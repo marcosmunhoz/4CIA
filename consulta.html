@@ -1,0 +1,216 @@
+<!DOCTYPE html>   
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Dejem e Delegada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="css/fontAwesome.css" />
+  <link rel="stylesheet" href="css/light-box.css" />
+  <link rel="stylesheet" href="css/templatemo-style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Kanit:300,400,700,900&display=swap" rel="stylesheet" />
+  <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Kanit', sans-serif;
+      background: #000;
+    }
+
+    nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px 20px;
+      z-index: 10;
+    }
+
+    .logo img.logo-img {
+      height: 50px;
+    }
+
+    #video-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    #video-container video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      object-fit: cover;
+      filter: brightness(0.6);
+    }
+
+    .video-content {
+  position: relative;
+  z-index: 2;
+  
+  /* Centralização flexbox */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* vertical */
+  align-items: center;      /* horizontal */
+  
+  height: 100vh;            /* ocupa toda altura da viewport */
+  text-align: center;       /* texto centralizado */
+  padding: 0 20px;          /* espaçamento lateral para mobile */
+}
+
+    .video-content h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5em;
+    }
+
+    .video-content p {
+      font-size: 1.6rem;
+      margin-bottom: 1.5em;
+      font-weight: 400;
+    }
+
+    form.id-form {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 300px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    form.id-form label {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: white;
+      text-align: left;
+    }
+
+    form.id-form input[type="text"] {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    form.id-form input::placeholder {
+      color: #ccc;
+    }
+
+    form.id-form button {
+      background-color: #777;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    form.id-form button:hover {
+      background-color: #555;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-size: 0.9rem;
+      z-index: 2;
+      background: transparent;
+      padding: 10px 0;
+    }
+
+    @media (max-width: 480px) {
+      .video-content h1 {
+        font-size: 2.2rem;
+      }
+
+      .video-content p {
+        font-size: 1.2rem;
+      }
+
+      form.id-form {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo/icon-pmrv.png" alt="Polícia Militar Rodoviária" class="logo-img" />
+      </a>
+    </div>
+  </nav>
+
+  <div id="video-container">
+    <video autoplay loop muted playsinline>
+      <source src="highway-loop.mp4" type="video/mp4" />
+      Seu navegador não suporta vídeo.
+    </video>
+
+    <div class="video-content">
+      <h1>Escala</h1>
+      <p>Dejem e Delegada</p>
+
+      <form class="id-form" onsubmit="abrirLink(); return false;">
+        <label for="numero">Inserir o ID</label>
+        <input type="text" id="numero" placeholder="Ex: ID 12345" required />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>Desenvolvido pelo SD PM 194528-9 Guidini</p>
+  </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script>
+    window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
+  </script>
+  <script src="js/vendor/bootstrap.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    function abrirLink() {
+  const id = document.getElementById('numero').value.trim();
+  if (!id) {
+    alert('Por favor, insira o ID.');
+    return;
+  }
+
+  // Exemplo de URL base
+  const urlBase = "https://sistemasadmin.intranet.policiamilitar.sp.gov.br/escala/arrelpreesc.aspx?";
+
+  // Redireciona para a URL com o ID
+  window.location.href = urlBase + encodeURIComponent(id);
+}
+  </script>
+
+</body>
+</html>

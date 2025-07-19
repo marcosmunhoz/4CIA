@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Área Policial</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    /* Fundo de vídeo */
+    #background-video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      object-fit: cover;
+    }
+
+    /* Menu circular principal */
+    .menu-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 450px;
+      height: 450px;
+      margin-top: -225px;
+      margin-left: -225px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      transition: all 0.3s ease;
+    }
+
+    .menu-item {
+	  display: flex;
+	  flex-direction: column; /*empilha verticalmente o texto*/
+	  align-items:center;
+	  justify-content:center;
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+      .menu-text {
+      font-size: 14px;
+      margin-bottom: 1px;
+    } 
+
+      .menu-emoji {
+       font-size: 22px;
+    }
+	.menu-icon {
+      width: 80px;
+      height: 80px;
+     object-fit: contain; /* Garante que a imagem não deforme */
+	  pointer-events: none; /* ← permite que o clique "passe" pela imagem */
+    }
+	 
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Posição circular atualizada (translate aumentado) */
+    .menu-item:nth-child(1) { transform: rotate(0deg) translate(160px) rotate(0deg); }
+    .menu-item:nth-child(2) { transform: rotate(45deg) translate(160px) rotate(-45deg); }
+    .menu-item:nth-child(3) { transform: rotate(90deg) translate(160px) rotate(-90deg); }
+    .menu-item:nth-child(4) { transform: rotate(135deg) translate(160px) rotate(-135deg); }
+    .menu-item:nth-child(5) { transform: rotate(180deg) translate(160px) rotate(-180deg); }
+    .menu-item:nth-child(6) { transform: rotate(225deg) translate(160px) rotate(-225deg); }
+    .menu-item:nth-child(7) { transform: rotate(270deg) translate(160px) rotate(-270deg); }
+    .menu-item:nth-child(8) { transform: rotate(315deg) translate(160px) rotate(-315deg); }
+	
+	
+	
+	
+	
+	
+	
+	
+
+    /* Submenu circular aumentado */
+    .submenu-circle {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .submenu-item {
+	  flex-direction: column; /*empilha verticalmente o texto*/
+	  align-items:center;
+	  justify-content:center;
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.3);
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 70px;
+      font-size: 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+	  font-size: clamp(10px, 1.5vw, 16px); /* texto redimensiona entre 10 e 16 px */
+      color: white;
+      text-align: center;
+      word-break: break-word;     /* permite quebra de linha */
+      white-space: normal;        /* quebra linhas */
+      max-width: 100%;            /* não ultrapassa o botão */
+      line-height: 1.1;
+      user-select: none;
+    }
+	  .submenu-icon {
+      width: 65px;
+      height: 65px;
+      object-fit: contain; /* Garante que a imagem não deforme */
+   }
+      .submenu-text {
+      font-size: 14px;
+      margin-bottom: 2px; /* espaço entre texto e emoji */
+    } 
+     .submenu-item a {
+      color: white;
+      text-decoration: none;
+      display: flex; flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+   }
+
+     .submenu-item a:hover {
+      color: white;
+      text-decoration: none;
+   }
+
+    /* Posição circular submenu ajustada */
+    .submenu-item:nth-child(1) { transform: rotate(0deg) translate(120px) rotate(0deg); }
+    .submenu-item:nth-child(2) { transform: rotate(72deg) translate(120px) rotate(-72deg); }
+    .submenu-item:nth-child(3) { transform: rotate(144deg) translate(120px) rotate(-144deg); }
+    .submenu-item:nth-child(4) { transform: rotate(216deg) translate(120px) rotate(-216deg); }
+    .submenu-item:nth-child(5) { transform: rotate(288deg) translate(120px) rotate(-288deg); }
+  </style>
+</head>
+<body>
+
+  <!-- Vídeo de fundo -->
+  <video id="background-video" autoplay loop muted>
+    <source src="videos/pm.mp4" type="video/mp4">
+    Seu navegador não suporta vídeo.
+  </video>
+
+  <!-- Menu principal -->
+  <div class="menu-circle" id="mainMenu">
+    <div class="menu-item" onclick="toggleSubmenu(1)"><img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" /></a></div>
+    <div class="menu-item" onclick="toggleSubmenu(2)"><img src="img/logo/VPN.png" alt="VPN" class="menu-icon" /></a></div>
+	<div class="menu-item" ><a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" /></a></div>
+    <div class="menu-item" ><a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon" /></a></div>
+    <div class="menu-item" ><a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon" /></a></div>
+    <div class="menu-item" ><a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" /></a></div>
+    <div class="menu-item" ><a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" /></a></div>
+    <div class="menu-item" onclick="toggleSubmenu(8)"><img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" /></a></div>
+  </div>
+
+  <!-- Submenus -->
+  <div class="submenu-circle" id="submenu1">
+    <div class="submenu-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLScAsayIw8JXcY8sIYy2ZQViqbAoKUSZOoKL27mnwXDIPjgK5w/viewform"><img src="img/logo/manutenção.png" alt="MANUTENÇÂO" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode"><img src="img/logo/amigo.png" alt="AMIGOS" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
+  </div>
+
+  <div class="submenu-circle" id="submenu2">
+    <div class="submenu-item"><a href="http://www.intranet.policiamilitar.sp.gov.br/"><img src="img/logo/intranet.png" alt="INTRANET" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="http://10.61.15.39/Login"><img src="img/logo/PPRI.png" alt="PPRI" class="submenu-icon" /><span class="submenu-text">PPRI</span></a></div>
+    <div class="submenu-item"><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login"><img src="img/logo/assentamento.png" alt="ASSENTAMENTO" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="consulta.html"><img src="img/logo/dejem.png" alt="DEJEM-DELEGADA" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/"><img src="img/logo/prodesp.png" alt="PRODESP" class="submenu-icon" /></a></div>
+  </div>
+
+  <script>
+    function toggleSubmenu(index) {
+      // Fecha todos os submenus
+      const submenus = document.querySelectorAll(".submenu-circle");
+      submenus.forEach(menu => menu.style.display = "none");
+
+      // Abre o submenu correspondente
+      const submenu = document.getElementById("submenu" + index);
+      if (submenu) {
+        submenu.style.display = "flex";
+        submenu.style.top = "50%";
+        submenu.style.left = "50%";
+        submenu.style.marginTop = "-175px";
+        submenu.style.marginLeft = "-175px";
+      }
+    }
+
+    // Clica fora do menu para fechar submenu
+    document.addEventListener("click", function(e) {
+      if (!e.target.classList.contains("menu-item")) {
+        const submenus = document.querySelectorAll(".submenu-circle");
+        submenus.forEach(menu => menu.style.display = "none");
+      }
+    });
+  </script>
+</body>
+</html>
