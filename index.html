@@ -441,34 +441,34 @@
     <script src="js/main.js"></script>
 
 <script>
-document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
-  link.addEventListener('click', e => {
-    const submenu = link.nextElementSibling;
+document.addEventListener("DOMContentLoaded", function () {
+  // Abrir submenu ao clicar no link do menu
+  document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
+    link.addEventListener('click', function (e) {
+      const submenu = this.nextElementSibling;
+      if (submenu && submenu.classList.contains('submenu-horizontal')) {
+        e.preventDefault();
 
-    if (submenu && submenu.classList.contains('submenu-horizontal')) {
-      e.preventDefault();
+        // Fecha outros submenus
+        document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {
+          if (sub !== submenu) {
+            sub.classList.remove('active');
+          }
+        });
 
-      // Fecha outros submenus
+        submenu.classList.toggle('active');
+      }
+    });
+  });
+
+  // Fecha todos os submenus se clicar fora do menu
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('nav')) {
       document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {
-        if (sub !== submenu) {
-          sub.classList.remove('active');
-        }
+        sub.classList.remove('active');
       });
-
-      // Alterna submenu clicado
-      submenu.classList.toggle('active');
     }
   });
-});
-
-// Fecha submenus ao clicar fora do menu
-document.addEventListener('click', (e) => {
-  const isClickInside = e.target.closest('nav');
-  if (!isClickInside) {
-    document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {
-      sub.classList.remove('active');
-    });
-  }
 });
 </script>
 
