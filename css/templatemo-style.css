@@ -1348,3 +1348,48 @@ footer a:hover {
   }
 
 }
+
+/* MENU RESPONSIVO ADICIONADO */
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  ul.menu-horizontal {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    position: absolute;
+    top: 70px;
+    left: 0;
+    z-index: 999;
+  }
+
+  ul.menu-horizontal.active {
+    display: flex;
+  }
+
+  ul.menu-horizontal > li {
+    width: 100%;
+    text-align: center;
+  }
+
+  ul.submenu-horizontal {
+    position: static;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+}
