@@ -440,6 +440,36 @@
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
 
+
+
+
+<script>
+  // Toggle menu mobile
+  document.getElementById('mobile-menu').addEventListener('click', function () {
+    document.getElementById('menu').classList.toggle('active');
+  });
+
+  // Abrir submenu no toque
+  document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
+    link.addEventListener('click', e => {
+      const submenu = link.nextElementSibling;
+      if (submenu && submenu.classList.contains('submenu-horizontal')) {
+        e.preventDefault();
+        submenu.classList.toggle('active');
+      }
+    });
+  });
+
+  // Fechar ao clicar fora
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('nav')) {
+      document.querySelectorAll('.submenu-horizontal').forEach(sub => sub.classList.remove('active'));
+      document.getElementById('menu').classList.remove('active');
+    }
+  });
+</script>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   // Abrir submenu ao clicar no link do menu
@@ -470,33 +500,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-</script>
-
-
-<script>
-  // Toggle menu mobile
-  document.getElementById('mobile-menu').addEventListener('click', function () {
-    document.getElementById('menu').classList.toggle('active');
-  });
-
-  // Abrir submenu no toque
-  document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
-    link.addEventListener('click', e => {
-      const submenu = link.nextElementSibling;
-      if (submenu && submenu.classList.contains('submenu-horizontal')) {
-        e.preventDefault();
-        submenu.classList.toggle('active');
-      }
-    });
-  });
-
-  // Fechar ao clicar fora
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('nav')) {
-      document.querySelectorAll('.submenu-horizontal').forEach(sub => sub.classList.remove('active'));
-      document.getElementById('menu').classList.remove('active');
-    }
-  });
 </script>
 
 </body>
