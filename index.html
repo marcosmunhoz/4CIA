@@ -46,6 +46,7 @@
         .logo img.logo-img {
             height: 50px;
             object-fit: contain;
+            max-width: 100%;
         }
 
         nav .logo a {
@@ -55,6 +56,7 @@
             text-decoration: none;
             margin-right: 50px;
             font-family: 'Kanit', sans-serif;
+            white-space: nowrap;
         }
 
         ul.menu-horizontal {
@@ -101,7 +103,6 @@
             white-space: nowrap;
             z-index: 1001;
             box-shadow: 0 2px 5px rgba(0,0,0,0.7);
-            /* display: flex removido daqui */
         }
 
         ul.submenu-horizontal.active {
@@ -129,28 +130,42 @@
             nav {
                 flex-wrap: nowrap;
                 padding: 15px 20px;
-                justify-content: flex-start;
+                justify-content: space-between; /* Logo à esquerda e botão à direita */
                 position: relative;
             }
+
             #menu-toggle {
                 display: block;
-                margin-left: auto;
+                margin-left: 0;
+                order: 2;
             }
+
+            .logo {
+                order: 1;
+                flex-shrink: 1;
+            }
+
             ul.menu-horizontal {
                 flex-direction: column;
                 gap: 10px;
-                background: rgba(0, 0, 0, 0.8);
+                background: rgba(0, 0, 0, 0.9);
                 position: absolute;
-                top: 70px; /* altura do nav para posicionar abaixo */
+                top: 60px; /* logo abaixo do nav */
                 left: 0;
                 width: 100%;
-                display: none; /* escondido por padrão */
-                padding: 10px 0;
+                max-height: 0;
+                overflow: hidden;
+                padding: 0;
                 border-radius: 0 0 5px 5px;
+                transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+                z-index: 1005;
             }
             ul.menu-horizontal.active {
+                max-height: 500px; /* altura suficiente para exibir o menu */
+                padding: 10px 0;
                 display: flex;
             }
+
             ul.menu-horizontal > li {
                 width: 100%;
                 padding: 0 20px;
@@ -160,33 +175,67 @@
                 font-size: 1.5rem;
                 padding: 10px 0;
                 white-space: normal;
+                display: block;
             }
+
             ul.submenu-horizontal {
                 position: static;
                 background: transparent;
                 padding-left: 20px;
-                display: none;
                 margin: 0;
                 gap: 0;
                 box-shadow: none;
                 border-radius: 0;
+                display: none;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
             }
             ul.submenu-horizontal.active {
                 display: block;
+                max-height: 500px;
             }
             ul.submenu-horizontal li a {
                 font-size: 1.3rem;
                 padding: 5px 0;
                 white-space: normal;
+                display: block;
             }
 
             /* Ajuste do logo */
             .logo img.logo-img {
                 height: 40px;
+                max-width: 80vw;
+                object-fit: contain;
             }
             nav .logo a {
                 margin-right: 0;
                 font-size: 1.4rem;
+                white-space: nowrap;
+            }
+
+            /* Ajustes do título e textos para evitar overflow */
+            #video-container {
+                height: 40vh;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+            #video-container .video-content .inner h1 {
+                font-size: 2rem;
+                max-width: 100%;
+                margin: 0 auto 10px auto;
+                word-break: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.2;
+            }
+            #video-container .video-content .inner p {
+                font-size: 1rem;
+                margin: 5px 0;
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }
+            .scroll-icon a img {
+                width: 30px;
             }
         }
 
@@ -243,21 +292,6 @@
             width: 40px;
             margin-top: 20px;
             filter: invert(1);
-        }
-
-        @media (max-width: 768px) {
-            #video-container {
-                height: 40vh;
-            }
-            #video-container .video-content .inner h1 {
-                font-size: 2rem;
-            }
-            #video-container .video-content .inner p {
-                font-size: 1rem;
-            }
-            .scroll-icon a img {
-                width: 30px;
-            }
         }
 
     </style>
@@ -379,51 +413,50 @@
             <input id="email" name="email" placeholder="Seu email..." type="email" required>
             <label for="mensagem">Mensagem:</label>
             <textarea id="mensagem" name="mensagem" rows="4" placeholder="Sua mensagem..." required></textarea>
-            <button type="submit">Enviar</button>
+            <input type="submit" value="Enviar">
         </form>
     </div>
 </div>
 
-<script src="js/vendor/jquery-1.11.2.min.js"></script>
-<script src="js/vendor/bootstrap.min.js"></script>
-<script src="js/plugins.js"></script>
-<script src="js/main.js"></script>
-
 <script>
-    // Abrir/fechar submenu no clique (desktop e mobile)
-    document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
-        link.addEventListener('click', e => {
-            const submenu = link.nextElementSibling;
-            if (submenu && submenu.classList.contains('submenu-horizontal')) {
-                e.preventDefault();
-                submenu.classList.toggle('active');
+    // Script para abrir/fechar menu mobile
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.querySelector('ul.menu-horizontal');
+    menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('active');
+    });
+
+    // Script para abrir/fechar submenu ao clicar no item no mobile
+    document.querySelectorAll('ul.menu-horizontal > li > a').forEach(item => {
+        item.addEventListener('click', e => {
+            // Só em telas pequenas
+            if(window.innerWidth <= 768){
+                const submenu = item.nextElementSibling;
+                if(submenu && submenu.classList.contains('submenu-horizontal')){
+                    e.preventDefault();
+                    submenu.classList.toggle('active');
+                }
             }
         });
     });
 
-    // Botão hamburguer toggle menu mobile
-    const menuToggle = document.getElementById('menu-toggle');
-    const menuHorizontal = document.querySelector('ul.menu-horizontal');
+    // Modal de contato
+    const modal = document.getElementById("modal");
+    const btn = document.getElementById("modBtn");
+    const span = document.getElementsByClassName("close")[0];
 
-    menuToggle.addEventListener('click', () => {
-        menuHorizontal.classList.toggle('active');
-    });
-
-    // Fechar modal ao clicar no X
-    const modal = document.getElementById('modal');
-    const modBtn = document.getElementById('modBtn');
-    const spanClose = document.querySelector('.modal .close');
-
-    modBtn.onclick = function() {
-        modal.style.display = "block";
+    btn.onclick = function() {
+      modal.style.display = "block";
     }
-    spanClose.onclick = function() {
-        modal.style.display = "none";
+
+    span.onclick = function() {
+      modal.style.display = "none";
     }
+
     window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
     }
 </script>
 
