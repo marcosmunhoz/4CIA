@@ -1,24 +1,25 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
- <head>
-  <meta charset="utf-8"/>
-  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
-  <title>
-   Pol&iacute;cia Rodovi&aacute;ria Militar
-  </title>
-  <meta content="" name="description"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link href="apple-touch-icon.png" rel="apple-touch-icon"/>
-  <link href="css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="css/bootstrap-theme.min.css" rel="stylesheet"/>
-  <link href="css/fontAwesome.css" rel="stylesheet"/>
-  <link href="css/light-box.css" rel="stylesheet"/>
-  <link href="css/templatemo-style.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet"/>
-  <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js">
-  </script>
-  <style>
-   /* MENU HORIZONTAL COM SUBMENUS TRANSPARENTE */
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  		<title>Polícia Rodoviária Militar</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/fontAwesome.css">
+        <link rel="stylesheet" href="css/light-box.css">
+        <link rel="stylesheet" href="css/templatemo-style.css">
+
+        <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+        <style>
+          /* MENU HORIZONTAL COM SUBMENUS TRANSPARENTE */
 
           nav {
             display: flex;
@@ -122,441 +123,345 @@
               overflow-x: auto;
             }
           }
-  </style>
- </head>
- <body>
-  <nav>
-   <div class="logo">
+        
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  ul.menu-horizontal {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+
+  ul.menu-horizontal li {
+    text-align: center;
+    width: 100%;
+  }
+
+  ul.menu-horizontal.active {
+    display: flex;
+  }
+
+  ul.submenu-horizontal {
+    position: static;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+  }
+
+  ul.submenu-horizontal li a {
+    color: #fff;
+  }
+}
+
+</style>
+    
+</head>
+<body>
+
+    <nav>
+  <div class="logo">
     <a href="index.html">
-     <img alt="Pol&iacute;cia Militar Rodovi&aacute;ria" class="logo-img" src="img/logo/icon-pmrv.png"/>
+      <img src="img/logo/icon-pmrv.png" alt="Polícia Militar Rodoviária" class="logo-img">
     </a>
-   </div>
-   <button class="menu-toggle" id="menu-toggle">
+  </div>
+
+  <div class="menu-toggle" id="mobile-menu">
     ☰
-   </button>
-   <ul class="menu-horizontal">
-    <li>
-     <a>
-      POLICIAL MILITAR
-     </a>
-     <ul class="submenu-horizontal">
-      <li>
-       <a href="PM.html">
-        👮🏻 PM
-       </a>
-      </li>
-      <li>
-       <a href="#">
-        Minha escala
-       </a>
-      </li>
-      <li>
-       <a href="https://www.ipva.fazenda.sp.gov.br/ipvanet_consulta/Consulta.aspx">
-        D&eacute;bito de Ve&iacute;culos
-       </a>
-      </li>
-     </ul>
-    </li>
-    <li>
-     <a>
-      SERVI&Ccedil;O AO P&Uacute;BLICO
-     </a>
-     <ul class="submenu-horizontal">
-      <li>
-       <a href="https://bopm.policiamilitar.sp.gov.br/">
-        Inserir Token(BOPM)
-       </a>
-      </li>
-      <li>
-       <a href="#">
-        Endere&ccedil;os
-       </a>
-      </li>
-      <li>
-       <a href="#">
-        Contatos
-       </a>
-      </li>
-      <li>
-       <a href="#">
-        D&uacute;vidas?
-       </a>
-      </li>
-     </ul>
-    </li>
-    <li>
-     <a href="grid.html">
-     </a>
-     <ul class="submenu-horizontal">
-      <li>
-       <a href="#">
-       </a>
-      </li>
-     </ul>
-    </li>
-   </ul>
-  </nav>
-  <div id="video-container">
-   <div class="video-overlay">
-   </div>
-   <div class="video-content">
-    <div class="inner">
-     <h1>
-      Pol&iacute;cia Militar Rodovi&aacute;ria
-     </h1>
-     <p>
-      4&ordm; BPRv - 4&ordf; Cia - 1&ordm; Pel
-     </p>
-     <p>
-      Anjos do Asfalto
-     </p>
-     <div class="scroll-icon">
-      <a class="scrollTo" data-scrollto="portfolio" href="#">
-       <img alt="" src="img/scroll-icon.png"/>
-      </a>
-     </div>
-    </div>
-   </div>
-   <video autoplay="" loop="" muted="">
-    <source src="highway-loop.mp4" type="video/mp4"/>
-   </video>
   </div>
-  <div class="grid-portfolio" id="portfolio">
-   <div class="container">
-    <div class="row">
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_4.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           <h1>
-            Policial do
-            <em>
-             m&ecirc;s
-            </em>
-           </h1>
-           <p>
-            Julho 2025
-           </p>
-          </div>
-         </div>
-        </a>
-        <div class="image">
-         <img src="img/pmdestaque/pmdestaque.png"/>
-        </div>
-       </div>
-      </div>
-     </div>
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_2.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           <h1>
-            Ocorr&ecirc;ncia
-            <em>
-             do M&ecirc;s
-            </em>
-           </h1>
-           <p>
-            Julho/2025
-           </p>
-          </div>
-         </div>
-         <div class="image">
-          <img src="img/ocorrencia/ocorrencia.jpg"/>
-         </div>
-        </a>
-       </div>
-      </div>
-     </div>
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_3.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           <h1>
-            Galeria
-            <em>
-             de Comandantes
-            </em>
-           </h1>
-           <p>
-            Hist&oacute;rico de Comandantes
-           </p>
-          </div>
-         </div>
-         <div class="image">
-          <img src="img/comandante/comandante.jpeg"/>
-         </div>
-        </a>
-       </div>
-      </div>
-     </div>
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_1.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           <h1>
-            O Eterno
-            <em>
-             Vigilante
-            </em>
-           </h1>
-           <p>
-            Ten Cel Carlos Miranda
-           </p>
-          </div>
-         </div>
-         <div class="image">
-          <img src="img/vigilante/vigilante.jpg"/>
-         </div>
-        </a>
-       </div>
-      </div>
-     </div>
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_5.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           &lt;
-           <h1>
-            Espa&ccedil;o
-            <em>
-             Livre
-            </em>
-           </h1>
-           <p>
-            Espa&ccedil;o Livre
-           </p>
-          </div>
-         </div>
-        </a>
-        <div class="image">
-         <img src="img/portfolio_item_5.png"/>
-        </div>
-       </div>
-      </div>
-     </div>
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_6.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           <h1>
-            Espa&ccedil;o
-            <em>
-             Livre
-            </em>
-           </h1>
-           <p>
-            Espa&ccedil;o Livre
-           </p>
-          </div>
-         </div>
-        </a>
-        <div class="image">
-         <img src="img/portfolio_item_6.png"/>
-        </div>
-       </div>
-      </div>
-     </div>
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_7.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           <h1>
-            Espa&ccedil;o
-            <em>
-             Livre
-            </em>
-           </h1>
-           <p>
-            Espa&ccedil;o Livre
-           </p>
-          </div>
-         </div>
-        </a>
-        <div class="image">
-         <img src="img/portfolio_item_7.png"/>
-        </div>
-       </div>
-      </div>
-     </div>
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_8.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           <h1>
-            Espa&ccedil;o
-            <em>
-             Livre
-            </em>
-           </h1>
-           <p>
-            Espa&ccedil;o Livre
-           </p>
-          </div>
-         </div>
-        </a>
-        <div class="image">
-         <img src="img/portfolio_item_8.png"/>
-        </div>
-       </div>
-      </div>
-     </div>
-     <div class="col-md-4 col-sm-6">
-      <div class="portfolio-item">
-       <div class="thumb">
-        <a data-lightbox="image-1" href="img/big_portfolio_item_9.png">
-         <div class="hover-effect">
-          <div class="hover-content">
-           <h1>
-            Espa&ccedil;o
-            <em>
-             Livre
-            </em>
-           </h1>
-           <p>
-            Espa&ccedil;o Livre
-           </p>
-          </div>
-         </div>
-        </a>
-        <div class="image">
-         <img src="img/portfolio_item_9.png"/>
-        </div>
-       </div>
-      </div>
-     </div>
-    </div>
-    <div class="row">
-     <div class="col-md-12">
-      <div class="load-more-button">
-       <a href="#">
-        Sobre N&oacute;s
-       </a>
-      </div>
-     </div>
-    </div>
-   </div>
-  </div>
-  <footer>
-   <div class="container-fluid">
-    <div class="col-md-12">
-     <p>
-      Desenvolvido pelo SD PM 194528-9 Guidini
-     </p>
-    </div>
-   </div>
-  </footer>
-  <!-- Modal button -->
-  <div class="popup-icon">
-   <button class="modal-btn" id="modBtn">
-    <img alt="" src="img/contact-icon.png"/>
-   </button>
-  </div>
-  <!-- Modal -->
-  <div class="modal" id="modal">
-   <!-- Modal Content -->
-   <div class="modal-content">
-    <!-- Modal Header -->
-    <div class="modal-header">
-     <h3 class="header-title">
-      Envie
-      <em>
-       uma Mensagem
-      </em>
-     </h3>
-     <div class="close-btn">
-      <img alt="" src="img/close_contact.png"/>
-     </div>
-    </div>
-    <!-- Modal Body -->
-    <div class="modal-body">
-     <div class="col-md-6 col-md-offset-3">
-      <form action="https://formspree.io/f/mblyzdqz" id="contact" method="post">
-       <div class="row">
-        <div class="col-md-12">
-         <fieldset>
-          <input class="form-control" id="name" name="name" placeholder="Seu Nome..." required="" type="text"/>
-         </fieldset>
-        </div>
-        <div class="col-md-12">
-         <fieldset>
-          <input class="form-control" id="email" name="email" placeholder="Seu Email..." required="" type="email"/>
-         </fieldset>
-        </div>
-        <div class="col-md-12">
-         <fieldset>
-          <textarea class="form-control" id="message" name="message" placeholder="Sua Mensagem..." required="" rows="6"></textarea>
-         </fieldset>
-        </div>
-        <div class="col-md-12">
-         <fieldset>
-          <button class="btn" id="form-submit" type="submit">
-           Enviar mensagem agora
-          </button>
-         </fieldset>
-        </div>
-       </div>
-      </form>
-     </div>
-    </div>
-   </div>
-  </div>
-  <section class="overlay-menu">
-   <!-- REMOVIDO: menu antigo -->
-  </section>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-  </script>
-  <script>
-   window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
-  </script>
-  <script src="js/vendor/bootstrap.min.js">
-  </script>
-  <script src="js/plugins.js">
-  </script>
-  <script src="js/main.js">
-  </script>
-  <script>
-   document.querySelectorAll('ul.menu-horizontal > li').forEach(item => {
-  item.addEventListener('click', e => {
-    const submenu = item.querySelector('ul.submenu-horizontal');
 
-    // Se clicou em um link dentro do submenu, deixa seguir o clique
-    if (e.target.closest('ul.submenu-horizontal a')) return;
+  <ul class="menu-horizontal" id="menu">
+    <li>
+      <a>POLICIAL MILITAR</a>
+      <ul class="submenu-horizontal">
+        <li><a href="PM.html">👮🏻 PM</a></li>
+        <li><a href="#">Minha escala</a></li>
+        <li><a href="https://www.ipva.fazenda.sp.gov.br/ipvanet_consulta/Consulta.aspx">Débito de Veículos</a></li>
+      </ul>
+    </li>
+    <li>
+      <a>SERVIÇO AO PÚBLICO</a>
+      <ul class="submenu-horizontal">
+        <li><a href="https://bopm.policiamilitar.sp.gov.br/">Inserir Token (BOPM)</a></li>
+        <li><a href="#">Endereços</a></li>
+        <li><a href="#">Contatos</a></li>
+        <li><a href="#">Dúvidas?</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
-    // Se o item tiver submenu, previne o clique e mostra/esconde o submenu
-    if (submenu) {
+    <div id="video-container">
+        <div class="video-overlay"></div>
+        <div class="video-content">
+            <div class="inner">
+              <h1>Polícia Militar Rodoviária</h1>
+              <p>4º BPRv - 4ª Cia - 1º Pel</p>
+              <p>Anjos do Asfalto</p>
+                <div class="scroll-icon">
+                    <a class="scrollTo" data-scrollTo="portfolio" href="#"><img src="img/scroll-icon.png" alt=""></a>
+                </div>    
+            </div>
+        </div>
+        <video autoplay="" loop="" muted>
+        	<source src="highway-loop.mp4" type="video/mp4" />
+        </video>
+    </div>
+
+
+    <div class="grid-portfolio" id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_4.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Policial do<em>mês</em></h1>
+                                    <p>Julho 2025</p>
+                                </div>
+                            </div></a>
+                            <div class="image">
+                                <img src="img/pmdestaque/pmdestaque.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_2.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Ocorrência <em> do Mês</em></h1>
+                                <p>Julho/2025</p>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="img/ocorrencia/ocorrencia.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_3.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Galeria <em> de Comandantes</em></h1>
+                                <p>Histórico de Comandantes</p>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="img/comandante/comandante.jpeg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_1.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>O Eterno<em>Vigilante</em></h1>
+                                <p>Ten Cel Carlos Miranda</p>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="img/vigilante/vigilante.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_5.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <<h1>Espaço<em> Livre</em></h1>
+                                <p>Espaço Livre</p>
+                                </div>
+                            </div></a>
+                            <div class="image">
+                                <img src="img/portfolio_item_5.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_6.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                <p>Espaço Livre</p>
+                                </div>
+                            </div></a>
+                            <div class="image">
+                                <img src="img/portfolio_item_6.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_7.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                <p>Espaço Livre</p>
+                                </div>
+                            </div></a>
+                            <div class="image">
+                                <img src="img/portfolio_item_7.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_8.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                <p>Espaço Livre</p>
+                                </div>
+                            </div></a>
+                            <div class="image">
+                                <img src="img/portfolio_item_8.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="img/big_portfolio_item_9.png" data-lightbox="image-1"><div class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                <p>Espaço Livre</p>
+                                </div>
+                            </div></a>
+                            <div class="image">
+                                <img src="img/portfolio_item_9.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="load-more-button">
+                        <a href="#">Sobre Nós</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container-fluid">
+            <div class="col-md-12">
+                 <p>Desenvolvido pelo SD PM 194528-9 Guidini</p>
+            </div>
+        </div>
+    </footer>
+
+
+      <!-- Modal button -->
+    <div class="popup-icon">
+      <button id="modBtn" class="modal-btn"><img src="img/contact-icon.png" alt=""></button>
+    </div>  
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <!-- Modal Content -->
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h3 class="header-title">Envie <em>uma Mensagem</em></h3>
+          <div class="close-btn"><img src="img/close_contact.png" alt=""></div>    
+        </div>
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="col-md-6 col-md-offset-3">
+            <form id="contact" action="https://formspree.io/f/mblyzdqz" method="post">
+                <div class="row">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <input name="name" type="text" class="form-control" id="name" placeholder="Seu Nome..." required="">
+                      </fieldset>
+                    </div>
+                    <div class="col-md-12">
+                      <fieldset>
+                        <input name="email" type="email" class="form-control" id="email" placeholder="Seu Email..." required="">
+                      </fieldset>
+                    </div>
+                    <div class="col-md-12">
+                      <fieldset>
+                        <textarea name="message" rows="6" class="form-control" id="message" placeholder="Sua Mensagem..." required=""></textarea>
+                      </fieldset>
+                    </div>
+                    <div class="col-md-12">
+                      <fieldset>
+                        <button type="submit" id="form-submit" class="btn">Enviar mensagem agora</button>
+                      </fieldset>
+                    </div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="overlay-menu">
+        <!-- REMOVIDO: menu antigo -->
+    </section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+    <script src="js/vendor/bootstrap.min.js"></script>
+    
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+
+<script>
+document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
+  link.addEventListener('click', e => {
+    const submenu = link.nextElementSibling;
+
+    if (submenu && submenu.classList.contains('submenu-horizontal')) {
       e.preventDefault();
 
-      // Fecha todos os outros submenus
+      // Fecha outros submenus
       document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {
         if (sub !== submenu) {
           sub.classList.remove('active');
         }
       });
 
-      // Toggle do submenu clicado
+      // Alterna submenu clicado
       submenu.classList.toggle('active');
     }
   });
 });
 
-// Fecha submenus ao clicar fora
+// Fecha submenus ao clicar fora do menu
 document.addEventListener('click', (e) => {
   const isClickInside = e.target.closest('nav');
   if (!isClickInside) {
@@ -565,6 +470,34 @@ document.addEventListener('click', (e) => {
     });
   }
 });
-  </script>
- </body>
+</script>
+
+
+<script>
+  // Toggle menu mobile
+  document.getElementById('mobile-menu').addEventListener('click', function () {
+    document.getElementById('menu').classList.toggle('active');
+  });
+
+  // Abrir submenu no toque
+  document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
+    link.addEventListener('click', e => {
+      const submenu = link.nextElementSibling;
+      if (submenu && submenu.classList.contains('submenu-horizontal')) {
+        e.preventDefault();
+        submenu.classList.toggle('active');
+      }
+    });
+  });
+
+  // Fechar ao clicar fora
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('nav')) {
+      document.querySelectorAll('.submenu-horizontal').forEach(sub => sub.classList.remove('active'));
+      document.getElementById('menu').classList.remove('active');
+    }
+  });
+</script>
+
+</body>
 </html>
