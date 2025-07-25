@@ -13,7 +13,7 @@
       font-family: sans-serif;
     }
 
-    /* Fundo de vídeo ajustado */
+    /* Fundo de vídeo ajustado para mostrar a bandeira à direita */
     #background-video {
       position: fixed;
       right: 0;
@@ -24,18 +24,19 @@
       height: auto;
       z-index: -1;
       object-fit: cover;
+      object-position: 70% center; /* Ajuste para mostrar mais a bandeira à direita */
     }
 
-    /* Ajuste para mobile - centralizar bandeira */
+    /* Ajuste específico para mobile */
     @media only screen and (max-width: 768px) {
       #background-video {
-        object-position: center;
+        object-position: 80% center; /* Mais à direita em mobile */
         object-fit: contain;
         background-color: #000;
       }
     }
 
-    /* Menu circular principal - ajustado para mobile */
+    /* Menu circular principal */
     .menu-circle {
       position: absolute;
       top: 50%;
@@ -93,7 +94,7 @@
       background: rgba(255, 255, 255, 0.4);
     }
 
-    /* Posição circular atualizada para tamanho menor */
+    /* Posição dos itens do menu */
     .menu-item:nth-child(1) { transform: rotate(0deg) translate(100px) rotate(0deg); }
     .menu-item:nth-child(2) { transform: rotate(45deg) translate(100px) rotate(-45deg); }
     .menu-item:nth-child(3) { transform: rotate(90deg) translate(100px) rotate(-90deg); }
@@ -103,7 +104,7 @@
     .menu-item:nth-child(7) { transform: rotate(270deg) translate(100px) rotate(-270deg); }
     .menu-item:nth-child(8) { transform: rotate(315deg) translate(100px) rotate(-315deg); }
 
-    /* Submenu circular ajustado para mobile */
+    /* Submenu circular */
     .submenu-circle {
       position: absolute;
       width: 220px;
@@ -170,7 +171,7 @@
       text-decoration: none;
     }
 
-    /* Posição circular submenu ajustada para mobile */
+    /* Posição dos itens do submenu */
     .submenu-item:nth-child(1) { transform: rotate(0deg) translate(80px) rotate(0deg); }
     .submenu-item:nth-child(2) { transform: rotate(72deg) translate(80px) rotate(-72deg); }
     .submenu-item:nth-child(3) { transform: rotate(144deg) translate(80px) rotate(-144deg); }
@@ -180,7 +181,7 @@
 </head>
 <body>
 
-  <!-- Vídeo de fundo -->
+  <!-- Vídeo de fundo com bandeira à direita -->
   <video id="background-video" autoplay loop muted playsinline>
     <source src="videos/pm.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
@@ -240,23 +241,25 @@
       }
     });
 
-    // Ajusta o vídeo para mobile
-    function adjustVideoForMobile() {
+    // Ajusta o posicionamento do vídeo
+    function adjustVideoPosition() {
       const video = document.getElementById('background-video');
       if (window.innerWidth <= 768) {
+        // Mobile - bandeira mais à direita e centralizada verticalmente
+        video.style.objectPosition = '80% center';
         video.style.objectFit = 'contain';
-        video.style.objectPosition = 'center';
         video.style.backgroundColor = '#000';
       } else {
+        // Desktop - bandeira destacada à direita
+        video.style.objectPosition = '70% center';
         video.style.objectFit = 'cover';
-        video.style.objectPosition = '';
         video.style.backgroundColor = '';
       }
     }
 
     // Executa na carga e no redimensionamento
-    window.addEventListener('load', adjustVideoForMobile);
-    window.addEventListener('resize', adjustVideoForMobile);
+    window.addEventListener('load', adjustVideoPosition);
+    window.addEventListener('resize', adjustVideoPosition);
   </script>
 </body>
 </html>
