@@ -1,4 +1,761 @@
-<!DOCTYPE html>
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Polícia Rodoviária Militar</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Meta tags para iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <style>
+        /* ESTILOS GERAIS */
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            color: white;
+            background-color: #000;
+            padding-top: 70px; /* Espaço para o menu fixo */
+        }
+
+        /* MENU HORIZONTAL COM SUBMENUS TRANSPARENTE E FIXO */
+        nav {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            user-select: none;
+            z-index: 1000;
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box;
+            top: 0;
+            transition: all 0.3s ease;
+            justify-content: space-between; /* Alinha logo e menu */
+        }
+
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            z-index: 1002; /* Garante que o logo fique acima dos submenus */
+        }
+
+        .logo img.logo-img {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        nav .logo a {
+            color: white;
+            font-weight: 700;
+            font-size: 1.6rem;
+            text-decoration: none;
+            margin-right: 20px;
+            font-family: 'Kanit', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-container {
+            display: flex;
+            align-items: center;
+        }
+
+        ul.menu-horizontal {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        ul.menu-horizontal > li {
+            position: relative;
+            cursor: pointer;
+        }
+
+        ul.menu-horizontal > li > a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.4rem;
+            white-space: nowrap;
+            padding: 10px 5px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        ul.menu-horizontal > li > a:hover {
+            border-bottom: 2px solid #00ccff;
+            color: #00ccff;
+        }
+
+        ul.submenu-horizontal {
+            list-style: none;
+            margin: 0;
+            padding: 10px;
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0 0 5px 5px;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            white-space: nowrap;
+            z-index: 1001;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+            min-width: 200px;
+        }
+
+        ul.submenu-horizontal.active {
+            display: block;
+        }
+
+        ul.submenu-horizontal li a {
+            color: #ccc;
+            font-size: 1.3rem;
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 8px 15px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        ul.submenu-horizontal li a:hover {
+            background-color: #00ccff;
+            color: #000;
+        }
+
+        /* AJUSTES PARA MOBILE */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            nav {
+                padding: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .menu-container {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            ul.menu-horizontal {
+                flex-direction: column;
+                width: 100%;
+                gap: 5px;
+            }
+
+            ul.menu-horizontal > li > a {
+                font-size: 1.2rem;
+                padding: 8px 3px;
+            }
+
+            .logo img.logo-img {
+                height: 40px;
+            }
+
+            /* Ajuste para submenu não sair da tela */
+            ul.submenu-horizontal {
+                position: static;
+                width: 100%;
+                box-sizing: border-box;
+                border-radius: 5px;
+                margin-top: 5px;
+            }
+
+            /* Prevent page shift when menu is clicked */
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+                position: relative;
+            }
+
+            body.menu-open {
+                overflow: hidden;
+                height: 100%;
+            }
+        }
+
+        /* VIDEO BACKGROUND */
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        #video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .video-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+            margin-top: 30px;
+            z-index: 10;
+        }
+
+        .video-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .video-content p {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.8);
+        }
+
+        @media (max-width: 768px) {
+            .video-content h1 {
+                font-size: 2rem;
+            }
+
+            .video-content p {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* SCROLL ICON */
+        .scroll-icon {
+            margin-top: 40px;
+        }
+
+        .scroll-icon img {
+            width: 40px;
+            height: 40px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .scroll-icon img:hover {
+            opacity: 1;
+            transform: translateY(5px);
+        }
+
+        /* PORTFOLIO GRID */
+        .grid-portfolio {
+            padding: 60px 0;
+            background-color: #111;
+            margin-top: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* BOTÃO DE SUGESTÃO ORIGINAL (DIREITO) */
+        .popup-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        .modal-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .modal-btn img {
+            width: 50px;
+            height: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover img {
+            transform: scale(1.1);
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #000;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #777;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1002;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            background-color: #111;
+            margin: 10% auto;
+            padding: 30px;
+            border: 1px solid #333;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .header-title em {
+            font-style: normal;
+            color: #00ccff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        .close-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-control {
+            background-color: #222;
+            border: 1px solid #333;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .form-control:focus {
+            background-color: #333;
+            border-color: #00ccff;
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .btn {
+            background-color: #00ccff;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0099cc;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="mainNav">
+        <div class="logo">
+            <a href="index.html">
+                <img src="img/logo/icon-pmrv.png" alt="Polícia Militar Rodoviária" class="logo-img">
+            </a>
+        </div>
+
+        <div class="menu-container">
+            <ul class="menu-horizontal" id="menu">
+                <li>
+                    <a>POLICIAL MILITAR</a>
+                    <ul class="submenu-horizontal">
+                        <li><a href="PM.html">👮🏻 PM</a></li>
+                        <li><a href="#">Minha escala</a></li>
+                        <li><a href="https://www.ipva.fazenda.sp.gov.br/ipvanet_consulta/Consulta.aspx">Débito de Veículos</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>SERVIÇO AO PÚBLICO</a>
+                    <ul class="submenu-horizontal">
+                        <li><a href="https://bopm.policiamilitar.sp.gov.br/">Inserir Token (BOPM)</a></li>
+                        <li><a href="#">Endereços</a></li>
+                        <li><a href="#">Contatos</a></li>
+                        <li><a href="#">Dúvidas?</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="video-container">
+        <div class="video-overlay"></div>
+        <div class="video-content">
+            <div class="inner">
+                <h1>Polícia Militar Rodoviária</h1>
+                <p>4º BPRv - 4ª Cia - 1º Pel</p>
+                <p>Anjos do Asfalto</p>
+                <div class="scroll-icon">
+                    <a href="#portfolio" id="scrollDown"><img src="img/scroll-icon.png" alt="Role para baixo"></a>
+                </div>    
+            </div>
+        </div>
+        <video autoplay loop muted playsinline>
+            <source src="highway-loop.mp4" type="video/mp4" />
+        </video>
+    </div>
+
+    <div class="grid-portfolio" id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/pmdestaque/pmdestaque.png" alt="Policial do mês">
+                            </div>
+                            <a href="img/big_portfolio_item_4.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Policial do<em>mês</em></h1>
+                                    <p>Julho 2025</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/ocorrencia/ocorrencia.jpg" alt="Ocorrência do mês">
+                            </div>
+                            <a href="img/big_portfolio_item_2.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Ocorrência <em>do Mês</em></h1>
+                                    <p>Julho/2025</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/comandante/comandante.jpeg" alt="Galeria de Comandantes">
+                            </div>
+                            <a href="img/big_portfolio_item_3.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Galeria <em>de Comandantes</em></h1>
+                                    <p>Histórico de Comandantes</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/vigilante/vigilante.jpg" alt="O Eterno Vigilante">
+                            </div>
+                            <a href="img/big_portfolio_item_1.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>O Eterno<em>Vigilante</em></h1>
+                                    <p>Ten Cel Carlos Miranda</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/portfolio_item_5.png" alt="Espaço Livre">
+                            </div>
+                            <a href="img/big_portfolio_item_5.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                    <p>Espaço Livre</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/portfolio_item_6.png" alt="Espaço Livre">
+                            </div>
+                            <a href="img/big_portfolio_item_6.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                    <p>Espaço Livre</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/portfolio_item_7.png" alt="Espaço Livre">
+                            </div>
+                            <a href="img/big_portfolio_item_7.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                    <p>Espaço Livre</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/portfolio_item_8.png" alt="Espaço Livre">
+                            </div>
+                            <a href="img/big_portfolio_item_8.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                    <p>Espaço Livre</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <div class="image">
+                                <img src="img/portfolio_item_9.png" alt="Espaço Livre">
+                            </div>
+                            <a href="img/big_portfolio_item_9.png" data-lightbox="image-1" class="hover-effect">
+                                <div class="hover-content">
+                                    <h1>Espaço<em> Livre</em></h1>
+                                    <p>Espaço Livre</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="load-more-button">
+                        <a href="#">Sobre Nós</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <p>Desenvolvido pelo SD PM 194528-9 Guidini</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão de Sugestão Original (lado direito) -->
+    <div class="popup-icon">
+        <button id="modBtn" class="modal-btn"><img src="img/contact-icon.png" alt=""></button>
+    </div>  
+
+    <!-- Modal de Sugestão -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="header-title">Envie <em>uma Sugestão</em></h3>
+                <div class="close-btn"><img src="img/close_contact.png" alt=""></div>    
+            </div>
+            <div class="modal-body">
+                <div class="col-md-6 col-md-offset-3">
+                    <form id="contact" action="https://formspree.io/f/mblyzdqz" method="post">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <input name="name" type="text" class="form-control" id="name" placeholder="Seu Nome..." required="">
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <input name="email" type="email" class="form-control" id="email" placeholder="Seu Email..." required="">
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <textarea name="message" rows="6" class="form-control" id="message" placeholder="Sua Sugestão..." required=""></textarea>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <button type="submit" id="form-submit" class="btn">Enviar Sugestão</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+    <script>
+        // Menu fixo com mudança de estilo ao scrollar
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Abrir submenu no toque
+        document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Fecha outros submenus primeiro
+                document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {
+                    if (sub !== this.nextElementSibling) {
+                        sub.classList.remove('active');
+                    }
+                });
+
+                // Abre o submenu atual
+                if (this.nextElementSibling && this.nextElementSibling.classList.contains('submenu-horizontal')) {
+                    e.preventDefault();
+                    this.nextElementSibling.classList.toggle('active');
+                    
+                    // Add/remove class to body to prevent scrolling
+                    if (this.nextElementSibling.classList.contains('active')) {
+                        document.body.classList.add('menu-open');
+                    } else {
+                        document.body.classList.remove('menu-open');
+                    }
+                }
+            });
+        });
+
+        // Fechar ao clicar fora
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('nav')) {
+                document.querySelectorAll('.submenu-horizontal.active').forEach(sub => {
+                    sub.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            }
+        });
+
+        // Scroll suave para a seção de portfólio
+        document.getElementById('scrollDown').addEventListener('click', function(e) {
+            e.preventDefault();
+            const portfolioSection = document.getElementById('portfolio');
+            portfolioSection.scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        });
+
+        // Forçar autoplay em iOS
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.querySelector('video');
+            video.play().catch(error => {
+                // Se autoplay for bloqueado, tentar reproduzir após interação do usuário
+                document.body.addEventListener('click', function() {
+                    video.play();
+                }, { once: true });
+            });
+        });
+
+        // Modal de Sugestão
+        var modal = document.getElementById("modal");
+        var btn = document.getElementById("modBtn");
+        var closeBtn = document.querySelector(".close-btn");
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        // Smooth scrolling para outros links âncora
+        document.querySelectorAll('a[href^="#"]:not([id="scrollDown"])').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>>
 <html>
 <head>
     <meta charset="utf-8">
