@@ -3,26 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Polícia Militar Rodoviária - 4º BPRv</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Polícia Militar Rodoviária</title>
     <style>
-        /* RESET GARANTIDO */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-        
         body {
             font-family: 'Arial', sans-serif;
             color: white;
             background: #000;
-            overflow-x: hidden;
-            line-height: 1.5;
             padding-top: 70px;
         }
-
-        /* NAVEGAÇÃO TESTADA EM DISPOSITIVOS REAIS */
         nav {
             display: flex;
             align-items: center;
@@ -34,110 +29,49 @@
             z-index: 1000;
             border-bottom: 1px solid #333;
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            min-width: 0;
-        }
-
         .logo img {
             height: 40px;
             margin-right: 10px;
         }
-
-        .logo-text {
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         .menu-toggle {
             background: none;
             border: none;
             color: white;
             font-size: 28px;
-            cursor: pointer;
-            padding: 0 10px;
             margin-left: auto;
         }
-
-        /* MENU PRINCIPAL - CORREÇÕES GARANTIDAS */
         #main-menu {
             list-style: none;
-            width: 100%;
             position: fixed;
             top: 70px;
             left: 0;
+            width: 100%;
             background: rgba(0,0,0,0.97);
             display: none;
-            padding: 0 15px;
-            border-top: 1px solid #333;
+            padding: 15px;
         }
-
         #main-menu.active {
             display: block;
         }
-
-        #main-menu > li {
-            position: relative;
-            padding: 12px 0;
-            border-bottom: 1px solid #222;
-        }
-
-        .menu-link {
-            color: white;
-            font-weight: bold;
-            font-size: 17px;
-            display: block;
-            padding: 10px 0;
-        }
-
-        /* SUBMENU FUNCIONAL TESTADO */
         .submenu-horizontal {
             list-style: none;
             padding-left: 15px;
             display: none;
             margin: 10px 0;
         }
-
         .submenu-horizontal.active {
             display: block;
             animation: fadeIn 0.3s;
         }
-
-        .submenu-horizontal li {
-            padding: 10px 0;
-        }
-
-        .submenu-horizontal li a {
-            color: #aaa;
-            font-size: 15px;
-            display: block;
-            transition: color 0.2s;
-        }
-
-        .submenu-horizontal li a:hover {
-            color: #00a8ff;
-        }
-
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* HEADER CONFIGURADO PARA MOBILE FIRST */
         #video-container {
             position: relative;
             height: calc(100vh - 70px);
             overflow: hidden;
-            background: #000;
         }
-
         video {
             position: absolute;
             top: 50%;
@@ -145,176 +79,56 @@
             transform: translate(-50%, -50%);
             min-width: 100%;
             min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: 1;
-        }
-
-        .video-content {
-            position: relative;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            z-index: 2;
-        }
-
-        .video-content h1 {
-            font-size: 26px;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .video-content p {
-            font-size: 18px;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        }
-
-        /* VERSÃO DESKTOP */
-        @media (min-width: 992px) {
-            body {
-                padding-top: 0;
-            }
-            
-            nav {
-                padding: 15px 30px;
-            }
-            
-            #main-menu {
-                position: static;
-                display: flex;
-                width: auto;
-                background: transparent;
-                border-top: none;
-                padding: 0;
-            }
-            
-            #main-menu > li {
-                padding: 0 15px;
-                border-bottom: none;
-            }
-            
-            .submenu-horizontal {
-                position: absolute;
-                background: rgba(0,0,0,0.97);
-                min-width: 220px;
-                left: 0;
-                top: 100%;
-                padding: 10px 0;
-                border-radius: 0 0 5px 5px;
-            }
-            
-            .video-content h1 {
-                font-size: 42px;
-            }
-            
-            .video-content p {
-                font-size: 24px;
-            }
         }
     </style>
 </head>
 <body>
-
-    <!-- MENU 100% FUNCIONAL -->
     <nav>
         <div class="logo">
             <img src="img/logo/icon-pmrv.png" alt="PMRV">
-            <div class="logo-text">POLÍCIA MILITAR RODOVIÁRIA</div>
+            <span>POLÍCIA MILITAR RODOVIÁRIA</span>
         </div>
         <button class="menu-toggle" id="mobile-menu">☰</button>
         <ul id="main-menu">
             <li>
-                <a class="menu-link">POLICIAL MILITAR</a>
+                <a>POLICIAL MILITAR</a>
                 <ul class="submenu-horizontal">
                     <li><a href="PM.html">👮🏻 PM</a></li>
                     <li><a href="#">Minha escala</a></li>
-                    <li><a href="#">Débito de Veículos</a></li>
                 </ul>
             </li>
             <li>
-                <a class="menu-link">SERVIÇO AO PÚBLICO</a>
+                <a>SERVIÇO AO PÚBLICO</a>
                 <ul class="submenu-horizontal">
                     <li><a href="#">Inserir Token</a></li>
                     <li><a href="#">Endereços</a></li>
-                    <li><a href="#">Contatos</a></li>
-                    <li><a href="#">Dúvidas?</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 
-    <!-- HEADER -->
     <div id="video-container">
-        <div class="video-content">
-            <h1>Polícia Militar Rodoviária</h1>
-            <p>4º BPRv - 4ª Cia - 1º Pel</p>
-            <p>Anjos do Asfalto</p>
-        </div>
         <video autoplay loop muted playsinline>
             <source src="highway-loop.mp4" type="video/mp4">
         </video>
+        <div class="video-content">
+            <h1>Polícia Militar Rodoviária</h1>
+            <p>4º BPRv - 4ª Cia - 1º Pel</p>
+        </div>
     </div>
 
     <script>
-        // CONTROLE DO MENU - VERSÃO DEFINITIVA
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuBtn = document.getElementById('mobile-menu');
-            const mainMenu = document.getElementById('main-menu');
-            const menuLinks = document.querySelectorAll('.menu-link');
-            
-            // Controle do menu mobile
-            mobileMenuBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                mainMenu.classList.toggle('active');
-            });
-            
-            // Controle dos submenus
-            menuLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (window.innerWidth < 992) {
-                        e.preventDefault();
-                        const submenu = this.nextElementSibling;
-                        
-                        // Fecha outros submenus
-                        document.querySelectorAll('.submenu-horizontal').forEach(item => {
-                            if (item !== submenu) item.classList.remove('active');
-                        });
-                        
-                        // Abre/fecha o submenu atual
-                        submenu.classList.toggle('active');
-                    }
-                });
-            });
-            
-            // Fechar menu ao clicar fora
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('nav')) {
-                    mainMenu.classList.remove('active');
-                    document.querySelectorAll('.submenu-horizontal').forEach(submenu => {
-                        submenu.classList.remove('active');
-                    });
+        document.getElementById('mobile-menu').addEventListener('click', function() {
+            document.getElementById('main-menu').classList.toggle('active');
+        });
+        
+        document.querySelectorAll('#main-menu > li > a').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    e.preventDefault();
+                    this.nextElementSibling.classList.toggle('active');
                 }
             });
-            
-            // Prevenir que cliques nos menus fechem acidentalmente
-            document.querySelectorAll('#main-menu, .submenu-horizontal').forEach(el => {
-                el.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            });
-            
-            // Fallback para vídeo
-            const video = document.querySelector('video');
-            if (video) {
-                video.play().catch(e => {
-                    document.getElementById('video-container').style.background = "#000 url('img/fallback-bg.jpg') center/cover";
-                });
-            }
         });
     </script>
 </body>
