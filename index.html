@@ -20,7 +20,7 @@
             line-height: 1.5;
         }
 
-        /* NAVEGAÇÃO MOBILE OTIMIZADA */
+        /* NAVEGAÇÃO MOBILE CORRIGIDA */
         nav {
             display: flex;
             flex-wrap: wrap;
@@ -31,8 +31,7 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid #333;
         }
 
         .logo {
@@ -43,8 +42,8 @@
         }
 
         .logo img {
-            height: 42px;
-            margin-right: 12px;
+            height: 40px;
+            margin-right: 10px;
         }
 
         .logo-text {
@@ -60,10 +59,10 @@
             background: none;
             border: none;
             color: white;
-            font-size: 26px;
+            font-size: 24px;
             cursor: pointer;
-            padding: 5px 10px;
-            margin-left: auto;
+            padding: 5px;
+            margin-left: 10px;
         }
 
         /* MENU PRINCIPAL - MOBILE FIRST */
@@ -71,7 +70,7 @@
             list-style: none;
             width: 100%;
             display: none;
-            margin-top: 12px;
+            margin-top: 15px;
         }
 
         .menu-horizontal.active {
@@ -81,7 +80,7 @@
         .menu-horizontal > li {
             position: relative;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid #444;
         }
 
         .menu-horizontal > li > a {
@@ -90,45 +89,37 @@
             font-size: 16px;
             display: block;
             padding: 10px 5px;
-            transition: all 0.3s ease;
-        }
-
-        .menu-horizontal > li > a:hover {
-            color: #00a8ff;
         }
 
         /* SUBMENU FUNCIONAL */
         .submenu-horizontal {
             list-style: none;
-            padding-left: 20px;
+            padding-left: 15px;
             display: none;
             margin-top: 5px;
         }
 
         .submenu-horizontal.active {
             display: block;
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.3s;
+        }
+
+        .submenu-horizontal li {
+            padding: 8px 0;
         }
 
         .submenu-horizontal li a {
             color: #ccc;
             font-size: 14px;
             display: block;
-            padding: 8px 5px;
-            transition: all 0.2s ease;
-        }
-
-        .submenu-horizontal li a:hover {
-            color: #00a8ff;
-            padding-left: 10px;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        /* HEADER PRINCIPAL */
+        /* HEADER RESPONSIVO */
         #video-container {
             position: relative;
             height: 100vh;
@@ -163,51 +154,19 @@
         }
 
         .video-content h1 {
-            font-size: 28px;
+            font-size: 24px;
             margin-bottom: 15px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-            font-weight: 700;
-        }
-
-        .video-content p {
-            font-size: 18px;
-            margin-bottom: 8px;
             text-shadow: 2px 2px 3px rgba(0,0,0,0.8);
         }
 
-        /* SEÇÃO DE CONTEÚDO */
-        .content-section {
-            padding: 50px 20px;
-            background-color: #111;
+        .video-content p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.8);
         }
 
-        /* RODAPÉ */
-        footer {
-            background-color: #000;
-            padding: 25px 20px;
-            text-align: center;
-            border-top: 1px solid #222;
-        }
-
-        footer p {
-            font-size: 14px;
-            color: #777;
-        }
-
-        /* RESPONSIVIDADE - TABLET */
+        /* RESPONSIVIDADE - TABLET/DESKTOP */
         @media (min-width: 768px) {
-            nav {
-                padding: 15px 30px;
-            }
-            
-            .logo img {
-                height: 48px;
-            }
-            
-            .logo-text {
-                font-size: 18px;
-            }
-            
             .menu-toggle {
                 display: none;
             }
@@ -228,12 +187,11 @@
             .submenu-horizontal {
                 position: absolute;
                 background: rgba(0,0,0,0.95);
-                min-width: 220px;
-                padding: 10px 0;
+                min-width: 200px;
                 left: 0;
                 top: 100%;
+                padding: 10px;
                 border-radius: 0 0 5px 5px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             }
             
             .video-content h1 {
@@ -241,38 +199,23 @@
             }
             
             .video-content p {
-                font-size: 22px;
-            }
-        }
-
-        /* RESPONSIVIDADE - DESKTOP */
-        @media (min-width: 992px) {
-            nav {
-                padding: 15px 40px;
-            }
-            
-            .video-content h1 {
-                font-size: 42px;
-            }
-            
-            .video-content p {
-                font-size: 24px;
+                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVEGAÇÃO -->
+    <!-- MENU CORRIGIDO -->
     <nav>
         <div class="logo">
             <img src="img/logo/icon-pmrv.png" alt="PMRV">
             <div class="logo-text">POLÍCIA MILITAR RODOVIÁRIA</div>
         </div>
         <button class="menu-toggle" id="mobile-menu">☰</button>
-        <ul class="menu-horizontal" id="menu">
+        <ul class="menu-horizontal" id="main-menu">
             <li>
-                <a>POLICIAL MILITAR</a>
+                <a class="menu-link">POLICIAL MILITAR</a>
                 <ul class="submenu-horizontal">
                     <li><a href="PM.html">👮🏻 PM</a></li>
                     <li><a href="#">Minha escala</a></li>
@@ -280,7 +223,7 @@
                 </ul>
             </li>
             <li>
-                <a>SERVIÇO AO PÚBLICO</a>
+                <a class="menu-link">SERVIÇO AO PÚBLICO</a>
                 <ul class="submenu-horizontal">
                     <li><a href="#">Inserir Token</a></li>
                     <li><a href="#">Endereços</a></li>
@@ -291,7 +234,7 @@
         </ul>
     </nav>
 
-    <!-- HEADER COM VÍDEO -->
+    <!-- HEADER -->
     <div id="video-container">
         <div class="video-content">
             <h1>Polícia Militar Rodoviária</h1>
@@ -300,25 +243,16 @@
         </div>
         <video autoplay loop muted playsinline>
             <source src="highway-loop.mp4" type="video/mp4">
-            Seu navegador não suporta vídeos HTML5.
+            Seu navegador não suporta vídeo.
         </video>
     </div>
 
-    <!-- SEÇÃO DE CONTEÚDO -->
-    <div class="content-section">
-        <!-- Adicione aqui outras seções conforme necessário -->
-    </div>
-
-    <!-- RODAPÉ -->
-    <footer>
-        <p>Desenvolvido pelo SD PM 194528-9 Guidini</p>
-    </footer>
-
     <script>
-        // CONTROLE DO MENU MOBILE
+        // CONTROLE DO MENU MOBILE - VERSÃO TESTADA
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuBtn = document.getElementById('mobile-menu');
-            const mainMenu = document.getElementById('menu');
+            const mainMenu = document.getElementById('main-menu');
+            const menuLinks = document.querySelectorAll('.menu-link');
             
             // Abrir/fechar menu principal
             mobileMenuBtn.addEventListener('click', function(e) {
@@ -327,42 +261,41 @@
             });
             
             // Controle dos submenus no mobile
-            document.querySelectorAll('.menu-horizontal > li > a').forEach(menuItem => {
-                menuItem.addEventListener('click', function(e) {
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
                     if (window.innerWidth < 768) {
                         e.preventDefault();
                         const submenu = this.nextElementSibling;
+                        const isActive = submenu.classList.contains('active');
                         
-                        // Fecha outros submenus antes de abrir o atual
+                        // Fecha todos os submenus primeiro
                         document.querySelectorAll('.submenu-horizontal').forEach(item => {
-                            if (item !== submenu) item.classList.remove('active');
+                            item.classList.remove('active');
                         });
                         
-                        submenu.classList.toggle('active');
+                        // Abre o submenu atual se não estava ativo
+                        if (!isActive) {
+                            submenu.classList.add('active');
+                        }
                     }
                 });
             });
             
             // Fechar menu ao clicar fora
-            document.addEventListener('click', function() {
-                mainMenu.classList.remove('active');
-                document.querySelectorAll('.submenu-horizontal').forEach(submenu => {
-                    submenu.classList.remove('active');
-                });
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('nav')) {
+                    mainMenu.classList.remove('active');
+                    document.querySelectorAll('.submenu-horizontal').forEach(submenu => {
+                        submenu.classList.remove('active');
+                    });
+                }
             });
             
-            // Prevenir que cliques nos submenus fechem o menu
-            document.querySelectorAll('.menu-horizontal, .submenu-horizontal').forEach(element => {
-                element.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            });
-            
-            // Fallback para vídeo em mobile
+            // Prevenir que o vídeo trave em mobile
             const video = document.querySelector('video');
             if (video) {
-                video.play().catch(error => {
-                    document.getElementById('video-container').style.background = "url('img/fallback-bg.jpg') center/cover no-repeat";
+                video.play().catch(e => {
+                    document.getElementById('video-container').style.background = "url('img/fallback-bg.jpg') center/cover";
                 });
             }
         });
