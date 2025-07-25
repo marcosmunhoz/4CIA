@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Polícia Rodoviária</title>
+    <title>Polícia Rodoviária Militar</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -37,6 +37,7 @@
             position: relative;
             width: 100%;
             box-sizing: border-box;
+            flex-wrap: wrap;
         }
         
         .logo img.logo-img {
@@ -122,64 +123,30 @@
             color: #000;
         }
 
-        /* MENU MOBILE */
-        .menu-toggle {
-            display: none;
-            font-size: 2rem;
-            color: white;
-            cursor: pointer;
-            margin-left: auto;
-            padding: 5px 10px;
-        }
-
+        /* AJUSTES PARA MOBILE SEM HAMBURGUER */
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
+            nav {
+                padding: 10px;
+                justify-content: center;
             }
-
+            
             ul.menu-horizontal {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background: rgba(0, 0, 0, 0.9);
-                position: absolute;
-                top: 70px;
-                left: 0;
-                gap: 0;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
             }
-
-            ul.menu-horizontal > li {
-                width: 100%;
-                text-align: left;
-                border-bottom: 1px solid #333;
-            }
-
+            
             ul.menu-horizontal > li > a {
-                padding: 15px 20px;
-                display: block;
-                font-size: 1.6rem;
+                font-size: 1.2rem;
+                padding: 8px 3px;
             }
-
-            ul.menu-horizontal.active {
-                display: flex;
+            
+            .logo {
+                margin-right: 10px;
             }
-
-            ul.submenu-horizontal {
-                position: static;
-                background: rgba(50, 50, 50, 0.9);
-                box-shadow: none;
-                border-radius: 0;
-                width: 100%;
-                display: none;
-            }
-
-            ul.submenu-horizontal.active {
-                display: block;
-            }
-
-            ul.submenu-horizontal li a {
-                padding-left: 30px;
-                font-size: 1.4rem;
+            
+            .logo img.logo-img {
+                height: 40px;
             }
         }
 
@@ -237,7 +204,7 @@
 
         @media (max-width: 768px) {
             .video-content h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
             
             .video-content p {
@@ -468,10 +435,6 @@
                 <!-- Substitua pelo caminho correto do seu logo -->
                 <img src="img/logo/icon-pmrv.png" alt="Polícia Militar Rodoviária" class="logo-img">
             </a>
-        </div>
-
-        <div class="menu-toggle" id="mobile-menu">
-            ☰
         </div>
 
         <ul class="menu-horizontal" id="menu">
@@ -730,11 +693,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
     <script>
-        // Toggle menu mobile
-        document.getElementById('mobile-menu').addEventListener('click', function() {
-            document.getElementById('menu').classList.toggle('active');
-        });
-
         // Abrir submenu no toque
         document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -759,13 +717,6 @@
                 document.querySelectorAll('.submenu-horizontal.active').forEach(sub => {
                     sub.classList.remove('active');
                 });
-            }
-            
-            // Fechar menu mobile ao clicar em um link
-            if (e.target.closest('ul.menu-horizontal > li > a') || e.target.closest('ul.submenu-horizontal li a')) {
-                if (window.innerWidth <= 768) {
-                    document.getElementById('menu').classList.remove('active');
-                }
             }
         });
 
