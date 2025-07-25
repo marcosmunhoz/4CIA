@@ -148,6 +148,18 @@
             .logo img.logo-img {
                 height: 40px;
             }
+
+            /* Prevent page shift when menu is clicked */
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+                position: relative;
+            }
+
+            body.menu-open {
+                overflow: hidden;
+                height: 100%;
+            }
         }
 
         /* VIDEO BACKGROUND */
@@ -189,6 +201,7 @@
             padding: 0 20px;
             box-sizing: border-box;
             margin-top: 30px;
+            z-index: 10;
         }
 
         .video-content h1 {
@@ -434,6 +447,7 @@
             height: 40px;
             opacity: 0.7;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .scroll-icon img:hover {
@@ -480,7 +494,7 @@
                 <p>4º BPRv - 4ª Cia - 1º Pel</p>
                 <p>Anjos do Asfalto</p>
                 <div class="scroll-icon">
-                    <a class="scrollTo" data-scrollTo="portfolio" href="#"><img src="img/scroll-icon.png" alt=""></a>
+                    <a class="scrollTo" href="#portfolio"><img src="img/scroll-icon.png" alt=""></a>
                 </div>    
             </div>
         </div>
@@ -711,6 +725,13 @@
                 if (this.nextElementSibling && this.nextElementSibling.classList.contains('submenu-horizontal')) {
                     e.preventDefault();
                     this.nextElementSibling.classList.toggle('active');
+                    
+                    // Add/remove class to body to prevent scrolling
+                    if (this.nextElementSibling.classList.contains('active')) {
+                        document.body.classList.add('menu-open');
+                    } else {
+                        document.body.classList.remove('menu-open');
+                    }
                 }
             });
         });
@@ -720,6 +741,7 @@
             if (!e.target.closest('nav')) {
                 document.querySelectorAll('.submenu-horizontal.active').forEach(sub => {
                     sub.classList.remove('active');
+                    document.body.classList.remove('menu-open');
                 });
             }
         });
@@ -743,8 +765,16 @@
             }
         }
 
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        // Smooth scrolling for scroll button
+        document.querySelector('.scroll-icon a').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('#portfolio').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scrolling for other anchor links
+        document.querySelectorAll('a[href^="#"]:not(.scroll-icon a)').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
