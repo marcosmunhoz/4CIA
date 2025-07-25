@@ -12,7 +12,7 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-        
+
         body {
             font-family: 'Kanit', Arial, sans-serif;
             color: white;
@@ -20,17 +20,17 @@
             overflow-x: hidden;
             line-height: 1.6;
         }
-        
+
         a {
             text-decoration: none;
             color: inherit;
         }
-        
-        /* NAVEGAÇÃO - IDÊNTICA PARA MOBILE E DESKTOP */
+
+        /* NAVEGAÇÃO TRANSPARENTE */
         nav {
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.3); /* Fundo transparente */
             padding: 15px 40px;
             position: fixed;
             width: 100%;
@@ -39,25 +39,31 @@
             backdrop-filter: blur(5px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
             flex-grow: 1;
         }
-        
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
         .logo img {
             height: 50px;
             margin-right: 15px;
         }
-        
+
         .logo-text {
             color: white;
             font-weight: 700;
             font-size: 1.4rem;
             white-space: nowrap;
         }
-        
+
         .menu-toggle {
             display: none;
             background: none;
@@ -68,8 +74,8 @@
             padding: 5px;
             margin-left: 15px;
         }
-        
-        /* MENU PRINCIPAL */
+
+        /* MENU PRINCIPAL TRANSPARENTE */
         .menu-horizontal {
             list-style: none;
             margin: 0;
@@ -77,11 +83,11 @@
             display: flex;
             gap: 40px;
         }
-        
+
         .menu-horizontal > li {
             position: relative;
         }
-        
+
         .menu-horizontal > li > a {
             color: white;
             font-weight: 600;
@@ -91,32 +97,33 @@
             transition: all 0.3s ease;
             display: inline-block;
         }
-        
+
         .menu-horizontal > li > a:hover {
             border-bottom: 2px solid #00ccff;
             color: #00ccff;
         }
-        
-        /* SUBMENU - ESTILO CONSISTENTE */
+
+        /* SUBMENU TRANSPARENTE */
         .submenu-horizontal {
             list-style: none;
             padding: 12px 0;
             display: none;
             position: absolute;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.3); /* Fundo transparente */
             min-width: 240px;
             left: 0;
             top: 100%;
             border-radius: 0 0 8px 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             z-index: 1001;
+            backdrop-filter: blur(5px);
         }
-        
+
         .submenu-horizontal.active {
             display: block;
             animation: fadeIn 0.3s ease-out;
         }
-        
+
         .submenu-horizontal li a {
             color: #ccc;
             font-size: 1.1rem;
@@ -124,18 +131,18 @@
             padding: 10px 25px;
             transition: all 0.3s ease;
         }
-        
+
         .submenu-horizontal li a:hover {
-            background-color: #00ccff;
-            color: #000;
+            background-color: rgba(0,204,255,0.3);
+            color: #fff;
             padding-left: 30px;
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         /* HEADER PRINCIPAL */
         #video-container {
             position: relative;
@@ -143,7 +150,7 @@
             margin-top: 85px;
             overflow: hidden;
         }
-        
+
         video {
             position: absolute;
             top: 50%;
@@ -155,7 +162,7 @@
             height: auto;
             z-index: -1;
         }
-        
+
         .video-overlay {
             position: absolute;
             top: 0;
@@ -164,7 +171,7 @@
             height: 100%;
             background-color: rgba(0,0,0,0.5);
         }
-        
+
         .video-content {
             position: absolute;
             top: 0;
@@ -177,62 +184,62 @@
             text-align: center;
             padding: 20px;
         }
-        
+
         .video-content .inner {
             max-width: 800px;
             padding: 20px;
         }
-        
+
         .video-content h1 {
             font-size: 3.2rem;
             font-weight: 700;
             margin-bottom: 20px;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
         }
-        
+
         .video-content p {
             font-size: 1.8rem;
             margin-bottom: 15px;
             text-shadow: 2px 2px 3px rgba(0,0,0,0.8);
         }
-        
+
         .scroll-icon {
             margin-top: 40px;
         }
-        
+
         .scroll-icon img {
             width: 40px;
             opacity: 0.8;
             transition: all 0.3s ease;
         }
-        
+
         .scroll-icon img:hover {
             opacity: 1;
             transform: translateY(5px);
         }
-        
+
         /* SEÇÃO PORTFÓLIO */
         .grid-portfolio {
             padding: 80px 20px;
             background-color: #111;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .row {
             display: flex;
             flex-wrap: wrap;
             margin: 0 -15px;
         }
-        
+
         .portfolio-item {
             width: 100%;
             padding: 15px;
         }
-        
+
         .thumb {
             position: relative;
             border-radius: 8px;
@@ -240,19 +247,19 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
         }
-        
+
         .thumb:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.7);
         }
-        
+
         .thumb .image img {
             width: 100%;
             height: 220px;
             object-fit: cover;
             display: block;
         }
-        
+
         .hover-effect {
             position: absolute;
             top: 0;
@@ -268,25 +275,25 @@
             text-align: center;
             padding: 20px;
         }
-        
+
         .thumb:hover .hover-effect {
             opacity: 1;
         }
-        
+
         .hover-content h1 {
             font-size: 1.8rem;
             margin-bottom: 10px;
         }
-        
+
         .hover-content em {
             color: #00ccff;
             font-style: normal;
         }
-        
+
         .hover-content p {
             font-size: 1.1rem;
         }
-        
+
         /* FOOTER */
         footer {
             background-color: #000;
@@ -294,17 +301,17 @@
             text-align: center;
             border-top: 1px solid #222;
         }
-        
+
         footer p {
             font-size: 1rem;
             color: #777;
         }
-        
+
         .load-more-button {
             margin-top: 40px;
             text-align: center;
         }
-        
+
         .load-more-button a {
             display: inline-block;
             padding: 12px 30px;
@@ -314,55 +321,55 @@
             border-radius: 5px;
             transition: all 0.3s ease;
         }
-        
+
         .load-more-button a:hover {
             background-color: #0099cc;
         }
-        
+
         /* RESPONSIVIDADE - MOBILE */
         @media (max-width: 992px) {
             nav {
                 padding: 12px 20px;
                 flex-wrap: wrap;
             }
-            
+
             .logo img {
                 height: 45px;
             }
-            
+
             .logo-text {
                 font-size: 1.2rem;
             }
-            
+
             .menu-toggle {
                 display: block;
             }
-            
+
             .menu-horizontal {
                 display: none;
                 width: 100%;
                 flex-direction: column;
                 gap: 0;
                 margin-top: 15px;
-                background: rgba(0,0,0,0.95);
+                background: rgba(0,0,0,0.3);
                 padding: 15px 0;
                 border-radius: 0 0 8px 8px;
             }
-            
+
             .menu-horizontal.active {
                 display: flex;
             }
-            
+
             .menu-horizontal > li {
                 padding: 10px 20px;
                 border-bottom: 1px solid rgba(255,255,255,0.1);
             }
-            
+
             .menu-horizontal > li > a {
                 font-size: 1.3rem;
                 padding: 12px 0;
             }
-            
+
             .submenu-horizontal {
                 position: static;
                 background: rgba(255,255,255,0.05);
@@ -371,38 +378,38 @@
                 animation: none;
                 width: 100%;
             }
-            
+
             .submenu-horizontal li a {
                 padding: 10px 30px;
                 font-size: 1.1rem;
             }
-            
+
             #video-container {
                 margin-top: 80px;
             }
-            
+
             .video-content h1 {
                 font-size: 2.2rem;
             }
-            
+
             .video-content p {
                 font-size: 1.3rem;
             }
         }
-        
+
         /* TABLET */
         @media (min-width: 600px) {
             .portfolio-item {
                 width: 50%;
             }
         }
-        
+
         /* DESKTOP */
         @media (min-width: 992px) {
             .portfolio-item {
                 width: 33.333%;
             }
-            
+
             .thumb .image img {
                 height: 250px;
             }
@@ -411,11 +418,13 @@
 </head>
 <body>
 
-    <!-- NAVEGAÇÃO -->
+    <!-- NAVEGAÇÃO COM LOGO LINKADO -->
     <nav>
         <div class="logo">
-            <img src="img/logo/icon-pmrv.png" alt="PMRV">
-            <div class="logo-text">POLÍCIA MILITAR RODOVIÁRIA</div>
+            <a href="index.html">
+                <img src="img/logo/icon-pmrv.png" alt="PMRV">
+                <span class="logo-text">POLÍCIA MILITAR RODOVIÁRIA</span>
+            </a>
         </div>
         <button class="menu-toggle" id="mobile-menu">☰</button>
         <ul class="menu-horizontal" id="menu">
@@ -526,31 +535,31 @@
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuBtn = document.getElementById('mobile-menu');
             const mainMenu = document.getElementById('menu');
-            
+
             // Abrir/fechar menu principal
             mobileMenuBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 mainMenu.classList.toggle('active');
             });
-            
+
             // Controle dos submenus no mobile
             document.querySelectorAll('.menu-horizontal > li > a').forEach(menuItem => {
                 menuItem.addEventListener('click', function(e) {
                     if (window.innerWidth <= 992) {
                         e.preventDefault();
                         const submenu = this.nextElementSibling;
-                        
+
                         // Fecha outros submenus
                         document.querySelectorAll('.submenu-horizontal').forEach(item => {
                             if (item !== submenu) item.classList.remove('active');
                         });
-                        
+
                         // Abre/fecha o submenu atual
                         submenu.classList.toggle('active');
                     }
                 });
             });
-            
+
             // Fechar menu ao clicar fora
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('nav')) {
@@ -560,14 +569,14 @@
                     });
                 }
             });
-            
+
             // Prevenir que cliques nos menus fechem acidentalmente
             document.querySelectorAll('.menu-horizontal, .submenu-horizontal').forEach(el => {
                 el.addEventListener('click', function(e) {
                     e.stopPropagation();
                 });
             });
-            
+
             // Fallback para vídeo
             const video = document.querySelector('video');
             if (video) {
@@ -575,7 +584,7 @@
                     document.getElementById('video-container').style.background = "#000 url('img/fallback-bg.jpg') center/cover";
                 });
             }
-            
+
             // Scroll suave
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
