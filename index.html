@@ -26,7 +26,7 @@
             background-color: #000;
         }
 
-        /* MENU HORIZONTAL COM SUBMENUS TRANSPARENTE */
+        /* MENU HORIZONTAL COM SUBMENUS TRANSPARENTE E FIXO */
         nav {
             display: flex;
             align-items: center;
@@ -34,10 +34,18 @@
             padding: 10px 20px;
             user-select: none;
             z-index: 1000;
-            position: relative;
+            position: fixed; /* Alterado para fixed */
             width: 100%;
             box-sizing: border-box;
             flex-wrap: wrap;
+            top: 0; /* Garante que fique no topo */
+            transition: background 0.3s ease;
+        }
+
+        /* Adiciona fundo mais sólido quando scrollar */
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .logo img.logo-img {
@@ -227,11 +235,31 @@
             }
         }
 
+        /* SCROLL ICON */
+        .scroll-icon {
+            margin-top: 40px;
+        }
+
+        .scroll-icon img {
+            width: 40px;
+            height: 40px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .scroll-icon img:hover {
+            opacity: 1;
+            transform: translateY(5px);
+        }
+
         /* PORTFOLIO GRID - CORRIGIDO */
         .grid-portfolio {
             padding: 60px 0;
             background-color: #111;
             margin-top: 100vh;
+            position: relative;
+            z-index: 1;
         }
 
         .portfolio-item {
@@ -436,29 +464,11 @@
         .modal-btn:hover img {
             transform: scale(1.1);
         }
-
-        /* SCROLL ICON */
-        .scroll-icon {
-            margin-top: 40px;
-        }
-
-        .scroll-icon img {
-            width: 40px;
-            height: 40px;
-            opacity: 0.7;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .scroll-icon img:hover {
-            opacity: 1;
-            transform: translateY(5px);
-        }
     </style>
 </head>
 <body>
 
-    <nav>
+    <nav id="mainNav">
         <div class="logo">
             <a href="index.html">
                 <img src="img/logo/icon-pmrv.png" alt="Polícia Militar Rodoviária" class="logo-img">
@@ -494,7 +504,7 @@
                 <p>4º BPRv - 4ª Cia - 1º Pel</p>
                 <p>Anjos do Asfalto</p>
                 <div class="scroll-icon">
-                    <a class="scrollTo" href="#portfolio"><img src="img/scroll-icon.png" alt=""></a>
+                    <a href="#portfolio" id="scrollDown"><img src="img/scroll-icon.png" alt="Role para baixo"></a>
                 </div>    
             </div>
         </div>
@@ -711,6 +721,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
     <script>
+        // Menu fixo com mudança de estilo ao scrollar
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
         // Abrir submenu no toque
         document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -765,16 +785,17 @@
             }
         }
 
-        // Smooth scrolling for scroll button
-        document.querySelector('.scroll-icon a').addEventListener('click', function(e) {
+        // Scroll suave para a seção de portfólio
+        document.getElementById('scrollDown').addEventListener('click', function(e) {
             e.preventDefault();
-            document.querySelector('#portfolio').scrollIntoView({
-                behavior: 'smooth'
+            const portfolioSection = document.getElementById('portfolio');
+            portfolioSection.scrollIntoView({ 
+                behavior: 'smooth' 
             });
         });
 
-        // Smooth scrolling for other anchor links
-        document.querySelectorAll('a[href^="#"]:not(.scroll-icon a)').forEach(anchor => {
+        // Smooth scrolling para outros links âncora
+        document.querySelectorAll('a[href^="#"]:not([id="scrollDown"])').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
