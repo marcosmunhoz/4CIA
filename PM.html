@@ -13,7 +13,7 @@
       font-family: sans-serif;
     }
 
-    /* Fundo de vídeo ajustado para mobile */
+    /* Fundo de vídeo ajustado */
     #background-video {
       position: fixed;
       right: 0;
@@ -24,6 +24,15 @@
       height: auto;
       z-index: -1;
       object-fit: cover;
+    }
+
+    /* Ajuste para mobile - centralizar bandeira */
+    @media only screen and (max-width: 768px) {
+      #background-video {
+        object-position: center;
+        object-fit: contain;
+        background-color: #000;
+      }
     }
 
     /* Menu circular principal - ajustado para mobile */
@@ -167,43 +176,9 @@
     .submenu-item:nth-child(3) { transform: rotate(144deg) translate(80px) rotate(-144deg); }
     .submenu-item:nth-child(4) { transform: rotate(216deg) translate(80px) rotate(-216deg); }
     .submenu-item:nth-child(5) { transform: rotate(288deg) translate(80px) rotate(-288deg); }
-
-    /* Barra superior como na imagem */
-    .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 5px 10px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      font-size: 14px;
-      display: flex;
-      justify-content: space-between;
-      z-index: 10;
-    }
-
-    .time {
-      font-weight: bold;
-    }
-
-    .url {
-      color: #ccc;
-    }
-
-    .battery {
-      text-align: right;
-    }
   </style>
 </head>
 <body>
-
-  <!-- Barra superior como na imagem -->
-  <div class="top-bar">
-    <div class="time">17:42</div>
-    <div class="url">cosmunhoz.github.io</div>
-    <div class="battery">45</div>
-  </div>
 
   <!-- Vídeo de fundo -->
   <video id="background-video" autoplay loop muted playsinline>
@@ -265,16 +240,23 @@
       }
     });
 
-    // Atualiza a hora em tempo real
-    function updateTime() {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      document.querySelector('.time').textContent = `${hours}:${minutes}`;
+    // Ajusta o vídeo para mobile
+    function adjustVideoForMobile() {
+      const video = document.getElementById('background-video');
+      if (window.innerWidth <= 768) {
+        video.style.objectFit = 'contain';
+        video.style.objectPosition = 'center';
+        video.style.backgroundColor = '#000';
+      } else {
+        video.style.objectFit = 'cover';
+        video.style.objectPosition = '';
+        video.style.backgroundColor = '';
+      }
     }
-    
-    setInterval(updateTime, 1000);
-    updateTime();
+
+    // Executa na carga e no redimensionamento
+    window.addEventListener('load', adjustVideoForMobile);
+    window.addEventListener('resize', adjustVideoForMobile);
   </script>
 </body>
 </html>
