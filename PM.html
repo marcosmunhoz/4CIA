@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Área Policial</title>
   <style>
     html, body {
@@ -12,26 +13,28 @@
       font-family: sans-serif;
     }
 
-    /* Fundo de vídeo */
+    /* Fundo de vídeo ajustado para mobile */
     #background-video {
       position: fixed;
       right: 0;
       bottom: 0;
       min-width: 100%;
       min-height: 100%;
+      width: auto;
+      height: auto;
       z-index: -1;
       object-fit: cover;
     }
 
-    /* Menu circular principal */
+    /* Menu circular principal - ajustado para mobile */
     .menu-circle {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 450px;
-      height: 450px;
-      margin-top: -225px;
-      margin-left: -225px;
+      width: 280px;
+      height: 280px;
+      margin-top: -140px;
+      margin-left: -140px;
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.6);
       display: flex;
@@ -42,66 +45,60 @@
     }
 
     .menu-item {
-	  display: flex;
-	  flex-direction: column; /*empilha verticalmente o texto*/
-	  align-items:center;
-	  justify-content:center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       position: absolute;
-      width: 100px;
-      height: 100px;
+      width: 60px;
+      height: 60px;
       background: rgba(255, 255, 255, 0.2);
       color: white;
       border-radius: 50%;
       text-align: center;
-      font-size: 16px;
+      font-size: 12px;
       cursor: pointer;
       transition: background 0.2s;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-      .menu-text {
-      font-size: 14px;
+    
+    .menu-text {
+      font-size: 10px;
       margin-bottom: 1px;
     } 
 
-      .menu-emoji {
-       font-size: 22px;
+    .menu-emoji {
+      font-size: 16px;
     }
-	.menu-icon {
-      width: 80px;
-      height: 80px;
-     object-fit: contain; /* Garante que a imagem não deforme */
-	  pointer-events: none; /* ← permite que o clique "passe" pela imagem */
+    
+    .menu-icon {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      pointer-events: none;
     }
-	 
+
     .menu-item:hover {
       background: rgba(255, 255, 255, 0.4);
     }
 
-    /* Posição circular atualizada (translate aumentado) */
-    .menu-item:nth-child(1) { transform: rotate(0deg) translate(160px) rotate(0deg); }
-    .menu-item:nth-child(2) { transform: rotate(45deg) translate(160px) rotate(-45deg); }
-    .menu-item:nth-child(3) { transform: rotate(90deg) translate(160px) rotate(-90deg); }
-    .menu-item:nth-child(4) { transform: rotate(135deg) translate(160px) rotate(-135deg); }
-    .menu-item:nth-child(5) { transform: rotate(180deg) translate(160px) rotate(-180deg); }
-    .menu-item:nth-child(6) { transform: rotate(225deg) translate(160px) rotate(-225deg); }
-    .menu-item:nth-child(7) { transform: rotate(270deg) translate(160px) rotate(-270deg); }
-    .menu-item:nth-child(8) { transform: rotate(315deg) translate(160px) rotate(-315deg); }
-	
-	
-	
-	
-	
-	
-	
-	
+    /* Posição circular atualizada para tamanho menor */
+    .menu-item:nth-child(1) { transform: rotate(0deg) translate(100px) rotate(0deg); }
+    .menu-item:nth-child(2) { transform: rotate(45deg) translate(100px) rotate(-45deg); }
+    .menu-item:nth-child(3) { transform: rotate(90deg) translate(100px) rotate(-90deg); }
+    .menu-item:nth-child(4) { transform: rotate(135deg) translate(100px) rotate(-135deg); }
+    .menu-item:nth-child(5) { transform: rotate(180deg) translate(100px) rotate(-180deg); }
+    .menu-item:nth-child(6) { transform: rotate(225deg) translate(100px) rotate(-225deg); }
+    .menu-item:nth-child(7) { transform: rotate(270deg) translate(100px) rotate(-270deg); }
+    .menu-item:nth-child(8) { transform: rotate(315deg) translate(100px) rotate(-315deg); }
 
-    /* Submenu circular aumentado */
+    /* Submenu circular ajustado para mobile */
     .submenu-circle {
       position: absolute;
-      width: 350px;
-      height: 350px;
+      width: 220px;
+      height: 220px;
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.5);
       display: none;
@@ -110,82 +107,120 @@
     }
 
     .submenu-item {
-	  flex-direction: column; /*empilha verticalmente o texto*/
-	  align-items:center;
-	  justify-content:center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       position: absolute;
-      width: 70px;
-      height: 70px;
+      width: 45px;
+      height: 45px;
       background: rgba(255, 255, 255, 0.3);
       color: #fff;
       border-radius: 50%;
       text-align: center;
-      line-height: 70px;
-      font-size: 16px;
+      line-height: 45px;
+      font-size: 10px;
       cursor: pointer;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-	  font-size: clamp(10px, 1.5vw, 16px); /* texto redimensiona entre 10 e 16 px */
+      font-size: clamp(8px, 1.5vw, 12px);
       color: white;
       text-align: center;
-      word-break: break-word;     /* permite quebra de linha */
-      white-space: normal;        /* quebra linhas */
-      max-width: 100%;            /* não ultrapassa o botão */
+      word-break: break-word;
+      white-space: normal;
+      max-width: 100%;
       line-height: 1.1;
       user-select: none;
     }
-	  .submenu-icon {
-      width: 65px;
-      height: 65px;
-      object-fit: contain; /* Garante que a imagem não deforme */
-   }
-      .submenu-text {
-      font-size: 14px;
-      margin-bottom: 2px; /* espaço entre texto e emoji */
-    } 
-     .submenu-item a {
+    
+    .submenu-icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    
+    .submenu-text {
+      font-size: 8px;
+      margin-bottom: 2px;
+    }
+    
+    .submenu-item a {
       color: white;
       text-decoration: none;
-      display: flex; flex-direction: column;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       width: 100%;
       height: 100%;
       text-align: center;
-   }
+    }
 
-     .submenu-item a:hover {
+    .submenu-item a:hover {
       color: white;
       text-decoration: none;
-   }
+    }
 
-    /* Posição circular submenu ajustada */
-    .submenu-item:nth-child(1) { transform: rotate(0deg) translate(120px) rotate(0deg); }
-    .submenu-item:nth-child(2) { transform: rotate(72deg) translate(120px) rotate(-72deg); }
-    .submenu-item:nth-child(3) { transform: rotate(144deg) translate(120px) rotate(-144deg); }
-    .submenu-item:nth-child(4) { transform: rotate(216deg) translate(120px) rotate(-216deg); }
-    .submenu-item:nth-child(5) { transform: rotate(288deg) translate(120px) rotate(-288deg); }
+    /* Posição circular submenu ajustada para mobile */
+    .submenu-item:nth-child(1) { transform: rotate(0deg) translate(80px) rotate(0deg); }
+    .submenu-item:nth-child(2) { transform: rotate(72deg) translate(80px) rotate(-72deg); }
+    .submenu-item:nth-child(3) { transform: rotate(144deg) translate(80px) rotate(-144deg); }
+    .submenu-item:nth-child(4) { transform: rotate(216deg) translate(80px) rotate(-216deg); }
+    .submenu-item:nth-child(5) { transform: rotate(288deg) translate(80px) rotate(-288deg); }
+
+    /* Barra superior como na imagem */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 5px 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      z-index: 10;
+    }
+
+    .time {
+      font-weight: bold;
+    }
+
+    .url {
+      color: #ccc;
+    }
+
+    .battery {
+      text-align: right;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Barra superior como na imagem -->
+  <div class="top-bar">
+    <div class="time">17:42</div>
+    <div class="url">cosmunhoz.github.io</div>
+    <div class="battery">45</div>
+  </div>
+
   <!-- Vídeo de fundo -->
-  <video id="background-video" autoplay loop muted>
+  <video id="background-video" autoplay loop muted playsinline>
     <source src="videos/pm.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
   </video>
 
   <!-- Menu principal -->
   <div class="menu-circle" id="mainMenu">
-    <div class="menu-item" onclick="toggleSubmenu(1)"><img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" /></a></div>
-    <div class="menu-item" onclick="toggleSubmenu(2)"><img src="img/logo/VPN.png" alt="VPN" class="menu-icon" /></a></div>
-	<div class="menu-item" ><a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" /></a></div>
-    <div class="menu-item" ><a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon" /></a></div>
-    <div class="menu-item" ><a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon" /></a></div>
-    <div class="menu-item" ><a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" /></a></div>
-    <div class="menu-item" ><a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" /></a></div>
-    <div class="menu-item" onclick="toggleSubmenu(8)"><img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" /></a></div>
+    <div class="menu-item" onclick="toggleSubmenu(1)"><img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" /></div>
+    <div class="menu-item" onclick="toggleSubmenu(2)"><img src="img/logo/VPN.png" alt="VPN" class="menu-icon" /></div>
+    <div class="menu-item"><a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" /></a></div>
+    <div class="menu-item" onclick="toggleSubmenu(8)"><img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" /></div>
   </div>
 
   <!-- Submenus -->
@@ -217,18 +252,29 @@
         submenu.style.display = "flex";
         submenu.style.top = "50%";
         submenu.style.left = "50%";
-        submenu.style.marginTop = "-175px";
-        submenu.style.marginLeft = "-175px";
+        submenu.style.marginTop = "-110px";
+        submenu.style.marginLeft = "-110px";
       }
     }
 
     // Clica fora do menu para fechar submenu
     document.addEventListener("click", function(e) {
-      if (!e.target.classList.contains("menu-item")) {
+      if (!e.target.classList.contains("menu-item") && !e.target.closest('.menu-item')) {
         const submenus = document.querySelectorAll(".submenu-circle");
         submenus.forEach(menu => menu.style.display = "none");
       }
     });
+
+    // Atualiza a hora em tempo real
+    function updateTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      document.querySelector('.time').textContent = `${hours}:${minutes}`;
+    }
+    
+    setInterval(updateTime, 1000);
+    updateTime();
   </script>
 </body>
 </html>
