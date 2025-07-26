@@ -856,6 +856,24 @@
                 });
             });
         });
-    </script>
+    
+// Ativa o hover-effect no toque para mobile
+document.querySelectorAll('.portfolio-item').forEach(item => {
+    item.addEventListener('click', function() {
+        if (window.innerWidth <= 768) { // Só aplica em mobile
+            const hoverEffect = this.querySelector('.hover-effect');
+            const isActive = hoverEffect.style.opacity === '1';
+            
+            // Fecha todos os outros hovers
+            document.querySelectorAll('.hover-effect').forEach(el => {
+                el.style.opacity = '0';
+            });
+            
+            // Abre apenas o hover clicado
+            hoverEffect.style.opacity = isActive ? '0' : '1';
+        }
+    });
+});
+</script>
 </body>
 </html>
