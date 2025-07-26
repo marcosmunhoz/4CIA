@@ -879,14 +879,32 @@
             }
         }
 
-        // Scroll suave para a seção de portfólio
-        document.getElementById('scrollDown').addEventListener('click', function(e) {
+       
+    // Scroll suave para a seção de portfólio - funciona em desktop e mobile
+    document.getElementById('scrollDown').addEventListener('click', function(e) {
+        e.preventDefault();
+        const portfolioSection = document.getElementById('portfolio');
+        
+        // Usando scrollTo com comportamento suave que funciona em todos os dispositivos
+        window.scrollTo({
+            top: portfolioSection.offsetTop,
+            behavior: 'smooth'
+        });
+    });
+
+    // Alternativa adicional para melhor compatibilidade
+    if ('ontouchstart' in window) {
+        // Dispositivos touch
+        document.getElementById('scrollDown').addEventListener('touchstart', function(e) {
             e.preventDefault();
             const portfolioSection = document.getElementById('portfolio');
-            portfolioSection.scrollIntoView({ 
-                behavior: 'smooth' 
+            window.scrollTo({
+                top: portfolioSection.offsetTop,
+                behavior: 'smooth'
             });
         });
+    }
+
 
         // Smooth scrolling para outros links âncora
         document.querySelectorAll('a[href^="#"]:not([id="scrollDown"])').forEach(anchor => {
