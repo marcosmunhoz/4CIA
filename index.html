@@ -26,7 +26,7 @@
             background-color: #000;
         }
 
-        /* MENU HORIZONTAL COM SUBMENUS TRANSPARENTE E FIXO */
+        /* MENU HORIZONTAL ALINHADO À ESQUERDA */
         nav {
             display: flex;
             align-items: center;
@@ -40,6 +40,7 @@
             flex-wrap: wrap;
             top: 0;
             transition: background 0.3s ease;
+            justify-content: flex-start; /* Alinha tudo à esquerda */
         }
 
         nav.scrolled {
@@ -57,7 +58,7 @@
             font-weight: 700;
             font-size: 1.6rem;
             text-decoration: none;
-            margin-right: 20px;
+            margin-right: 0; /* Removido o margin-right */
             font-family: 'Kanit', sans-serif;
             display: flex;
             align-items: center;
@@ -66,7 +67,7 @@
         ul.menu-horizontal {
             list-style: none;
             margin: 0;
-            padding: 0;
+            padding: 0 0 0 20px; /* Adiciona padding apenas à esquerda */
             display: flex;
             gap: 20px;
             flex-wrap: nowrap;
@@ -119,7 +120,7 @@
             font-size: 1.2rem;
             text-decoration: none;
             white-space: nowrap;
-            padding: 6px 9px;
+            padding: 6px 12px;
             border-radius: 2px;
             transition: all 0.3s ease;
             display: block;
@@ -130,26 +131,21 @@
             color: #000;
         }
 
-        /* AJUSTES PARA MOBILE SEM HAMBURGUER */
+        /* AJUSTES PARA MOBILE */
         @media (max-width: 768px) {
             nav {
-                padding: 10px;
-                justify-content: center;
+                padding: 10px 15px; /* Reduz o padding lateral */
+                justify-content: flex-start; /* Mantém alinhado à esquerda */
             }
 
             ul.menu-horizontal {
-                gap: 10px;
-                flex-wrap: wrap;
-                justify-content: center;
+                padding-left: 10px; /* Reduz o padding no mobile */
+                gap: 8px; /* Reduz o espaço entre itens */
             }
 
             ul.menu-horizontal > li > a {
                 font-size: 1.2rem;
                 padding: 8px 3px;
-            }
-
-            .logo {
-                margin-right: 10px;
             }
 
             .logo img.logo-img {
@@ -168,6 +164,7 @@
             }
         }
 
+        /* [RESTANTE DO CSS PERMANECE IGUAL...] */
         /* VIDEO BACKGROUND */
         #video-container {
             position: fixed;
@@ -362,7 +359,7 @@
             color: #777;
         }
 
-        /* MODAL - NOVOS ESTILOS */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
