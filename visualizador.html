@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizador de Escalas</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c5e91; }
+        .pdf-viewer { width: 100%; height: 600px; border: 1px solid #ccc; }
+        .week-selector { margin: 20px 0; }
+        button { padding: 10px 15px; background: #2c5e91; color: white; border: none; cursor: pointer; }
+        button:hover { background: #1d4b7a; }
+    </style>
+</head>
+<body>
+    <h1>Visualizador de Escalas</h1>
+    
+    <div class="week-selector">
+        <button onclick="carregarPDF('https://drive.google.com/file/d/1QWa_sXNo0wvDWrPaJwUpOKwvZRrDq-4t/view?usp=drivesdk')">27/07 a 02/08</button>
+        <button onclick="carregarPDF('LINK_DO_PDF_2')">em breve</button>
+        <!-- Adicione mais botões para outras semanas -->
+    </div>
+    
+    <iframe id="pdfViewer" class="pdf-viewer" src=""></iframe>
+
+    <script>
+        function carregarPDF(pdfUrl) {
+            document.getElementById('pdfViewer').src = 
+                `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(pdfUrl)}`;
+        }
+        
+        // Carrega o primeiro PDF por padrão
+        window.onload = function() {
+            carregarPDF('LINK_DO_PDF_1');
+        };
+    </script>
+</body>
+</html>
