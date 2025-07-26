@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Polícia Rodoviária</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
@@ -24,6 +24,7 @@
             overflow-x: hidden;
             color: white;
             background-color: #000;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* MENU HORIZONTAL ALINHADO À ESQUERDA */
@@ -196,6 +197,27 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* Fallback para iPhone */
+        #video-container .video-fallback {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('img/video-fallback.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        @media (max-width: 768px) and (orientation: portrait) {
+            #video-container video {
+                display: none;
+            }
+            #video-container .video-fallback {
+                display: block;
+            }
         }
 
         .video-overlay {
@@ -586,9 +608,11 @@
                 </div>    
             </div>
         </div>
-        <video autoplay="" loop="" muted>
+        <video autoplay loop muted playsinline>
             <source src="highway-loop.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeos HTML5.
         </video>
+        <div class="video-fallback"></div>
     </div>
 
     <div class="grid-portfolio" id="portfolio">
@@ -889,7 +913,7 @@
             }
         }
 
-        // Função de scroll suave universal
+        // Função de scroll suave universal melhorada
         function smoothScroll(targetId) {
             const target = document.getElementById(targetId);
             if (!target) return;
@@ -918,17 +942,55 @@
             requestAnimationFrame(animation);
         }
 
-        // Evento de scroll para desktop e mobile
+        // Evento de scroll para desktop e mobile melhorado
         document.getElementById('scrollDown').addEventListener('click', function(e) {
             e.preventDefault();
             smoothScroll('portfolio');
         });
 
-        // Evento adicional para touch em mobile
-        document.getElementById('scrollDown').addEventListener('touchstart', function(e) {
+        // Evento touch melhorado para mobile
+        document.getElementById('scrollDown').addEventListener('touchend', function(e) {
             e.preventDefault();
             smoothScroll('portfolio');
         }, {passive: false});
+
+        // Verificar se é um dispositivo iOS
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+
+        // Verificar se é um dispositivo mobile
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // Solução alternativa para scroll em dispositivos iOS
+        if (isIOS()) {
+            document.getElementById('scrollDown').addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.getElementById('portfolio');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // Solução para vídeo no iPhone
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verifica se é um iPhone e o vídeo não está tocando
+            if (isIOS()) {
+                const video = document.querySelector('#video-container video');
+                if (video) {
+                    // Tenta tocar o vídeo programaticamente
+                    video.play().catch(error => {
+                        console.log('Autoplay não permitido:', error);
+                        // Mostra o fallback se o vídeo não puder ser reproduzido
+                        document.querySelector('.video-fallback').style.display = 'block';
+                    });
+                }
+            }
+        });
 
         // Smooth scrolling para outros links âncora
         document.querySelectorAll('a[href^="#"]:not([id="scrollDown"])').forEach(anchor => {
