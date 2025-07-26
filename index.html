@@ -247,14 +247,16 @@
         .scroll-icon {
             margin-top: 40px;
             position: relative;
-            z-index: 100;
+            z-index: 1000;
             cursor: pointer;
             touch-action: manipulation;
         }
 
         .scroll-icon a {
             display: inline-block;
-            pointer-events: auto;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 1001;
         }
 
         .scroll-icon img {
@@ -596,7 +598,7 @@
                 </div>    
             </div>
         </div>
-        <video autoplay loop muted playsinline>
+        <video autoplay loop muted playsinline webkit-playsinline>
             <source src="highway-loop.mp4" type="video/mp4" />
         </video>
     </div>
@@ -899,16 +901,30 @@
             }
         }
 
-        // Função de scroll suave otimizada para mobile
+        // Função de scroll suave otimizada para iOS
         function smoothScroll(targetId) {
             const target = document.getElementById(targetId);
             if (!target) return;
             
-            // Calcula a posição considerando o header fixo
             const headerHeight = document.getElementById('mainNav').offsetHeight;
             const targetPosition = target.offsetTop - headerHeight;
             
-            // Usa o método nativo se disponível (melhor performance)
+            // Solução específica para iOS
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+                // Usa scrollTo com behavior smooth se suportado
+                if ('scrollBehavior' in document.documentElement.style) {
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Fallback para iOS antigo
+                    window.scrollTo(0, targetPosition);
+                }
+                return;
+            }
+            
+            // Para outros navegadores
             if ('scrollBehavior' in document.documentElement.style) {
                 window.scrollTo({
                     top: targetPosition,
@@ -941,21 +957,41 @@
             requestAnimationFrame(animation);
         }
 
-        // Configuração do scroll icon para mobile e desktop
+        // Configuração do scroll icon
         const scrollButton = document.getElementById('scrollDown');
         
-        // Clique normal (desktop e mobile)
-        scrollButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            smoothScroll('portfolio');
-        });
-
-        // Garantir que o vídeo não impeça o scroll
-        document.querySelector('#video-container video').addEventListener('click', function(e) {
+        // Função otimizada para iOS
+        function handleScrollClick(e) {
             e.preventDefault();
             e.stopPropagation();
-            return false;
-        });
+            
+            // Força um pequeno delay para garantir que o clique seja processado
+            setTimeout(() => {
+                smoothScroll('portfolio');
+            }, 100);
+        }
+
+        // Adiciona eventos de forma cross-browser
+        if ('ontouchstart' in window) {
+            // Dispositivos touch
+            scrollButton.addEventListener('touchstart', handleScrollClick, { passive: false });
+            scrollButton.addEventListener('click', handleScrollClick);
+        } else {
+            // Desktop
+            scrollButton.addEventListener('click', handleScrollClick);
+        }
+
+        // Garantir que o vídeo não impeça o scroll
+        const video = document.querySelector('#video-container video');
+        if (video) {
+            video.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
+            video.setAttribute('playsinline', '');
+            video.setAttribute('webkit-playsinline', '');
+        }
 
         // Smooth scrolling para outros links âncora
         document.querySelectorAll('a[href^="#"]:not([id="scrollDown"])').forEach(anchor => {
