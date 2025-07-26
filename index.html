@@ -337,15 +337,18 @@
         }
 
         .hover-link p {
-            color: white;
-            font-size: 1.2rem;
-            margin: 0;
-            transition: all 0.3s ease;
-        }
+    color: white;
+    font-size: 1.2rem;
+    margin: 0;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: 600;
+}
 
-        .hover-link:hover p {
-            color: #fff;
-        }
+.hover-link:hover p {
+    color: white;
+    text-decoration: none;
+}
 
         .load-more-button {
             text-align: center;
@@ -621,9 +624,9 @@
                             </div>
                             <div class="hover-effect">
                                 <div class="hover-content">
-                                    <h1>Galeria <em>de Comandantes</em></h1>
+                                    <h1>Galeria de Comandantes</h1>
                                     <a href="img/big_portfolio_item_3.png" data-lightbox="image-1" class="hover-link">
-                                        <p>Histórico de Comandantes</p>
+                                        <p>Veja Mais</p>
                                     </a>
                                 </div>
                             </div>
@@ -638,9 +641,9 @@
                             </div>
                             <div class="hover-effect">
                                 <div class="hover-content">
-                                    <h1>O Eterno<em>Vigilante</em></h1>
+                                    <h1>O Eterno Vigilante</h1>
                                     <a href="img/big_portfolio_item_1.png" data-lightbox="image-1" class="hover-link">
-                                        <p>Ten Cel Carlos Miranda</p>
+                                        <p>Veja Mais</p>
                                     </a>
                                 </div>
                             </div>
@@ -655,9 +658,9 @@
                             </div>
                             <div class="hover-effect">
                                 <div class="hover-content">
-                                    <h1>Espaço<em> Livre</em></h1>
+                                    <h1>Espaço Livre</h1>
                                     <a href="img/big_portfolio_item_5.png" data-lightbox="image-1" class="hover-link">
-                                        <p>Espaço Livre</p>
+                                        <p>Veja Mais</p>
                                     </a>
                                 </div>
                             </div>
@@ -672,9 +675,9 @@
                             </div>
                             <div class="hover-effect">
                                 <div class="hover-content">
-                                    <h1>Espaço<em> Livre</em></h1>
+                                    <h1>Espaço Livre</h1>
                                     <a href="img/big_portfolio_item_6.png" data-lightbox="image-1" class="hover-link">
-                                        <p>Espaço Livre</p>
+                                        <p>Veja Mais</p>
                                     </a>
                                 </div>
                             </div>
@@ -689,9 +692,9 @@
                             </div>
                             <div class="hover-effect">
                                 <div class="hover-content">
-                                    <h1>Espaço<em> Livre</em></h1>
+                                    <h1>Espaço Livre</h1>
                                     <a href="img/big_portfolio_item_7.png" data-lightbox="image-1" class="hover-link">
-                                        <p>Espaço Livre</p>
+                                        <p>Veja Mais</p>
                                     </a>
                                 </div>
                             </div>
@@ -706,9 +709,9 @@
                             </div>
                             <div class="hover-effect">
                                 <div class="hover-content">
-                                    <h1>Espaço<em> Livre</em></h1>
+                                    <h1>Espaço Livre</h1>
                                     <a href="img/big_portfolio_item_8.png" data-lightbox="image-1" class="hover-link">
-                                        <p>Espaço Livre</p>
+                                        <p>Veja Mais</p>
                                     </a>
                                 </div>
                             </div>
@@ -723,9 +726,9 @@
                             </div>
                             <div class="hover-effect">
                                 <div class="hover-content">
-                                    <h1>Espaço<em> Livre</em></h1>
+                                    <h1>Espaço Livre</h1>
                                     <a href="img/big_portfolio_item_9.png" data-lightbox="image-1" class="hover-link">
-                                        <p>Espaço Livre</p>
+                                        <p>Veja Mais</p>
                                     </a>
                                 </div>
                             </div>
@@ -894,73 +897,50 @@
         });
 
         // Controle de toque para mobile - Duplo clique
-        document.addEventListener('DOMContentLoaded', function() {
-            const portfolioItems = document.querySelectorAll('.portfolio-item');
-            let lastClicked = null;
-            let lastClickTime = 0;
+document.addEventListener('DOMContentLoaded', function() {
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    let lastClickTime = 0;
+    let lastClickedItem = null;
 
-            portfolioItems.forEach(item => {
-                const link = item.querySelector('.hover-link');
-                const hoverEffect = item.querySelector('.hover-effect');
-                
-                // Previne o comportamento padrão do link no mobile
-                if (link) {
-                    link.addEventListener('click', function(e) {
-                        if (window.innerWidth <= 768) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }
-                    });
-                }
-
-                item.addEventListener('click', function(e) {
-                    if (window.innerWidth > 768) return;
-                    
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const currentTime = new Date().getTime();
-                    const isDoubleClick = (currentTime - lastClickTime) < 500 && lastClicked === this;
-                    
-                    lastClickTime = currentTime;
-                    lastClicked = this;
-                    
-                    if (isDoubleClick && e.target.closest('.hover-link')) {
-                        // Segundo clique no link - abre a imagem
-                        if (link) {
-                            const clickEvent = new MouseEvent('click', {
-                                view: window,
-                                bubbles: true,
-                                cancelable: true
-                            });
-                            link.dispatchEvent(clickEvent);
-                        }
-                    } else {
-                        // Primeiro clique - mostra o hover
-                        document.querySelectorAll('.hover-effect').forEach(el => {
-                            if (el !== hoverEffect) {
-                                el.classList.remove('active');
-                                el.style.opacity = '0';
-                            }
-                        });
-                        
-                        hoverEffect.classList.toggle('active');
-                        hoverEffect.style.opacity = hoverEffect.style.opacity === '1' ? '0' : '1';
-                    }
-                }, true);
-            });
+    portfolioItems.forEach(item => {
+        const link = item.querySelector('.hover-link');
+        const hoverEffect = item.querySelector('.hover-effect');
+        
+        item.addEventListener('click', function(e) {
+            if (window.innerWidth > 768) return;
             
-            // Fecha os hovers ao clicar fora
-            document.addEventListener('click', function(e) {
-                if (window.innerWidth > 768) return;
-                if (!e.target.closest('.portfolio-item')) {
-                    document.querySelectorAll('.hover-effect').forEach(el => {
-                        el.classList.remove('active');
-                        el.style.opacity = '0';
-                    });
+            e.stopPropagation();
+            const currentTime = new Date().getTime();
+            const isDoubleClick = (currentTime - lastClickTime < 500) && (lastClickedItem === this);
+            
+            lastClickTime = currentTime;
+            lastClickedItem = this;
+            
+            if (isDoubleClick) {
+                // Dispara o clique no link para abrir o lightbox
+                if (link) {
+                    link.click();
                 }
-            });
+            } else {
+                // Mostra/oculta o hover effect no primeiro clique
+                document.querySelectorAll('.hover-effect').forEach(el => {
+                    if (el !== hoverEffect) {
+                        el.classList.remove('active');
+                    }
+                });
+                hoverEffect.classList.toggle('active');
+            }
         });
+    });
+    
+    // Fecha os hovers ao clicar fora
+    document.addEventListener('click', function() {
+        if (window.innerWidth > 768) return;
+        document.querySelectorAll('.hover-effect').forEach(el => {
+            el.classList.remove('active');
+        });
+    });
+});
     </script>
 </body>
 </html>
