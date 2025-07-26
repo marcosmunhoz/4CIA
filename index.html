@@ -243,13 +243,18 @@
             }
         }
 
-        /* SCROLL ICON */
+        /* SCROLL ICON - ESTILOS ATUALIZADOS */
         .scroll-icon {
             margin-top: 40px;
             position: relative;
-            z-index: 20;
+            z-index: 100;
             cursor: pointer;
             touch-action: manipulation;
+        }
+
+        .scroll-icon a {
+            display: inline-block;
+            pointer-events: auto;
         }
 
         .scroll-icon img {
@@ -266,9 +271,14 @@
         }
 
         @media (max-width: 768px) {
+            .scroll-icon {
+                margin-top: 30px;
+            }
+            
             .scroll-icon img {
-                width: 60px;
-                height: 60px;
+                width: 70px;
+                height: 70px;
+                opacity: 0.9;
             }
         }
 
@@ -894,17 +904,20 @@
             const target = document.getElementById(targetId);
             if (!target) return;
             
-            // Usa scrollBehavior se suportado (melhor performance em mobile)
+            // Calcula a posição considerando o header fixo
+            const headerHeight = document.getElementById('mainNav').offsetHeight;
+            const targetPosition = target.offsetTop - headerHeight;
+            
+            // Usa o método nativo se disponível (melhor performance)
             if ('scrollBehavior' in document.documentElement.style) {
                 window.scrollTo({
-                    top: target.offsetTop,
+                    top: targetPosition,
                     behavior: 'smooth'
                 });
                 return;
             }
             
-            // Fallback para browsers mais antigos
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+            // Fallback para browsers antigos
             const startPosition = window.pageYOffset;
             const distance = targetPosition - startPosition;
             const duration = 800;
@@ -928,17 +941,33 @@
             requestAnimationFrame(animation);
         }
 
-        // Evento de scroll otimizado para mobile
-        document.getElementById('scrollDown').addEventListener('click', function(e) {
+        // Configuração do scroll icon para mobile e desktop
+        const scrollButton = document.getElementById('scrollDown');
+        
+        // Clique normal (desktop)
+        scrollButton.addEventListener('click', function(e) {
             e.preventDefault();
             smoothScroll('portfolio');
         });
 
-        // Evento touch melhorado para mobile
-        document.getElementById('scrollDown').addEventListener('touchend', function(e) {
+        // Toque em mobile
+        scrollButton.addEventListener('touchstart', function(e) {
             e.preventDefault();
+            // Feedback visual
+            this.style.transform = 'scale(0.95)';
             smoothScroll('portfolio');
-        }, {passive: false});
+        });
+
+        scrollButton.addEventListener('touchend', function() {
+            this.style.transform = '';
+        });
+
+        // Garantir que o vídeo não impeça o scroll
+        document.querySelector('#video-container video').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
 
         // Smooth scrolling para outros links âncora
         document.querySelectorAll('a[href^="#"]:not([id="scrollDown"])').forEach(anchor => {
