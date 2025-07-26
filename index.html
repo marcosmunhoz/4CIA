@@ -173,7 +173,7 @@
             
             .hover-effect.active {
                 opacity: 1 !important;
-                background: rgba(0, 0, 0, 0.3) !important;
+                background: rgba(0, 0, 0, 0.8) !important;
             }
         }
 
@@ -248,6 +248,8 @@
             margin-top: 40px;
             position: relative;
             z-index: 20;
+            cursor: pointer;
+            touch-action: manipulation;
         }
 
         .scroll-icon img {
@@ -255,8 +257,6 @@
             height: 50px;
             opacity: 0.7;
             transition: all 0.3s ease;
-            cursor: pointer;
-            touch-action: manipulation;
             pointer-events: auto;
         }
 
@@ -267,7 +267,8 @@
 
         @media (max-width: 768px) {
             .scroll-icon img {
-                display: none;
+                width: 60px;
+                height: 60px;
             }
         }
 
@@ -275,7 +276,7 @@
         .grid-portfolio {
             padding: 60px 0;
             background-color: #111;
-            margin-top: 80vh;
+            margin-top: 100vh;
             position: relative;
             z-index: 1;
         }
@@ -888,11 +889,21 @@
             }
         }
 
-        // Função de scroll suave universal
+        // Função de scroll suave otimizada para mobile
         function smoothScroll(targetId) {
             const target = document.getElementById(targetId);
             if (!target) return;
             
+            // Usa scrollBehavior se suportado (melhor performance em mobile)
+            if ('scrollBehavior' in document.documentElement.style) {
+                window.scrollTo({
+                    top: target.offsetTop,
+                    behavior: 'smooth'
+                });
+                return;
+            }
+            
+            // Fallback para browsers mais antigos
             const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
             const startPosition = window.pageYOffset;
             const distance = targetPosition - startPosition;
@@ -917,14 +928,14 @@
             requestAnimationFrame(animation);
         }
 
-        // Evento de scroll para desktop e mobile
+        // Evento de scroll otimizado para mobile
         document.getElementById('scrollDown').addEventListener('click', function(e) {
             e.preventDefault();
             smoothScroll('portfolio');
         });
 
-        // Evento adicional para touch em mobile
-        document.getElementById('scrollDown').addEventListener('touchstart', function(e) {
+        // Evento touch melhorado para mobile
+        document.getElementById('scrollDown').addEventListener('touchend', function(e) {
             e.preventDefault();
             smoothScroll('portfolio');
         }, {passive: false});
