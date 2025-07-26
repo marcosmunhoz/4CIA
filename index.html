@@ -596,7 +596,7 @@
                 </div>    
             </div>
         </div>
-        <video autoplay="" loop="" muted>
+        <video autoplay loop muted playsinline>
             <source src="highway-loop.mp4" type="video/mp4" />
         </video>
     </div>
@@ -944,22 +944,10 @@
         // Configuração do scroll icon para mobile e desktop
         const scrollButton = document.getElementById('scrollDown');
         
-        // Clique normal (desktop)
+        // Clique normal (desktop e mobile)
         scrollButton.addEventListener('click', function(e) {
             e.preventDefault();
             smoothScroll('portfolio');
-        });
-
-        // Toque em mobile
-        scrollButton.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            // Feedback visual
-            this.style.transform = 'scale(0.95)';
-            smoothScroll('portfolio');
-        });
-
-        scrollButton.addEventListener('touchend', function() {
-            this.style.transform = '';
         });
 
         // Garantir que o vídeo não impeça o scroll
