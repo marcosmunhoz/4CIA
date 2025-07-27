@@ -3,456 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual Brasileiro de Fiscalização de Trânsito 2022 | DENATRAN</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Acesso PM-SP | Portal Oficial</title>
     <style>
         :root {
-            --primary: #0066cc; /* Azul DENATRAN */
-            --secondary: #004080;
-            --accent: #ff6600;
-            --light: #f5f7fa;
-            --dark: #333;
-            --text: #444;
-            --border: #ddd;
+            --pm-blue: #003366;
+            --pm-gold: #FFD700;
+            --pm-red: #CC0000;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: var(--light);
-            color: var(--text);
-            line-height: 1.6;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://www.policiamilitar.sp.gov.br/img/logo-pmsp.png');
+            background-size: 30%;
+            background-position: right bottom;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding: 20px;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-in-out;
         }
         
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .login-header {
+            background: var(--pm-blue);
             color: white;
-            padding: 1.5rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            text-align: center;
+            position: relative;
         }
         
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .login-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
         }
         
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo img {
-            height: 50px;
-        }
-        
-        .logo-text h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        
-        .logo-text p {
+        .login-header p {
             font-size: 0.9rem;
             opacity: 0.9;
         }
         
-        /* PDF Container */
-        .pdf-container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin: 2rem 0;
-            overflow: hidden;
-        }
-        
-        .pdf-header {
-            background-color: var(--primary);
+        .badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--pm-red);
             color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
-        .pdf-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .login-form {
+            padding: 30px;
         }
         
-        .pdf-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .pdf-btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.2s;
-        }
-        
-        .pdf-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .pdf-btn i {
-            font-size: 0.9rem;
-        }
-        
-        .pdf-viewer {
-            width: 100%;
-            height: 600px;
-            border: none;
-        }
-        
-        /* Search Section */
-        .search-section {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .search-title {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-        
-        .search-box {
+        .form-group {
+            margin-bottom: 20px;
             position: relative;
-            margin-bottom: 1rem;
         }
         
-        .search-box input {
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+        
+        .form-group input {
             width: 100%;
-            padding: 12px 20px;
-            padding-left: 50px;
-            border: 2px solid var(--border);
-            border-radius: 30px;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
             font-size: 1rem;
             transition: all 0.3s;
         }
         
-        .search-box input:focus {
-            border-color: var(--primary);
+        .form-group input:focus {
+            border-color: var(--pm-blue);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+            box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.2);
         }
         
-        .search-box i {
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
             position: absolute;
-            left: 20px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
-            color: #777;
+            cursor: pointer;
+            color: var(--pm-blue);
         }
         
-        .search-info {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 10px;
-        }
-        
-        /* Document Info */
-        .doc-info {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .doc-info h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-        
-        .doc-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .meta-item {
-            flex: 1;
-            min-width: 200px;
-        }
-        
-        .meta-label {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .meta-value {
-            font-weight: 500;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .footer-content {
+        .remember-forgot {
             display: flex;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 2rem;
+            align-items: center;
+            margin-bottom: 20px;
         }
         
-        .footer-section {
-            flex: 1;
-            min-width: 250px;
+        .remember-me {
+            display: flex;
+            align-items: center;
         }
         
-        .footer-section h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: #fff;
+        .remember-me input {
+            margin-right: 8px;
         }
         
-        .footer-section ul {
-            list-style: none;
-        }
-        
-        .footer-section li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer-section a {
-            color: #ccc;
+        .forgot-password a {
+            color: var(--pm-blue);
             text-decoration: none;
-            transition: all 0.2s;
-        }
-        
-        .footer-section a:hover {
-            color: white;
-            text-decoration: underline;
-        }
-        
-        .copyright {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #444;
-            color: #aaa;
             font-size: 0.9rem;
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: var(--pm-blue);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .login-button:hover {
+            background: #002244;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .login-footer a {
+            color: var(--pm-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 500px) {
+            body {
+                background-size: 50%;
             }
             
-            .logo {
-                justify-content: center;
-            }
-            
-            .pdf-viewer {
-                height: 400px;
-            }
-            
-            .pdf-actions {
-                flex-wrap: wrap;
-                justify-content: center;
+            .login-container {
+                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <img src="https://www.gov.br/denatran/pt-br/imagens/logo-denatran/@@images/9f4f5d9e-4c8e-4a4e-9c3b-8e0b3e3e3e3e.png" alt="DENATRAN Logo">
-                <div class="logo-text">
-                    <h1>Manual Brasileiro de Fiscalização de Trânsito</h1>
-                    <p>Departamento Nacional de Trânsito - DENATRAN</p>
-                </div>
-            </div>
-        </div>
-    </header>
-    
-    <div class="container">
-        <!-- Document Information -->
-        <div class="doc-info">
-            <h3>Informações do Documento</h3>
-            <div class="doc-meta">
-                <div class="meta-item">
-                    <div class="meta-label">Título</div>
-                    <div class="meta-value">Manual Brasileiro de Fiscalização de Trânsito</div>
-                </div>
-                <div class="meta-item">
-                    <div class="meta-label">Ano</div>
-                    <div class="meta-value">2022</div>
-                </div>
-                <div class="meta-item">
-                    <div class="meta-label">Órgão</div>
-                    <div class="meta-value">DENATRAN/CONTRAN</div>
-                </div>
-                <div class="meta-item">
-                    <div class="meta-label">Número de Páginas</div>
-                    <div class="meta-value">326</div>
-                </div>
-            </div>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="badge">SEGURANÇA</div>
+            <h1>PORTAL PM-SP</h1>
+            <p>Sistema Integrado de Acesso</p>
         </div>
         
-        <!-- Search Section -->
-        <div class="search-section">
-            <h3 class="search-title">Pesquisar no Manual</h3>
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="pdfSearchInput" placeholder="Digite o termo que deseja pesquisar...">
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Identificação</label>
+                <input type="text" id="username" name="usuario" placeholder="Digite seu RA ou CPF" required>
             </div>
-            <p class="search-info">
-                <i class="fas fa-info-circle"></i> Para pesquisar dentro do PDF, abra o documento e use Ctrl+F (Windows) ou Command+F (Mac).
-            </p>
-        </div>
+            
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="senha" placeholder="Digite sua senha" required>
+                    <span class="toggle-password" id="togglePassword">👁️</span>
+                </div>
+            </div>
+            
+            <div class="remember-forgot">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Lembrar acesso</label>
+                </div>
+                <div class="forgot-password">
+                    <a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/recuperarsenha.aspx">Esqueceu a senha?</a>
+                </div>
+            </div>
+            
+            <button type="submit" class="login-button">ACESSAR SISTEMA</button>
+        </form>
         
-        <!-- PDF Viewer -->
-        <div class="pdf-container">
-            <div class="pdf-header">
-                <div class="pdf-title">Manual Brasileiro de Fiscalização de Trânsito - 2022</div>
-                <div class="pdf-actions">
-                    <button class="pdf-btn" onclick="downloadPDF()">
-                        <i class="fas fa-download"></i> Baixar
-                    </button>
-                    <button class="pdf-btn" onclick="printPDF()">
-                        <i class="fas fa-print"></i> Imprimir
-                    </button>
-                    <button class="pdf-btn" onclick="fullscreenPDF()">
-                        <i class="fas fa-expand"></i> Tela Cheia
-                    </button>
-                </div>
-            </div>
-            <iframe src="https://docs.google.com/gview?url=https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/mbvt20222.pdf&embedded=true" 
-                    class="pdf-viewer" 
-                    frameborder="0">
-            </iframe>
-        </div>
-        
-        <!-- Document Summary -->
-        <div class="doc-info">
-            <h3>Conteúdo Principal do Manual</h3>
-            <div class="doc-meta">
-                <div class="meta-item">
-                    <div class="meta-label">Capítulos Principais</div>
-                    <div class="meta-value">
-                        <ul style="list-style-type: disc; padding-left: 20px;">
-                            <li>Procedimentos de Fiscalização</li>
-                            <li>Tipos de Infrações</li>
-                            <li>Penalidades e Medidas Administrativas</li>
-                            <li>Sinalização de Trânsito</li>
-                            <li>Documentação de Veículos</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="meta-item">
-                    <div class="meta-label">Principais Alterações</div>
-                    <div class="meta-value">
-                        <ul style="list-style-type: disc; padding-left: 20px;">
-                            <li>Novas regras para fiscalização eletrônica</li>
-                            <li>Atualização de valores de multas</li>
-                            <li>Procedimentos para veículos autônomos</li>
-                            <li>Orientações sobre transporte por aplicativo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="login-footer">
+            <p>Acesso restrito aos integrantes da Polícia Militar do Estado de São Paulo</p>
+            <p>Problemas com o acesso? <a href="https://www.policiamilitar.sp.gov.br/contato">Contate o suporte</a></p>
         </div>
     </div>
-    
-    <footer>
-        <div class="container footer-content">
-            <div class="footer-section">
-                <h3>DENATRAN</h3>
-                <ul>
-                    <li><a href="https://www.gov.br/denatran" target="_blank">Site Oficial</a></li>
-                    <li><a href="https://www.gov.br/denatran/pt-br/assuntos/legislacao" target="_blank">Legislação</a></li>
-                    <li><a href="https://www.gov.br/denatran/pt-br/assuntos/estatisticas" target="_blank">Estatísticas</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Contato</h3>
-                <ul>
-                    <li><i class="fas fa-phone"></i> (61) 2022-5000</li>
-                    <li><i class="fas fa-envelope"></i> denatran@infraestrutura.gov.br</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Esplanada dos Ministérios, Bloco 3 - Brasília/DF</li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Links Úteis</h3>
-                <ul>
-                    <li><a href="https://www.gov.br/infraestrutura/pt-br" target="_blank">Ministério dos Transportes</a></li>
-                    <li><a href="https://www.gov.br/prf/pt-br" target="_blank">PRF</a></li>
-                    <li><a href="https://www.ctbdigital.com.br" target="_blank">CTB Digital</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="copyright">
-            <p>© 2023 Departamento Nacional de Trânsito - DENATRAN. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-    
+
     <script>
-        // Funções para os botões de ação do PDF
-        function downloadPDF() {
-            window.open('https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/mbvt20222.pdf', '_blank');
-        }
-        
-        function printPDF() {
-            alert('Para imprimir, abra o PDF e use a opção de impressão do navegador.');
-        }
-        
-        function fullscreenPDF() {
-            const pdfViewer = document.querySelector('.pdf-viewer');
-            if (pdfViewer.requestFullscreen) {
-                pdfViewer.requestFullscreen();
-            } else if (pdfViewer.webkitRequestFullscreen) {
-                pdfViewer.webkitRequestFullscreen();
-            } else if (pdfViewer.msRequestFullscreen) {
-                pdfViewer.msRequestFullscreen();
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle password visibility
+            const togglePassword = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.textContent = type === 'password' ? '👁️' : '🔒';
+            });
+            
+            // Form submission
+            const loginForm = document.getElementById('loginForm');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                submitButton.textContent = 'AUTENTICANDO...';
+                submitButton.disabled = true;
+                
+                // Get form data
+                const formData = new URLSearchParams();
+                formData.append('usuario', this.usuario.value);
+                formData.append('senha', this.senha.value);
+                
+                // Submit to official PM-SP login endpoint
+                fetch('https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData,
+                    redirect: 'manual' // Important for handling redirects
+                })
+                .then(response => {
+                    if (response.type === 'opaqueredirect') {
+                        // Successful login redirects to mobileview.aspx
+                        window.location.href = 'https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx';
+                    } else {
+                        // Handle failed login
+                        alert('Falha na autenticação. Verifique suas credenciais.');
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erro na conexão. Tente novamente.');
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                });
+            });
+            
+            // Remember me functionality (local storage)
+            const rememberCheckbox = document.getElementById('remember');
+            const usernameInput = document.getElementById('username');
+            
+            // Check if credentials are saved
+            if (localStorage.getItem('rememberPMUser') === 'true') {
+                rememberCheckbox.checked = true;
+                usernameInput.value = localStorage.getItem('pmUsername') || '';
             }
-        }
-        
-        // Pesquisa no conteúdo descritivo (simulação)
-        document.getElementById('pdfSearchInput').addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') {
-                const term = this.value.trim();
-                if (term) {
-                    alert(`Para pesquisar "${term}" dentro do PDF:\n1. Clique no documento para ativar o visualizador\n2. Use Ctrl+F (Windows) ou Command+F (Mac)\n3. Digite o termo desejado`);
+            
+            rememberCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    localStorage.setItem('rememberPMUser', 'true');
+                    localStorage.setItem('pmUsername', usernameInput.value);
+                } else {
+                    localStorage.removeItem('rememberPMUser');
+                    localStorage.removeItem('pmUsername');
                 }
-            }
+            });
         });
     </script>
 </body>
