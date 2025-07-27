@@ -92,9 +92,12 @@
             display: inline-block;
         }
 
-        ul.menu-horizontal > li > a:hover {
-            border-bottom: 2px solid #fff;
-            color: #fff;
+        /* ALTERAÇÃO: HOVER E ACTIVE COM AZUL CÉU */
+        ul.menu-horizontal > li > a:hover,
+        ul.menu-horizontal > li > a:active,
+        ul.menu-horizontal > li > a.active {
+            color: #87CEEB !important;
+            border-bottom: 2px solid #87CEEB !important;
         }
 
         ul.submenu-horizontal {
@@ -129,9 +132,12 @@
             display: block;
         }
 
-        ul.submenu-horizontal li a:hover {
-            background-color: #333;
-            color: #fff;
+        /* ALTERAÇÃO: HOVER E ACTIVE DO SUBMENU COM AZUL CÉU */
+        ul.submenu-horizontal li a:hover,
+        ul.submenu-horizontal li a:active,
+        ul.submenu-horizontal li a.active {
+            background-color: #87CEEB !important;
+            color: #000 !important;
         }
 
         /* AJUSTES PARA MOBILE */
@@ -166,7 +172,6 @@
                 height: 100%;
             }
 
-            /* NOVOS ESTILOS PARA PORTFOLIO MOBILE */
             .portfolio-item {
                 cursor: pointer;
             }
@@ -243,7 +248,7 @@
             }
         }
 
-        /* SCROLL ICON - ESTILOS ATUALIZADOS */
+        /* SCROLL ICON */
         .scroll-icon {
             margin-top: 40px;
             position: relative;
@@ -570,11 +575,9 @@
                 <a>POLICIAL MILITAR</a>
                 <ul class="submenu-horizontal">
                     <li><a href="PM.html">👮🏻 PM</a></li>
-           
-<li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>       
- 
+                    <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
                     <li><a href="visualizador.html">Minha escala</a></li>
-<li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatários</a></li>
+                    <li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatários</a></li>
                     <li><a href="https://www.ipva.fazenda.sp.gov.br/ipvanet_consulta/Consulta.aspx">Débito de Veículos</a></li>
                 </ul>
             </li>
