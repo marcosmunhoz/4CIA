@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Brasileiro de Fiscalização de Trânsito | DENATRAN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066cc; /* Azul DENATRAN */
+            --secondary: #004080;
+            --accent: #ff6600;
+            --light: #f5f7fa;
+            --dark: #333;
+            --text: #444;
+            --border: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: 2rem 0;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 50px;
+            border: 2px solid var(--border);
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .search-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-option {
+            padding: 6px 12px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .search-option:hover, .search-option.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin: 2rem 0;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 120px;
+            align-self: flex-start;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .sidebar-title {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .sidebar-menu li:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar-menu a {
+            display: block;
+            padding: 12px 15px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .sidebar-menu a:hover {
+            background-color: #f5f5f5;
+            color: var(--primary);
+            padding-left: 20px;
+        }
+        
+        .sidebar-menu a.active {
+            background-color: #e6f2ff;
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            font-weight: 500;
+        }
+        
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+        
+        .content-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .content-header h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .breadcrumb a {
+            color: #777;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .separator {
+            color: #aaa;
+        }
+        
+        /* Manual Content */
+        .manual-content {
+            line-height: 1.7;
+        }
+        
+        .manual-content h3 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .manual-content h4 {
+            color: var(--secondary);
+            margin: 1.2rem 0 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .manual-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .manual-content ul, .manual-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .manual-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight {
+            background-color: #fffde7;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .logo {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="https://www.gov.br/denatran/pt-br/imagens/logo-denatran/@@images/9f4f5d9e-4c8e-4a4e-9c3b-8e0b3e3e3e3e.png" alt="DENATRAN Logo">
+                <div class="logo-text">
+                    <h1>Manual de Fiscalização de Trânsito</h1>
+                    <p>Departamento Nacional de Trânsito - DENATRAN</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar no manual... (digite e pressione Enter)">
+            </div>
+            <div class="search-options">
+                <div class="search-option active" data-filter="all">Tudo</div>
+                <div class="search-option" data-filter="legislacao">Legislação</div>
+                <div class="search-option" data-filter="procedimentos">Procedimentos</div>
+                <div class="search-option" data-filter="infracoes">Infrações</div>
+                <div class="search-option" data-filter="sinais">Sinais de Trânsito</div>
+                <div class="search-option" data-filter="exemplos">Exemplos Práticos</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Sumário</div>
+                    <ul class="sidebar-menu" id="tocMenu">
+                        <li><a href="#introducao" class="active">1. Introdução</a></li>
+                        <li><a href="#legislacao">2. Base Legal</a></li>
+                        <li><a href="#competencia">3. Competência</a></li>
+                        <li><a href="#fiscalizacao">4. Fiscalização</a></li>
+                        <li><a href="#autuacao">5. Autuação</a></li>
+                        <li><a href="#infracoes">6. Infrações</a></li>
+                        <li><a href="#sinalizacao">7. Sinalização</a></li>
+                        <li><a href="#veiculos">8. Veículos</a></li>
+                        <li><a href="#condutores">9. Condutores</a></li>
+                        <li><a href="#penalidades">10. Penalidades</a></li>
+                        <li><a href="#recursos">11. Recursos</a></li>
+                        <li><a href="#anexos">Anexos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Downloads</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#"><i class="fas fa-file-pdf"></i> Manual Completo (PDF)</a></li>
+                        <li><a href="#"><i class="fas fa-file-excel"></i> Tabela de Infrações (XLS)</a></li>
+                        <li><a href="#"><i class="fas fa-file-word"></i> Modelos de Documentos (DOC)</a></li>
+                        <li><a href="#"><i class="fas fa-file-powerpoint"></i> Apresentação (PPT)</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Links Úteis</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="https://www.gov.br/denatran" target="_blank"><i class="fas fa-external-link-alt"></i> DENATRAN</a></li>
+                        <li><a href="https://www.gov.br/infraestrutura/pt-br" target="_blank"><i class="fas fa-external-link-alt"></i> Ministério</a></li>
+                        <li><a href="https://www.ctbdigital.com.br" target="_blank"><i class="fas fa-external-link-alt"></i> CTB Digital</a></li>
+                        <li><a href="https://www.gov.br/prf/pt-br" target="_blank"><i class="fas fa-external-link-alt"></i> PRF</a></li>
+                    </ul>
+                </div>
+            </aside>
+            
+            <main class="content-area">
+                <div class="content-header">
+                    <h2 id="introducao">Manual Brasileiro de Fiscalização de Trânsito</h2>
+                    <div class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span class="separator">/</span>
+                        <a href="#">Manuais</a>
+                        <span class="separator">/</span>
+                        <span>Fiscalização de Trânsito</span>
+                    </div>
+                </div>
+                
+                <div class="manual-content" id="manualContent">
+                    <section id="introducao">
+                        <h3>1. Introdução</h3>
+                        <p>O Manual Brasileiro de Fiscalização de Trânsito constitui instrumento de padronização e orientação técnica para os agentes fiscalizadores de trânsito em todo o território nacional, conforme estabelecido no Código de Trânsito Brasileiro (Lei nº 9.503/97) e nas Resoluções do CONTRAN.</p>
+                        
+                        <h4>1.1 Objetivos</h4>
+                        <ul>
+                            <li>Uniformizar os procedimentos de fiscalização em todo território nacional</li>
+                            <li>Orientar os agentes de trânsito no exercício de suas atribuições</li>
+                            <li>Garantir a segurança jurídica dos atos de fiscalização</li>
+                            <li>Promover a educação para o trânsito através da fiscalização</li>
+                        </ul>
+                        
+                        <h4>1.2 Âmbito de Aplicação</h4>
+                        <p>Este manual aplica-se a todos os órgãos e entidades do Sistema Nacional de Trânsito, compreendendo:</p>
+                        <ul>
+                            <li>Polícia Rodoviária Federal</li>
+                            <li>Polícias Militares Estaduais</li>
+                            <li>Órgãos municipais de trânsito</li>
+                            <li>Demais agentes credenciados para fiscalização</li>
+                        </ul>
+                    </section>
+                    
+                    <section id="legislacao">
+                        <h3>2. Base Legal</h3>
+                        <p>A fiscalização de trânsito no Brasil fundamenta-se nos seguintes dispositivos legais:</p>
+                        
+                        <h4>2.1 Legislação Principal</h4>
+                        <ul>
+                            <li><strong>Lei nº 9.503/97</strong> - Código de Trânsito Brasileiro (CTB)</li>
+                            <li><strong>Lei nº 9.602/98</strong> - Altera dispositivos do CTB</li>
+                            <li><strong>Lei nº 13.281/16</strong> - Altera o CTB para incluir infrações relativas a ciclistas</li>
+                        </ul>
+                        
+                        <h4>2.2 Resoluções do CONTRAN</h4>
+                        <ul>
+                            <li>Resolução nº 168/04 - Estabelece procedimentos para fiscalização</li>
+                            <li>Resolução nº 619/16 - Dispõe sobre a fiscalização eletrônica</li>
+                            <li>Resolução nº 789/20 - Normas para fiscalização de transporte de carga</li>
+                        </ul>
+                    </section>
+                    
+                    <section id="competencia">
+                        <h3>3. Competência para Fiscalização</h3>
+                        <p>A competência para fiscalização de trânsito é distribuída conforme a jurisdição das vias:</p>
+                        
+                        <h4>3.1 Órgãos Federais</h4>
+                        <ul>
+                            <li>Polícia Rodoviária Federal (PRF) - vias federais</li>
+                            <li>DNIT - fiscalização de obras e conservação</li>
+                        </ul>
+                        
+                        <h4>3.2 Órgãos Estaduais</h4>
+                        <ul>
+                            <li>Polícia Militar - vias estaduais e municipais</li>
+                            <li>Departamentos Estaduais de Trânsito (Detrans)</li>
+                        </ul>
+                        
+                        <h4>3.3 Órgãos Municipais</h4>
+                        <ul>
+                            <li>Secretarias/Departamentos Municipais de Trânsito</li>
+                            <li>Guarda Municipal (quando autorizada)</li>
+                        </ul>
+                    </section>
+                    
+                    <!-- As outras seções do manual continuariam aqui -->
+                    <!-- Esta é apenas uma estrutura de exemplo -->
+                    
+                    <section id="anexos">
+                        <h3>Anexos</h3>
+                        <h4>Tabela de Infrações e Penalidades</h4>
+                        <p>Consulte a tabela completa de infrações e suas respectivas penalidades conforme o CTB.</p>
+                        
+                        <h4>Modelos de Documentos</h4>
+                        <ul>
+                            <li>Auto de Infração</li>
+                            <li>Notificação de Penalidade</li>
+                            <li>Termo de Retenção</li>
+                            <li>Relatório de Fiscalização</li>
+                        </ul>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>DENATRAN</h3>
+                <ul>
+                    <li><a href="#">Sobre o DENATRAN</a></li>
+                    <li><a href="#">Estrutura Organizacional</a></li>
+                    <li><a href="#">Legislação de Trânsito</a></li>
+                    <li><a href="#">Estatísticas</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Manuais</h3>
+                <ul>
+                    <li><a href="#">Manual de Fiscalização</a></li>
+                    <li><a href="#">Manual de Sinalização</a></li>
+                    <li><a href="#">Manual de Engenharia</a></li>
+                    <li><a href="#">Manual de Educação</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> (61) 2022-5000</li>
+                    <li><i class="fas fa-envelope"></i> denatran@infraestrutura.gov.br</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Esplanada dos Ministérios, Bloco 3 - Brasília/DF</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2023 Departamento Nacional de Trânsito - DENATRAN. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Função de busca no conteúdo
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value.trim().toLowerCase();
+                if (searchTerm === '') return;
+                
+                const content = document.getElementById('manualContent').textContent.toLowerCase();
+                const occurrences = content.split(searchTerm).length - 1;
+                
+                if (occurrences > 0) {
+                    // Remove destaque anterior
+                    const oldHighlights = document.querySelectorAll('.highlight');
+                    oldHighlights.forEach(el => {
+                        el.outerHTML = el.innerHTML;
+                    });
+                    
+                    // Aplica novo destaque
+                    const regex = new RegExp(searchTerm, 'gi');
+                    const html = document.getElementById('manualContent').innerHTML;
+                    document.getElementById('manualContent').innerHTML = html.replace(regex, match => 
+                        `<span class="highlight">${match}</span>`
+                    );
+                    
+                    // Rola para a primeira ocorrência
+                    const firstHighlight = document.querySelector('.highlight');
+                    if (firstHighlight) {
+                        firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    
+                    alert(`Termo encontrado ${occurrences} vezes no manual.`);
+                } else {
+                    alert('Termo não encontrado no manual.');
+                }
+            }
+        });
+        
+        // Navegação pelo menu lateral
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove classe active de todos os itens
+                document.querySelectorAll('.sidebar-menu a').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Adiciona classe active ao item clicado
+                this.classList.add('active');
+                
+                // Rola para a seção correspondente
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Filtros de busca
+        document.querySelectorAll('.search-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.search-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+                // Aqui você implementaria a filtragem por categoria
+                alert(`Filtrando por: ${this.textContent}`);
+            });
+        });
+        
+        // Ativa o primeiro item do menu ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.sidebar-menu a').classList.add('active');
+        });
+    </script>
+</body>
+</html>
