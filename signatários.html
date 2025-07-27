@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Países Signatários de Acordos Viários com o Brasil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --info: #2980b9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 15px;
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        
+        .filter-btn[data-filter="convencao"] {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .filter-btn[data-filter="convencao"]:hover, 
+        .filter-btn[data-filter="convencao"].active {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .filter-btn[data-filter="reciprocidade"] {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+        
+        .filter-btn[data-filter="reciprocidade"]:hover, 
+        .filter-btn[data-filter="reciprocidade"].active {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .filter-btn[data-filter="outros"] {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .filter-btn[data-filter="outros"]:hover, 
+        .filter-btn[data-filter="outros"].active {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 10px;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .countries-table {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+        }
+        
+        th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s;
+        }
+        
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge-convencao {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+        }
+        
+        .badge-reciprocidade {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+        
+        .badge-outros {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--accent);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 5px;
+        }
+        
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover, .page-btn.active {
+            background-color: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            th, td {
+                padding: 10px 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Países Signatários</h1>
+            <p class="subtitle">Acordos de trânsito viário com o Brasil</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar país...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="convencao">Convenção de Viena</button>
+                <button class="filter-btn" data-filter="reciprocidade">Reciprocidade</button>
+                <button class="filter-btn" data-filter="outros">Outros Tratados</button>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalCountries">0</div>
+                <div class="stat-label">Países</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="viennaCount">0</div>
+                <div class="stat-label">Convenção de Viena</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="reciprocityCount">0</div>
+                <div class="stat-label">Reciprocidade</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="otherCount">0</div>
+                <div class="stat-label">Outros Tratados</div>
+            </div>
+        </div>
+        
+        <div class="countries-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>País</th>
+                        <th>Tipo de Acordo</th>
+                    </tr>
+                </thead>
+                <tbody id="countriesTable">
+                    <!-- Dados serão inseridos via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="pagination" id="pagination">
+            <!-- Paginação será gerada via JavaScript -->
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Fonte: Departamento de Trânsito do Paraná (DETRAN-PR)</p>
+            <p>Atualizado em Julho de 2023</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Dados dos países
+        const countriesData = [
+            { pais: "África do Sul", acordo: "Convenção de Viena" },
+            { pais: "Albânia", acordo: "Convenção de Viena" },
+            { pais: "Alemanha", acordo: "Convenção de Viena" },
+            { pais: "Anguilla", acordo: "Reciprocidade" },
+            { pais: "Angola", acordo: "Reciprocidade" },
+            { pais: "Arábia Saudita", acordo: "Convenção de Viena" },
+            { pais: "Argélia", acordo: "Reciprocidade" },
+            { pais: "Argentina", acordo: "Outros tratados*" },
+            { pais: "Arquem. de Sem Andrés", acordo: "Reciprocidade" },
+            { pais: "Armênia", acordo: "Convenção de Viena" },
+            { pais: "Austrália", acordo: "Reciprocidade" },
+            { pais: "Áustria", acordo: "Convenção de Viena" },
+            { pais: "Azerbaidjão", acordo: "Convenção de Viena" },
+            { pais: "Bahamas", acordo: "Convenção de Viena" },
+            { pais: "Barem/Bareine/Bairein", acordo: "Convenção de Viena" },
+            { pais: "Bélgica", acordo: "Convenção de Viena" },
+            { pais: "Bermudas", acordo: "Reciprocidade" },
+            { pais: "Bielo-Rússia (Belarus)", acordo: "Convenção de Viena" },
+            { pais: "Bolívia", acordo: "Outros tratados*" },
+            { pais: "Bósnia-Herzegovina", acordo: "Convenção de Viena" },
+            { pais: "Bulgária", acordo: "Convenção de Viena" },
+            { pais: "Cabo Verde", acordo: "Reciprocidade" },
+            { pais: "Canadá", acordo: "Reciprocidade" },
+            { pais: "Catar", acordo: "Convenção de Viena" },
+            { pais: "Cazaquistão", acordo: "Convenção de Viena" },
+            { pais: "Cayman", acordo: "Reciprocidade" },
+            { pais: "Ceuta e Melilla", acordo: "Reciprocidade" },
+            { pais: "Chile", acordo: "Outros tratados*" },
+            { pais: "Cingapura", acordo: "Reciprocidade" },
+            { pais: "Colômbia", acordo: "Reciprocidade" },
+            { pais: "Congo", acordo: "Convenção de Viena" },
+            { pais: "Coréia do Sul", acordo: "Reciprocidade" },
+            { pais: "Costa do Marfim", acordo: "Convenção de Viena" },
+            { pais: "Costa Rica", acordo: "Reciprocidade" },
+            { pais: "Croácia", acordo: "Convenção de Viena" },
+            { pais: "Cuba", acordo: "Convenção de Viena" },
+            { pais: "Dinamarca", acordo: "Convenção de Viena" },
+            { pais: "El Salvador", acordo: "Reciprocidade" },
+            { pais: "Emirados Árabes Unidos", acordo: "Convenção de Viena" },
+            { pais: "Equador", acordo: "Reciprocidade" },
+            { pais: "Escócia", acordo: "Reciprocidade" },
+            { pais: "Eslovênia", acordo: "Convenção de Viena" },
+            { pais: "Espanha", acordo: "Reciprocidade" },
+            { pais: "Estados Unidos", acordo: "Reciprocidade" },
+            { pais: "Estônia", acordo: "Convenção de Viena" },
+            { pais: "Filipinas", acordo: "Convenção de Viena" },
+            { pais: "Finlândia", acordo: "Convenção de Viena" },
+            { pais: "França", acordo: "Convenção de Viena" },
+            { pais: "Gabão", acordo: "Reciprocidade" },
+            { pais: "Gana", acordo: "Reciprocidade" },
+            { pais: "Geórgia", acordo: "Convenção de Viena" },
+            { pais: "Gibraltar", acordo: "Reciprocidade" },
+            { pais: "Grã-Bretanha", acordo: "Reciprocidade" },
+            { pais: "Grécia", acordo: "Reciprocidade/Convenção de Viena" },
+            { pais: "Groenlândia", acordo: "Convenção de Viena" },
+            { pais: "Guadalupe", acordo: "Convenção de Viena" },
+            { pais: "Guatemala", acordo: "Reciprocidade" },
+            { pais: "Guiana", acordo: "Convenção de Viena" },
+            { pais: "Guiana Francesa", acordo: "Convenção de Viena" },
+            { pais: "Guiné-Bissau", acordo: "Reciprocidade" },
+            { pais: "Haiti", acordo: "Reciprocidade" },
+            { pais: "Holanda", acordo: "Reciprocidade/Convenção de Viena" },
+            { pais: "Honduras", acordo: "Reciprocidade" },
+            { pais: "Hungria", acordo: "Convenção de Viena" },
+            { pais: "Ilha de Pitcairn", acordo: "Reciprocidade" },
+            { pais: "Ilha Norfolk", acordo: "Reciprocidade" },
+            { pais: "Ilhas Aland", acordo: "Convenção de Viena" },
+            { pais: "Ilhas Cayman", acordo: "Reciprocidade" },
+            { pais: "Ilhas Cocos (Keeling)", acordo: "Reciprocidade" },
+            { pais: "Ilhas Cook", acordo: "Reciprocidade" },
+            { pais: "Ilhas do Canal", acordo: "Reciprocidade" },
+            { pais: "Ilhas Geórgia e Sandwich do Sul", acordo: "Reciprocidade" },
+            { pais: "Ilhas Virgens (Gb)", acordo: "Reciprocidade" },
+            { pais: "Ilhas Wallis e Futuna", acordo: "Convenção de Viena" },
+            { pais: "Indonésia", acordo: "Reciprocidade" },
+            { pais: "Inglaterra", acordo: "Reciprocidade" },
+            { pais: "Ira/Iran", acordo: "Convenção de Viena" },
+            { pais: "Iraque", acordo: "Convenção de Viena" },
+            { pais: "Iria Ocidental", acordo: "Convenção de Viena" },
+            { pais: "Irlanda do Norte", acordo: "Reciprocidade" },
+            { pais: "Israel", acordo: "Convenção de Viena" },
+            { pais: "Itália", acordo: "Convenção de Viena" },
+            { pais: "Kuaite/Kuweit", acordo: "Convenção de Viena" },
+            { pais: "Letônia", acordo: "Convenção de Viena" },
+            { pais: "Libéria", acordo: "Convenção de Viena" },
+            { pais: "Líbia", acordo: "Reciprocidade" },
+            { pais: "Lituânia", acordo: "Convenção de Viena" },
+            { pais: "Luxemburgo", acordo: "Convenção de Viena" },
+            { pais: "Macedônia", acordo: "Convenção de Viena" },
+            { pais: "Malvinas/Ilhas Falkland", acordo: "Reciprocidade" },
+            { pais: "Marrocos", acordo: "Convenção de Viena" },
+            { pais: "Martinica", acordo: "Convenção de Viena" },
+            { pais: "Mayotte", acordo: "Convenção de Viena" },
+            { pais: "México", acordo: "Reciprocidade" },
+            { pais: "Moçambique", acordo: "Reciprocidade" },
+            { pais: "Moldávia (Moldova)", acordo: "Convenção de Viena" },
+            { pais: "Mônaco", acordo: "Convenção de Viena" },
+            { pais: "Mongólia", acordo: "Convenção de Viena" },
+            { pais: "Montenegro", acordo: "Convenção de Viena" },
+            { pais: "Montserrat", acordo: "Reciprocidade" },
+            { pais: "Namíbia", acordo: "Reciprocidade" },
+            { pais: "Nicarágua", acordo: "Reciprocidade" },
+            { pais: "Níger", acordo: "Convenção de Viena" },
+            { pais: "Niue", acordo: "Reciprocidade" },
+            { pais: "Noruega", acordo: "Convenção de Viena" },
+            { pais: "Nova Caledônia", acordo: "Convenção de Viena" },
+            { pais: "Nova Zelândia", acordo: "Reciprocidade" },
+            { pais: "Nueva Esparta", acordo: "Reciprocidade" },
+            { pais: "País de Gales", acordo: "Reciprocidade" },
+            { pais: "Panamá", acordo: "Reciprocidade" },
+            { pais: "Paquistão", acordo: "Convenção de Viena" },
+            { pais: "Paraguai", acordo: "Outros tratados*" },
+            { pais: "Peru", acordo: "Outros tratados*/Convenção de Viena" },
+            { pais: "Polinésia Francesa", acordo: "Convenção de Viena" },
+            { pais: "Polônia", acordo: "Convenção de Viena" },
+            { pais: "Porto Rico", acordo: "Convenção de Viena" },
+            { pais: "Portugal", acordo: "Reciprocidade/Convenção de Viena" },
+            { pais: "Quênia", acordo: "Convenção de Viena" },
+            { pais: "Quirguízia/Uirguiztao", acordo: "Convenção de Viena" },
+            { pais: "Reino Unido", acordo: "Reciprocidade" },
+            { pais: "República Centroafricana", acordo: "Convenção de Viena" },
+            { pais: "República Democrática do Congo", acordo: "Convenção de Viena" },
+            { pais: "República Dominicana", acordo: "Reciprocidade" },
+            { pais: "República Eslovaca", acordo: "Convenção de Viena" },
+            { pais: "República Tcheca", acordo: "Convenção de Viena" },
+            { pais: "Reunião", acordo: "Convenção de Viena" },
+            { pais: "Romênia", acordo: "Convenção de Viena" },
+            { pais: "Rússia", acordo: "Convenção de Viena" },
+            { pais: "Saara Ocidental", acordo: "Convenção de Viena" },
+            { pais: "Saint-Pierre e Miquelon", acordo: "Convenção de Viena" },
+            { pais: "San Marino", acordo: "Convenção de Viena" },
+            { pais: "Santa Helena", acordo: "Reciprocidade" },
+            { pais: "São Tomé e Príncipe", acordo: "Reciprocidade" },
+            { pais: "Seichelles (Seychelles)", acordo: "Convenção de Viena" },
+            { pais: "Senegal", acordo: "Convenção de Viena" },
+            { pais: "Sérvia", acordo: "Convenção de Viena" },
+            { pais: "Suécia", acordo: "Convenção de Viena" },
+            { pais: "Suíça", acordo: "Convenção de Viena" },
+            { pais: "Svalbard", acordo: "Convenção de Viena" },
+            { pais: "Tadjiquistão", acordo: "Convenção de Viena" },
+            { pais: "Terras Austrais e Antártica", acordo: "Reciprocidade" },
+            { pais: "Território Britânico na Antártica", acordo: "Reciprocidade" },
+            { pais: "Território Britânico no Oceano Indico", acordo: "Reciprocidade" },
+            { pais: "Timor", acordo: "Convenção de Viena" },
+            { pais: "Toquelau", acordo: "Reciprocidade" },
+            { pais: "Tunísia", acordo: "Convenção de Viena" },
+            { pais: "Turcas e Caicos (Turks e Caicos)", acordo: "Reciprocidade" },
+            { pais: "Turcomenistão (Turcomênia)", acordo: "Convenção de Viena" },
+            { pais: "Turquia", acordo: "Convenção de Viena" },
+            { pais: "Ucrânia", acordo: "Convenção de Viena" },
+            { pais: "Uruguai", acordo: "Outros tratados*/Convenção de Viena" },
+            { pais: "Uzbequistão", acordo: "Convenção de Viena" },
+            { pais: "Venezuela", acordo: "Reciprocidade" },
+            { pais: "Vietnam", acordo: "Convenção de Viena" },
+            { pais: "Zimbábue", acordo: "Outros tratados*" }
+        ];
+
+        // Configurações de paginação
+        const itemsPerPage = 20;
+        let currentPage = 1;
+        let filteredData = [...countriesData];
+        
+        // Elementos DOM
+        const tableBody = document.getElementById('countriesTable');
+        const paginationEl = document.getElementById('pagination');
+        const searchInput = document.getElementById('searchInput');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        // Contadores
+        const totalCountriesEl = document.getElementById('totalCountries');
+        const viennaCountEl = document.getElementById('viennaCount');
+        const reciprocityCountEl = document.getElementById('reciprocityCount');
+        const otherCountEl = document.getElementById('otherCount');
+        
+        // Atualizar contadores
+        function updateCounters() {
+            const viennaCount = countriesData.filter(c => c.acordo.includes("Convenção de Viena")).length;
+            const reciprocityCount = countriesData.filter(c => c.acordo === "Reciprocidade").length;
+            const otherCount = countriesData.filter(c => c.acordo.includes("Outros tratados")).length;
+            
+            totalCountriesEl.textContent = countriesData.length;
+            viennaCountEl.textContent = viennaCount;
+            reciprocityCountEl.textContent = reciprocityCount;
+            otherCountEl.textContent = otherCount;
+        }
+        
+        // Renderizar tabela
+        function renderTable(data, page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = data.slice(start, end);
+            
+            tableBody.innerHTML = '';
+            
+            paginatedData.forEach(country => {
+                const row = document.createElement('tr');
+                
+                // Determinar a classe do badge com base no tipo de acordo
+                let badgeClass = '';
+                if (country.acordo.includes("Convenção de Viena")) {
+                    badgeClass = 'badge-convencao';
+                } else if (country.acordo === "Reciprocidade") {
+                    badgeClass = 'badge-reciprocidade';
+                } else if (country.acodo.includes("Outros tratados")) {
+                    badgeClass = 'badge-outros';
+                }
+                
+                row.innerHTML = `
+                    <td>${country.pais}</td>
+                    <td><span class="badge ${badgeClass}">${country.acordo}</span></td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            renderPagination(data.length);
+        }
+        
+        // Renderizar paginação
+        function renderPagination(totalItems) {
+            const pageCount = Math.ceil(totalItems / itemsPerPage);
+            paginationEl.innerHTML = '';
+            
+            // Botão anterior
+            const prevBtn = document.createElement('div');
+            prevBtn.className = 'page-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable(filteredData, currentPage);
+                }
+            });
+            paginationEl.appendChild(prevBtn);
+            
+            // Números das páginas
+            for (let i = 1; i <= pageCount; i++) {
+                const pageBtn = document.createElement('div');
+                pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderTable(filteredData, currentPage);
+                });
+                paginationEl.appendChild(pageBtn);
+            }
+            
+            // Botão próximo
+            const nextBtn = document.createElement('div');
+            nextBtn.className = 'page-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < pageCount) {
+                    currentPage++;
+                    renderTable(filteredData, currentPage);
+                }
+            });
+            paginationEl.appendChild(nextBtn);
+        }
+        
+        // Filtrar dados
+        function filterData() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            
+            filteredData = countriesData.filter(country => {
+                const matchesSearch = country.pais.toLowerCase().includes(searchTerm) || 
+                                     country.acordo.toLowerCase().includes(searchTerm);
+                
+                let matchesFilter = true;
+                if (activeFilter !== 'all') {
+                    if (activeFilter === 'convencao') {
+                        matchesFilter = country.acordo.includes("Convenção de Viena");
+                    } else if (activeFilter === 'reciprocidade') {
+                        matchesFilter = country.acordo === "Reciprocidade";
+                    } else if (activeFilter === 'outros') {
+                        matchesFilter = country.acordo.includes("Outros tratados");
+                    }
+                }
+                
+                return matchesSearch && matchesFilter;
+            });
+            
+            currentPage = 1;
+            renderTable(filteredData, currentPage);
+        }
+        
+        // Event listeners
+        searchInput.addEventListener('input', filterData);
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                filterData();
+            });
+        });
+        
+        // Inicialização
+        updateCounters();
+        renderTable(countriesData, currentPage);
+    </script>
+</body>
+</html>
