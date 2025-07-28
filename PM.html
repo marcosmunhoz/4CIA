@@ -2,13 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Área Policial</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
   <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <style>
-    /* ESTILOS DO MENU SUPERIOR (MESMO DO INDEX ORIGINAL) */
     body {
       font-family: 'Kanit', sans-serif;
       margin: 0;
@@ -162,7 +161,7 @@
       }
     }
 
-    /* ESTILOS DA PÁGINA COM MENU CIRCULAR (ORIGINAL) */
+    /* ESTILOS DA PÁGINA COM MENU CIRCULAR */
     html, body {
       margin: 0;
       padding: 0;
@@ -171,7 +170,7 @@
       font-family: sans-serif;
     }
 
-    /* Fundo de vídeo ajustado para mostrar a bandeira à direita */
+    /* Fundo de vídeo */
     #background-video {
       position: fixed;
       right: 0;
@@ -182,16 +181,7 @@
       height: auto;
       z-index: -1;
       object-fit: cover;
-      object-position: 70% center; /* Ajuste para mostrar mais a bandeira à direita */
-    }
-
-    /* Ajuste específico para mobile */
-    @media only screen and (max-width: 768px) {
-      #background-video {
-        object-position: 80% center; /* Mais à direita em mobile */
-        object-fit: contain;
-        background-color: #000;
-      }
+      object-position: 70% center;
     }
 
     /* Menu circular principal */
@@ -201,8 +191,8 @@
       left: 50%;
       width: 350px;
       height: 350px;
-      margin-top: -140px;
-      margin-left: -140px;
+      margin-top: -175px;
+      margin-left: -175px;
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.6);
       display: flex;
@@ -335,11 +325,67 @@
     .submenu-item:nth-child(3) { transform: rotate(144deg) translate(110px) rotate(-144deg); }
     .submenu-item:nth-child(4) { transform: rotate(216deg) translate(110px) rotate(-216deg); }
     .submenu-item:nth-child(5) { transform: rotate(288deg) translate(110px) rotate(-288deg); }
+
+    /* Ajustes específicos para mobile */
+    @media only screen and (max-width: 768px) {
+      #background-video {
+        object-position: 50% center;
+        object-fit: cover;
+      }
+
+      .menu-circle {
+        position: fixed;
+        width: 280px;
+        height: 280px;
+        top: 50%;
+        left: 50%;
+        margin-top: -140px;
+        margin-left: -140px;
+        transform: none;
+      }
+
+      .menu-item {
+        width: 60px;
+        height: 60px;
+      }
+
+      .menu-item:nth-child(1) { transform: rotate(0deg) translate(90px) rotate(0deg); }
+      .menu-item:nth-child(2) { transform: rotate(45deg) translate(90px) rotate(-45deg); }
+      .menu-item:nth-child(3) { transform: rotate(90deg) translate(90px) rotate(-90deg); }
+      .menu-item:nth-child(4) { transform: rotate(135deg) translate(90px) rotate(-135deg); }
+      .menu-item:nth-child(5) { transform: rotate(180deg) translate(90px) rotate(-180deg); }
+      .menu-item:nth-child(6) { transform: rotate(225deg) translate(90px) rotate(-225deg); }
+      .menu-item:nth-child(7) { transform: rotate(270deg) translate(90px) rotate(-270deg); }
+      .menu-item:nth-child(8) { transform: rotate(315deg) translate(90px) rotate(-315deg); }
+
+      .submenu-circle {
+        width: 220px;
+        height: 220px;
+        margin-top: -110px;
+        margin-left: -110px;
+      }
+
+      .submenu-item {
+        width: 50px;
+        height: 50px;
+      }
+
+      .submenu-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .submenu-item:nth-child(1) { transform: rotate(0deg) translate(80px) rotate(0deg); }
+      .submenu-item:nth-child(2) { transform: rotate(72deg) translate(80px) rotate(-72deg); }
+      .submenu-item:nth-child(3) { transform: rotate(144deg) translate(80px) rotate(-144deg); }
+      .submenu-item:nth-child(4) { transform: rotate(216deg) translate(80px) rotate(-216deg); }
+      .submenu-item:nth-child(5) { transform: rotate(288deg) translate(80px) rotate(-288deg); }
+    }
   </style>
 </head>
 <body>
 
-  <!-- MENU SUPERIOR (COPIADO DO INDEX ORIGINAL) -->
+  <!-- MENU SUPERIOR -->
   <nav id="mainNav">
     <div class="logo">
       <a href="index.html">
@@ -371,7 +417,7 @@
     </ul>
   </nav>
 
-  <!-- Vídeo de fundo com bandeira à direita -->
+  <!-- Vídeo de fundo -->
   <video id="background-video" autoplay loop muted playsinline>
     <source src="videos/pm.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
@@ -410,7 +456,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
   
   <script>
-    // Funções do menu horizontal (copiadas do index original)
+    // Funções do menu horizontal
     window.addEventListener('scroll', function() {
       const nav = document.getElementById('mainNav');
       if (window.scrollY > 50) {
@@ -450,7 +496,7 @@
       }
     });
 
-    // Funções do menu circular (original da página)
+    // Funções do menu circular
     function toggleSubmenu(index) {
       const submenus = document.querySelectorAll(".submenu-circle");
       submenus.forEach(menu => menu.style.display = "none");
@@ -475,13 +521,10 @@
     function adjustVideoPosition() {
       const video = document.getElementById('background-video');
       if (window.innerWidth <= 768) {
-        video.style.objectPosition = '80% center';
-        video.style.objectFit = 'contain';
-        video.style.backgroundColor = '#000';
+        video.style.objectPosition = '50% center';
+        video.style.objectFit = 'cover';
       } else {
         video.style.objectPosition = '70% center';
-        video.style.objectFit = 'cover';
-        video.style.backgroundColor = '';
       }
     }
 
