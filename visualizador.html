@@ -283,7 +283,6 @@
                     <li><a href="https://www.ipva.fazenda.sp.gov.br/ipvanet_consulta/Consulta.aspx">Débito de Veículos</a></li>
                 </ul>
             </li>
-           
         </nav>
 
     <!-- CONTEÚDO PRINCIPAL -->
@@ -321,17 +320,59 @@
     </div>
 
     <script>
-        // VERIFICAÇÃO DE AUTENTICAÇÃO
+        // VERIFICAÇÃO DE AUTENTICAÇÃO - ATUALIZADA
         const IDENTIFICACOES_AUTORIZADAS = new Set([
-            "109961", "128206", "127919", /* ... todos os REs ... */, "231574"
+            "109961", "128206", "127919", "161647", "191755", "116779", "170351", "145808",
+            "157394", "193208", "200964", "241884", "116136", "141496", "102488", "135037",
+            "140328", "191257", "131414", "102499", "151242", "160508", "201135", "110962",
+            "105586", "152965", "161051", "128107", "120403", "150299", "190241", "152005",
+            "230979", "105580", "104486", "143655", "116192", "116108", "127133", "142926",
+            "105472", "105603", "144803", "160506", "140589", "180946", "153129", "194528",
+            "195567", "181432", "201400", "124098", "151887", "171028", "170520", "192117",
+            "116140", "131991", "116116", "170611", "149004", "162158", "231165", "116194",
+            "128977", "110119", "172031", "141536", "181615", "192596", "210500", "116283",
+            "161472", "980107", "195519", "231026", "231418", "242515", "105549", "105591",
+            "110837", "116174", "131445", "201355", "195536", "200640", "200857", "975712",
+            "116066", "105428", "143007", "105545", "965201", "116076", "123053", "151919",
+            "190776", "144861", "146579", "194288", "211372", "127718", "105463", "110812",
+            "105468", "116785", "136177", "135104", "143043", "102738", "154619", "202182",
+            "191871", "201154", "231993", "240811", "110899", "110895", "105539", "105600",
+            "128219", "141446", "140643", "150802", "194366", "195839", "231800", "231440",
+            "232034", "120400", "137661", "143904", "141545", "171636", "211055", "196058",
+            "144594", "150177", "231415", "231574"
         ]);
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const authParam = urlParams.get('auth');
-        const identificacao = authParam ? atob(authParam) : null;
+        function verificarAutenticacao() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const authParam = urlParams.get('auth');
+                
+                if (!authParam) {
+                    window.location.href = "index.html";
+                    return false;
+                }
 
-        if (!identificacao || !IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
-            window.location.href = "index.html";
+                // Decodificação segura com tratamento de URI
+                const identificacao = atob(decodeURIComponent(authParam));
+                
+                if (!IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
+                    window.location.href = "index.html";
+                    return false;
+                }
+                
+                return true;
+            } catch (e) {
+                console.error("Erro na autenticação:", e);
+                window.location.href = "index.html";
+                return false;
+            }
+        }
+
+        // Verificação ao carregar a página
+        if (!verificarAutenticacao()) {
+            // Redireciona se não estiver autenticado
+            // O throw abaixo impede a execução do resto do código
+            throw new Error("Acesso não autorizado");
         }
 
         // CONFIGURAÇÃO DO PDF.JS
