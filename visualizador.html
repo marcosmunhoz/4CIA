@@ -354,7 +354,7 @@
     </div>
 
     <script>
-        // VERIFICAÇÃO DE AUTENTICAÇÃO - ATUALIZADA
+        // VERIFICAÇÃO DE AUTENTICAÇÃO
         const IDENTIFICACOES_AUTORIZADAS = new Set([
             "109961", "128206", "127919", "161647", "191755", "116779", "170351", "145808",
             "157394", "193208", "200964", "241884", "116136", "141496", "102488", "135037",
@@ -386,7 +386,6 @@
                     return false;
                 }
 
-                // Decodificação segura com tratamento de URI
                 const identificacao = atob(decodeURIComponent(authParam));
                 
                 if (!IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
@@ -404,8 +403,6 @@
 
         // Verificação ao carregar a página
         if (!verificarAutenticacao()) {
-            // Redireciona se não estiver autenticado
-            // O throw abaixo impede a execução do resto do código
             throw new Error("Acesso não autorizado");
         }
 
@@ -426,7 +423,6 @@
         }
 
         function carregarEscala(url, element) {
-            // Atualiza o dropdown
             document.querySelectorAll('.dropdown-content a').forEach(a => {
                 a.classList.remove('active');
             });
@@ -434,34 +430,27 @@
             document.getElementById('escalasDropdown').style.display = 'none';
             document.querySelector('.dropdown-btn').textContent = element.textContent + ' ▼';
             
-            // Atualiza link de download
             document.getElementById('downloadLink').href = url;
-            
-            // Carrega o PDF
             currentEscala = url;
             carregarPDF(url);
         }
 
         // FUNÇÕES DO PDF
         function carregarPDF(url) {
-            // Mostra loader e esconde conteúdo antigo
             document.getElementById('pdf-loader').style.display = 'flex';
             document.getElementById('errorMessage').style.display = 'none';
             document.getElementById('pdf-render-container').innerHTML = '';
             document.getElementById('pageNavigation').style.display = 'none';
             
-            // Carrega o PDF
             pdfjsLib.getDocument(url).promise.then(function(pdf) {
                 pdfDoc = pdf;
                 updatePageInfo(1, pdf.numPages);
                 
-                // Mostra navegação se tiver mais de 1 página
                 if (pdf.numPages > 1) {
                     document.getElementById('pageNavigation').style.display = 'flex';
                     document.getElementById('nextPage').disabled = false;
                 }
                 
-                // Renderiza a primeira página
                 currentPage = 1;
                 renderPage(currentPage);
                 
@@ -479,9 +468,7 @@
             document.getElementById('nextPage').disabled = true;
             
             pdfDoc.getPage(num).then(function(page) {
-                let viewport = page.getViewport({ scale: 1.0 }); // Começa com scale 1.0
-                
-                // Ajuste para dispositivos móveis
+                let viewport = page.getViewport({ scale: 1.0 });
                 const maxWidth = window.innerWidth * 0.9;
                 const scale = Math.min(1.5, maxWidth / viewport.width);
                 viewport = page.getViewport({ scale });
@@ -489,7 +476,6 @@
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
                 
-                // Ajusta a densidade de pixels para dispositivos de alta resolução
                 const outputScale = window.devicePixelRatio || 1;
                 canvas.width = Math.floor(viewport.width * outputScale);
                 canvas.height = Math.floor(viewport.height * outputScale);
@@ -553,46 +539,15 @@
             queueRenderPage(currentPage);
         }
 
-        // Controles de toque para mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        function handleTouchStart(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        }
-
-        function handleTouchEnd(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 50) {
-                // Swipe para esquerda - próxima página
-                if (currentPage < pdfDoc.numPages) {
-                    onNextPage();
-                }
-            }
-            
-            if (touchEndX > touchStartX + 50) {
-                // Swipe para direita - página anterior
-                if (currentPage > 1) {
-                    onPrevPage();
-                }
-            }
-        }
-
         function checkMobileCompatibility() {
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             if (isMobile) {
-                // Verifica suporte a canvas
                 const canvas = document.createElement('canvas');
                 if (!canvas.getContext) {
                     alert("Seu navegador móvel não suporta a visualização de PDFs. Tente usar o Chrome ou Safari.");
                     return false;
                 }
                 
-                // Verifica tamanho máximo do canvas (alguns dispositivos têm limites)
                 canvas.width = 4096;
                 canvas.height = 4096;
                 if (canvas.width !== 4096 || canvas.height !== 4096) {
@@ -605,10 +560,6 @@
         // EVENT LISTENERS
         document.getElementById('prevPage').addEventListener('click', onPrevPage);
         document.getElementById('nextPage').addEventListener('click', onNextPage);
-        
-        // Event listeners para touch
-        document.getElementById('pdf-render-container').addEventListener('touchstart', handleTouchStart, false);
-        document.getElementById('pdf-render-container').addEventListener('touchend', handleTouchEnd, false);
         
         // Fechar dropdown ao clicar fora
         window.addEventListener('click', function(event) {
@@ -629,13 +580,11 @@
                 return;
             }
             
-            // Seleciona a primeira escala disponível
             const primeiraEscala = document.querySelector('.dropdown-content a');
             if (primeiraEscala) {
                 primeiraEscala.click();
             }
             
-            // Menu responsivo
             const menuItems = document.querySelectorAll('ul.menu-horizontal > li');
             menuItems.forEach(item => {
                 item.addEventListener('click', function(e) {
