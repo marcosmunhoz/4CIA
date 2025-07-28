@@ -2,7 +2,25 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>27/07 - 02/08</title>
+    <title>Visualizador de Escalas</title>
+    <script>
+// Verificação de autenticação na página visualizador.html
+const IDENTIFICACOES_AUTORIZADAS = new Set([...]); // mesma lista de REs
+
+const urlParams = new URLSearchParams(window.location.search);
+const authParam = urlParams.get('auth');
+const identificacao = authParam ? atob(authParam) : null;
+
+if (!identificacao || !IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
+  window.location.href = "index.html"; // Redireciona se não estiver autenticado
+}
+
+// Opcional: Mostrar a identificação do usuário
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('user-id').textContent = identificacao;
+});
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,50 +31,219 @@
         h1 {
             color: #2c5e91;
             text-align: center;
+            margin-bottom: 30px;
         }
         .pdf-container {
             width: 100%;
-            height: 80vh;
-            border: 1px solid #ddd;
+            max-width: 1200px;
+            margin: 0 auto;
             background: white;
-            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
         }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .alert {
-            padding: 15px;
-            background: #ffebee;
-            color: #c62828;
-            text-align: center;
+        .week-selector {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
             margin: 20px 0;
+        }
+        button {
+            padding: 10px 15px;
+            background: #2c5e91;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+        }
+        button:hover {
+            background: #1d4b7a;
+        }
+        button.active {
+            background: #1d4b7a;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #pdf-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #2c5e91;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #pdf-viewer-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pdf-page {
+            margin-bottom: 20px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            display: inline-block;
+        }
+        .page-navigation {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .error-message {
+            color: #d32f2f;
+            text-align: center;
+            padding: 20px;
+            display: none;
         }
     </style>
 </head>
 <body>
     <h1>Visualizador de Escalas</h1>
     
-    <!-- Container do PDF -->
-    <div class="pdf-container">
-        <!-- SUBSTITUA pelo SEU ID DO PDF -->
-        <iframe src="https://drive.google.com/file/d/1QWa_sXNo0wvDWrPaJwUpOKwvZRrDq-4t/preview"></iframe>
+    <div class="week-selector">
+        <button onclick="carregarPDF('27-07-a-02-08', '27/02 a 02/08.pdf')" class="active">
+            27/07 a 02/08
+        </button>
+        <button onclick="carregarPDF('proxima-semana', 'https://exemplo.com/pdfs/escala-proxima-semana.pdf')">
+            Próxima Semana
+        </button>
     </div>
-
-    <!-- Mensagem de fallback -->
-    <div class="alert" id="fallback-message" style="display: none;">
-        Nenhuma visualização disponível. Verifique o link do arquivo.
+    
+    <div class="pdf-container">
+        <div id="pdf-loader">
+            <div class="spinner"></div>
+        </div>
+        <div class="error-message" id="errorMessage">
+            Ocorreu um erro ao carregar o PDF. Por favor, tente novamente.
+        </div>
+        <div id="pdf-viewer-container"></div>
+        <div class="page-navigation" id="pageNavigation" style="display: none;">
+            <button id="prevPage">Anterior</button>
+            <span id="pageInfo">Página 1 de 1</span>
+            <button id="nextPage">Próxima</button>
+        </div>
     </div>
 
     <script>
-        // Verifica se o PDF carregou após 3 segundos
-        setTimeout(function() {
-            const iframe = document.querySelector('iframe');
-            if(iframe.contentDocument.body.innerHTML.includes("visualização não está disponível")) {
-                document.getElementById('fallback-message').style.display = 'block';
+        // Configuração do PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+        
+        let pdfDoc = null;
+        let currentPage = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        const scale = 1.5;
+        
+        function carregarPDF(id, url) {
+            // Atualiza botão ativo
+            document.querySelectorAll('.week-selector button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Mostra loader e esconde conteúdo antigo
+            document.getElementById('pdf-loader').style.display = 'flex';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('pdf-viewer-container').innerHTML = '';
+            document.getElementById('pageNavigation').style.display = 'none';
+            
+            // Carrega o PDF
+            pdfjsLib.getDocument(url).promise.then(function(pdf) {
+                pdfDoc = pdf;
+                document.getElementById('pageInfo').textContent = 
+                    `Página 1 de ${pdf.numPages}`;
+                
+                // Mostra navegação se tiver mais de 1 página
+                if (pdf.numPages > 1) {
+                    document.getElementById('pageNavigation').style.display = 'flex';
+                }
+                
+                // Renderiza a primeira página
+                currentPage = 1;
+                renderPage(currentPage);
+                
+            }).catch(function(error) {
+                document.getElementById('pdf-loader').style.display = 'none';
+                document.getElementById('errorMessage').textContent = 
+                    'Erro ao carregar o PDF: ' + error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+            });
+        }
+        
+        function renderPage(num) {
+            pageRendering = true;
+            document.getElementById('pdf-loader').style.display = 'flex';
+            
+            pdfDoc.getPage(num).then(function(page) {
+                const viewport = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                
+                document.getElementById('pdf-viewer-container').innerHTML = '';
+                document.getElementById('pdf-viewer-container').appendChild(canvas);
+                
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                
+                page.render(renderContext).promise.then(function() {
+                    pageRendering = false;
+                    document.getElementById('pdf-loader').style.display = 'none';
+                    document.getElementById('pageInfo').textContent = 
+                        `Página ${num} de ${pdfDoc.numPages}`;
+                    
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            });
+            
+            currentPage = num;
+        }
+        
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
             }
-        }, 3000);
+        }
+        
+        function onPrevPage() {
+            if (currentPage <= 1) return;
+            currentPage--;
+            queueRenderPage(currentPage);
+        }
+        
+        function onNextPage() {
+            if (currentPage >= pdfDoc.numPages) return;
+            currentPage++;
+            queueRenderPage(currentPage);
+        }
+        
+        // Event listeners para navegação
+        document.getElementById('prevPage').addEventListener('click', onPrevPage);
+        document.getElementById('nextPage').addEventListener('click', onNextPage);
+        
+        // Carrega o primeiro PDF ao iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarPDF('27-07-a-02-08', 'https://exemplo.com/pdfs/escala-27-07-a-02-08.pdf');
+        });
     </script>
 </body>
 </html>
