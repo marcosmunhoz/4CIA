@@ -900,31 +900,34 @@
     }
 
     function verificarIdentificacao() {
-      const identificacao = document.getElementById('inputIdentificacao').value.trim();
-      const mensagemErro = document.getElementById('mensagemErro');
-      
-      // Validação do formato (6 dígitos)
-      if (identificacao.length !== 6 || !/^\d+$/.test(identificacao)) {
-        mensagemErro.textContent = "Digite exatamente 6 dígitos numéricos!";
-        mensagemErro.style.display = 'block';
-        document.getElementById('inputIdentificacao').value = '';
-        setTimeout(() => {
-          mensagemErro.style.display = 'none';
-        }, 3000);
-        return;
-      }
+  const identificacao = document.getElementById('inputIdentificacao').value.trim();
+  const mensagemErro = document.getElementById('mensagemErro');
+  
+  // Validação do formato (6 dígitos)
+  if (identificacao.length !== 6 || !/^\d+$/.test(identificacao)) {
+    mensagemErro.textContent = "Digite exatamente 6 dígitos numéricos!";
+    mensagemErro.style.display = 'block';
+    document.getElementById('inputIdentificacao').value = '';
+    setTimeout(() => {
+      mensagemErro.style.display = 'none';
+    }, 3000);
+    return;
+  }
 
-      if (IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
-        window.location.href = "visualizador.html?auth=" + btoa(identificacao);
-      } else {
-        mensagemErro.textContent = "RE não encontrado ou não autorizado!";
-        mensagemErro.style.display = 'block';
-        document.getElementById('inputIdentificacao').value = '';
-        setTimeout(() => {
-          mensagemErro.style.display = 'none';
-        }, 3000);
-      }
-    }
+  if (IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
+    // Codifica o RE em base64 e aplica encodeURIComponent para segurança
+    const authParam = encodeURIComponent(btoa(identificacao));
+    // Redireciona para o visualizador com o parâmetro de autenticação
+    window.location.href = "visualizador.html?auth=" + authParam;
+  } else {
+    mensagemErro.textContent = "RE não encontrado ou não autorizado!";
+    mensagemErro.style.display = 'block';
+    document.getElementById('inputIdentificacao').value = '';
+    setTimeout(() => {
+      mensagemErro.style.display = 'none';
+    }, 3000);
+  }
+}
 
     // Permitir enviar com Enter
     document.getElementById('inputIdentificacao')?.addEventListener('keypress', function(e) {
