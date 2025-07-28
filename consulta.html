@@ -99,11 +99,13 @@
     form.id-form label {
       font-size: 1.2rem;
       font-weight: 600;
-      color: #000;
+      color: white !important; /* Força branco */
       text-align: left;
     }
 
     form.id-form input[type="text"] {
+      color: white; /* Texto branco */
+      background: rgba(255, 255, 255, 0.2); /* Fundo semi-transparente para contrastar */
       padding: 10px;
       border-radius: 6px;
       border: none;
@@ -111,7 +113,7 @@
     }
 
     form.id-form input::placeholder {
-      color: #000;
+     color: rgba(255, 255, 255, 0.7) !important; /* Placeholder branco translúcido */
     }
 
     form.id-form button {
