@@ -1,34 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador de Escalas</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Visualizador de Escala</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+
     <style>
-        /* ESTILOS GERAIS */
+        /* ESTILOS GERAIS - MESMOS DO INDEX */
         body {
             font-family: 'Kanit', sans-serif;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
             color: white;
             background-color: #000;
-            overflow-x: hidden;
         }
 
-        /* MENU SUPERIOR */
+        /* MENU HORIZONTAL - MESMO ESTILO DO INDEX */
         nav {
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.3);
             padding: 8px 20px;
+            user-select: none;
+            z-index: 1000;
             position: fixed;
             width: 100%;
             box-sizing: border-box;
+            flex-wrap: wrap;
             top: 0;
-            z-index: 1000;
+            transition: background 0.3s ease;
+            justify-content: flex-start;
+        }
+
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.8);
             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
@@ -72,12 +86,55 @@
             padding: 10px 5px;
             border-bottom: 2px solid transparent;
             transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
         }
 
         ul.menu-horizontal > li > a:hover,
+        ul.menu-horizontal > li > a:active,
         ul.menu-horizontal > li > a.active {
             color: #87CEEB !important;
             border-bottom: 2px solid #87CEEB !important;
+        }
+
+        ul.submenu-horizontal {
+            list-style: none;
+            margin: 0;
+            padding: 5px 0;
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 3px;
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+            min-width: 110px;
+            width: max-content;
+        }
+
+        ul.submenu-horizontal.active {
+            display: block;
+            top: 100%;
+        }
+
+        ul.submenu-horizontal li a {
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 4px 12px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        ul.submenu-horizontal li a:hover,
+        ul.submenu-horizontal li a:active,
+        ul.submenu-horizontal li a.active {
+            background-color: #87CEEB !important;
+            color: #000 !important;
         }
 
         /* CONTEÚDO PRINCIPAL */
@@ -275,9 +332,9 @@
             <li>
                 <a>POLICIAL MILITAR</a>
                 <ul class="submenu-horizontal">
-                    <li><a href="PM.html">👮🏻 PM</a></li>
+                    <li><a href="PM.html">PAPA MIKE</a></li>
                     <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
-                    <li><a href="visualizador.html">Minha escala</a></li>
+                   
                     <li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatários</a></li>
                     <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>
                     <li><a href="https://www.ipva.fazenda.sp.gov.br/ipvanet_consulta/Consulta.aspx">Débito de Veículos</a></li>
@@ -318,7 +375,18 @@
             </div>
         </div>
     </div>
+ <!-- FOOTER IDÊNTICO AO INDEX -->
+    <footer>
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <p>Desenvolvido pelo SD PM 194528-9 Guidini</p>
+            </div>
+        </div>
+    </footer>
 
+    <!-- SCRIPTS - MESMOS DO INDEX (COM ADIÇÕES PARA O VISUALIZADOR) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
     <script>
         // VERIFICAÇÃO DE AUTENTICAÇÃO - ATUALIZADA
         const IDENTIFICACOES_AUTORIZADAS = new Set([
