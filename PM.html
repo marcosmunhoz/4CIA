@@ -4,7 +4,165 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Área Policial</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <style>
+    /* ESTILOS DO MENU SUPERIOR (MESMO DO INDEX ORIGINAL) */
+    body {
+      font-family: 'Kanit', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      color: white;
+      background-color: #000;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 20px;
+      user-select: none;
+      z-index: 1000;
+      position: fixed;
+      width: 100%;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+      top: 0;
+      transition: background 0.3s ease;
+      justify-content: flex-start;
+    }
+
+    nav.scrolled {
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .logo img.logo-img {
+      height: 50px;
+      object-fit: contain;
+    }
+
+    nav .logo a {
+      color: white;
+      font-weight: 700;
+      font-size: 1.6rem;
+      text-decoration: none;
+      margin-right: 0;
+      font-family: 'Kanit', sans-serif;
+      display: flex;
+      align-items: center;
+    }
+
+    ul.menu-horizontal {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 0 20px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: nowrap;
+    }
+
+    ul.menu-horizontal > li {
+      position: relative;
+      cursor: pointer;
+      padding-bottom: 10px;
+    }
+
+    ul.menu-horizontal > li > a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.4rem;
+      white-space: nowrap;
+      padding: 10px 5px;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    ul.menu-horizontal > li > a:hover,
+    ul.menu-horizontal > li > a:active,
+    ul.menu-horizontal > li > a.active {
+      color: #87CEEB !important;
+      border-bottom: 2px solid #87CEEB !important;
+    }
+
+    ul.submenu-horizontal {
+      list-style: none;
+      margin: 0;
+      padding: 5px 0;
+      display: none;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 3px;
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      z-index: 1001;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+      min-width: 110px;
+      width: max-content;
+    }
+
+    ul.submenu-horizontal.active {
+      display: block;
+      top: 100%;
+    }
+
+    ul.submenu-horizontal li a {
+      color: white;
+      font-size: 1.2rem;
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 4px 12px;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      display: block;
+    }
+
+    ul.submenu-horizontal li a:hover,
+    ul.submenu-horizontal li a:active,
+    ul.submenu-horizontal li a.active {
+      background-color: #87CEEB !important;
+      color: #000 !important;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 10px 15px;
+        justify-content: flex-start;
+      }
+
+      ul.menu-horizontal {
+        padding-left: 10px;
+        gap: 8px;
+      }
+
+      ul.menu-horizontal > li > a {
+        font-size: 1.2rem;
+        padding: 8px 3px;
+      }
+
+      .logo img.logo-img {
+        height: 40px;
+      }
+
+      html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+      }
+
+      body.menu-open {
+        overflow: hidden;
+        height: 100%;
+      }
+    }
+
+    /* ESTILOS DA PÁGINA COM MENU CIRCULAR (ORIGINAL) */
     html, body {
       margin: 0;
       padding: 0;
@@ -181,6 +339,38 @@
 </head>
 <body>
 
+  <!-- MENU SUPERIOR (COPIADO DO INDEX ORIGINAL) -->
+  <nav id="mainNav">
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo/icon-pmrv.png" alt="Polícia Rodoviária" class="logo-img">
+      </a>
+    </div>
+
+    <ul class="menu-horizontal" id="menu">
+      <li>
+        <a>POLICIAL MILITAR</a>
+        <ul class="submenu-horizontal">
+          <li><a href="PM.html">👮🏻 PM</a></li>
+          <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
+          <li><a href="visualizador.html">Minha escala</a></li>
+          <li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatários</a></li>
+          <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>
+          <li><a href="https://www.ipva.fazenda.sp.gov.br/ipvanet_consulta/Consulta.aspx">Débito de Veículos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a>SERVIÇO AO PÚBLICO</a>
+        <ul class="submenu-horizontal">
+          <li><a href="https://bopm.policiamilitar.sp.gov.br/">Inserir Token (BOPM)</a></li>
+          <li><a href="#">Endereços</a></li>
+          <li><a href="#">Contatos</a></li>
+          <li><a href="#">Dúvidas?</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
   <!-- Vídeo de fundo com bandeira à direita -->
   <video id="background-video" autoplay loop muted playsinline>
     <source src="videos/pm.mp4" type="video/mp4">
@@ -216,13 +406,55 @@
     <div class="submenu-item"><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/"><img src="img/logo/prodesp.png" alt="PRODESP" class="submenu-icon" /></a></div>
   </div>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+  
   <script>
+    // Funções do menu horizontal (copiadas do index original)
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('mainNav');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {
+          if (sub !== this.nextElementSibling) {
+            sub.classList.remove('active');
+          }
+        });
+
+        if (this.nextElementSibling && this.nextElementSibling.classList.contains('submenu-horizontal')) {
+          e.preventDefault();
+          this.nextElementSibling.classList.toggle('active');
+          
+          if (this.nextElementSibling.classList.contains('active')) {
+            document.body.classList.add('menu-open');
+          } else {
+            document.body.classList.remove('menu-open');
+          }
+        }
+      });
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('nav')) {
+        document.querySelectorAll('.submenu-horizontal.active').forEach(sub => {
+          sub.classList.remove('active');
+          document.body.classList.remove('menu-open');
+        });
+      }
+    });
+
+    // Funções do menu circular (original da página)
     function toggleSubmenu(index) {
-      // Fecha todos os submenus
       const submenus = document.querySelectorAll(".submenu-circle");
       submenus.forEach(menu => menu.style.display = "none");
 
-      // Abre o submenu correspondente
       const submenu = document.getElementById("submenu" + index);
       if (submenu) {
         submenu.style.display = "flex";
@@ -233,7 +465,6 @@
       }
     }
 
-    // Clica fora do menu para fechar submenu
     document.addEventListener("click", function(e) {
       if (!e.target.classList.contains("menu-item") && !e.target.closest('.menu-item')) {
         const submenus = document.querySelectorAll(".submenu-circle");
@@ -241,23 +472,19 @@
       }
     });
 
-    // Ajusta o posicionamento do vídeo
     function adjustVideoPosition() {
       const video = document.getElementById('background-video');
       if (window.innerWidth <= 768) {
-        // Mobile - bandeira mais à direita e centralizada verticalmente
         video.style.objectPosition = '80% center';
         video.style.objectFit = 'contain';
         video.style.backgroundColor = '#000';
       } else {
-        // Desktop - bandeira destacada à direita
         video.style.objectPosition = '70% center';
         video.style.objectFit = 'cover';
         video.style.backgroundColor = '';
       }
     }
 
-    // Executa na carga e no redimensionamento
     window.addEventListener('load', adjustVideoPosition);
     window.addEventListener('resize', adjustVideoPosition);
   </script>
