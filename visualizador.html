@@ -2,140 +2,339 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Visualizador de Escalas</title>
-    <script>
-// Verificação de autenticação na página visualizador.html
-const IDENTIFICACOES_AUTORIZADAS = new Set([...]); // mesma lista de REs
-
-const urlParams = new URLSearchParams(window.location.search);
-const authParam = urlParams.get('auth');
-const identificacao = authParam ? atob(authParam) : null;
-
-if (!identificacao || !IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
-  window.location.href = "index.html"; // Redireciona se não estiver autenticado
-}
-
-// Opcional: Mostrar a identificação do usuário
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('user-id').textContent = identificacao;
-});
-</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Escalas - 4º BPRv</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <style>
+        /* ESTILOS GERAIS */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Kanit', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+            padding: 0;
+            color: white;
+            background-color: #000;
+            overflow-x: hidden;
         }
+
+        /* MENU SUPERIOR */
+        nav {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 20px;
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .logo img.logo-img {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        nav .logo a {
+            color: white;
+            font-weight: 700;
+            font-size: 1.6rem;
+            text-decoration: none;
+            margin-right: 0;
+            font-family: 'Kanit', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+
+        ul.menu-horizontal {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 0 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: nowrap;
+        }
+
+        ul.menu-horizontal > li {
+            position: relative;
+            cursor: pointer;
+            padding-bottom: 10px;
+        }
+
+        ul.menu-horizontal > li > a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.4rem;
+            white-space: nowrap;
+            padding: 10px 5px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        ul.menu-horizontal > li > a:hover,
+        ul.menu-horizontal > li > a.active {
+            color: #87CEEB !important;
+            border-bottom: 2px solid #87CEEB !important;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
         h1 {
-            color: #2c5e91;
+            color: #87CEEB;
             text-align: center;
             margin-bottom: 30px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-        .pdf-container {
+
+        /* SELEÇÃO DE ESCALAS */
+        .escala-selector {
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .dropdown-btn {
+            background-color: #1a1a1a;
+            color: #87CEEB;
+            border: 1px solid #87CEEB;
             width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-        .week-selector {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        button {
-            padding: 10px 15px;
-            background: #2c5e91;
-            color: white;
-            border: none;
-            border-radius: 4px;
+            padding: 12px;
+            font-size: 1.2rem;
+            text-align: center;
             cursor: pointer;
+            border-radius: 5px;
             transition: all 0.3s;
-            min-width: 120px;
         }
-        button:hover {
-            background: #1d4b7a;
+
+        .dropdown-btn:hover {
+            background-color: #87CEEB;
+            color: #000;
         }
-        button.active {
-            background: #1d4b7a;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+        .dropdown-content {
+            display: none;
+            background-color: #1a1a1a;
+            border: 1px solid #87CEEB;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            overflow: hidden;
         }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: 0.3s;
+            border-bottom: 1px solid #333;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #87CEEB;
+            color: #000;
+        }
+
+        .dropdown-content a.active {
+            background-color: #87CEEB;
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* VISUALIZADOR DE PDF */
+        .pdf-viewer-container {
+            background-color: #1a1a1a;
+            border: 2px solid #87CEEB;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 1000px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
         #pdf-loader {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 50px;
+            height: 100px;
         }
+
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
-            border-top: 4px solid #2c5e91;
-            width: 30px;
-            height: 30px;
+            border-top: 4px solid #87CEEB;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        #pdf-viewer-container {
-            margin-top: 20px;
+
+        #pdf-render-container {
             text-align: center;
+            margin-top: 20px;
         }
-        .pdf-page {
-            margin-bottom: 20px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-            display: inline-block;
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
+
         .page-navigation {
-            margin: 20px 0;
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
+            margin-top: 20px;
         }
+
+        .page-btn {
+            background-color: #1a1a1a;
+            color: #87CEEB;
+            border: 1px solid #87CEEB;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover {
+            background-color: #87CEEB;
+            color: #000;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #page-info {
+            color: #87CEEB;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
         .error-message {
-            color: #d32f2f;
+            color: #ff6b6b;
             text-align: center;
             padding: 20px;
             display: none;
         }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 10px 15px;
+            }
+
+            .logo img.logo-img {
+                height: 40px;
+            }
+
+            ul.menu-horizontal > li > a {
+                font-size: 1.1rem;
+                padding: 8px 3px;
+            }
+
+            .main-content {
+                margin-top: 70px;
+                padding: 15px;
+            }
+
+            .dropdown-btn {
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+            .pdf-viewer-container {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Visualizador de Escalas</h1>
-    
-    <div class="week-selector">
-        <button onclick="carregarPDF('27-07-a-02-08', 'escalas/27JUL a 02AGO.pdf')" class="active">
-            27/07 a 02/08
-        </button>
-        <button onclick="carregarPDF('proxima-semana', 'https://exemplo.com/pdfs/escala-proxima-semana.pdf')">
-            Próxima Semana
-        </button>
-    </div>
-    
-    <div class="pdf-container">
-        <div id="pdf-loader">
-            <div class="spinner"></div>
+    <!-- MENU SUPERIOR -->
+    <nav id="mainNav">
+        <div class="logo">
+            <a href="index.html">
+                <img src="img/logo/icon-pmrv.png" alt="Polícia Rodoviária" class="logo-img">
+            </a>
         </div>
-        <div class="error-message" id="errorMessage">
-            Ocorreu um erro ao carregar o PDF. Por favor, tente novamente.
+
+        <ul class="menu-horizontal" id="menu">
+            <li>
+                <a>POLICIAL MILITAR</a>
+                <ul class="submenu-horizontal">
+                    <li><a href="PM.html">👮🏻 PM</a></li>
+                    <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
+                    <li><a href="visualizador.html">Minha escala</a></li>
+                    <li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatários</a></li>
+                    <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>
+                    <li><a href="https://www.ipva.fazenda.sp.gov.br/ipvanet_consulta/Consulta.aspx">Débito de Veículos</a></li>
+                </ul>
+            </li>
+           
+        </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-content">
+        <h1>VISUALIZADOR DE ESCALAS</h1>
+        
+        <!-- SELEÇÃO DE ESCALAS -->
+        <div class="escala-selector">
+            <button class="dropdown-btn" onclick="toggleDropdown()">
+                SELECIONE A ESCALA ▼
+            </button>
+            <div class="dropdown-content" id="escalasDropdown">
+                <a href="#" onclick="carregarEscala('escalas/27JUL a 02AGO.pdf', this)">27/07 a 02/08</a>
+                <a href="#" onclick="carregarEscala('escalas/03AGO a 09AGO.pdf', this)">Em breve</a>
+                <a href="#" onclick="carregarEscala('escalas/10AGO a 16AGO.pdf', this)">Em breve</a>
+                <!-- Adicione mais escalas conforme necessário -->
+            </div>
         </div>
-        <div id="pdf-viewer-container"></div>
-        <div class="page-navigation" id="pageNavigation" style="display: none;">
-            <button id="prevPage">Anterior</button>
-            <span id="pageInfo">Página 1 de 1</span>
-            <button id="nextPage">Próxima</button>
+        
+        <!-- VISUALIZADOR DE PDF -->
+        <div class="pdf-viewer-container">
+            <div id="pdf-loader">
+                <div class="spinner"></div>
+            </div>
+            <div class="error-message" id="errorMessage">
+                Ocorreu um erro ao carregar a escala. Por favor, tente novamente.
+            </div>
+            <div id="pdf-render-container"></div>
+            <div class="page-navigation" id="pageNavigation" style="display: none;">
+                <button class="page-btn" id="prevPage" disabled>ANTERIOR</button>
+                <span id="page-info">Página 1 de 1</span>
+                <button class="page-btn" id="nextPage" disabled>PRÓXIMA</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Configuração do PDF.js
+        // VERIFICAÇÃO DE AUTENTICAÇÃO
+        const IDENTIFICACOES_AUTORIZADAS = new Set([
+            "109961", "128206", "127919", /* ... todos os REs ... */, "231574"
+        ]);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const authParam = urlParams.get('auth');
+        const identificacao = authParam ? atob(authParam) : null;
+
+        if (!identificacao || !IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
+            window.location.href = "index.html";
+        }
+
+        // CONFIGURAÇÃO DO PDF.JS
         pdfjsLib.GlobalWorkerOptions.workerSrc = 
             'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
         
@@ -144,29 +343,45 @@ document.addEventListener('DOMContentLoaded', function() {
         let pageRendering = false;
         let pageNumPending = null;
         const scale = 1.5;
-        
-        function carregarPDF(id, url) {
-            // Atualiza botão ativo
-            document.querySelectorAll('.week-selector button').forEach(btn => {
-                btn.classList.remove('active');
+        let currentEscala = null;
+
+        // FUNÇÕES DO DROPDOWN
+        function toggleDropdown() {
+            const dropdown = document.getElementById('escalasDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function carregarEscala(url, element) {
+            // Atualiza o dropdown
+            document.querySelectorAll('.dropdown-content a').forEach(a => {
+                a.classList.remove('active');
             });
-            event.target.classList.add('active');
+            element.classList.add('active');
+            document.getElementById('escalasDropdown').style.display = 'none';
+            document.querySelector('.dropdown-btn').textContent = element.textContent + ' ▼';
             
+            // Carrega o PDF
+            currentEscala = url;
+            carregarPDF(url);
+        }
+
+        // FUNÇÕES DO PDF
+        function carregarPDF(url) {
             // Mostra loader e esconde conteúdo antigo
             document.getElementById('pdf-loader').style.display = 'flex';
             document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('pdf-viewer-container').innerHTML = '';
+            document.getElementById('pdf-render-container').innerHTML = '';
             document.getElementById('pageNavigation').style.display = 'none';
             
             // Carrega o PDF
             pdfjsLib.getDocument(url).promise.then(function(pdf) {
                 pdfDoc = pdf;
-                document.getElementById('pageInfo').textContent = 
-                    `Página 1 de ${pdf.numPages}`;
+                updatePageInfo(1, pdf.numPages);
                 
                 // Mostra navegação se tiver mais de 1 página
                 if (pdf.numPages > 1) {
                     document.getElementById('pageNavigation').style.display = 'flex';
+                    document.getElementById('nextPage').disabled = false;
                 }
                 
                 // Renderiza a primeira página
@@ -174,9 +389,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderPage(currentPage);
                 
             }).catch(function(error) {
+                console.error('Erro ao carregar PDF:', error);
                 document.getElementById('pdf-loader').style.display = 'none';
                 document.getElementById('errorMessage').textContent = 
-                    'Erro ao carregar o PDF: ' + error.message;
+                    'Erro ao carregar a escala: ' + error.message;
                 document.getElementById('errorMessage').style.display = 'block';
             });
         }
@@ -184,16 +400,26 @@ document.addEventListener('DOMContentLoaded', function() {
         function renderPage(num) {
             pageRendering = true;
             document.getElementById('pdf-loader').style.display = 'flex';
+            document.getElementById('prevPage').disabled = true;
+            document.getElementById('nextPage').disabled = true;
             
             pdfDoc.getPage(num).then(function(page) {
                 const viewport = page.getViewport({ scale });
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
+                
+                // Ajuste para dispositivos móveis
+                const maxWidth = window.innerWidth * 0.9;
+                if (viewport.width > maxWidth) {
+                    const adjustedScale = maxWidth / viewport.width;
+                    viewport = page.getViewport({ scale: adjustedScale });
+                }
+                
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
                 
-                document.getElementById('pdf-viewer-container').innerHTML = '';
-                document.getElementById('pdf-viewer-container').appendChild(canvas);
+                document.getElementById('pdf-render-container').innerHTML = '';
+                document.getElementById('pdf-render-container').appendChild(canvas);
                 
                 const renderContext = {
                     canvasContext: context,
@@ -203,17 +429,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 page.render(renderContext).promise.then(function() {
                     pageRendering = false;
                     document.getElementById('pdf-loader').style.display = 'none';
-                    document.getElementById('pageInfo').textContent = 
-                        `Página ${num} de ${pdfDoc.numPages}`;
+                    updatePageInfo(num, pdfDoc.numPages);
+                    
+                    // Habilita/desabilita botões de navegação
+                    document.getElementById('prevPage').disabled = num <= 1;
+                    document.getElementById('nextPage').disabled = num >= pdfDoc.numPages;
                     
                     if (pageNumPending !== null) {
                         renderPage(pageNumPending);
                         pageNumPending = null;
                     }
                 });
+            }).catch(function(error) {
+                console.error('Erro ao renderizar página:', error);
+                document.getElementById('pdf-loader').style.display = 'none';
+                document.getElementById('errorMessage').textContent = 
+                    'Erro ao renderizar a página: ' + error.message;
+                document.getElementById('errorMessage').style.display = 'block';
             });
             
             currentPage = num;
+        }
+        
+        function updatePageInfo(current, total) {
+            document.getElementById('page-info').textContent = 
+                `Página ${current} de ${total}`;
         }
         
         function queueRenderPage(num) {
@@ -236,13 +476,51 @@ document.addEventListener('DOMContentLoaded', function() {
             queueRenderPage(currentPage);
         }
         
-        // Event listeners para navegação
+        // EVENT LISTENERS
         document.getElementById('prevPage').addEventListener('click', onPrevPage);
         document.getElementById('nextPage').addEventListener('click', onNextPage);
         
-        // Carrega o primeiro PDF ao iniciar
+        // Fechar dropdown ao clicar fora
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-btn')) {
+                const dropdowns = document.getElementsByClassName('dropdown-content');
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        });
+        
+        // Carrega a primeira escala ao iniciar
         document.addEventListener('DOMContentLoaded', function() {
-            carregarPDF('27-07-a-02-08', 'https://exemplo.com/pdfs/escala-27-07-a-02-08.pdf');
+            // Seleciona a primeira escala disponível
+            const primeiraEscala = document.querySelector('.dropdown-content a');
+            if (primeiraEscala) {
+                primeiraEscala.click();
+            }
+            
+            // Menu responsivo
+            const menuItems = document.querySelectorAll('ul.menu-horizontal > li');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        const submenu = this.querySelector('ul.submenu-horizontal');
+                        if (submenu) {
+                            e.preventDefault();
+                            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Redimensionamento responsivo
+        window.addEventListener('resize', function() {
+            if (pdfDoc && currentPage) {
+                renderPage(currentPage);
+            }
         });
     </script>
 </body>
