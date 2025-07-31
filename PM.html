@@ -189,8 +189,8 @@
       position: fixed;
       top: 50%;
       left: 50%;
-      width: 500px;
-      height: 500px;
+      width: 500px; /* Ajustado para 500px */
+      height: 500px; /* Ajustado para 500px */
       transform: translate(-50%, -50%);
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.6);
@@ -208,8 +208,8 @@
       align-items: center;
       justify-content: center;
       position: absolute;
-      width: 100px;
-      height: 100px;
+      width: 100px; /* Ajustado para 100px */
+      height: 100px; /* Ajustado para 100px */
       background: rgba(255, 255, 255, 0.2);
       color: white;
       border-radius: 50%;
@@ -233,8 +233,8 @@
     }
     
     .menu-icon {
-      width: 60px;
-      height: 60px;
+      width: 60px; /* Ajustado para 60px */
+      height: 60px; /* Ajustado para 60px */
       object-fit: contain;
       pointer-events: none;
     }
@@ -243,56 +243,8 @@
       background: rgba(255, 255, 255, 0.4);
     }
 
-    /* Tooltips para os itens do menu */
-    .menu-item, .submenu-item {
-        position: relative;
-    }
-
-    .menu-item::after, .submenu-item::after {
-        content: attr(data-tooltip);
-        position: absolute;
-        background: rgba(0,0,0,0.8);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 4px;
-        font-size: 14px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.3s;
-        pointer-events: none;
-        z-index: 1000;
-    }
-
-    /* Posicionamento dos tooltips para o menu principal */
-    .menu-item:nth-child(1)::after { top: -40px; left: 50%; transform: translateX(-50%); }
-    .menu-item:nth-child(2)::after { top: -30px; right: -30px; }
-    .menu-item:nth-child(3)::after { right: -40px; top: 50%; transform: translateY(-50%); }
-    .menu-item:nth-child(4)::after { bottom: -30px; right: -30px; }
-    .menu-item:nth-child(5)::after { bottom: -40px; left: 50%; transform: translateX(-50%); }
-    .menu-item:nth-child(6)::after { bottom: -30px; left: -30px; }
-    .menu-item:nth-child(7)::after { left: -40px; top: 50%; transform: translateY(-50%); }
-    .menu-item:nth-child(8)::after { top: -30px; left: -30px; }
-
-    /* Posicionamento dos tooltips para o submenu */
-    .submenu-item:nth-child(1)::after { top: -40px; left: 50%; transform: translateX(-50%); }
-    .submenu-item:nth-child(2)::after { top: -20px; right: -20px; }
-    .submenu-item:nth-child(3)::after { right: -30px; top: 50%; transform: translateY(-50%); }
-    .submenu-item:nth-child(4)::after { bottom: -20px; right: -20px; }
-    .submenu-item:nth-child(5)::after { bottom: -40px; left: 50%; transform: translateX(-50%); }
-
-    .menu-item:hover::after, .submenu-item:hover::after {
-        opacity: 1;
-    }
-
-    /* Ajustes para mobile - esconder tooltips em touch devices */
-    @media (hover: none) {
-        .menu-item::after, .submenu-item::after {
-            display: none;
-        }
-    }
-
     /* Posição dos itens do menu ajustada */
-    .menu-item:nth-child(1) { transform: rotate(0deg) translate(200px) rotate(0deg); }
+    .menu-item:nth-child(1) { transform: rotate(0deg) translate(200px) rotate(0deg); } /* Ajustado para 200px */
     .menu-item:nth-child(2) { transform: rotate(45deg) translate(200px) rotate(-45deg); }
     .menu-item:nth-child(3) { transform: rotate(90deg) translate(200px) rotate(-90deg); }
     .menu-item:nth-child(4) { transform: rotate(135deg) translate(200px) rotate(-135deg); }
@@ -304,8 +256,8 @@
     /* Submenu circular */
     .submenu-circle {
       position: fixed;
-      width: 400px;
-      height: 400px;
+      width: 400px; /* Ajustado para 400px */
+      height: 400px; /* Ajustado para 400px */
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.6);
       display: none;
@@ -322,8 +274,8 @@
       align-items: center;
       justify-content: center;
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 80px; /* Ajustado para 80px */
+      height: 80px; /* Ajustado para 80px */
       background: rgba(255, 255, 255, 0.3);
       color: #fff;
       border-radius: 50%;
@@ -340,8 +292,8 @@
     }
     
     .submenu-icon {
-      width: 50px;
-      height: 50px;
+      width: 50px; /* Ajustado para 50px */
+      height: 50px; /* Ajustado para 50px */
       object-fit: contain;
       margin-bottom: 5px;
     }
@@ -375,106 +327,106 @@
     }
 
     /* Posição dos itens do submenu ajustada */
-    .submenu-item:nth-child(1) { transform: rotate(0deg) translate(150px) rotate(0deg); }
+    .submenu-item:nth-child(1) { transform: rotate(0deg) translate(150px) rotate(0deg); } /* Ajustado para 150px */
     .submenu-item:nth-child(2) { transform: rotate(72deg) translate(150px) rotate(-72deg); }
     .submenu-item:nth-child(3) { transform: rotate(144deg) translate(150px) rotate(-144deg); }
     .submenu-item:nth-child(4) { transform: rotate(216deg) translate(150px) rotate(-216deg); }
     .submenu-item:nth-child(5) { transform: rotate(288deg) translate(150px) rotate(-288deg); }
 
     /* Ajustes específicos para mobile */
-    @media only screen and (max-width: 768px) {
-      .menu-circle {
-        width: 320px;
-        height: 320px;
-      }
+   @media only screen and (max-width: 768px) {
+  .menu-circle {
+    width: 320px;
+    height: 320px;
+  }
 
-      .menu-item {
-        width: 70px;
-        height: 70px;
-      }
+  .menu-item {
+    width: 70px;
+    height: 70px;
+  }
 
-      .menu-icon {
-        width: 40px;
-        height: 40px;
-      }
+  .menu-icon {
+    width: 40px;
+    height: 40px;
+  }
 
-      .menu-item:nth-child(1) { transform: rotate(0deg) translate(125px) rotate(0deg); }
-      .menu-item:nth-child(2) { transform: rotate(45deg) translate(125px) rotate(-45deg); }
-      .menu-item:nth-child(3) { transform: rotate(90deg) translate(125px) rotate(-90deg); }
-      .menu-item:nth-child(4) { transform: rotate(135deg) translate(125px) rotate(-135deg); }
-      .menu-item:nth-child(5) { transform: rotate(180deg) translate(125px) rotate(-180deg); }
-      .menu-item:nth-child(6) { transform: rotate(225deg) translate(125px) rotate(-225deg); }
-      .menu-item:nth-child(7) { transform: rotate(270deg) translate(125px) rotate(-270deg); }
-      .menu-item:nth-child(8) { transform: rotate(315deg) translate(125px) rotate(-315deg); }
+  .menu-item:nth-child(1) { transform: rotate(0deg) translate(125px) rotate(0deg); }
+  .menu-item:nth-child(2) { transform: rotate(45deg) translate(125px) rotate(-45deg); }
+  .menu-item:nth-child(3) { transform: rotate(90deg) translate(125px) rotate(-90deg); }
+  .menu-item:nth-child(4) { transform: rotate(135deg) translate(125px) rotate(-135deg); }
+  .menu-item:nth-child(5) { transform: rotate(180deg) translate(125px) rotate(-180deg); }
+  .menu-item:nth-child(6) { transform: rotate(225deg) translate(125px) rotate(-225deg); }
+  .menu-item:nth-child(7) { transform: rotate(270deg) translate(125px) rotate(-270deg); }
+  .menu-item:nth-child(8) { transform: rotate(315deg) translate(125px) rotate(-315deg); }
 
-      .submenu-circle {
-        width: 260px;
-        height: 260px;
-      }
+  .submenu-circle {
+    width: 260px;
+    height: 260px;
+  }
 
-      .submenu-item {
-        width: 60px;
-        height: 60px;
-      }
+  .submenu-item {
+    width: 60px;
+    height: 60px;
+  }
 
-      .submenu-icon {
-        width: 35px;
-        height: 35px;
-      }
+  .submenu-icon {
+    width: 35px;
+    height: 35px;
+  }
 
-      .submenu-item:nth-child(1) { transform: rotate(0deg) translate(100px) rotate(0deg); }
-      .submenu-item:nth-child(2) { transform: rotate(72deg) translate(100px) rotate(-72deg); }
-      .submenu-item:nth-child(3) { transform: rotate(144deg) translate(100px) rotate(-144deg); }
-      .submenu-item:nth-child(4) { transform: rotate(216deg) translate(100px) rotate(-216deg); }
-      .submenu-item:nth-child(5) { transform: rotate(288deg) translate(100px) rotate(-288deg); }
-    }
+  .submenu-item:nth-child(1) { transform: rotate(0deg) translate(100px) rotate(0deg); }
+  .submenu-item:nth-child(2) { transform: rotate(72deg) translate(100px) rotate(-72deg); }
+  .submenu-item:nth-child(3) { transform: rotate(144deg) translate(100px) rotate(-144deg); }
+  .submenu-item:nth-child(4) { transform: rotate(216deg) translate(100px) rotate(-216deg); }
+  .submenu-item:nth-child(5) { transform: rotate(288deg) translate(100px) rotate(-288deg); }
+}
 
-    @media only screen and (max-width: 480px) {
-      .menu-circle {
-        width: 280px;
-        height: 280px;
-      }
+@media only screen and (max-width: 480px) {
+  .menu-circle {
+    width: 280px;
+    height: 280px;
+  }
 
-      .menu-item {
-        width: 60px;
-        height: 60px;
-      }
+  .menu-item {
+    width: 60px;
+    height: 60px;
+  }
 
-      .menu-icon {
-        width: 35px;
-        height: 35px;
-      }
+  .menu-icon {
+    width: 35px;
+    height: 35px;
+  }
 
-      .menu-item:nth-child(1) { transform: rotate(0deg) translate(110px) rotate(0deg); }
-      .menu-item:nth-child(2) { transform: rotate(45deg) translate(110px) rotate(-45deg); }
-      .menu-item:nth-child(3) { transform: rotate(90deg) translate(110px) rotate(-90deg); }
-      .menu-item:nth-child(4) { transform: rotate(135deg) translate(110px) rotate(-135deg); }
-      .menu-item:nth-child(5) { transform: rotate(180deg) translate(110px) rotate(-180deg); }
-      .menu-item:nth-child(6) { transform: rotate(225deg) translate(110px) rotate(-225deg); }
-      .menu-item:nth-child(7) { transform: rotate(270deg) translate(110px) rotate(-270deg); }
-      .menu-item:nth-child(8) { transform: rotate(315deg) translate(110px) rotate(-315deg); }
+  .menu-item:nth-child(1) { transform: rotate(0deg) translate(110px) rotate(0deg); }
+  .menu-item:nth-child(2) { transform: rotate(45deg) translate(110px) rotate(-45deg); }
+  .menu-item:nth-child(3) { transform: rotate(90deg) translate(110px) rotate(-90deg); }
+  .menu-item:nth-child(4) { transform: rotate(135deg) translate(110px) rotate(-135deg); }
+  .menu-item:nth-child(5) { transform: rotate(180deg) translate(110px) rotate(-180deg); }
+  .menu-item:nth-child(6) { transform: rotate(225deg) translate(110px) rotate(-225deg); }
+  .menu-item:nth-child(7) { transform: rotate(270deg) translate(110px) rotate(-270deg); }
+  .menu-item:nth-child(8) { transform: rotate(315deg) translate(110px) rotate(-315deg); }
 
-      .submenu-circle {
-        width: 220px;
-        height: 220px;
-      }
+  .submenu-circle {
+    width: 220px;
+    height: 220px;
+  }
 
-      .submenu-item {
-        width: 50px;
-        height: 50px;
-      }
+  .submenu-item {
+    width: 50px;
+    height: 50px;
+  }
 
-      .submenu-icon {
-        width: 30px;
-        height: 30px;
-      }
+  .submenu-icon {
+    width: 30px;
+    height: 30px;
+  }
 
-      .submenu-item:nth-child(1) { transform: rotate(0deg) translate(85px) rotate(0deg); }
-      .submenu-item:nth-child(2) { transform: rotate(72deg) translate(85px) rotate(-72deg); }
-      .submenu-item:nth-child(3) { transform: rotate(144deg) translate(85px) rotate(-144deg); }
-      .submenu-item:nth-child(4) { transform: rotate(216deg) translate(85px) rotate(-216deg); }
-      .submenu-item:nth-child(5) { transform: rotate(288deg) translate(85px) rotate(-288deg); }
-    }
+  .submenu-item:nth-child(1) { transform: rotate(0deg) translate(85px) rotate(0deg); }
+  .submenu-item:nth-child(2) { transform: rotate(72deg) translate(85px) rotate(-72deg); }
+  .submenu-item:nth-child(3) { transform: rotate(144deg) translate(85px) rotate(-144deg); }
+  .submenu-item:nth-child(4) { transform: rotate(216deg) translate(85px) rotate(-216deg); }
+  .submenu-item:nth-child(5) { transform: rotate(288deg) translate(85px) rotate(-288deg); }
+}
   </style>
 </head>
 <body>
@@ -509,76 +461,31 @@
 
   <!-- Menu principal -->
   <div class="menu-circle" id="mainMenu">
-    <div class="menu-item" onclick="toggleSubmenu(1)" data-tooltip="Formulários">
-      <img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" />
-    </div>
-    <div class="menu-item" onclick="toggleSubmenu(2)" data-tooltip="VPN e Sistemas">
-      <img src="img/logo/VPN.png" alt="VPN" class="menu-icon" />
-    </div>
-    <div class="menu-item" data-tooltip="Mapas">
-      <a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" /></a>
-    </div>
-    <div class="menu-item" data-tooltip="DER">
-      <a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon" /></a>
-    </div>
-    <div class="menu-item" data-tooltip="E-mail Institucional">
-      <a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon" /></a>
-    </div>
-    <div class="menu-item" data-tooltip="Cronotacógrafo">
-      <a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" /></a>
-    </div>
-    <div class="menu-item" data-tooltip="SEI">
-      <a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" /></a>
-    </div>
-    <div class="menu-item" onclick="toggleSubmenu(8)" data-tooltip="Contatos">
-      <img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" />
-    </div>
+    <div class="menu-item" onclick="toggleSubmenu(1)"><img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" /></div>
+    <div class="menu-item" onclick="toggleSubmenu(2)"><img src="img/logo/VPN.png" alt="VPN" class="menu-icon" /></div>
+    <div class="menu-item"><a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" /></a></div>
+    <div class="menu-item" onclick="toggleSubmenu(8)"><img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" /></div>
   </div>
 
   <!-- Submenus -->
   <div class="submenu-circle" id="submenu1">
-    <div class="submenu-item" data-tooltip="Solicitar Manutenção">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLScAsayIw8JXcY8sIYy2ZQViqbAoKUSZOoKL27mnwXDIPjgK5w/viewform">
-        <img src="img/logo/manutenção.png" alt="MANUTENÇÂO" class="submenu-icon" />
-      </a>
-    </div>
-    <div class="submenu-item" data-tooltip="Indicar Amigo">
-      <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode">
-        <img src="img/logo/amigo.png" alt="AMIGOS" class="submenu-icon" />
-      </a>
-    </div>
+    <div class="submenu-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLScAsayIw8JXcY8sIYy2ZQViqbAoKUSZOoKL27mnwXDIPjgK5w/viewform"><img src="img/logo/manutenção.png" alt="MANUTENÇÂO" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode"><img src="img/logo/amigo.png" alt="AMIGOS" class="submenu-icon" /></a></div>
     <div class="submenu-item"><a href="#">__</a></div>
     <div class="submenu-item"><a href="#">__</a></div>
     <div class="submenu-item"><a href="#">__</a></div>
   </div>
 
   <div class="submenu-circle" id="submenu2">
-    <div class="submenu-item" data-tooltip="Intranet PM">
-      <a href="http://www.intranet.policiamilitar.sp.gov.br/">
-        <img src="img/logo/intranet.png" alt="INTRANET" class="submenu-icon" />
-      </a>
-    </div>
-    <div class="submenu-item" data-tooltip="PPRI">
-      <a href="http://10.61.15.39/Login">
-        <img src="img/logo/PPRI.png" alt="PPRI" class="submenu-icon" />
-        <span class="submenu-text">PPRI</span>
-      </a>
-    </div>
-    <div class="submenu-item" data-tooltip="Assentamento">
-      <a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login">
-        <img src="img/logo/assentamento.png" alt="ASSENTAMENTO" class="submenu-icon" />
-      </a>
-    </div>
-    <div class="submenu-item" data-tooltip="DEJEM">
-      <a href="consulta.html">
-        <img src="img/logo/dejem.png" alt="DEJEM-DELEGADA" class="submenu-icon" />
-      </a>
-    </div>
-    <div class="submenu-item" data-tooltip="PRODESP">
-      <a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/">
-        <img src="img/logo/prodesp.png" alt="PRODESP" class="submenu-icon" />
-      </a>
-    </div>
+    <div class="submenu-item"><a href="http://www.intranet.policiamilitar.sp.gov.br/"><img src="img/logo/intranet.png" alt="INTRANET" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="http://10.61.15.39/Login"><img src="img/logo/PPRI.png" alt="PPRI" class="submenu-icon" /><span class="submenu-text">PPRI</span></a></div>
+    <div class="submenu-item"><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login"><img src="img/logo/assentamento.png" alt="ASSENTAMENTO" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="consulta.html"><img src="img/logo/dejem.png" alt="DEJEM-DELEGADA" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/"><img src="img/logo/prodesp.png" alt="PRODESP" class="submenu-icon" /></a></div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
