@@ -254,15 +254,19 @@
 
     /* Submenu circular */
     .submenu-circle {
-      position: absolute;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Isso centraliza perfeitamente */
+  margin: 0; /* Remove qualquer margem pré-definida */
+}
 
     .submenu-item {
       flex-direction: column;
@@ -328,9 +332,9 @@
 
     /* Ajustes específicos para mobile */
     @media only screen and (max-width: 768px) {
-      #background-video {
-        object-position: 50% center;
-        object-fit: cover;
+  .submenu-circle {
+    width: 220px;
+    height: 220px;
       }
 
       .menu-circle {
@@ -504,10 +508,7 @@
       const submenu = document.getElementById("submenu" + index);
       if (submenu) {
         submenu.style.display = "flex";
-        submenu.style.top = "50%";
-        submenu.style.left = "50%";
-        submenu.style.marginTop = "-110px";
-        submenu.style.marginLeft = "-110px";
+        
       }
     }
 
