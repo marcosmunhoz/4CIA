@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bandeiras dos Estados Brasileiros</title>
+    <title>Débito de Veículos por Estado</title>
     <style>
         * {
             margin: 0;
@@ -70,7 +70,8 @@
             transition: transform 0.3s;
         }
         
-        .state-button:hover .state-name {
+        .state-button:hover .state-name,
+        .state-button.active .state-name {
             transform: translateY(0);
         }
         
@@ -81,6 +82,11 @@
             
             .state-button {
                 height: 70px;
+            }
+            
+            /* Esconde o hover em dispositivos móveis */
+            .state-button:hover .state-name:not(.active) {
+                transform: translateY(100%);
             }
         }
         
@@ -102,7 +108,7 @@
     </style>
 </head>
 <body>
-    <h1>Estados do Brasil</h1>
+    <h1>Débito de Veículo</h1>
     
     <div class="container">
         <!-- Região Norte -->
@@ -189,12 +195,12 @@
         
         <!-- Região Centro-Oeste -->
         <a href="#goias" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Bandeira_de_Goi%C3%A1s.svg" alt="Goiás" class="state-flag">
+            <img src="https://www.estadosecapitaisdobrasil.com/wp-content/uploads/2014/09/bandeira-estado-goias.jpg" alt="Goiás" class="state-flag">
             <span class="state-name">Goiás</span>
         </a>
         
         <a href="#mato-grosso" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Bandeira_de_Mato_Grosso.svg" alt="Mato Grosso" class="state-flag">
+            <img src="https://www.estadosecapitaisdobrasil.com/wp-content/uploads/2014/09/bandeira-estado-mato-grosso.jpg" alt="Mato Grosso" class="state-flag">
             <span class="state-name">Mato Grosso</span>
         </a>
         
@@ -245,5 +251,44 @@
             <span class="state-name">Santa Catarina</span>
         </a>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stateButtons = document.querySelectorAll('.state-button');
+            let activeButton = null;
+            
+            // Verifica se é um dispositivo móvel
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                stateButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        // Se já está ativo e clicou no mesmo botão, segue o link
+                        if (activeButton === this && this.classList.contains('active')) {
+                            return true; // permite o comportamento padrão do link
+                        }
+                        
+                        // Remove a classe active de todos os botões
+                        stateButtons.forEach(btn => btn.classList.remove('active'));
+                        
+                        // Adiciona a classe active ao botão clicado
+                        this.classList.add('active');
+                        activeButton = this;
+                        
+                        // Previne o comportamento padrão no primeiro clique
+                        e.preventDefault();
+                    });
+                });
+                
+                // Fecha o nome do estado ao clicar fora
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.state-button')) {
+                        stateButtons.forEach(btn => btn.classList.remove('active'));
+                        activeButton = null;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
