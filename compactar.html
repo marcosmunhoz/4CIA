@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compactador de PDF</title>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .upload-area {
+            border: 2px dashed #3498db;
+            border-radius: 5px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .upload-area:hover {
+            background-color: #f0f8ff;
+        }
+        .quality-options {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .quality-option {
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #eee;
+        }
+        .quality-option:hover {
+            border-color: #3498db;
+        }
+        .quality-option.selected {
+            border-color: #3498db;
+            background-color: #eaf2f8;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .file-info {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+        progress {
+            width: 100%;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Compactador de PDF</h1>
+        
+        <div class="upload-area" id="dropArea">
+            <p>Arraste e solte seu PDF aqui ou clique para selecionar</p>
+            <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+        </div>
+        
+        <div class="file-info" id="fileInfo">
+            Nenhum arquivo selecionado
+        </div>
+        
+        <div class="quality-options">
+            <div class="quality-option" data-quality="low">
+                <h3>Baixa Qualidade</h3>
+                <p>Compactação máxima (tamanho mínimo)</p>
+                <p>Recomendado para visualização rápida</p>
+            </div>
+            <div class="quality-option selected" data-quality="medium">
+                <h3>Média Qualidade</h3>
+                <p>Balanço entre qualidade e tamanho</p>
+                <p>Uso geral</p>
+            </div>
+            <div class="quality-option" data-quality="high">
+                <h3>Alta Qualidade</h3>
+                <p>Compactação mínima (qualidade máxima)</p>
+                <p>Para impressão ou arquivamento</p>
+            </div>
+        </div>
+        
+        <div class="progress-container" id="progressContainer">
+            <p>Processando PDF...</p>
+            <progress id="progressBar" value="0" max="100"></progress>
+        </div>
+        
+        <button id="compressBtn" disabled>Compactar PDF</button>
+    </div>
+
+    <script>
+        // Variáveis globais
+        let selectedFile = null;
+        let selectedQuality = 'medium';
+        
+        // Elementos DOM
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const compressBtn = document.getElementById('compressBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const qualityOptions = document.querySelectorAll('.quality-option');
+        
+        // Event Listeners
+        dropArea.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFileSelection(e.target.files[0]);
+            }
+        });
+        
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#eaf2f8';
+        });
+        
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.backgroundColor = '';
+        });
+        
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '';
+            
+            if (e.dataTransfer.files.length && e.dataTransfer.files[0].type === 'application/pdf') {
+                handleFileSelection(e.dataTransfer.files[0]);
+            } else {
+                alert('Por favor, selecione apenas arquivos PDF.');
+            }
+        });
+        
+        qualityOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                qualityOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedQuality = option.getAttribute('data-quality');
+            });
+        });
+        
+        compressBtn.addEventListener('click', compressPDF);
+        
+        // Funções
+        function handleFileSelection(file) {
+            if (file.type !== 'application/pdf') {
+                alert('Por favor, selecione apenas arquivos PDF.');
+                return;
+            }
+            
+            selectedFile = file;
+            fileInfo.textContent = `Arquivo selecionado: ${file.name} (${formatFileSize(file.size)})`;
+            compressBtn.disabled = false;
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        async function compressPDF() {
+            if (!selectedFile) return;
+            
+            compressBtn.disabled = true;
+            progressContainer.style.display = 'block';
+            progressBar.value = 10;
+            
+            try {
+                const pdfBytes = await selectedFile.arrayBuffer();
+                progressBar.value = 30;
+                
+                // Carrega o PDF
+                const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+                progressBar.value = 50;
+                
+                // Configurações de qualidade
+                const qualitySettings = {
+                    low: {
+                        imageQuality: 0.5,
+                        removeUnusedObjects: true,
+                        removeUnusedResources: true
+                    },
+                    medium: {
+                        imageQuality: 0.75,
+                        removeUnusedObjects: true,
+                        removeUnusedResources: false
+                    },
+                    high: {
+                        imageQuality: 0.9,
+                        removeUnusedObjects: false,
+                        removeUnusedResources: false
+                    }
+                };
+                
+                // Aplica as configurações de qualidade selecionadas
+                const options = qualitySettings[selectedQuality];
+                
+                // Salva o PDF com as configurações de compactação
+                const compressedPdfBytes = await pdfDoc.save({
+                    useObjectStreams: true,
+                    ...options
+                });
+                
+                progressBar.value = 80;
+                
+                // Faz o download do PDF compactado
+                const fileName = selectedFile.name.replace('.pdf', '') + '_compactado.pdf';
+                download(compressedPdfBytes, fileName, 'application/pdf');
+                
+                progressBar.value = 100;
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    compressBtn.disabled = false;
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Erro ao compactar PDF:', error);
+                alert('Ocorreu um erro ao compactar o PDF. Por favor, tente novamente.');
+                progressContainer.style.display = 'none';
+                compressBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
