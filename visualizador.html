@@ -233,8 +233,6 @@
             max-width: 100%;
             height: auto;
             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
         }
 
         .page-navigation {
@@ -281,16 +279,6 @@
         .error-message a {
             color: #87CEEB;
             text-decoration: underline;
-        }
-
-        /* CONTROLES DE ZOOM */
-        .zoom-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
         }
 
         /* RESPONSIVIDADE - MENU HORIZONTAL SEMPRE */
@@ -348,11 +336,6 @@
             
             .main-content {
                 margin-top: 80px;
-            }
-
-            .zoom-controls {
-                bottom: 10px;
-                right: 10px;
             }
         }
 
@@ -512,8 +495,6 @@
         let pageRendering = false;
         let pageNumPending = null;
         let currentEscala = null;
-        let currentScale = 1.5; // Escala padrão aumentada
-        let maxScale = 3.0; // Zoom máximo permitido
 
         // FUNÇÕES DO DROPDOWN
         function toggleDropdown() {
@@ -541,11 +522,7 @@
             document.getElementById('pdf-render-container').innerHTML = '';
             document.getElementById('pageNavigation').style.display = 'none';
             
-            pdfjsLib.getDocument({
-                url: url,
-                cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.11.338/cmaps/',
-                cMapPacked: true
-            }).promise.then(function(pdf) {
+            pdfjsLib.getDocument(url).promise.then(function(pdf) {
                 pdfDoc = pdf;
                 updatePageInfo(1, pdf.numPages);
                 
@@ -571,33 +548,24 @@
             document.getElementById('nextPage').disabled = true;
             
             pdfDoc.getPage(num).then(function(page) {
-                // Calcula a escala ideal para o PDF
-                let viewport = page.getViewport({ scale: currentScale });
-                const container = document.getElementById('pdf-render-container');
-                const containerWidth = container.clientWidth;
+                // Alteração principal: zoom de 150% (scale: 1.5)
+                let viewport = page.getViewport({ scale: 1.5 });
+                const maxWidth = window.innerWidth * 0.9;
                 
-                // Ajusta a escala para caber na largura do container
-                if (viewport.width > containerWidth) {
-                    const scale = containerWidth / viewport.width * currentScale;
+                // Ajuste para telas menores mantendo a melhor qualidade possível
+                if (viewport.width > maxWidth) {
+                    const scale = maxWidth / viewport.width * 1.5;
                     viewport = page.getViewport({ scale });
                 }
                 
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
                 
-                // Configuração de alta qualidade
                 const outputScale = window.devicePixelRatio || 1;
                 canvas.width = Math.floor(viewport.width * outputScale);
                 canvas.height = Math.floor(viewport.height * outputScale);
                 canvas.style.width = Math.floor(viewport.width) + "px";
                 canvas.style.height = Math.floor(viewport.height) + "px";
-                
-                // Melhoria na renderização
-                context.imageSmoothingEnabled = true;
-                context.webkitImageSmoothingEnabled = true;
-                context.mozImageSmoothingEnabled = true;
-                context.msImageSmoothingEnabled = true;
-                context.oImageSmoothingEnabled = true;
                 
                 context.scale(outputScale, outputScale);
                 
@@ -606,9 +574,7 @@
                 
                 const renderContext = {
                     canvasContext: context,
-                    viewport: viewport,
-                    enableWebGL: true, // Habilita aceleração WebGL se disponível
-                    intent: 'print' // Melhora a qualidade para visualização
+                    viewport: viewport
                 };
                 
                 page.render(renderContext).promise.then(function() {
@@ -681,50 +647,6 @@
             if (primeiraEscala) {
                 primeiraEscala.click();
             }
-            
-            // Adiciona controles de zoom
-            const zoomControls = document.createElement('div');
-            zoomControls.className = 'zoom-controls';
-            
-            const zoomInBtn = document.createElement('button');
-            zoomInBtn.textContent = '+';
-            zoomInBtn.className = 'page-btn';
-            zoomInBtn.style.fontWeight = 'bold';
-            zoomInBtn.style.fontSize = '1.2rem';
-            zoomInBtn.style.padding = '8px 15px';
-            zoomInBtn.onclick = function() {
-                if (currentScale < maxScale) {
-                    currentScale += 0.1;
-                    renderPage(currentPage);
-                }
-            };
-            
-            const zoomOutBtn = document.createElement('button');
-            zoomOutBtn.textContent = '-';
-            zoomOutBtn.className = 'page-btn';
-            zoomOutBtn.style.fontWeight = 'bold';
-            zoomOutBtn.style.fontSize = '1.2rem';
-            zoomOutBtn.style.padding = '8px 15px';
-            zoomOutBtn.onclick = function() {
-                if (currentScale > 0.5) {
-                    currentScale -= 0.1;
-                    renderPage(currentPage);
-                }
-            };
-            
-            const resetZoomBtn = document.createElement('button');
-            resetZoomBtn.textContent = 'Reset';
-            resetZoomBtn.className = 'page-btn';
-            resetZoomBtn.style.padding = '8px 15px';
-            resetZoomBtn.onclick = function() {
-                currentScale = 1.5;
-                renderPage(currentPage);
-            };
-            
-            zoomControls.appendChild(zoomOutBtn);
-            zoomControls.appendChild(resetZoomBtn);
-            zoomControls.appendChild(zoomInBtn);
-            document.body.appendChild(zoomControls);
             
             // Comportamento do submenu no mobile (toque)
             if ('ontouchstart' in window) {
