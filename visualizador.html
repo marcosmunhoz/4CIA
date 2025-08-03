@@ -137,6 +137,49 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
+        /* BARRA DE PESQUISA */
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: 1px solid #87CEEB;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Kanit', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        #searchButton {
+            background-color: #87CEEB;
+            color: #000;
+            border: none;
+            padding: 0 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Kanit', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        #searchButton:hover {
+            background-color: #6cb8d6;
+        }
+
+        .search-results {
+            text-align: center;
+            margin-top: 10px;
+            color: #87CEEB;
+            font-weight: 500;
+        }
+
         /* SELEÇÃO DE ESCALAS */
         .escala-selector {
             max-width: 800px;
@@ -199,6 +242,7 @@
             margin: 0 auto;
             max-width: 1000px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
         }
 
         #pdf-loader {
@@ -227,12 +271,44 @@
             margin-top: 20px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            position: relative;
         }
 
         canvas {
             max-width: 100%;
             height: auto;
             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .textLayer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            opacity: 0.2;
+            line-height: 1.0;
+        }
+
+        .textLayer > div {
+            color: transparent;
+            position: absolute;
+            white-space: pre;
+            cursor: text;
+            transform-origin: 0% 0%;
+        }
+
+        .textLayer .highlight {
+            background-color: yellow;
+            color: black;
+            border-radius: 2px;
+        }
+
+        .textLayer .search-match {
+            background-color: rgba(255, 255, 0, 0.5);
+            border: 1px solid yellow;
+            box-shadow: 0 0 5px yellow;
         }
 
         .page-navigation {
@@ -337,6 +413,14 @@
             .main-content {
                 margin-top: 80px;
             }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            #searchButton {
+                padding: 12px;
+            }
         }
 
         @media (max-width: 576px) {
@@ -402,6 +486,13 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <div class="main-content">
         <h1>Minha Escala</h1>
+        
+        <!-- BARRA DE PESQUISA -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Digite o nome para pesquisar...">
+            <button id="searchButton">Pesquisar</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
         
         <!-- SELEÇÃO DE ESCALAS -->
         <div class="escala-selector">
@@ -495,6 +586,10 @@
         let pageRendering = false;
         let pageNumPending = null;
         let currentEscala = null;
+        let textLayer = null;
+        let textContent = null;
+        let searchMatches = [];
+        let currentMatchIndex = -1;
 
         // FUNÇÕES DO DROPDOWN
         function toggleDropdown() {
@@ -521,6 +616,8 @@
             document.getElementById('errorMessage').style.display = 'none';
             document.getElementById('pdf-render-container').innerHTML = '';
             document.getElementById('pageNavigation').style.display = 'none';
+            document.getElementById('searchResults').textContent = '';
+            document.getElementById('searchInput').value = '';
             
             pdfjsLib.getDocument(url).promise.then(function(pdf) {
                 pdfDoc = pdf;
@@ -548,11 +645,9 @@
             document.getElementById('nextPage').disabled = true;
             
             pdfDoc.getPage(num).then(function(page) {
-                // Alteração principal: zoom de 150% (scale: 1.5)
                 let viewport = page.getViewport({ scale: 1.5 });
                 const maxWidth = window.innerWidth * 0.9;
                 
-                // Ajuste para telas menores mantendo a melhor qualidade possível
                 if (viewport.width > maxWidth) {
                     const scale = maxWidth / viewport.width * 1.5;
                     viewport = page.getViewport({ scale });
@@ -572,12 +667,42 @@
                 document.getElementById('pdf-render-container').innerHTML = '';
                 document.getElementById('pdf-render-container').appendChild(canvas);
                 
+                // Container para o texto
+                const textLayerDiv = document.createElement('div');
+                textLayerDiv.className = 'textLayer';
+                textLayerDiv.style.position = 'absolute';
+                textLayerDiv.style.left = '0';
+                textLayerDiv.style.top = '0';
+                textLayerDiv.style.right = '0';
+                textLayerDiv.style.bottom = '0';
+                textLayerDiv.style.overflow = 'hidden';
+                textLayerDiv.style.opacity = '0.2';
+                textLayerDiv.style.lineHeight = '1.0';
+                
+                document.getElementById('pdf-render-container').appendChild(textLayerDiv);
+                textLayer = textLayerDiv;
+                
                 const renderContext = {
                     canvasContext: context,
-                    viewport: viewport
+                    viewport: viewport,
+                    textLayer: textLayer
                 };
                 
+                // Primeiro renderiza a página
                 page.render(renderContext).promise.then(function() {
+                    // Depois obtém o conteúdo de texto
+                    return page.getTextContent();
+                }).then(function(text) {
+                    textContent = text;
+                    
+                    // Renderiza o texto na camada de texto
+                    pdfjsLib.renderTextLayer({
+                        textContent: textContent,
+                        container: textLayer,
+                        viewport: viewport,
+                        textDivs: []
+                    });
+                    
                     pageRendering = false;
                     document.getElementById('pdf-loader').style.display = 'none';
                     updatePageInfo(num, pdfDoc.numPages);
@@ -588,6 +713,11 @@
                     if (pageNumPending !== null) {
                         renderPage(pageNumPending);
                         pageNumPending = null;
+                    }
+                    
+                    // Se houver pesquisa ativa, aplica novamente
+                    if (document.getElementById('searchInput').value) {
+                        searchText(document.getElementById('searchInput').value);
                     }
                 });
             }).catch(function(error) {
@@ -624,9 +754,120 @@
             queueRenderPage(currentPage);
         }
 
+        // FUNÇÕES DE PESQUISA
+        function searchText(query) {
+            if (!textContent || !query.trim()) {
+                resetSearch();
+                return;
+            }
+            
+            searchMatches = [];
+            currentMatchIndex = -1;
+            
+            // Limpa highlights anteriores
+            const textDivs = textLayer.querySelectorAll('div');
+            textDivs.forEach(div => {
+                div.classList.remove('highlight', 'search-match');
+                if (div.innerHTML !== div.textContent) {
+                    div.innerHTML = div.textContent;
+                }
+            });
+            
+            // Busca por correspondências
+            const searchTerm = query.toLowerCase();
+            let matchCount = 0;
+            
+            textContent.items.forEach((item, i) => {
+                const text = item.str.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    searchMatches.push(i);
+                    matchCount++;
+                    
+                    // Destaca o texto encontrado
+                    const textDiv = textLayer.querySelector(`div:nth-child(${i + 1})`);
+                    if (textDiv) {
+                        const originalText = item.str;
+                        const highlightedText = originalText.replace(
+                            new RegExp(query, 'gi'),
+                            match => `<span class="highlight">${match}</span>`
+                        );
+                        textDiv.innerHTML = highlightedText;
+                    }
+                }
+            });
+            
+            // Atualiza a exibição dos resultados
+            const resultsElement = document.getElementById('searchResults');
+            if (matchCount > 0) {
+                resultsElement.textContent = `${matchCount} resultado(s) encontrado(s)`;
+                currentMatchIndex = 0;
+                scrollToMatch(currentMatchIndex);
+            } else {
+                resultsElement.textContent = "Nenhum resultado encontrado";
+            }
+        }
+
+        function scrollToMatch(index) {
+            if (index < 0 || index >= searchMatches.length) return;
+            
+            currentMatchIndex = index;
+            const textDiv = textLayer.querySelector(`div:nth-child(${searchMatches[index] + 1})`);
+            if (textDiv) {
+                // Adiciona classe para destacar visualmente
+                textDiv.classList.add('search-match');
+                
+                // Rola para a div
+                textDiv.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // Remove o destaque após um tempo
+                setTimeout(() => {
+                    textDiv.classList.remove('search-match');
+                }, 2000);
+                
+                // Atualiza a exibição do resultado atual
+                document.getElementById('searchResults').textContent = 
+                    `Resultado ${index + 1} de ${searchMatches.length}`;
+            }
+        }
+
+        function resetSearch() {
+            if (!textLayer) return;
+            
+            const textDivs = textLayer.querySelectorAll('div');
+            textDivs.forEach(div => {
+                div.classList.remove('highlight', 'search-match');
+                if (div.innerHTML !== div.textContent) {
+                    div.innerHTML = div.textContent;
+                }
+            });
+            
+            searchMatches = [];
+            currentMatchIndex = -1;
+            document.getElementById('searchResults').textContent = "";
+        }
+
         // EVENT LISTENERS
         document.getElementById('prevPage').addEventListener('click', onPrevPage);
         document.getElementById('nextPage').addEventListener('click', onNextPage);
+        
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                searchText(query);
+            }
+        });
+
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query) {
+                    searchText(query);
+                }
+            }
+        });
         
         // Fechar dropdown ao clicar fora
         window.addEventListener('click', function(event) {
