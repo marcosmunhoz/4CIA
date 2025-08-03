@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandeiras dos Estados Brasileiros</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .state-button {
+            position: relative;
+            width: 100%;
+            height: 80px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .state-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .state-flag {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .state-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        
+        .state-button:hover .state-name {
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .state-button {
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 10px;
+            }
+            
+            .state-button {
+                height: 60px;
+            }
+            
+            .state-name {
+                font-size: 10px;
+                padding: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Estados do Brasil</h1>
+    
+    <div class="container">
+        <!-- Região Norte -->
+        <a href="#acre" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Bandeira_do_Acre.svg" alt="Acre" class="state-flag">
+            <span class="state-name">Acre</span>
+        </a>
+        
+        <a href="#amapa" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Bandeira_do_Amap%C3%A1.svg" alt="Amapá" class="state-flag">
+            <span class="state-name">Amapá</span>
+        </a>
+        
+        <a href="#amazonas" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bandeira_do_Amazonas.svg" alt="Amazonas" class="state-flag">
+            <span class="state-name">Amazonas</span>
+        </a>
+        
+        <a href="#para" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/Bandeira_do_Par%C3%A1.svg" alt="Pará" class="state-flag">
+            <span class="state-name">Pará</span>
+        </a>
+        
+        <a href="#rondonia" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Bandeira_de_Rond%C3%B4nia.svg" alt="Rondônia" class="state-flag">
+            <span class="state-name">Rondônia</span>
+        </a>
+        
+        <a href="#roraima" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Bandeira_de_Roraima.svg" alt="Roraima" class="state-flag">
+            <span class="state-name">Roraima</span>
+        </a>
+        
+        <a href="#tocantins" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Bandeira_do_Tocantins.svg" alt="Tocantins" class="state-flag">
+            <span class="state-name">Tocantins</span>
+        </a>
+        
+        <!-- Região Nordeste -->
+        <a href="#alagoas" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Bandeira_de_Alagoas.svg" alt="Alagoas" class="state-flag">
+            <span class="state-name">Alagoas</span>
+        </a>
+        
+        <a href="#bahia" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Bandeira_da_Bahia.svg" alt="Bahia" class="state-flag">
+            <span class="state-name">Bahia</span>
+        </a>
+        
+        <a href="#ceara" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Bandeira_do_Cear%C3%A1.svg" alt="Ceará" class="state-flag">
+            <span class="state-name">Ceará</span>
+        </a>
+        
+        <a href="#maranhao" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Bandeira_do_Maranh%C3%A3o.svg" alt="Maranhão" class="state-flag">
+            <span class="state-name">Maranhão</span>
+        </a>
+        
+        <a href="#paraiba" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Bandeira_da_Para%C3%ADba.svg" alt="Paraíba" class="state-flag">
+            <span class="state-name">Paraíba</span>
+        </a>
+        
+        <a href="#pernambuco" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Bandeira_de_Pernambuco.svg" alt="Pernambuco" class="state-flag">
+            <span class="state-name">Pernambuco</span>
+        </a>
+        
+        <a href="#piaui" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Bandeira_do_Piau%C3%AD.svg" alt="Piauí" class="state-flag">
+            <span class="state-name">Piauí</span>
+        </a>
+        
+        <a href="#rio-grande-do-norte" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Bandeira_do_Rio_Grande_do_Norte.svg" alt="Rio Grande do Norte" class="state-flag">
+            <span class="state-name">Rio Grande do Norte</span>
+        </a>
+        
+        <a href="#sergipe" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Bandeira_de_Sergipe.svg" alt="Sergipe" class="state-flag">
+            <span class="state-name">Sergipe</span>
+        </a>
+        
+        <!-- Região Centro-Oeste -->
+        <a href="#goias" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Bandeira_de_Goi%C3%A1s.svg" alt="Goiás" class="state-flag">
+            <span class="state-name">Goiás</span>
+        </a>
+        
+        <a href="#mato-grosso" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Bandeira_de_Mato_Grosso.svg" alt="Mato Grosso" class="state-flag">
+            <span class="state-name">Mato Grosso</span>
+        </a>
+        
+        <a href="#mato-grosso-do-sul" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Bandeira_de_Mato_Grosso_do_Sul.svg" alt="Mato Grosso do Sul" class="state-flag">
+            <span class="state-name">Mato Grosso do Sul</span>
+        </a>
+        
+        <a href="#distrito-federal" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Bandeira_do_Distrito_Federal_%28Brasil%29.svg" alt="Distrito Federal" class="state-flag">
+            <span class="state-name">Distrito Federal</span>
+        </a>
+        
+        <!-- Região Sudeste -->
+        <a href="#espirito-santo" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/Bandeira_do_Esp%C3%ADrito_Santo.svg" alt="Espírito Santo" class="state-flag">
+            <span class="state-name">Espírito Santo</span>
+        </a>
+        
+        <a href="#minas-gerais" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Bandeira_de_Minas_Gerais.svg" alt="Minas Gerais" class="state-flag">
+            <span class="state-name">Minas Gerais</span>
+        </a>
+        
+        <a href="#rio-de-janeiro" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Bandeira_do_estado_do_Rio_de_Janeiro.svg" alt="Rio de Janeiro" class="state-flag">
+            <span class="state-name">Rio de Janeiro</span>
+        </a>
+        
+        <a href="#sao-paulo" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Bandeira_do_estado_de_S%C3%A3o_Paulo.svg" alt="São Paulo" class="state-flag">
+            <span class="state-name">São Paulo</span>
+        </a>
+        
+        <!-- Região Sul -->
+        <a href="#parana" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Bandeira_do_Paran%C3%A1.svg" alt="Paraná" class="state-flag">
+            <span class="state-name">Paraná</span>
+        </a>
+        
+        <a href="#rio-grande-do-sul" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bandeira_do_Rio_Grande_do_Sul.svg" alt="Rio Grande do Sul" class="state-flag">
+            <span class="state-name">Rio Grande do Sul</span>
+        </a>
+        
+        <a href="#santa-catarina" class="state-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Bandeira_de_Santa_Catarina.svg" alt="Santa Catarina" class="state-flag">
+            <span class="state-name">Santa Catarina</span>
+        </a>
+    </div>
+</body>
+</html>
