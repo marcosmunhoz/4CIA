@@ -3,292 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Débito de Veículos por Estado</title>
+    <title>Estados do Brasil em Ordem Alfabética</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
         }
         
         body {
             background-color: #f5f5f5;
             padding: 20px;
+            color: #333;
         }
         
         h1 {
             text-align: center;
             margin-bottom: 30px;
-            color: #333;
+            color: #2c3e50;
         }
         
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-            max-width: 1200px;
+        .states-container {
+            max-width: 800px;
             margin: 0 auto;
-        }
-        
-        .state-button {
-            position: relative;
-            width: 100%;
-            height: 80px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            padding: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             overflow: hidden;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .state-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        .state-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        
+        .state-item:last-child {
+            border-bottom: none;
+        }
+        
+        .state-item:hover {
+            background-color: #f9f9f9;
         }
         
         .state-flag {
-            width: 100%;
-            height: 100%;
+            width: 30px;
+            height: 20px;
+            margin-right: 15px;
             object-fit: cover;
+            border: 1px solid #ddd;
         }
         
         .state-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px;
-            text-align: center;
-            font-size: 12px;
-            transform: translateY(100%);
-            transition: transform 0.3s;
+            flex-grow: 1;
+            font-size: 16px;
         }
         
-        .state-button:hover .state-name,
-        .state-button.active .state-name {
-            transform: translateY(0);
+        .state-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            width: 100%;
         }
         
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        @media (max-width: 600px) {
+            .state-item {
+                padding: 10px 15px;
             }
             
-            .state-button {
-                height: 70px;
-            }
-            
-            /* Esconde o hover em dispositivos móveis */
-            .state-button:hover .state-name:not(.active) {
-                transform: translateY(100%);
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-                gap: 10px;
-            }
-            
-            .state-button {
-                height: 60px;
+            .state-flag {
+                width: 25px;
+                height: 16px;
+                margin-right: 10px;
             }
             
             .state-name {
-                font-size: 10px;
-                padding: 3px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Débito de Veículo</h1>
+    <h1>Estados do Brasil</h1>
     
-    <div class="container">
-        <!-- Região Norte -->
-        <a href="#acre" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Bandeira_do_Acre.svg" alt="Acre" class="state-flag">
-            <span class="state-name">Acre</span>
-        </a>
+    <div class="states-container">
+        <!-- Estados em ordem alfabética -->
+        <div class="state-item">
+            <a href="#acre" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Bandeira_do_Acre.svg" alt="Acre" class="state-flag">
+                <span class="state-name">Acre</span>
+            </a>
+        </div>
         
-        <a href="#amapa" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Bandeira_do_Amap%C3%A1.svg" alt="Amapá" class="state-flag">
-            <span class="state-name">Amapá</span>
-        </a>
+        <div class="state-item">
+            <a href="#alagoas" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Bandeira_de_Alagoas.svg" alt="Alagoas" class="state-flag">
+                <span class="state-name">Alagoas</span>
+            </a>
+        </div>
         
-        <a href="#amazonas" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bandeira_do_Amazonas.svg" alt="Amazonas" class="state-flag">
-            <span class="state-name">Amazonas</span>
-        </a>
+        <div class="state-item">
+            <a href="#amapa" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Bandeira_do_Amap%C3%A1.svg" alt="Amapá" class="state-flag">
+                <span class="state-name">Amapá</span>
+            </a>
+        </div>
         
-        <a href="#para" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/Bandeira_do_Par%C3%A1.svg" alt="Pará" class="state-flag">
-            <span class="state-name">Pará</span>
-        </a>
+        <div class="state-item">
+            <a href="#amazonas" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bandeira_do_Amazonas.svg" alt="Amazonas" class="state-flag">
+                <span class="state-name">Amazonas</span>
+            </a>
+        </div>
         
-        <a href="#rondonia" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Bandeira_de_Rond%C3%B4nia.svg" alt="Rondônia" class="state-flag">
-            <span class="state-name">Rondônia</span>
-        </a>
+        <div class="state-item">
+            <a href="#bahia" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Bandeira_da_Bahia.svg" alt="Bahia" class="state-flag">
+                <span class="state-name">Bahia</span>
+            </a>
+        </div>
         
-        <a href="#roraima" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Bandeira_de_Roraima.svg" alt="Roraima" class="state-flag">
-            <span class="state-name">Roraima</span>
-        </a>
+        <div class="state-item">
+            <a href="#ceara" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Bandeira_do_Cear%C3%A1.svg" alt="Ceará" class="state-flag">
+                <span class="state-name">Ceará</span>
+            </a>
+        </div>
         
-        <a href="#tocantins" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Bandeira_do_Tocantins.svg" alt="Tocantins" class="state-flag">
-            <span class="state-name">Tocantins</span>
-        </a>
+        <div class="state-item">
+            <a href="#distrito-federal" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Bandeira_do_Distrito_Federal_%28Brasil%29.svg" alt="Distrito Federal" class="state-flag">
+                <span class="state-name">Distrito Federal</span>
+            </a>
+        </div>
         
-        <!-- Região Nordeste -->
-        <a href="#alagoas" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Bandeira_de_Alagoas.svg" alt="Alagoas" class="state-flag">
-            <span class="state-name">Alagoas</span>
-        </a>
+        <div class="state-item">
+            <a href="#espirito-santo" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/Bandeira_do_Esp%C3%ADrito_Santo.svg" alt="Espírito Santo" class="state-flag">
+                <span class="state-name">Espírito Santo</span>
+            </a>
+        </div>
         
-        <a href="#bahia" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Bandeira_da_Bahia.svg" alt="Bahia" class="state-flag">
-            <span class="state-name">Bahia</span>
-        </a>
+        <div class="state-item">
+            <a href="#goias" class="state-link">
+                <svg class="state-flag" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="600" height="420" fill="#008000"/>
+                    <rect x="120" y="90" width="360" height="240" fill="#FFD700" stroke="#000000" stroke-width="2"/>
+                    <path d="M240,210 L360,210" stroke="#008000" stroke-width="20"/>
+                    <path d="M300,150 L300,270" stroke="#008000" stroke-width="20"/>
+                    <circle cx="300" cy="210" r="60" fill="#008000"/>
+                    <path d="M300,150 L280,190 L320,190 L300,150 Z" fill="#FFD700"/>
+                    <path d="M300,270 L280,230 L320,230 L300,270 Z" fill="#FFD700"/>
+                    <path d="M240,210 L260,230 L260,190 L240,210 Z" fill="#FFD700"/>
+                    <path d="M360,210 L340,230 L340,190 L360,210 Z" fill="#FFD700"/>
+                </svg>
+                <span class="state-name">Goiás</span>
+            </a>
+        </div>
         
-        <a href="#ceara" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Bandeira_do_Cear%C3%A1.svg" alt="Ceará" class="state-flag">
-            <span class="state-name">Ceará</span>
-        </a>
+        <div class="state-item">
+            <a href="#maranhao" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Bandeira_do_Maranh%C3%A3o.svg" alt="Maranhão" class="state-flag">
+                <span class="state-name">Maranhão</span>
+            </a>
+        </div>
         
-        <a href="#maranhao" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Bandeira_do_Maranh%C3%A3o.svg" alt="Maranhão" class="state-flag">
-            <span class="state-name">Maranhão</span>
-        </a>
+        <div class="state-item">
+            <a href="#mato-grosso" class="state-link">
+                <svg class="state-flag" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="600" height="420" fill="#0038A8"/>
+                    <rect x="0" y="140" width="600" height="140" fill="#00AF4D"/>
+                    <circle cx="300" cy="210" r="70" fill="#FEDD00"/>
+                    <path d="M300,140 L320,180 L360,180 L330,210 L360,240 L320,240 L300,280 L280,240 L240,240 L270,210 L240,180 L280,180 Z" fill="#0038A8"/>
+                </svg>
+                <span class="state-name">Mato Grosso</span>
+            </a>
+        </div>
         
-        <a href="#paraiba" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Bandeira_da_Para%C3%ADba.svg" alt="Paraíba" class="state-flag">
-            <span class="state-name">Paraíba</span>
-        </a>
+        <div class="state-item">
+            <a href="#mato-grosso-do-sul" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Bandeira_de_Mato_Grosso_do_Sul.svg" alt="Mato Grosso do Sul" class="state-flag">
+                <span class="state-name">Mato Grosso do Sul</span>
+            </a>
+        </div>
         
-        <a href="#pernambuco" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Bandeira_de_Pernambuco.svg" alt="Pernambuco" class="state-flag">
-            <span class="state-name">Pernambuco</span>
-        </a>
+        <div class="state-item">
+            <a href="#minas-gerais" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Bandeira_de_Minas_Gerais.svg" alt="Minas Gerais" class="state-flag">
+                <span class="state-name">Minas Gerais</span>
+            </a>
+        </div>
         
-        <a href="#piaui" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Bandeira_do_Piau%C3%AD.svg" alt="Piauí" class="state-flag">
-            <span class="state-name">Piauí</span>
-        </a>
+        <div class="state-item">
+            <a href="#para" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/Bandeira_do_Par%C3%A1.svg" alt="Pará" class="state-flag">
+                <span class="state-name">Pará</span>
+            </a>
+        </div>
         
-        <a href="#rio-grande-do-norte" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Bandeira_do_Rio_Grande_do_Norte.svg" alt="Rio Grande do Norte" class="state-flag">
-            <span class="state-name">Rio Grande do Norte</span>
-        </a>
+        <div class="state-item">
+            <a href="#paraiba" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Bandeira_da_Para%C3%ADba.svg" alt="Paraíba" class="state-flag">
+                <span class="state-name">Paraíba</span>
+            </a>
+        </div>
         
-        <a href="#sergipe" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Bandeira_de_Sergipe.svg" alt="Sergipe" class="state-flag">
-            <span class="state-name">Sergipe</span>
-        </a>
+        <div class="state-item">
+            <a href="#parana" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Bandeira_do_Paran%C3%A1.svg" alt="Paraná" class="state-flag">
+                <span class="state-name">Paraná</span>
+            </a>
+        </div>
         
-        <!-- Região Centro-Oeste -->
-        <a href="#goias" class="state-button">
-            <img src="https://www.estadosecapitaisdobrasil.com/wp-content/uploads/2014/09/bandeira-estado-goias.jpg" alt="Goiás" class="state-flag">
-            <span class="state-name">Goiás</span>
-        </a>
+        <div class="state-item">
+            <a href="#pernambuco" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Bandeira_de_Pernambuco.svg" alt="Pernambuco" class="state-flag">
+                <span class="state-name">Pernambuco</span>
+            </a>
+        </div>
         
-        <a href="#mato-grosso" class="state-button">
-            <img src="https://www.estadosecapitaisdobrasil.com/wp-content/uploads/2014/09/bandeira-estado-mato-grosso.jpg" alt="Mato Grosso" class="state-flag">
-            <span class="state-name">Mato Grosso</span>
-        </a>
+        <div class="state-item">
+            <a href="#piaui" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Bandeira_do_Piau%C3%AD.svg" alt="Piauí" class="state-flag">
+                <span class="state-name">Piauí</span>
+            </a>
+        </div>
         
-        <a href="#mato-grosso-do-sul" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Bandeira_de_Mato_Grosso_do_Sul.svg" alt="Mato Grosso do Sul" class="state-flag">
-            <span class="state-name">Mato Grosso do Sul</span>
-        </a>
+        <div class="state-item">
+            <a href="#rio-de-janeiro" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Bandeira_do_estado_do_Rio_de_Janeiro.svg" alt="Rio de Janeiro" class="state-flag">
+                <span class="state-name">Rio de Janeiro</span>
+            </a>
+        </div>
         
-        <a href="#distrito-federal" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Bandeira_do_Distrito_Federal_%28Brasil%29.svg" alt="Distrito Federal" class="state-flag">
-            <span class="state-name">Distrito Federal</span>
-        </a>
+        <div class="state-item">
+            <a href="#rio-grande-do-norte" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Bandeira_do_Rio_Grande_do_Norte.svg" alt="Rio Grande do Norte" class="state-flag">
+                <span class="state-name">Rio Grande do Norte</span>
+            </a>
+        </div>
         
-        <!-- Região Sudeste -->
-        <a href="#espirito-santo" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/Bandeira_do_Esp%C3%ADrito_Santo.svg" alt="Espírito Santo" class="state-flag">
-            <span class="state-name">Espírito Santo</span>
-        </a>
+        <div class="state-item">
+            <a href="#rio-grande-do-sul" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bandeira_do_Rio_Grande_do_Sul.svg" alt="Rio Grande do Sul" class="state-flag">
+                <span class="state-name">Rio Grande do Sul</span>
+            </a>
+        </div>
         
-        <a href="#minas-gerais" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Bandeira_de_Minas_Gerais.svg" alt="Minas Gerais" class="state-flag">
-            <span class="state-name">Minas Gerais</span>
-        </a>
+        <div class="state-item">
+            <a href="#rondonia" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Bandeira_de_Rond%C3%B4nia.svg" alt="Rondônia" class="state-flag">
+                <span class="state-name">Rondônia</span>
+            </a>
+        </div>
         
-        <a href="#rio-de-janeiro" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Bandeira_do_estado_do_Rio_de_Janeiro.svg" alt="Rio de Janeiro" class="state-flag">
-            <span class="state-name">Rio de Janeiro</span>
-        </a>
+        <div class="state-item">
+            <a href="#roraima" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Bandeira_de_Roraima.svg" alt="Roraima" class="state-flag">
+                <span class="state-name">Roraima</span>
+            </a>
+        </div>
         
-        <a href="#sao-paulo" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Bandeira_do_estado_de_S%C3%A3o_Paulo.svg" alt="São Paulo" class="state-flag">
-            <span class="state-name">São Paulo</span>
-        </a>
+        <div class="state-item">
+            <a href="#santa-catarina" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Bandeira_de_Santa_Catarina.svg" alt="Santa Catarina" class="state-flag">
+                <span class="state-name">Santa Catarina</span>
+            </a>
+        </div>
         
-        <!-- Região Sul -->
-        <a href="#parana" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Bandeira_do_Paran%C3%A1.svg" alt="Paraná" class="state-flag">
-            <span class="state-name">Paraná</span>
-        </a>
+        <div class="state-item">
+            <a href="#sao-paulo" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Bandeira_do_estado_de_S%C3%A3o_Paulo.svg" alt="São Paulo" class="state-flag">
+                <span class="state-name">São Paulo</span>
+            </a>
+        </div>
         
-        <a href="#rio-grande-do-sul" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bandeira_do_Rio_Grande_do_Sul.svg" alt="Rio Grande do Sul" class="state-flag">
-            <span class="state-name">Rio Grande do Sul</span>
-        </a>
+        <div class="state-item">
+            <a href="#sergipe" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Bandeira_de_Sergipe.svg" alt="Sergipe" class="state-flag">
+                <span class="state-name">Sergipe</span>
+            </a>
+        </div>
         
-        <a href="#santa-catarina" class="state-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Bandeira_de_Santa_Catarina.svg" alt="Santa Catarina" class="state-flag">
-            <span class="state-name">Santa Catarina</span>
-        </a>
+        <div class="state-item">
+            <a href="#tocantins" class="state-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Bandeira_do_Tocantins.svg" alt="Tocantins" class="state-flag">
+                <span class="state-name">Tocantins</span>
+            </a>
+        </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const stateButtons = document.querySelectorAll('.state-button');
-            let activeButton = null;
-            
-            // Verifica se é um dispositivo móvel
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                stateButtons.forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        // Se já está ativo e clicou no mesmo botão, segue o link
-                        if (activeButton === this && this.classList.contains('active')) {
-                            return true; // permite o comportamento padrão do link
-                        }
-                        
-                        // Remove a classe active de todos os botões
-                        stateButtons.forEach(btn => btn.classList.remove('active'));
-                        
-                        // Adiciona a classe active ao botão clicado
-                        this.classList.add('active');
-                        activeButton = this;
-                        
-                        // Previne o comportamento padrão no primeiro clique
-                        e.preventDefault();
-                    });
-                });
-                
-                // Fecha o nome do estado ao clicar fora
-                document.addEventListener('click', function(e) {
-                    if (!e.target.closest('.state-button')) {
-                        stateButtons.forEach(btn => btn.classList.remove('active'));
-                        activeButton = null;
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 </html>
