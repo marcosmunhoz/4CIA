@@ -542,6 +542,77 @@
         submenu.style.display = "flex";
       }
     }
+    <script>
+    // LISTA DE IDENTIFICAÇÕES AUTORIZADAS (REs sem dígito)
+    const IDENTIFICACOES_AUTORIZADAS = new Set([
+      "109961", "128206", "127919", "161647", "191755", "116779", "170351", "145808",
+      "157394", "193208", "200964", "241884", "116136", "141496", "102488", "135037",
+      "140328", "191257", "131414", "102499", "151242", "160508", "201135", "110962",
+      "105586", "152965", "161051", "128107", "120403", "150299", "190241", "152005",
+      "230979", "105580", "104486", "143655", "116192", "116108", "127133", "142926",
+      "105472", "105603", "144803", "160506", "140589", "180946", "153129", "194528",
+      "195567", "181432", "201400", "124098", "151887", "171028", "170520", "192117",
+      "116140", "131991", "116116", "170611", "149004", "162158", "231165", "116194",
+      "128977", "110119", "172031", "141536", "181615", "192596", "210500", "116283",
+      "161472", "980107", "195519", "231026", "231418", "242515", "105549", "105591",
+      "110837", "116174", "131445", "201355", "195536", "200640", "200857", "975712",
+      "116066", "105428", "143007", "105545", "965201", "116076", "123053", "151919",
+      "190776", "144861", "146579", "194288", "211372", "127718", "105463", "110812",
+      "105468", "116785", "136177", "135104", "143043", "102738", "154619", "202182",
+      "191871", "201154", "231993", "240811", "110899", "110895", "105539", "105600",
+      "128219", "141446", "140643", "150802", "194366", "195839", "231800", "231440",
+      "232034", "120400", "137661", "143904", "141545", "171636", "211055", "196058",
+      "144594", "150177", "231415", "231574"
+    ]);
+
+    function abrirModalIdentificacao(event) {
+      if (event) event.preventDefault(); // Adicionado para prevenir comportamento padrão
+      document.getElementById('modalIdentificacao').style.display = 'flex';
+      document.getElementById('inputIdentificacao').value = '';
+      document.getElementById('inputIdentificacao').focus();
+      document.getElementById('mensagemErro').style.display = 'none';
+      return false; // Adicionado para garantir que o link não seja seguido
+    }
+
+    function fecharModalIdentificacao() {
+      document.getElementById('modalIdentificacao').style.display = 'none';
+    }
+
+    function verificarIdentificacao() {
+  const identificacao = document.getElementById('inputIdentificacao').value.trim();
+  const mensagemErro = document.getElementById('mensagemErro');
+  
+  // Validação do formato (6 dígitos)
+  if (identificacao.length !== 6 || !/^\d+$/.test(identificacao)) {
+    mensagemErro.textContent = "Digite exatamente 6 dígitos numéricos!";
+    mensagemErro.style.display = 'block';
+    document.getElementById('inputIdentificacao').value = '';
+    setTimeout(() => {
+      mensagemErro.style.display = 'none';
+    }, 3000);
+    return;
+  }
+
+  if (IDENTIFICACOES_AUTORIZADAS.has(identificacao)) {
+    // Codifica o RE em base64 e aplica encodeURIComponent para segurança
+    const authParam = encodeURIComponent(btoa(identificacao));
+    // Redireciona para o visualizador com o parâmetro de autenticação
+    window.location.href = "visualizador.html?auth=" + authParam;
+  } else {
+    mensagemErro.textContent = "RE não encontrado ou não autorizado!";
+    mensagemErro.style.display = 'block';
+    document.getElementById('inputIdentificacao').value = '';
+    setTimeout(() => {
+      mensagemErro.style.display = 'none';
+    }, 3000);
+  }
+}
+
+    // Permitir enviar com Enter
+    document.getElementById('inputIdentificacao')?.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        verificarIdentificacao();
+      }
 
     document.addEventListener("click", function(e) {
       if (!e.target.classList.contains("menu-item") && 
