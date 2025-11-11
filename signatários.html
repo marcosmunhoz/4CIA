@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MBFT — Manual Brasileiro de Fiscalização de Trânsito</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -227,22 +229,46 @@
             margin-bottom: 15px;
         }
 
-        .pdf-placeholder {
+        #pdfViewer {
+            width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--light);
-            color: var(--gray);
-            padding: 20px;
-            text-align: center;
+            overflow: auto;
+            background: #f0f0f0;
         }
 
-        .pdf-placeholder i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: var(--primary);
+        .pdf-page {
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background: white;
+        }
+
+        .pdf-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .pdf-controls button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pdf-controls button:hover {
+            background: var(--primary-dark);
+        }
+
+        .highlight {
+            background-color: yellow;
+            opacity: 0.6;
         }
 
         /* Quick Actions */
@@ -331,6 +357,50 @@
             text-decoration: none;
         }
 
+        /* Loading */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--gray);
+        }
+
+        .loading i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        /* Search Results */
+        .search-results {
+            display: none;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .result-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .result-item:hover {
+            background: var(--light);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
         /* Responsive */
         @media (min-width: 768px) {
             .quick-actions {
@@ -369,7 +439,7 @@
             <li><a href="#"><i class="fas fa-home"></i> Página Inicial</a></li>
             <li><a href="#"><i class="fas fa-book"></i> Manual Completo</a></li>
             <li><a href="#"><i class="fas fa-search"></i> Buscar no MBFT</a></li>
-            <li><a href="#"><i class="fas fa-download"></i> Download PDF</a></li>
+            <li><a href="#" id="download-menu-btn"><i class="fas fa-download"></i> Download PDF</a></li>
             <li><a href="#"><i class="fas fa-question-circle"></i> Ajuda</a></li>
             <li><a href="#"><i class="fas fa-info-circle"></i> Sobre</a></li>
             <li><a href="#"><i class="fas fa-envelope"></i> Contato</a></li>
@@ -384,11 +454,14 @@
             <div class="card-body">
                 <div class="search-container">
                     <div class="search-box">
-                        <input type="text" placeholder="Buscar no MBFT...">
-                        <button class="search-btn">
+                        <input type="text" id="searchInput" placeholder="Buscar no MBFT...">
+                        <button class="search-btn" id="searchBtn">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
+                </div>
+                <div class="search-results" id="searchResults">
+                    <!-- Resultados da busca aparecerão aqui -->
                 </div>
                 <p style="text-align: center; color: var(--gray); font-size: 14px; margin-top: 10px;">
                     Pesquise por artigos, infrações ou termos específicos
@@ -398,11 +471,11 @@
 
         <!-- Quick Actions -->
         <div class="quick-actions">
-            <button class="action-btn">
+            <button class="action-btn" id="viewPdfBtn">
                 <i class="fas fa-book-open"></i>
                 <span>Ler MBFT</span>
             </button>
-            <button class="action-btn">
+            <button class="action-btn" id="downloadBtn">
                 <i class="fas fa-download"></i>
                 <span>Baixar PDF</span>
             </button>
@@ -419,23 +492,30 @@
         <!-- PDF Viewer Card -->
         <div class="card">
             <div class="card-header">
-                <h2>Visualizador MBFT</h2>
+                <h2>Manual Brasileiro de Fiscalização de Trânsito</h2>
                 <div style="display: flex; gap: 10px;">
-                    <button style="background: var(--primary); color: white; border: none; border-radius: 6px; padding: 8px 12px; font-size: 14px;">
+                    <button id="fullscreenBtn" style="background: var(--primary); color: white; border: none; border-radius: 6px; padding: 8px 12px; font-size: 14px;">
                         <i class="fas fa-expand"></i>
                     </button>
                 </div>
             </div>
             <div class="card-body">
                 <div class="pdf-container">
-                    <div class="pdf-placeholder">
-                        <i class="fas fa-file-pdf"></i>
-                        <h3>Manual Brasileiro de Fiscalização de Trânsito</h3>
-                        <p>Toque no botão abaixo para abrir o manual completo</p>
-                        <button style="background: var(--primary); color: white; border: none; border-radius: 6px; padding: 10px 20px; margin-top: 15px; font-weight: 500;">
-                            Abrir MBFT
-                        </button>
+                    <div id="pdfViewer">
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Carregando PDF...</p>
+                        </div>
                     </div>
+                </div>
+                <div class="pdf-controls">
+                    <button id="prevPage">
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <span id="pageInfo">Página 1 de 1</span>
+                    <button id="nextPage">
+                        Próxima <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -443,7 +523,7 @@
         <!-- Recent Sections Card -->
         <div class="card">
             <div class="card-header">
-                <h2>Seções Recentes</h2>
+                <h2>Seções Importantes</h2>
             </div>
             <div class="card-body">
                 <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -451,14 +531,14 @@
                         <i class="fas fa-file-alt" style="margin-right: 10px; color: var(--primary);"></i>
                         <div>
                             <div style="font-weight: 500;">Art. 1º - Disposições Preliminares</div>
-                            <div style="font-size: 12px; color: var(--gray);">Abrir há 2 dias</div>
+                            <div style="font-size: 12px; color: var(--gray);">Seção inicial do manual</div>
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; padding: 12px; background: var(--light); border-radius: 8px;">
                         <i class="fas fa-file-alt" style="margin-right: 10px; color: var(--primary);"></i>
                         <div>
                             <div style="font-weight: 500;">Art. 162 - Infrações Leves</div>
-                            <div style="font-size: 12px; color: var(--gray);">Abrir há 5 dias</div>
+                            <div style="font-size: 12px; color: var(--gray);">Infrações de trânsito</div>
                         </div>
                     </div>
                 </div>
@@ -493,6 +573,262 @@
     </footer>
 
     <script>
+        // Configuração do PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // Variáveis globais
+        let pdfDoc = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        let searchResults = [];
+        let currentResultIndex = -1;
+
+        // Elementos DOM
+        const pdfViewer = document.getElementById('pdfViewer');
+        const pageInfo = document.getElementById('pageInfo');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchResultsDiv = document.getElementById('searchResults');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const downloadMenuBtn = document.getElementById('download-menu-btn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const viewPdfBtn = document.getElementById('viewPdfBtn');
+
+        // URL do PDF (substitua pela URL real do seu PDF)
+        const pdfUrl = 'mbvt20222.pdf'; // Coloque o PDF na mesma pasta ou use URL completa
+
+        // Carregar PDF quando a página carregar
+        window.onload = function() {
+            loadPDF();
+        };
+
+        // Função para carregar o PDF
+        async function loadPDF() {
+            try {
+                const loadingTask = pdfjsLib.getDocument(pdfUrl);
+                pdfDoc = await loadingTask.promise;
+                totalPages = pdfDoc.numPages;
+                
+                // Renderizar a primeira página
+                renderPage(currentPage);
+                
+                // Atualizar informações da página
+                updatePageInfo();
+                
+            } catch (error) {
+                console.error('Erro ao carregar PDF:', error);
+                pdfViewer.innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Erro ao carregar o PDF</p>
+                        <p style="font-size: 14px; margin-top: 10px;">Verifique se o arquivo existe no servidor</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Função para renderizar uma página
+        async function renderPage(pageNum) {
+            try {
+                const page = await pdfDoc.getPage(pageNum);
+                const viewport = page.getViewport({ scale: 1.2 });
+                
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                
+                await page.render(renderContext).promise;
+                
+                // Limpar o visualizador e adicionar a nova página
+                pdfViewer.innerHTML = '';
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'pdf-page';
+                pageDiv.appendChild(canvas);
+                pdfViewer.appendChild(pageDiv);
+                
+            } catch (error) {
+                console.error('Erro ao renderizar página:', error);
+            }
+        }
+
+        // Função para atualizar informações da página
+        function updatePageInfo() {
+            pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+            
+            // Atualizar estado dos botões de navegação
+            prevPageBtn.disabled = currentPage <= 1;
+            nextPageBtn.disabled = currentPage >= totalPages;
+        }
+
+        // Navegação entre páginas
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+                updatePageInfo();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPage(currentPage);
+                updatePageInfo();
+            }
+        });
+
+        // Função de busca no PDF
+        async function searchPDF() {
+            const searchTerm = searchInput.value.trim();
+            
+            if (!searchTerm) {
+                alert('Por favor, digite um termo para buscar.');
+                return;
+            }
+            
+            searchResults = [];
+            currentResultIndex = -1;
+            
+            try {
+                // Buscar em todas as páginas
+                for (let i = 1; i <= totalPages; i++) {
+                    const page = await pdfDoc.getPage(i);
+                    const textContent = await page.getTextContent();
+                    
+                    textContent.items.forEach((item, itemIndex) => {
+                        if (item.str.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            searchResults.push({
+                                page: i,
+                                str: item.str,
+                                transform: item.transform
+                            });
+                        }
+                    });
+                }
+                
+                // Exibir resultados
+                if (searchResults.length > 0) {
+                    displaySearchResults(searchTerm);
+                } else {
+                    searchResultsDiv.innerHTML = '<p>Nenhum resultado encontrado para: "' + searchTerm + '"</p>';
+                    searchResultsDiv.classList.add('active');
+                }
+                
+            } catch (error) {
+                console.error('Erro na busca:', error);
+                alert('Erro ao realizar a busca. Tente novamente.');
+            }
+        }
+
+        // Exibir resultados da busca
+        function displaySearchResults(searchTerm) {
+            searchResultsDiv.innerHTML = '';
+            
+            const resultsHeader = document.createElement('div');
+            resultsHeader.style.padding = '10px';
+            resultsHeader.style.borderBottom = '1px solid var(--border)';
+            resultsHeader.style.fontWeight = 'bold';
+            resultsHeader.textContent = `${searchResults.length} resultado(s) para "${searchTerm}"`;
+            searchResultsDiv.appendChild(resultsHeader);
+            
+            // Agrupar resultados por página
+            const resultsByPage = {};
+            searchResults.forEach(result => {
+                if (!resultsByPage[result.page]) {
+                    resultsByPage[result.page] = [];
+                }
+                resultsByPage[result.page].push(result);
+            });
+            
+            // Criar itens de resultado
+            Object.keys(resultsByPage).forEach(pageNum => {
+                const pageResults = resultsByPage[pageNum];
+                
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div style="font-weight: 500;">Página ${pageNum}</div>
+                    <div style="font-size: 14px; color: var(--gray);">
+                        ${pageResults.length} ocorrência(s)
+                    </div>
+                `;
+                
+                resultItem.addEventListener('click', () => {
+                    currentPage = parseInt(pageNum);
+                    renderPage(currentPage);
+                    updatePageInfo();
+                    searchResultsDiv.classList.remove('active');
+                });
+                
+                searchResultsDiv.appendChild(resultItem);
+            });
+            
+            searchResultsDiv.classList.add('active');
+        }
+
+        // Download do PDF
+        function downloadPDF() {
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = 'mbvt20222.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Tela cheia
+        function toggleFullscreen() {
+            const pdfContainer = document.querySelector('.pdf-container');
+            
+            if (!document.fullscreenElement) {
+                if (pdfContainer.requestFullscreen) {
+                    pdfContainer.requestFullscreen();
+                } else if (pdfContainer.webkitRequestFullscreen) {
+                    pdfContainer.webkitRequestFullscreen();
+                } else if (pdfContainer.msRequestFullscreen) {
+                    pdfContainer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Event Listeners
+        searchBtn.addEventListener('click', searchPDF);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchPDF();
+            }
+        });
+
+        downloadBtn.addEventListener('click', downloadPDF);
+        downloadMenuBtn.addEventListener('click', downloadPDF);
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        viewPdfBtn.addEventListener('click', () => {
+            document.querySelector('.pdf-container').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Fechar resultados ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!searchResultsDiv.contains(e.target) && e.target !== searchInput && e.target !== searchBtn) {
+                searchResultsDiv.classList.remove('active');
+            }
+        });
+
         // Mobile Menu Toggle
         const menuBtn = document.querySelector('.menu-btn');
         const mobileMenu = document.querySelector('.mobile-menu');
@@ -514,23 +850,6 @@
             overlay.classList.remove('active');
         });
 
-        // Search Functionality
-        const searchBtn = document.querySelector('.search-btn');
-        const searchInput = document.querySelector('.search-box input');
-
-        searchBtn.addEventListener('click', () => {
-            if (searchInput.value.trim() !== '') {
-                alert(`Buscando por: "${searchInput.value}"`);
-                // Implementar busca real aqui
-            }
-        });
-
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchBtn.click();
-            }
-        });
-
         // Bottom Navigation Active State
         const navItems = document.querySelectorAll('.nav-item');
         
@@ -539,17 +858,6 @@
                 e.preventDefault();
                 navItems.forEach(nav => nav.classList.remove('active'));
                 this.classList.add('active');
-            });
-        });
-
-        // Action Buttons
-        const actionBtns = document.querySelectorAll('.action-btn');
-        
-        actionBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const text = this.querySelector('span').textContent;
-                alert(`Abrindo: ${text}`);
-                // Implementar ações reais aqui
             });
         });
     </script>
