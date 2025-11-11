@@ -1,177 +1,181 @@
 <!doctype html>
-
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>CTB pesquisável — Código de Trânsito Brasileiro (consolidado)</title>
+  <title>CTB pesquisável — Código de Trânsito Brasileiro</title>
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.5;margin:0;padding:0;background:#f7f7f8;color:#111}
-    header{background:#0b5; /* subtle */ padding:18px 20px;border-bottom:1px solid #e6e6e6}
-    h1{margin:0;font-size:18px}
-    .controls{display:flex;gap:8px;align-items:center;margin-top:8px}
-    input[type=text],input[type=number]{padding:8px;border:1px solid #ccc;border-radius:6px;min-width:220px}
-    button{padding:8px 12px;border-radius:8px;border:0;background:#0b5;color:white;cursor:pointer}
-    main{display:flex;gap:20px;padding:18px}
-    nav{width:320px;max-height:80vh;overflow:auto;padding:12px;background:white;border-radius:8px;border:1px solid #e6e6e6}
-    #content{flex:1;max-height:80vh;overflow:auto;padding:18px;background:white;border-radius:8px;border:1px solid #e6e6e6}
-    .article{padding:6px 0;margin:0.25rem 0}
-    .highlight{background:yellow}
-    footer{padding:12px 18px;font-size:13px;color:#444}
-    .small{font-size:13px;color:#666}
-    .btn-ghost{background:transparent;color:#0b5;border:1px solid #0b5}
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background: #f7f7f8;
+      color: #111;
+    }
+    header {
+      background: #00994d;
+      color: white;
+      text-align: center;
+      padding: 16px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    input[type=text] {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+    button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 0;
+      background: white;
+      color: #00994d;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+    #content {
+      flex: 1;
+      max-height: 75vh;
+      overflow: auto;
+      padding: 16px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    .highlight {
+      background: yellow;
+    }
+    footer {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #444;
+      text-align: center;
+    }
+    a { color: #00994d; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    @media (min-width: 768px) {
+      main { flex-direction: row; gap: 20px; }
+      #content { flex: 1; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>CTB pesquisável — Texto consolidado (carrega da fonte oficial)</h1>
+    <h1>CTB pesquisável — Texto consolidado</h1>
     <div class="controls">
-      <input id="searchInput" type="text" placeholder="Pesquisar palavra, artigo ou expressão (ex: alcoolemia, Art. 165, pedal)" />
+      <input id="searchInput" type="text" placeholder="Pesquise palavra, expressão ou artigo (ex: cinto, 165, alcoolemia)">
       <button id="searchBtn">Pesquisar</button>
-      <input id="articleInput" type="number" placeholder="Número do artigo (ex: 165)" />
-      <button id="gotoBtn">Ir para Artigo</button>
-      <button id="reloadBtn" class="btn-ghost">Recarregar fonte</button>
+      <button id="reloadBtn">Recarregar texto</button>
     </div>
   </header>
+
   <main>
-    <nav id="toc">
-      <strong>Índice rápido</strong>
-      <div id="tocList" class="small"></div>
-      <hr>
-      <div class="small">Fonte principal: <a href="https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm" target="_blank">Planalto (compilado)</a></div>
-      <div class="small">Backup: <a href="https://www.ctbdigital.com.br/" target="_blank">CTB Digital (Perkons)</a></div>
-    </nav><section id="content">
-  <p class="small">Carregando o texto consolidado do CTB a partir da fonte oficial (Planalto). Se o navegador bloquear por CORS, verá uma mensagem com opção para colar o texto manualmente.</p>
-  <div id="lawContainer"></div>
-  <textarea id="manualPaste" style="display:none;width:100%;height:200px;margin-top:12px"></textarea>
-  <div id="manualActions" style="display:none;margin-top:8px"><button id="useManual">Usar texto colado</button></div>
-</section>
-
+    <section id="content">
+      <p style="font-size:13px;color:#555">
+        O texto é carregado automaticamente da fonte oficial (Planalto). 
+        Se não aparecer, cole o texto/HTML do CTB abaixo.
+      </p>
+      <div id="lawContainer"></div>
+      <textarea id="manualPaste" style="display:none;width:100%;height:200px;margin-top:12px"></textarea>
+      <div id="manualActions" style="display:none;margin-top:8px">
+        <button id="useManual">Usar texto colado</button>
+      </div>
+    </section>
   </main>
+
   <footer>
-    <div>Como funciona: o botão <strong>Pesquisar</strong> destaca ocorrências e mostra o número total; <strong>Ir para Artigo</strong> procura um elemento marcado como "Art." seguido do número e rola até ele. Se o carregamento automático falhar por CORS, cole o HTML/texto oficial no campo indicado.</div>
-  </footer><script>
-const PLANALTO_URL = 'https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm';
-const lawContainer = document.getElementById('lawContainer');
-const tocList = document.getElementById('tocList');
+    Fonte oficial: 
+    <a href="https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm" target="_blank">Planalto</a> · 
+    Backup: 
+    <a href="https://www.ctbdigital.com.br/" target="_blank">CTB Digital</a>
+  </footer>
 
-async function loadFromPlanalto(){
-  lawContainer.innerHTML = '<p class="small">Tentando carregar da fonte oficial...</p>';
-  try{
-    const res = await fetch(PLANALTO_URL);
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const txt = await res.text();
-    injectLawHtml(txt);
-  }catch(err){
-    lawContainer.innerHTML = '<p class="small">Não foi possível carregar automaticamente (provável bloqueio CORS). Você pode colar o HTML/texto consolidado manualmente no campo abaixo.</p>';
-    document.getElementById('manualPaste').style.display='block';
-    document.getElementById('manualActions').style.display='block';
-  }
-}
+  <script>
+    const PLANALTO_URL = 'https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm';
+    const lawContainer = document.getElementById('lawContainer');
 
-function injectLawHtml(html){
-  // parse and extract main content heuristically
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  // try to find main article container
-  let source = doc.querySelector('body') || doc;
-  // remove scripts
-  source.querySelectorAll('script,style,iframe,nav,header').forEach(n=>n.remove());
-  // sanitize links to open new tab
-  source.querySelectorAll('a').forEach(a=>{ a.target='_blank'; });
-  // get innerHTML
-  let inner = source.innerHTML;
-  // inject
-  lawContainer.innerHTML = inner;
-  indexArticles();
-}
+    async function loadFromPlanalto() {
+      lawContainer.innerHTML = '<p>Carregando o texto consolidado...</p>';
+      try {
+        const res = await fetch(PLANALTO_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const txt = await res.text();
+        injectLawHtml(txt);
+      } catch (err) {
+        lawContainer.innerHTML = '<p>Não foi possível carregar automaticamente (bloqueio CORS). Cole o texto oficial no campo abaixo.</p>';
+        document.getElementById('manualPaste').style.display = 'block';
+        document.getElementById('manualActions').style.display = 'block';
+      }
+    }
 
-function indexArticles(){
-  // find text nodes containing 'Art.' pattern and wrap them
-  const container = lawContainer;
-  let html = container.innerHTML;
-  // normalize common patterns: 'Art. 1', 'Art. 1º', 'Art. 1 -', 'Art. 1.'
-  // We'll replace occurrences of 'Art.' followed by number with an anchor span having id art-<num>
-  html = html.replace(/(Art\.|ART\.|Artigo)\s*\.?\s*(\d{1,3})(?:º|\.|\s|\-)?/g, function(match,prefix,num){
-    return `<a id="art-${num}" class="article-anchor" style="text-decoration:none;color:inherit">`+match+`</a>`;
-  });
-  container.innerHTML = html;
-  // build TOC
-  const anchors = container.querySelectorAll('a.article-anchor');
-  tocList.innerHTML='';
-  anchors.forEach(a=>{
-    const text = a.textContent;
-    const id = a.id;
-    const num = id.replace('art-','');
-    const div = document.createElement('div');
-    div.className='small';
-    const link = document.createElement('a');
-    link.href='#'+id;
-    link.textContent = text;
-    link.addEventListener('click', (e)=>{ e.preventDefault(); document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'}); });
-    div.appendChild(link);
-    tocList.appendChild(div);
-  });
-}
+    function injectLawHtml(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      let source = doc.querySelector('body') || doc;
+      source.querySelectorAll('script,style,iframe,nav,header').forEach(n => n.remove());
+      source.querySelectorAll('a').forEach(a => { a.target = '_blank'; });
+      lawContainer.innerHTML = source.innerHTML;
+    }
 
-function clearHighlights(){
-  document.querySelectorAll('.highlight').forEach(el=>{
-    el.outerHTML = el.textContent; // remove wrapper
-  });
-}
+    function clearHighlights() {
+      document.querySelectorAll('.highlight').forEach(el => {
+        el.outerHTML = el.textContent;
+      });
+    }
 
-function highlightAll(term){
-  clearHighlights();
-  if(!term) return 0;
-  const container = lawContainer;
-  const walk = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
-  const re = new RegExp(term.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&'), 'ig');
-  let node;
-  let count=0;
-  const nodesToWrap = [];
-  while(node = walk.nextNode()){
-    if(re.test(node.nodeValue)) nodesToWrap.push(node);
-  }
-  nodesToWrap.forEach(textNode=>{
-    const span = document.createElement('span');
-    span.innerHTML = textNode.nodeValue.replace(re, m=>`<span class="highlight">${m}</span>`);
-    textNode.parentNode.replaceChild(span, textNode);
-    count += (span.querySelectorAll('.highlight')||[]).length;
-  });
-  return count;
-}
+    function highlightAndScroll(term) {
+      clearHighlights();
+      if (!term) return 0;
+      const container = lawContainer;
+      const re = new RegExp(term.replace(/[-/\\^$*+?.()|[\\]{}]/g, '\\\\$&'), 'ig');
+      let html = container.innerHTML;
+      const matches = html.match(re);
+      if (!matches) return 0;
+      html = html.replace(re, m => `<span class="highlight">${m}</span>`);
+      container.innerHTML = html;
+      const first = container.querySelector('.highlight');
+      if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return matches.length;
+    }
 
-// controls
-document.getElementById('searchBtn').addEventListener('click', ()=>{
-  const term = document.getElementById('searchInput').value.trim();
-  const count = highlightAll(term);
-  if(term) alert(`${count} ocorrência(s) encontradas.`);
-});
+    document.getElementById('searchBtn').addEventListener('click', () => {
+      const term = document.getElementById('searchInput').value.trim();
+      const count = highlightAndScroll(term);
+      if (term) alert(`${count} ocorrência(s) encontradas.`);
+    });
 
-document.getElementById('gotoBtn').addEventListener('click', ()=>{
-  const n = document.getElementById('articleInput').value.trim();
-  if(!n) return alert('Digite o número do artigo');
-  const el = document.getElementById('art-'+n);
-  if(el){
-    el.scrollIntoView({behavior:'smooth',block:'center'});
-    el.style.background='#ffd';
-    setTimeout(()=>el.style.background='',2000);
-  }else{
-    alert('Artigo não encontrado na versão carregada. Tente recarregar ou cole o texto oficial manualmente.');
-  }
-});
+    document.getElementById('reloadBtn').addEventListener('click', () => loadFromPlanalto());
 
-document.getElementById('reloadBtn').addEventListener('click', ()=>{ loadFromPlanalto(); });
+    document.getElementById('useManual').addEventListener('click', () => {
+      const txt = document.getElementById('manualPaste').value;
+      if (!txt) return alert('Cole o texto antes de usar.');
+      injectLawHtml(txt);
+      document.getElementById('manualPaste').style.display = 'none';
+      document.getElementById('manualActions').style.display = 'none';
+    });
 
-document.getElementById('useManual').addEventListener('click', ()=>{
-  const txt = document.getElementById('manualPaste').value;
-  if(!txt) return alert('Cole o texto/HTML do CTB no campo antes de usar.');
-  injectLawHtml(txt);
-  document.getElementById('manualPaste').style.display='none';
-  document.getElementById('manualActions').style.display='none';
-});
-
-// initial load
-loadFromPlanalto();
-</script></body>
+    // Carregar automaticamente na abertura
+    loadFromPlanalto();
+  </script>
+</body>
 </html>
