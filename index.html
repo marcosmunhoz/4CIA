@@ -1,274 +1,550 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Área Policial</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Kanit', sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      color: white;
-      background-color: #000;
-    }
+<!DOCTYPE html>  <html lang="pt-BR">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+  <title>Área Policial</title>  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">  
+  <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">  
+  <style>  
+    body {  
+      font-family: 'Kanit', sans-serif;  
+      margin: 0;  
+      padding: 0;  
+      overflow-x: hidden;  
+      color: white;  
+      background-color: #000;  
+    }  nav {  
+  display: flex;  
+  align-items: center;  
+  background: rgba(0, 0, 0, 0.3);  
+  padding: 8px 20px;  
+  user-select: none;  
+  z-index: 1000;  
+  position: fixed;  
+  width: 100%;  
+  box-sizing: border-box;  
+  flex-wrap: wrap;  
+  top: 0;  
+  transition: background 0.3s ease;  
+  justify-content: flex-start;  
+}  
 
-    nav {
-      display: flex;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 8px 20px;
-      user-select: none;
-      z-index: 1000;
-      position: fixed;
-      width: 100%;
-      box-sizing: border-box;
-      flex-wrap: wrap;
-      top: 0;
-      transition: background 0.3s ease;
-      justify-content: flex-start;
-    }
+nav.scrolled {  
+  background: rgba(0, 0, 0, 0.8);  
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);  
+}  
 
-    nav.scrolled {
-      background: rgba(0, 0, 0, 0.8);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
+.logo img.logo-img {  
+  height: 50px;  
+  object-fit: contain;  
+}  
 
-    .logo img.logo-img {
-      height: 50px;
-      object-fit: contain;
-    }
+nav .logo a {  
+  color: white;  
+  font-weight: 700;  
+  font-size: 1.6rem;  
+  text-decoration: none;  
+  margin-right: 0;  
+  font-family: 'Kanit', sans-serif;  
+  display: flex;  
+  align-items: center;  
+}  
 
-    ul.menu-horizontal {
-      list-style: none;
-      margin: 0;
-      padding: 0 0 0 20px;
-      display: flex;
-      gap: 20px;
-      flex-wrap: nowrap;
-    }
+ul.menu-horizontal {  
+  list-style: none;  
+  margin: 0;  
+  padding: 0 0 0 20px;  
+  display: flex;  
+  gap: 20px;  
+  flex-wrap: nowrap;  
+}  
 
-    ul.menu-horizontal > li {
-      position: relative;
-      cursor: pointer;
-      padding-bottom: 10px;
-    }
+ul.menu-horizontal > li {  
+  position: relative;  
+  cursor: pointer;  
+  padding-bottom: 10px;  
+}  
 
-    ul.menu-horizontal > li > a {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.4rem;
-      white-space: nowrap;
-      padding: 10px 5px;
-      border-bottom: 2px solid transparent;
-      transition: all 0.3s ease;
-      position: relative;
-      display: inline-block;
-    }
+ul.menu-horizontal > li > a {  
+  color: white;  
+  text-decoration: none;  
+  font-weight: 600;  
+  font-size: 1.4rem;  
+  white-space: nowrap;  
+  padding: 10px 5px;  
+  border-bottom: 2px solid transparent;  
+  transition: all 0.3s ease;  
+  position: relative;  
+  display: inline-block;  
+}  
 
-    ul.menu-horizontal > li > a:hover {
-      color: #87CEEB !important;
-      border-bottom: 2px solid #87CEEB !important;
-    }
+ul.menu-horizontal > li > a:hover,  
+ul.menu-horizontal > li > a:active,  
+ul.menu-horizontal > li > a.active {  
+  color: #87CEEB !important;  
+  border-bottom: 2px solid #87CEEB !important;  
+}  
 
-    ul.submenu-horizontal {
-      list-style: none;
-      margin: 0;
-      padding: 5px 0;
-      display: none;
-      background: rgba(0, 0, 0, 0.8);
-      border-radius: 3px;
-      position: absolute;
-      left: 50%;
-      top: 100%;
-      transform: translateX(-50%);
-      z-index: 1001;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-      min-width: 110px;
-      width: max-content;
-    }
+ul.submenu-horizontal {  
+  list-style: none;  
+  margin: 0;  
+  padding: 5px 0;  
+  display: none;  
+  background: rgba(0, 0, 0, 0.8);  
+  border-radius: 3px;  
+  position: absolute;  
+  left: 50%;  
+  top: 100%;  
+  transform: translateX(-50%);  
+  z-index: 1001;  
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5);  
+  min-width: 110px;  
+  width: max-content;  
+}  
 
-    ul.submenu-horizontal.active {
-      display: block;
-      top: 100%;
-    }
+ul.submenu-horizontal.active {  
+  display: block;  
+  top: 100%;  
+}  
 
-    ul.submenu-horizontal li a {
-      color: white;
-      font-size: 1.2rem;
-      text-decoration: none;
-      white-space: nowrap;
-      padding: 4px 12px;
-      border-radius: 2px;
-      transition: all 0.3s ease;
-      display: block;
-    }
+ul.submenu-horizontal li a {  
+  color: white;  
+  font-size: 1.2rem;  
+  text-decoration: none;  
+  white-space: nowrap;  
+  padding: 4px 12px;  
+  border-radius: 2px;  
+  transition: all 0.3s ease;  
+  display: block;  
+}  
 
-    ul.submenu-horizontal li a:hover {
-      background-color: #87CEEB !important;
-      color: #000 !important;
-    }
+ul.submenu-horizontal li a:hover,  
+ul.submenu-horizontal li a:active,  
+ul.submenu-horizontal li a.active {  
+  background-color: #87CEEB !important;  
+  color: #000 !important;  
+}  
 
-    /* Fundo de vídeo */
-    #background-video {
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      z-index: -1;
-      object-fit: cover;
-      object-position: 70% center;
-    }
+@media (max-width: 768px) {  
+  nav {  
+    padding: 10px 15px;  
+    justify-content: flex-start;  
+  }  
 
-    /* Menu circular */
-    .menu-circle {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 500px;
-      height: 500px;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      z-index: 100;
-    }
+  ul.menu-horizontal {  
+    padding-left: 10px;  
+    gap: 8px;  
+  }  
 
-    .menu-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+  ul.menu-horizontal > li > a {  
+    font-size: 1.2rem;  
+    padding: 8px 3px;  
+  }  
 
-    .menu-item:hover {
-      background: rgba(255, 255, 255, 0.4);
-    }
+  .logo img.logo-img {  
+    height: 40px;  
+  }  
 
-    .menu-icon {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-    }
+  html, body {  
+    overflow-x: hidden;  
+    width: 100%;  
+    position: relative;  
+  }  
 
-    /* Rodapé discreto */
-    footer {
-      position: fixed;
-      bottom: 8px;
-      width: 100%;
-      text-align: center;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
-      font-weight: 300;
-      z-index: 50;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-      user-select: none;
-    }
+  body.menu-open {  
+    overflow: hidden;  
+    height: 100%;  
+  }  
+}  
 
-    footer:hover {
-      color: rgba(255,255,255,0.9);
-      transition: color 0.3s;
-    }
+/* ESTILOS DA PÁGINA COM MENU CIRCULAR */  
+html, body {  
+  margin: 0;  
+  padding: 0;  
+  height: 100%;  
+  overflow: hidden;  
+  font-family: sans-serif;  
+}  
 
-    @media (max-width: 768px) {
-      .menu-circle {
-        width: 320px;
-        height: 320px;
-      }
-      .menu-item {
-        width: 70px;
-        height: 70px;
-      }
-      .menu-icon {
-        width: 40px;
-        height: 40px;
-      }
-    }
-  </style>
-</head>
-<body>
+/* Fundo de vídeo */  
+#background-video {  
+  position: fixed;  
+  right: 0;  
+  bottom: 0;  
+  min-width: 100%;  
+  min-height: 100%;  
+  width: auto;  
+  height: auto;  
+  z-index: -1;  
+  object-fit: cover;  
+  object-position: 70% center;  
+}  
 
-  <!-- MENU SUPERIOR -->
-  <nav id="mainNav">
-    <div class="logo">
-      <a href="index.html">
-        <img src="img/logo/icon-pmrv.png" alt="Polícia Rodoviária" class="logo-img">
-      </a>
-    </div>
+/* Menu circular principal */  
+.menu-circle {  
+  position: fixed;  
+  top: 50%;  
+  left: 50%;  
+  width: 500px; /* Ajustado para 500px */  
+  height: 500px; /* Ajustado para 500px */  
+  transform: translate(-50%, -50%);  
+  border-radius: 50%;  
+  background: rgba(0, 0, 0, 0.6);  
+  display: flex;  
+  justify-content: center;  
+  align-items: center;  
+  flex-wrap: wrap;  
+  transition: all 0.3s ease;  
+  z-index: 100;  
+}  
 
-    <ul class="menu-horizontal" id="menu">
-      <li>
-        <a>POLICIAL MILITAR</a>
-        <ul class="submenu-horizontal">
-          <li><a href="mbft.html">MBFT</a></li>
-          <li><a href="https://www.ctbdigital.com.br">CTB Digital</a></li>
-          <li><a href="municipios.html">Código de Município</a></li>
-          <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
-          <li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatário</a></li>
-          <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>
-          <li><a href="debito.html">Débito de Veículos</a></li>
-          <li><a href="manual.html">Vigilante Rodoviário</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+.menu-item {  
+  display: flex;  
+  flex-direction: column;  
+  align-items: center;  
+  justify-content: center;  
+  position: absolute;  
+  width: 100px; /* Ajustado para 100px */  
+  height: 100px; /* Ajustado para 100px */  
+  background: rgba(255, 255, 255, 0.2);  
+  color: white;  
+  border-radius: 50%;  
+  text-align: center;  
+  font-size: 14px;  
+  cursor: pointer;  
+  transition: background 0.2s;  
+  white-space: nowrap;  
+  overflow: hidden;  
+  text-overflow: ellipsis;  
+}  
+  
+.menu-text {  
+  font-size: 14px;  
+  margin-bottom: 5px;  
+  font-weight: bold;  
+}   
 
-  <!-- Vídeo de fundo -->
-  <video id="background-video" autoplay loop muted playsinline>
-    <source src="videos/pm1.mp4" type="video/mp4">
-  </video>
+.menu-emoji {  
+  font-size: 24px;  
+}  
+  
+.menu-icon {  
+  width: 60px; /* Ajustado para 60px */  
+  height: 60px; /* Ajustado para 60px */  
+  object-fit: contain;  
+  pointer-events: none;  
+}  
 
-  <!-- Menu circular -->
-  <div class="menu-circle" id="mainMenu">
-    <div class="menu-item" onclick="toggleSubmenu(1)">
-      <img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon">
-    </div>
-    <div class="menu-item" onclick="toggleSubmenu(2)">
-      <img src="img/logo/VPN.png" alt="VPN" class="menu-icon">
-    </div>
-    <div class="menu-item">
-      <a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon"></a>
-    </div>
-    <div class="menu-item">
-      <a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon"></a>
-    </div>
-    <div class="menu-item">
-      <a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon"></a>
-    </div>
-    <div class="menu-item">
-      <a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon"></a>
-    </div>
-    <div class="menu-item">
-      <a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon"></a>
-    </div>
-    <div class="menu-item" onclick="toggleSubmenu(8)">
-      <img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon">
-    </div>
-  </div>
+.menu-item:hover {  
+  background: rgba(255, 255, 255, 0.4);  
+}  
 
-  <!-- 🔻 RODAPÉ DISCRETO -->
-  <footer>Desenvolvido pelo Sd PM 194528-9 GUIDINI</footer>
+/* Posição dos itens do menu ajustada */  
+.menu-item:nth-child(1) { transform: rotate(0deg) translate(200px) rotate(0deg); } /* Ajustado para 200px */  
+.menu-item:nth-child(2) { transform: rotate(45deg) translate(200px) rotate(-45deg); }  
+.menu-item:nth-child(3) { transform: rotate(90deg) translate(200px) rotate(-90deg); }  
+.menu-item:nth-child(4) { transform: rotate(135deg) translate(200px) rotate(-135deg); }  
+.menu-item:nth-child(5) { transform: rotate(180deg) translate(200px) rotate(-180deg); }  
+.menu-item:nth-child(6) { transform: rotate(225deg) translate(200px) rotate(-225deg); }  
+.menu-item:nth-child(7) { transform: rotate(270deg) translate(200px) rotate(-270deg); }  
+.menu-item:nth-child(8) { transform: rotate(315deg) translate(200px) rotate(-315deg); }  
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
-</body>
+/* Submenu circular */  
+.submenu-circle {  
+  position: fixed;  
+  width: 400px; /* Ajustado para 400px */  
+  height: 400px; /* Ajustado para 400px */  
+  border-radius: 50%;  
+  background: rgba(0, 0, 0, 0.6);  
+  display: none;  
+  justify-content: center;  
+  align-items: center;  
+  top: 50%;  
+  left: 50%;  
+  transform: translate(-50%, -50%);  
+  z-index: 101;  
+}  
+
+.submenu-item {  
+  flex-direction: column;  
+  align-items: center;  
+  justify-content: center;  
+  position: absolute;  
+  width: 80px; /* Ajustado para 80px */  
+  height: 80px; /* Ajustado para 80px */  
+  background: rgba(255, 255, 255, 0.3);  
+  color: #fff;  
+  border-radius: 50%;  
+  text-align: center;  
+  font-size: 12px;  
+  cursor: pointer;  
+  white-space: nowrap;  
+  overflow: hidden;  
+  text-overflow: ellipsis;  
+  font-weight: bold;  
+  line-height: 1.2;  
+  user-select: none;  
+  transition: all 0.2s;  
+}  
+  
+.submenu-icon {  
+  width: 50px; /* Ajustado para 50px */  
+  height: 50px; /* Ajustado para 50px */  
+  object-fit: contain;  
+  margin-bottom: 5px;  
+}  
+  
+.submenu-text {  
+  font-size: 12px;  
+  margin-bottom: 2px;  
+}  
+  
+.submenu-item a {  
+  color: white;  
+  text-decoration: none;  
+  display: flex;  
+  flex-direction: column;  
+  align-items: center;  
+  justify-content: center;  
+  width: 100%;  
+  height: 100%;  
+  text-align: center;  
+  padding: 5px;  
+}  
+
+.submenu-item a:hover {  
+  color: white;  
+  text-decoration: none;  
+}  
+
+.submenu-item:hover {  
+  background: rgba(255, 255, 255, 0.5);  
+  transform: scale(1.05);  
+}  
+
+/* Posição dos itens do submenu ajustada */  
+.submenu-item:nth-child(1) { transform: rotate(0deg) translate(150px) rotate(0deg); } /* Ajustado para 150px */  
+.submenu-item:nth-child(2) { transform: rotate(72deg) translate(150px) rotate(-72deg); }  
+.submenu-item:nth-child(3) { transform: rotate(144deg) translate(150px) rotate(-144deg); }  
+.submenu-item:nth-child(4) { transform: rotate(216deg) translate(150px) rotate(-216deg); }  
+.submenu-item:nth-child(5) { transform: rotate(288deg) translate(150px) rotate(-288deg); }  
+
+/* Ajustes específicos para mobile */
+
+@media only screen and (max-width: 768px) {
+.menu-circle {
+width: 320px;
+height: 320px;
+}
+
+.menu-item {
+width: 70px;
+height: 70px;
+}
+
+.menu-icon {
+width: 40px;
+height: 40px;
+}
+
+.menu-item:nth-child(1) { transform: rotate(0deg) translate(125px) rotate(0deg); }
+.menu-item:nth-child(2) { transform: rotate(45deg) translate(125px) rotate(-45deg); }
+.menu-item:nth-child(3) { transform: rotate(90deg) translate(125px) rotate(-90deg); }
+.menu-item:nth-child(4) { transform: rotate(135deg) translate(125px) rotate(-135deg); }
+.menu-item:nth-child(5) { transform: rotate(180deg) translate(125px) rotate(-180deg); }
+.menu-item:nth-child(6) { transform: rotate(225deg) translate(125px) rotate(-225deg); }
+.menu-item:nth-child(7) { transform: rotate(270deg) translate(125px) rotate(-270deg); }
+.menu-item:nth-child(8) { transform: rotate(315deg) translate(125px) rotate(-315deg); }
+
+.submenu-circle {
+width: 260px;
+height: 260px;
+}
+
+.submenu-item {
+width: 60px;
+height: 60px;
+}
+
+.submenu-icon {
+width: 35px;
+height: 35px;
+}
+
+.submenu-item:nth-child(1) { transform: rotate(0deg) translate(100px) rotate(0deg); }
+.submenu-item:nth-child(2) { transform: rotate(72deg) translate(100px) rotate(-72deg); }
+.submenu-item:nth-child(3) { transform: rotate(144deg) translate(100px) rotate(-144deg); }
+.submenu-item:nth-child(4) { transform: rotate(216deg) translate(100px) rotate(-216deg); }
+.submenu-item:nth-child(5) { transform: rotate(288deg) translate(100px) rotate(-288deg); }
+}
+
+@media only screen and (max-width: 480px) {
+.menu-circle {
+width: 280px;
+height: 280px;
+}
+
+.menu-item {
+width: 60px;
+height: 60px;
+}
+
+.menu-icon {
+width: 35px;
+height: 35px;
+}
+
+.menu-item:nth-child(1) { transform: rotate(0deg) translate(110px) rotate(0deg); }
+.menu-item:nth-child(2) { transform: rotate(45deg) translate(110px) rotate(-45deg); }
+.menu-item:nth-child(3) { transform: rotate(90deg) translate(110px) rotate(-90deg); }
+.menu-item:nth-child(4) { transform: rotate(135deg) translate(110px) rotate(-135deg); }
+.menu-item:nth-child(5) { transform: rotate(180deg) translate(110px) rotate(-180deg); }
+.menu-item:nth-child(6) { transform: rotate(225deg) translate(110px) rotate(-225deg); }
+.menu-item:nth-child(7) { transform: rotate(270deg) translate(110px) rotate(-270deg); }
+.menu-item:nth-child(8) { transform: rotate(315deg) translate(110px) rotate(-315deg); }
+
+.submenu-circle {
+width: 220px;
+height: 220px;
+}
+
+.submenu-item {
+width: 50px;
+height: 50px;
+}
+
+.submenu-icon {
+width: 30px;
+height: 30px;
+}
+
+.submenu-item:nth-child(1) { transform: rotate(0deg) translate(85px) rotate(0deg); }
+.submenu-item:nth-child(2) { transform: rotate(72deg) translate(85px) rotate(-72deg); }
+.submenu-item:nth-child(3) { transform: rotate(144deg) translate(85px) rotate(-144deg); }
+.submenu-item:nth-child(4) { transform: rotate(216deg) translate(85px) rotate(-216deg); }
+.submenu-item:nth-child(5) { transform: rotate(288deg) translate(85px) rotate(-288deg); }
+}
+</style>
+
+</head>  
+<body>    <!-- MENU SUPERIOR -->    <nav id="mainNav">  
+    <div class="logo">  
+      <a href="index.html">  
+        <img src="img/logo/icon-pmrv.png" alt="Polícia Rodoviária" class="logo-img">  
+      </a>  
+    </div>  <ul class="menu-horizontal" id="menu">  
+  <li>  
+    <a>POLICIAL MILITAR</a>  
+    <ul class="submenu-horizontal">  
+      <li><a href="mbft.html">MBFT</a></li>  
+      <li><a href="https://www.ctbdigital.com.br">CTB Digital</a></li>  
+      <li><a href="municipios.html">Código de Município</a></li>  
+      <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>  
+      <li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatário</a></li>  
+      <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>  
+      <li><a href="debito.html">Débito de Veículos</a></li>  
+      <li><a href="manual.html">Vigilante Rodoviário</a></li>  
+    </ul>  
+  </li>  
+</ul>
+
+  </nav>    <!-- Vídeo de fundo -->    <video id="background-video" autoplay loop muted playsinline>  
+    <source src="videos/pm1.mp4" type="video/mp4">  
+   </video>    <!-- Menu principal -->    <div class="menu-circle" id="mainMenu">  
+    <div class="menu-item" onclick="toggleSubmenu(1)"><img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" /></div>  
+    <div class="menu-item" onclick="toggleSubmenu(2)"><img src="img/logo/VPN.png" alt="VPN" class="menu-icon" /></div>  
+    <div class="menu-item"><a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" /></a></div>  
+    <div class="menu-item"><a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon" /></a></div>  
+    <div class="menu-item"><a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon" /></a></div>  
+    <div class="menu-item"><a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" /></a></div>  
+    <div class="menu-item"><a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" /></a></div>  
+    <div class="menu-item" onclick="toggleSubmenu(8)"><img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" /></div>  
+  </div>    <!-- Submenus -->    <div class="submenu-circle" id="submenu1">  
+    <div class="submenu-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLScAsayIw8JXcY8sIYy2ZQViqbAoKUSZOoKL27mnwXDIPjgK5w/viewform"><img src="img/logo/manutenção.png" alt="MANUTENÇÂO" class="submenu-icon" /></a></div>  
+    <div class="submenu-item"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode"><img src="img/logo/amigo.png" alt="AMIGOS" class="submenu-icon" /></a></div>  
+    <div class="submenu-item"><a href="#">__</a></div>  
+    <div class="submenu-item"><a href="#">__</a></div>  
+    <div class="submenu-item"><a href="#">__</a></div>  
+  </div>    <div class="submenu-circle" id="submenu2">  
+    <div class="submenu-item"><a href="http://www.intranet.policiamilitar.sp.gov.br/"><img src="img/logo/intranet.png" alt="INTRANET" class="submenu-icon" /></a></div>  
+    <div class="submenu-item"><a href="http://10.61.15.39/Login"><img src="img/logo/PPRI.png" alt="PPRI" class="submenu-icon" /><span class="submenu-text">PPRI</span></a></div>  
+    <div class="submenu-item"><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login"><img src="img/logo/assentamento.png" alt="ASSENTAMENTO" class="submenu-icon" /></a></div>  
+    <div class="submenu-item"><a href="consulta.html"><img src="img/logo/dejem.png" alt="DEJEM-DELEGADA" class="submenu-icon" /></a></div>  
+    <div class="submenu-item"><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/"><img src="img/logo/prodesp.png" alt="PRODESP" class="submenu-icon" /></a></div>  
+  </div>    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>    <script>  
+    // Funções do menu horizontal  
+    window.addEventListener('scroll', function() {  
+      const nav = document.getElementById('mainNav');  
+      if (window.scrollY > 50) {  
+        nav.classList.add('scrolled');  
+      } else {  
+        nav.classList.remove('scrolled');  
+      }  
+    });  
+  
+    document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {  
+      link.addEventListener('click', function(e) {  
+        document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {  
+          if (sub !== this.nextElementSibling) {  
+            sub.classList.remove('active');  
+          }  
+        });  
+  
+        if (this.nextElementSibling && this.nextElementSibling.classList.contains('submenu-horizontal')) {  
+          e.preventDefault();  
+          this.nextElementSibling.classList.toggle('active');  
+            
+          if (this.nextElementSibling.classList.contains('active')) {  
+            document.body.classList.add('menu-open');  
+          } else {  
+            document.body.classList.remove('menu-open');  
+          }  
+        }  
+      });  
+    });  
+  
+    document.addEventListener('click', function(e) {  
+      if (!e.target.closest('nav')) {  
+        document.querySelectorAll('.submenu-horizontal.active').forEach(sub => {  
+          sub.classList.remove('active');  
+          document.body.classList.remove('menu-open');  
+        });  
+      }  
+    });  
+  
+    // Funções do menu circular  
+    function toggleSubmenu(index) {  
+      const submenus = document.querySelectorAll(".submenu-circle");  
+      submenus.forEach(menu => menu.style.display = "none");  
+  
+      const submenu = document.getElementById("submenu" + index);  
+      if (submenu) {  
+        submenu.style.display = "flex";  
+      }  
+    }  
+  
+    document.addEventListener("click", function(e) {  
+      if (!e.target.classList.contains("menu-item") &&   
+          !e.target.closest('.menu-item') &&   
+          !e.target.classList.contains("submenu-item") &&   
+          !e.target.closest('.submenu-item')) {  
+        const submenus = document.querySelectorAll(".submenu-circle");  
+        submenus.forEach(menu => menu.style.display = "none");  
+      }  
+    });  
+  
+    function adjustVideoPosition() {  
+      const video = document.getElementById('background-video');  
+      if (window.innerWidth <= 768) {  
+        video.style.objectPosition = '50% center';  
+        video.style.objectFit = 'cover';  
+      } else {  
+        video.style.objectPosition = '70% center';  
+      }  
+    }  
+  
+    window.addEventListener('load', adjustVideoPosition);  
+    window.addEventListener('resize', adjustVideoPosition);  
+  </script>  </body>  
 </html>
