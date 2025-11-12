@@ -15,36 +15,44 @@
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      /* 🔻 Sua imagem de fundo */
       background-image: url('vigilante.jpg');
-      padding-top: 130px; /* espaço pro player fixo */
-    }
-
-    /* 🔹 PLAYER FIXO NO TOPO */
-    .player {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      max-width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 0 0 20px 20px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 999;
+      justify-content: center;
+      padding-top: 20px; /* apenas espaçamento superior */
     }
 
-    .controls {
+    /* 🔹 CAIXA DA LETRA */
+    .lyrics {
+      position: fixed; /* fixa no topo */
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       width: 90%;
-      max-width: 400px;
+      max-width: 600px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 20px;
+      padding: 20px;
+      line-height: 1.6;
+      font-size: 1rem;
+      backdrop-filter: blur(6px);
+      text-align: center;
+      z-index: 999;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    }
+
+    .lyrics h2 {
+      margin: 20px 0;
+      color: #FFD700;
+      text-shadow: 2px 2px 5px black;
+    }
+
+    /* 🔹 PLAYER DENTRO DA LETRA */
+    .controls {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 10px;
+      margin-bottom: 15px;
     }
 
     button {
@@ -56,38 +64,23 @@
     }
 
     input[type="range"] {
-      width: 100%;
+      width: 70%;
       accent-color: #FFD700;
       cursor: pointer;
     }
 
-    /* 🔹 LETRA */
-    .lyrics {
-      width: 90%;
-      max-width: 600px;
-      background: rgba(0,0,0,0.6);
-      border-radius: 15px;
-      padding: 20px;
-      margin: 0 auto 60px auto;
-      line-height: 1.6;
-      font-size: 1rem;
-      backdrop-filter: blur(6px);
-      text-align: center;
+    /* 🔹 ESPAÇO PARA O RESTO DO CONTEÚDO */
+    .spacer {
+      height: 400px; /* espaço fictício para rolar a página */
     }
 
-    .lyrics h2 {
-      margin-bottom: 15px;
-      color: #FFD700;
-      text-shadow: 2px 2px 5px black;
-    }
   </style>
 </head>
 <body>
 
-  <!-- 🔹 PLAYER NO TOPO -->
-  <div class="player">
+  <!-- 🔹 LETRA DA MÚSICA COM PLAYER -->
+  <div class="lyrics">
     <audio id="audio">
-      <!-- 🔻 Sua música MP3 -->
       <source src="musica.mp3" type="audio/mp3">
     </audio>
 
@@ -95,10 +88,7 @@
       <button id="playPause">▶️</button>
       <input type="range" id="progress" value="0" min="0" max="100">
     </div>
-  </div>
 
-  <!-- 🔹 LETRA DA MÚSICA -->
-  <div class="lyrics">
     <h2>O Vigilante Rodoviário</h2>
     <p>
       De noite ou de dia<br>
@@ -140,6 +130,9 @@
       Do bravo, Vigilante Rodoviário!
     </p>
   </div>
+
+  <!-- 🔹 ESPAÇO PARA ROLAR -->
+  <div class="spacer"></div>
 
   <script>
     const audio = document.getElementById('audio');
