@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Menu - BPRv</title>
+  <style>
+    :root{
+      --gap: 14px;
+      --btn-height: 56px;
+      --btn-radius: 999px;
+      --max-width: 600px;
+      --page-bg: linear-gradient(180deg,#f6f8fb,#eef4fb);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--page-bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:#111;
+    }
+
+    /* Centering container */
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px 18px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      width:100%;
+      max-width:var(--max-width);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:var(--gap);
+      padding:28px;
+      box-sizing:border-box;
+      background:transparent;
+    }
+
+    /* Button base */
+    .btn{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      width:88%;
+      max-width:420px;
+      height:var(--btn-height);
+      padding:0 18px;
+      border-radius:var(--btn-radius);
+      text-decoration:none;
+      color:#fff;
+      font-weight:700;
+      font-size:18px;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.08), 0 10px 20px rgba(10,25,50,0.06);
+      transition: transform .12s ease, box-shadow .12s ease;
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:active{ transform:translateY(2px); box-shadow: 0 3px 0 rgba(0,0,0,0.06); }
+
+    /* small screens tweak */
+    @media (max-width:380px){
+      .btn{ width:94%; font-size:16px; height:50px; }
+    }
+
+    /* Play icon (SVG) placed to the left */
+    .btn svg.play{
+      position:absolute;
+      left:14px;
+      width:28px;
+      height:28px;
+      pointer-events:none;
+      filter: drop-shadow(0 2px 0 rgba(0,0,0,0.05));
+    }
+
+    /* Per-button colors (matching 6 variations) */
+    .btn:nth-child(1){ background: linear-gradient(180deg,#00d1c6,#00a89a); }
+    .btn:nth-child(2){ background: linear-gradient(180deg,#ffb400,#ff8a00); }
+    .btn:nth-child(3){ background: linear-gradient(180deg,#ff4b4b,#d92f2f); }
+    .btn:nth-child(4){ background: linear-gradient(180deg,#5cd65c,#22a722); }
+    .btn:nth-child(5){ background: linear-gradient(180deg,#5b6cff,#2a46d9); }
+    .btn:nth-child(6){ background: linear-gradient(180deg,#ff63b8,#d83a88); }
+
+    /* subtle inner highlight to mimic 3D */
+    .btn::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+      border-radius:var(--btn-radius);
+      pointer-events:none;
+    }
+
+    /* small footer note */
+    .note{
+      margin-top:6px;
+      font-size:13px;
+      color:#4b5563;
+      opacity:0.9;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap" role="main">
+    <div class="card" aria-labelledby="titulo">
+      <h1 id="titulo" style="font-size:20px;margin:0 0 6px 0;">Acesso Rápido</h1>
+
+      <!-- Cada link aponta para "<texto do botão>.html".
+           Usamos href URL-encoded para manter o "°" e espaços. -->
+      <a class="btn" href="1%C2%B0%20BPRv.html" aria-label="Abrir 1º BPRv">
+        <!-- play icon SVG -->
+        <svg class="play" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.18)"/>
+          <path d="M10 8v8l6-4-6-4z" fill="#fff"/>
+        </svg>
+        1° BPRv
+      </a>
+
+      <a class="btn" href="2%C2%B0%20BPRv.html" aria-label="Abrir 2º BPRv">
+        <svg class="play" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.18)"/>
+          <path d="M10 8v8l6-4-6-4z" fill="#fff"/>
+        </svg>
+        2° BPRv
+      </a>
+
+      <a class="btn" href="3%C2%B0%20BPRv.html" aria-label="Abrir 3º BPRv">
+        <svg class="play" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.18)"/>
+          <path d="M10 8v8l6-4-6-4z" fill="#fff"/>
+        </svg>
+        3° BPRv
+      </a>
+
+      <a class="btn" href="4%C2%B0%20BPRv.html" aria-label="Abrir 4º BPRv">
+        <svg class="play" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.18)"/>
+          <path d="M10 8v8l6-4-6-4z" fill="#fff"/>
+        </svg>
+        4° BPRv
+      </a>
+
+      <a class="btn" href="5%C2%B0%20BPRv.html" aria-label="Abrir 5º BPRv">
+        <svg class="play" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.18)"/>
+          <path d="M10 8v8l6-4-6-4z" fill="#fff"/>
+        </svg>
+        5° BPRv
+      </a>
+
+      <a class="btn" href="6%C2%B0%20BPRv.html" aria-label="Abrir 6º BPRv">
+        <svg class="play" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.18)"/>
+          <path d="M10 8v8l6-4-6-4z" fill="#fff"/>
+        </svg>
+        6° BPRv
+      </a>
+
+      <p class="note">Toque em um botão para abrir a página correspondente.</p>
+    </div>
+  </main>
+</body>
+</html>
