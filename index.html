@@ -43,13 +43,6 @@
       object-fit: contain;
     }
 
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* deixa o logo à esquerda e o menu à direita */
-  flex-wrap: wrap; /* faz quebrar no celular */
-}
-
     nav .logo a {
       color: white;
       font-weight: 700;
@@ -437,7 +430,7 @@ header {
   </style>
 </head>
 <body>
-<header>
+
   <!-- MENU SUPERIOR -->
   <nav id="mainNav">
     <div class="logo">
@@ -446,35 +439,24 @@ header {
       </a>
     </div>
 
-   <nav>
-  <ul class="menu-horizontal" id="menu">
-    
-    <!-- Menu principal: POLICIAL MILITAR -->
-    <li>
-      <a>POLICIAL MILITAR</a>
-      <ul class="submenu-horizontal">
-        <li><a href="mbft.html">MBFT</a></li>
-        <li><a href="https://www.ctbdigital.com.br">CTB Digital</a></li>
-        <li><a href="municipios.html">Código de Município</a></li>
-        <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
-        <li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatário</a></li>
-        <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>
-        <li><a href="debito.html">Débito de Veículos</a></li>
-      </ul>
-    </li>
-
-    <!-- Menu principal: CANÇÕES MILITARES -->
-    <li>
-      <a>CANÇÕES MILITARES</a>
-      <ul class="submenu-horizontal">
-        <li><a href="manual.html">Vigilante Rodoviário</a></li>
-        <!-- você pode adicionar mais canções aqui -->
-      </ul>
-    </li>
-
-  </ul>
-</nav>
-</header>
+    <ul class="menu-horizontal" id="menu">
+      <li>
+        <a>POLICIAL MILITAR</a>
+        <ul class="submenu-horizontal">
+          <li><a href="mbft.html">MBFT</a></li>
+          <li><a href="https://www.ctbdigital.com.br">CTB Digital</a></li>
+          <li><a href="municipios.html">Código de Município</a></li>
+          <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
+          <li><a href="https://www.detran.pr.gov.br/Pagina/PAISES-SIGNATARIOS">Países Signatário</a></li>
+          <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>
+          <li><a href="debito.html">Débito de Veículos</a></li>
+          <a>Canções Militares</a>
+         <ul class="submenu-horizontal">
+          <li><a href="manual.html">MBFT</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
 
   <!-- Vídeo de fundo -->
   <video id="background-video" autoplay loop muted playsinline>
