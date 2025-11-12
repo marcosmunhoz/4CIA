@@ -43,6 +43,13 @@
       object-fit: contain;
     }
 
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* deixa o logo à esquerda e o menu à direita */
+  flex-wrap: wrap; /* faz quebrar no celular */
+}
+
     nav .logo a {
       color: white;
       font-weight: 700;
@@ -430,7 +437,7 @@
   </style>
 </head>
 <body>
-
+<header>
   <!-- MENU SUPERIOR -->
   <nav id="mainNav">
     <div class="logo">
@@ -460,14 +467,14 @@
     <li>
       <a>CANÇÕES MILITARES</a>
       <ul class="submenu-horizontal">
-        <li><a href="manual.html">MBFT</a></li>
+        <li><a href="manual.html">Vigilante Rodoviário</a></li>
         <!-- você pode adicionar mais canções aqui -->
       </ul>
     </li>
 
   </ul>
 </nav>
-
+</header>
 
   <!-- Vídeo de fundo -->
   <video id="background-video" autoplay loop muted playsinline>
