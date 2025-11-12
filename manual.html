@@ -21,7 +21,7 @@
       padding-top: 20px;
     }
 
-    /* 🔹 CAIXA DA LETRA */
+    /* 🔹 CAIXA DA LETRA COM ROLAGEM */
     .lyrics {
       position: fixed;
       top: 20px;
@@ -29,6 +29,7 @@
       transform: translateX(-50%);
       width: 90%;
       max-width: 600px;
+      max-height: 80vh; /* altura máxima da tela */
       background: rgba(0,0,0,0.7);
       border-radius: 20px;
       padding: 20px;
@@ -38,6 +39,7 @@
       text-align: center;
       z-index: 999;
       box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      overflow-y: auto; /* 🔹 permite rolar a letra */
     }
 
     .lyrics h2 {
@@ -67,11 +69,6 @@
       width: 70%;
       accent-color: #FFD700;
       cursor: pointer;
-    }
-
-    /* 🔹 ESPAÇO PARA ROLAR */
-    .spacer {
-      height: 600px; /* espaço fictício para rolar a página */
     }
 
   </style>
@@ -128,9 +125,6 @@
       Do bravo, Vigilante Rodoviário!
     </p>
   </div>
-
-  <!-- 🔹 ESPAÇO PARA ROLAR -->
-  <div class="spacer"></div>
 
   <script>
     const audio = document.getElementById('audio');
