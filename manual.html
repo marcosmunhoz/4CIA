@@ -71,20 +71,27 @@
       text-shadow: 2px 2px 5px black;
     }
 
-    /* 📌 LETRA EM DUAS COLUNAS NO DESKTOP */
-    .lyrics {
-      column-count: 2;
-      column-gap: 40px;
-      line-height: 1.65;
-      font-size: 1rem;
-      white-space: pre-line;
+    /* 🎤 LETRA EM 2 COLUNAS FIXAS QUE CABEM NA TELA */
+    .lyrics-box {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      height: calc(100vh - 220px); /* desconta player + título */
+      overflow: hidden;
     }
 
-    /* 📱 CELULAR = UMA COLUNA */
-    @media (max-width: 700px) {
-      .lyrics {
-        column-count: 1;
-        font-size: 0.95rem;
+    .col {
+      flex: 1;
+      font-size: 2.6vw; /* auto-ajuste para caber no mobile */
+      line-height: 1.25;
+      white-space: pre-line;
+      overflow: hidden;
+    }
+
+    /* Desktop restaura tamanho maior */
+    @media (min-width: 700px) {
+      .col {
+        font-size: 1rem;
       }
     }
   </style>
@@ -106,8 +113,10 @@
 
     <h2>Canção da Polícia Militar Rodoviária</h2>
 
-    <!-- LETRA FIEL 100% IGUAL -->
-    <div class="lyrics">
+    <!-- LETRA EM 2 COLUNAS (SEM CORTAR ESTROFE) -->
+    <div class="lyrics-box">
+
+      <div class="col">
 De noite ou de dia
 Sempre firme no volante
 Vai pela rodovia
@@ -129,7 +138,9 @@ Dirigindo com cuidado
 Muito atento ao volante
 Recomendações do dia
 Lendário Vigilante Rodoviário
+      </div>
 
+      <div class="col">
 São os anjos do asfalto
 A Polícia Rodoviária
 Do Estado de São Paulo
@@ -146,10 +157,11 @@ Do bravo, Vigilante Rodoviário!
 São os anjos do asfalto
 A Polícia Rodoviária
 Do Estado de São Paulo
+      </div>
+
     </div>
 
   </div>
-
 
   <script>
     const audio = document.getElementById("audio");
