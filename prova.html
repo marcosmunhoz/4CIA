@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Completo PMO - Veículos e Procedimentos</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2a4a7c);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #1a2a6c, #2a4a7c, #3a6a9c);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #1a2a6c;
+            font-size: 1.8rem;
+        }
+        
+        .description {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #555;
+            font-style: italic;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a2a6c;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            height: 12px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1a2a6c, #2a4a7c);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .question-counter {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #2a4a7c;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .question h3 {
+            margin-bottom: 20px;
+            color: #1a2a6c;
+            font-size: 1.2rem;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .option {
+            margin-bottom: 12px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .option:hover {
+            background-color: #e9e9e9;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected {
+            background-color: #d4edda;
+            border-color: #1a2a6c;
+            color: #1a2a6c;
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        #prev-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        #prev-btn:hover:not(:disabled) {
+            background-color: #5a6268;
+        }
+        
+        #next-btn, #submit-btn {
+            background: linear-gradient(90deg, #1a2a6c, #2a4a7c);
+            color: white;
+        }
+        
+        #next-btn:hover:not(:disabled), #submit-btn:hover:not(:disabled) {
+            background: linear-gradient(90deg, #2a4a7c, #3a6a9c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            text-align: center;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .results h2 {
+            margin-bottom: 20px;
+            color: #1a2a6c;
+        }
+        
+        .score-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+        }
+        
+        .score-box {
+            padding: 20px;
+            border-radius: 10px;
+            width: 45%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .correct-box {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+        }
+        
+        .incorrect-box {
+            background-color: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+        
+        .score-label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .correct-value {
+            color: #155724;
+        }
+        
+        .incorrect-value {
+            color: #721c24;
+        }
+        
+        .percentage {
+            font-size: 1.5rem;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #1a2a6c;
+        }
+        
+        .message {
+            margin: 15px 0;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        
+        .restart-btn {
+            background: linear-gradient(90deg, #1a2a6c, #2a4a7c);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .restart-btn:hover {
+            background: linear-gradient(90deg, #2a4a7c, #3a6a9c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #495057;
+            display: none;
+        }
+        
+        .category {
+            display: inline-block;
+            background: #1a2a6c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .question {
+                padding: 15px;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .score-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .score-box {
+                width: 90%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Completo PMO - Veículos e Procedimentos</h1>
+        <p class="description">Teste seus conhecimentos sobre PMO-52, PMO-53, PMO-54, PMO-55 e procedimentos</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="total-questions">0</div>
+                <div class="stat-label">Total de Perguntas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="answered-questions">0</div>
+                <div class="stat-label">Respondidas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="remaining-questions">0</div>
+                <div class="stat-label">Restantes</div>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="question-counter" id="question-counter">Pergunta 1 de 0</div>
+        
+        <div id="quiz-container">
+            <!-- As perguntas serão inseridas aqui via JavaScript -->
+        </div>
+        
+        <div class="explanation" id="explanation">
+            <!-- Explicação da resposta será inserida aqui -->
+        </div>
+        
+        <div class="buttons">
+            <button id="prev-btn" disabled>Anterior</button>
+            <button id="next-btn">Próxima</button>
+            <button id="submit-btn" style="display: none;">Verificar Respostas</button>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Resultado do Quiz</h2>
+            <div class="score-container">
+                <div class="score-box correct-box">
+                    <div class="score-label">Acertos</div>
+                    <div class="score-value correct-value" id="correct-count">0</div>
+                </div>
+                <div class="score-box incorrect-box">
+                    <div class="score-label">Erros</div>
+                    <div class="score-value incorrect-value" id="incorrect-count">0</div>
+                </div>
+            </div>
+            <div class="percentage" id="percentage">0%</div>
+            <div class="message" id="message"></div>
+            <button class="restart-btn" id="restart-btn">Refazer Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // Dados do quiz - TODAS as perguntas organizadas por categoria
+        const quizData = [
+            // PMO-52 - Veículos Monobloco
+            { q: "A PMO-52 aplica-se a quais veículos?", opts: ["Motocicletas", "Automóveis de estrutura monobloco", "Caminhões com chassi", "Micro-ônibus"], c: 1, cat: "PMO-52" },
+            { q: "Quantos itens podem configurar DPM na PMO-52?", opts: ["0 a 1 item SIM/NA", "2 a 6", "7 a 22", "Acima de 22"], c: 0, cat: "PMO-52" },
+            { q: "DMM (média monta) na PMO-52 corresponde a:", opts: ["0 itens", "2 a 6 itens", "7 a 22 itens", "Mais de 22"], c: 2, cat: "PMO-52" },
+            { q: "DGM na PMO-52 corresponde a:", opts: ["Mais de 22 itens SIM/NA", "2 a 6 itens", "0 item", "Apenas 1 item"], c: 0, cat: "PMO-52" },
+            { q: "O agente deve marcar NA quando:", opts: ["Não entendeu o dano", "Quando é impossível avaliação técnica", "Quando é pedido", "Quando há chuva"], c: 1, cat: "PMO-52" },
+            { q: "A PMO-52 avalia principalmente:", opts: ["Lataria superficial", "Danos estruturais em zonas de impacto e alinhamento", "Som do motor", "Cor da pintura"], c: 1, cat: "PMO-52" },
+            { q: "Um pequeno amassado em porta, sem prejuízo estrutural, é:", opts: ["DGM", "DMM", "DPM", "Não entra na planilha"], c: 2, cat: "PMO-52" },
+            { q: "Danos estruturais são:", opts: ["Apenas arranhões", "Apenas pintura", "Elementos que afetam integridade, alinhamento ou segurança veicular", "Som permanente"], c: 2, cat: "PMO-52" },
+            { q: "Se um automóvel tiver 25 itens SIM/NA:", opts: ["DPM", "DMM", "DGM", "Sem dano"], c: 2, cat: "PMO-52" },
+            { q: "Quantos itens totais existem na PMO-52?", opts: ["Menos de 10", "Entre 15 e 20", "Mais de 20", "Apenas 12"], c: 2, cat: "PMO-52" },
+            { q: "A PMO-52 não se aplica a:", opts: ["SUVs monobloco", "Sedãs monobloco", "Hatches monobloco", "Caminhões"], c: 3, cat: "PMO-52" },
+            { q: "Quem preenche a PMO-52?", opts: ["A seguradora", "O cidadão", "O PM viajando no atendimento", "O DETRAN"], c: 2, cat: "PMO-52" },
+            { q: "A PMO-52 só deve ser preenchida se:", opts: ["Veículo monobloco tiver dano", "Condutor pedir", "Houver vítima", "A imprensa aparecer"], c: 0, cat: "PMO-52" },
+            { q: "A ausência de dano estrutural implica:", opts: ["DMM", "DGM", "Possível DPM", "Recolhimento do CRLV"], c: 2, cat: "PMO-52" },
+            { q: "Dano que impede alinhamento de porta é:", opts: ["Estrutural", "Somente superficial", "Ignorável", "Sempre DPM"], c: 0, cat: "PMO-52" },
+            { q: "Dano na longarina de um monobloco implica:", opts: ["Possível DGM", "Somente arranhão", "Não entra na PMO-52", "É opcional"], c: 0, cat: "PMO-52" },
+            { q: "A PMO-52 considera:", opts: ["Chassi separado", "Estrutura monobloco soldada", "Carroceria separada", "Chassi tubular"], c: 1, cat: "PMO-52" },
+            { q: "Um monobloco com 5 itens SIM/NA é:", opts: ["DPM", "DMM", "DGM", "Nenhum"], c: 1, cat: "PMO-52" },
+            { q: "Pequena monta significa:", opts: ["Nenhum risco estrutural", "Risco alto", "Dano irrecuperável", "Perda total"], c: 0, cat: "PMO-52" },
+            { q: "Média monta significa:", opts: ["Reparo leve", "Reparos que exigem realinhamento", "Perda total", "Dano irrelevante"], c: 1, cat: "PMO-52" },
+            { q: "Grande monta significa:", opts: ["Reparo simples", "Reparo de pintura", "Dano estrutural severo", "Dano na lataria apenas"], c: 2, cat: "PMO-52" },
+            { q: "A PMO-52 pode ser usada em pick-ups monobloco?", opts: ["Sim", "Não", "Apenas motos", "Apenas ônibus"], c: 0, cat: "PMO-52" },
+            { q: "A PMO-52 serve para:", opts: ["Determinar responsabilidade civil", "Classificar gravidade do dano", "Multar condutor", "Avaliar perícia criminal"], c: 1, cat: "PMO-52" },
+            { q: "Monobloco é:", opts: ["Chassi separado", "Estrutura integrada carroceria + estrutura", "Estrutura tubular", "Estrutura náutica"], c: 1, cat: "PMO-52" },
+            { q: "Alinhamento comprometido é:", opts: ["Superficial", "Estético", "Estrutural", "Inexistente"], c: 2, cat: "PMO-52" },
+            { q: "Para PMO-52, dano em coluna A é:", opts: ["Estético", "Sempre superficial", "Estrutural", "Não contado"], c: 2, cat: "PMO-52" },
+            { q: "Impacto na região de absorção dianteira pode gerar:", opts: ["DPM", "DMM ou DGM", "Nada", "Apenas arranhão"], c: 1, cat: "PMO-52" },
+            { q: "A PMO-52 NÃO avalia:", opts: ["Estrutura frontal", "Estrutura lateral", "Estrutura traseira", "Valor do conserto"], c: 3, cat: "PMO-52" },
+            { q: "A aferição conta itens SIM/NA buscando:", opts: ["Quantificar danos estruturais", "Registrar boletim", "Medir velocidade", "Notificar seguro"], c: 0, cat: "PMO-52" },
+            { q: "Se a PMO-52 indicar DGM:", opts: ["Veículo circula normalmente", "Precisa sucateamento", "Guarda no pátio apenas", "Apenas multa"], c: 1, cat: "PMO-52" },
+            
+            // PMO-53 - Caminhões e Caminhonetes
+            { q: "A PMO-53 é utilizada para:", opts: ["Motocicletas", "Veículos automotores de chassi: caminhões e caminhonetes de chassi", "Monobloco", "Tratores agrícolas"], c: 1, cat: "PMO-53" },
+            { q: "Veículos da categoria N2/N3 possuem:", opts: ["Estrutura monobloco", "Chassi separado", "Somente cabine integrada", "Carroceria soldada"], c: 1, cat: "PMO-53" },
+            { q: "A principal diferença entre PMO-52 e PMO-53 é:", opts: ["Número de fotos", "A estrutura analisada (monobloco x chassi)", "Número de envolvidos", "Tamanho do veículo"], c: 1, cat: "PMO-53" },
+            { q: "Um caminhão sempre deve usar PMO:", opts: ["52", "53", "54", "55"], c: 1, cat: "PMO-53" },
+            { q: "Uma caminhonete com chassi (S10, Hilux etc.) utiliza:", opts: ["PMO-52", "PMO-53", "PMO-54", "Nenhuma"], c: 1, cat: "PMO-53" },
+            { q: "A PMO-53 considera danos em:", opts: ["Carroceria apenas", "Chassi, longarinas, travessas e suportes estruturais", "Pneus apenas", "Lataria superficial"], c: 1, cat: "PMO-53" },
+            { q: "DPM na PMO-53 corresponde a:", opts: ["0 a 1 item SIM/NA", "2 a 7 itens", "Mais de 20", "Apenas 10"], c: 0, cat: "PMO-53" },
+            { q: "DMM na PMO-53 corresponde a:", opts: ["2-7", "8-15", "Acima de 22", "Nenhum"], c: 1, cat: "PMO-53" },
+            { q: "DGM na PMO-53 corresponde a:", opts: ["Acima de 15 itens SIM/NA", "2-7 itens", "0-1 item", "Exatamente 5 itens"], c: 0, cat: "PMO-53" },
+            { q: "Longarina torta indica:", opts: ["Dano estético", "Dano estrutural severo", "Dano superficial", "Nada"], c: 1, cat: "PMO-53" },
+            { q: "Travessa de chassi empenada pode levar a:", opts: ["DPM", "DGM", "Nenhuma classificação", "Apenas multa"], c: 1, cat: "PMO-53" },
+            { q: "Cabine deslocada sobre chassi é:", opts: ["Normal", "Dano estrutural", "Estético", "Não entra na planilha"], c: 1, cat: "PMO-53" },
+            { q: "A PMO-53 não se aplica a:", opts: ["Caminhões", "Pickups chassi", "Motocicletas", "Caminhonetes de chassi"], c: 2, cat: "PMO-53" },
+            { q: "Veículo de carga leve monobloco (Toro, Strada) deve usar:", opts: ["PMO-53", "PMO-52", "PMO-55", "Nenhuma"], c: 1, cat: "PMO-53" },
+            { q: "Caminhão sinistrado com 20 itens SIM/NA:", opts: ["DPM", "DGM", "DMM", "Nenhum"], c: 1, cat: "PMO-53" },
+            { q: "Dano no suporte de mola indica:", opts: ["Dano irrelevante", "Dano estrutural", "Dano de alinhamento apenas", "Dano superficial"], c: 1, cat: "PMO-53" },
+            { q: "Chassi trincado implica:", opts: ["DPM", "DGM", "Sem registro", "Apenas pintura"], c: 1, cat: "PMO-53" },
+            { q: "Carroceria basculante danificada:", opts: ["Não conta", "Pode contar dependendo da fixação estrutural", "Sempre DPM", "Nunca classifica"], c: 1, cat: "PMO-53" },
+            { q: "Cabine adiantada por impacto frontal:", opts: ["Estético", "Possível dano em suportes e chassi", "Nada", "Não entra na PMO"], c: 1, cat: "PMO-53" },
+            { q: "Veículo articulado (carreta) utiliza:", opts: ["PMO-53 (somente cavalo)", "PMO-55", "PMO-52", "Nenhuma"], c: 0, cat: "PMO-53" },
+            
+            // PMO-54 - Motocicletas
+            { q: "A PMO-54 classifica danos em:", opts: ["Caminhões", "Motocicletas", "Monoblocos", "Tratores"], c: 1, cat: "PMO-54" },
+            { q: "Motocicletas possuem estrutura do tipo:", opts: ["Monobloco", "Chassi tubular/treliça", "Chassi articulado", "Não possuem estrutura"], c: 1, cat: "PMO-54" },
+            { q: "DPM em motos corresponde a:", opts: ["0-1 item SIM/NA", "2-5", "6-15", "Mais de 15"], c: 0, cat: "PMO-54" },
+            { q: "DMM em motos corresponde a:", opts: ["2-5 itens", "6-15 itens", "Mais de 15", "Nenhum"], c: 1, cat: "PMO-54" },
+            { q: "DGM em motos corresponde a:", opts: ["Mais de 15 itens SIM/NA", "1 item", "2-5 itens", "Nenhum"], c: 0, cat: "PMO-54" },
+            { q: "Dano no garfo indica:", opts: ["Estético", "Eixo de direção comprometido", "Nada de especial", "Dano na pintura"], c: 1, cat: "PMO-54" },
+            { q: "Dano no quadro da moto implica:", opts: ["DPM", "DGM", "Nada", "Dano em pneus"], c: 1, cat: "PMO-54" },
+            
+            // PMO-55 - Ônibus e Micro-ônibus
+            { q: "A PMO-55 é usada para:", opts: ["Motocicletas", "Ônibus e micro-ônibus", "Automóveis", "Reboques"], c: 1, cat: "PMO-55" },
+            { q: "Ônibus possuem estrutura:", opts: ["Chassi separado ou monobloco", "Apenas tubular", "Apenas monobloco", "Não possuem"], c: 0, cat: "PMO-55" },
+            { q: "Impacto traseiro severo em ônibus pode gerar:", opts: ["DPM", "DGM", "Nada", "Estético"], c: 1, cat: "PMO-55" },
+            { q: "Torção do chassi de ônibus implica:", opts: ["Nada", "DGM", "DPM", "Multa"], c: 1, cat: "PMO-55" },
+            { q: "A PMO-55 analisa:", opts: ["Bancos", "Estrutura, longarinas, coluna e geometria", "Som", "Painel"], c: 1, cat: "PMO-55" },
+            { q: "Micro-ônibus utiliza:", opts: ["PMO-52", "PMO-55", "PMO-54", "Nenhuma"], c: 1, cat: "PMO-55" },
+            
+            // Procedimentos e BO-e
+            { q: "O croqui deve representar:", opts: ["Apenas direção dos veículos", "Movimentos, posições finais e referências fixas", "Somente danos", "Somente vias principais"], c: 1, cat: "Procedimentos" },
+            { q: "No croqui, a via deve ser representada:", opts: ["Com escala exata obrigatória", "De forma aproximada, mas fiel ao fato", "Apenas como uma linha", "Somente com simbologia textual"], c: 1, cat: "Procedimentos" },
+            { q: "A marcação de posições finais no croqui deve ser:", opts: ["Apenas textual", "Obrigatória para veículos e objetos relevantes", "Opcional", "Somente se houver guincho"], c: 1, cat: "Procedimentos" },
+            { q: "O etilômetro pertence a qual tipo de prova?", opts: ["Documental", "Testemunhal", "Pericial", "Indireta"], c: 2, cat: "Procedimentos" },
+            { q: "O valor do etilômetro deve ser lançado:", opts: ["Somente verbalmente no RAPM", "No campo específico do BO-e", "Apenas em anexo", "Somente na ocorrência do COPOM"], c: 1, cat: "Procedimentos" },
+            { q: "O teste de alcoolemia deve ser:", opts: ["Obrigatório para todas as partes", "Realizado apenas se o policial quiser", "Oferecido quando há suspeita ou envolvimento em sinistro", "Apenas para motorista com dano"], c: 2, cat: "Procedimentos" },
+            { q: "Se o condutor se recusar ao teste:", opts: ["Nada acontece", "Aplica-se apenas advertência", "Conduz ao médico perito, se necessário", "Multa e recolhe CNH automaticamente"], c: 2, cat: "Procedimentos" },
+            { q: "O guincho deve ser acionado quando:", opts: ["O policial acha conveniente", "Veículo não puder se mover com segurança", "Sempre que houver dano", "Quando solicitarem"], c: 1, cat: "Procedimentos" },
+            { q: "O uso do guincho particular:", opts: ["É proibido sempre", "Permitido somente com ciência e liberação do agente", "Permitido sem controle", "Só pode quando veículo for de carga"], c: 1, cat: "Procedimentos" },
+            { q: "Em sinistro com vítima, o primeiro passo é:", opts: ["Fazer o croqui", "Garantir segurança da cena e atendimento da vítima", "Acionar guincho", "Perguntar versão das partes"], c: 1, cat: "Procedimentos" },
+            { q: "A marcação de sangue no local é:", opts: ["Opcional", "Não deve ser registrada", "Permitida apenas em fotos", "Elemento relevante para registro da dinâmica"], c: 3, cat: "Procedimentos" },
+            { q: "Quando há vítima inconsciente:", opts: ["Não se registra qualificação", "Deve-se registrar como 'desconhecida' e atualizar depois", "Cancela ocorrência", "Apenas conduz ao hospital"], c: 1, cat: "Procedimentos" },
+            { q: "O croqui com vítima deve conter:", opts: ["Somente veículos", "Posição final da vítima no local", "Somente trajeto do condutor", "Posição aproximada dos socorristas"], c: 1, cat: "Procedimentos" },
+            { q: "Em caso de evasão do local:", opts: ["Não se faz BO-e", "Somente foto", "Registra-se ocorrência e croqui com base em vestígios", "Apenas relata verbalmente"], c: 2, cat: "Procedimentos" },
+            { q: "O aditamento ao BO-e é utilizado para:", opts: ["Corrigir ou complementar informações posteriores", "Cancelar ocorrência", "Incluir multa", "Trocar versão das partes"], c: 0, cat: "Procedimentos" },
+            { q: "Quem pode solicitar aditamento?", opts: ["Qualquer pessoa interessada", "Apenas delegado", "Apenas vítima", "Apenas PM comandante"], c: 0, cat: "Procedimentos" },
+            { q: "O AIT por recusa de etilômetro deve ser:", opts: ["Feito por escrito no papel", "Registrado no BO-e e no sistema de trânsito", "Somente verbalizado", "Apenas comunicado ao DETRAN"], c: 1, cat: "Procedimentos" },
+            { q: "Em caso de lesão corporal culposa no trânsito:", opts: ["Não existe BO-e", "Registra-se BO-e e conduz partes para esclarecimentos", "Somente perito comparece", "Somente polícia civil atende"], c: 1, cat: "Procedimentos" },
+            { q: "Se o condutor for levado ao hospital:", opts: ["Não se preenche seus dados", "Registra como 'socorrido ao hospital', atualizando depois", "Ignora-se sua participação", "Registra-se como autor"], c: 1, cat: "Procedimentos" },
+            { q: "As fotos no local do acidente devem:", opts: ["Ser dispensadas", "Registrar veículos, via, vestígios e posição relativa", "Registrar apenas placas", "Registrar apenas vítimas"], c: 1, cat: "Procedimentos" },
+            { q: "O croqui deve obrigatoriamente ter:", opts: ["Nome das partes", "Assinatura das partes", "Referências fixas", "Velocidade estimada"], c: 2, cat: "Procedimentos" },
+            { q: "Quando há atropelamento:", opts: ["Não se faz croqui", "Croqui deve indicar ponto de impacto provável", "Apenas fotos", "Somente depoimento da vítima"], c: 1, cat: "Procedimentos" },
+            { q: "O relatório do atendente (RAPM) deve:", opts: ["Conter opinião", "Ser exclusivamente objetivo", "Ser preenchido apenas pela autoridade policial", "Pode conter hipóteses"], c: 1, cat: "Procedimentos" },
+            { q: "A inversão de marchas no croqui significa:", opts: ["Representação errada", "Uso de seta dupla demonstrando deslocamento", "Que o veículo estava parado", "Erro do agente"], c: 1, cat: "Procedimentos" },
+            { q: "Se um veículo for retirado antes da chegada da PM:", opts: ["Cancela ocorrência", "Registra croqui baseado em vestígios e relatos", "Não se faz BO-e", "Apenas fotos do proprietário"], c: 1, cat: "Procedimentos" },
+            { q: "O posicionamento do policial no registro deve ser:", opts: ["Subjetivo", "Neutro e técnico", "Baseado no autor mais forte", "Com opinião jurídica"], c: 1, cat: "Procedimentos" },
+            { q: "Quando o veículo está muito danificado e sem placa:", opts: ["Não se registra", "Registra-se chassi + características", "Apenas fotos", "Solicita-se novo CRLV"], c: 1, cat: "Procedimentos" },
+            { q: "O deslocamento das partes após colisão deve ser:", opts: ["Estimado no croqui com seta de movimentação", "Ignorado", "Registrado apenas nas fotos", "Lançado como distância exata"], c: 0, cat: "Procedimentos" },
+            { q: "Quando há forte divergência entre versões:", opts: ["Policial escolhe a mais provável", "Registra ambas as versões fielmente", "Cancela BO-e", "Registra apenas a da vítima"], c: 1, cat: "Procedimentos" },
+            { q: "O objetivo do croqui é:", opts: ["Identificar culpado", "Auxiliar a visualização técnica da dinâmica do fato", "Definir multa", "Mostrar opinião do agente"], c: 1, cat: "Procedimentos" },
+            
+            // Resolução 810 e Classificação
+            { q: "O que é considerado sinistro de trânsito segundo a Res. 810?", opts: ["Qualquer colisão entre dois objetos", "Evento com dano envolvendo ao menos uma das partes em movimento", "Somente acidentes com vítimas", "Somente acidentes com caminhões"], c: 1, cat: "Res. 810" },
+            { q: "Quando um veículo roubado é recuperado com danos, o que deve ser feito?", opts: ["Não se classifica dano", "Somente a seguradora avalia", "Deve ser efetuada classificação de dano e BO-e duplo", "Somente DETRAN analisa"], c: 2, cat: "Res. 810" },
+            { q: "Em furto/roubo com posterior sinistro, qual é a regra correta?", opts: ["Não há necessidade de desdobramento", "O veículo não pode ser classificado", "Deve conter desdobramento adequado no BO-e", "O PMRv apenas fotografa"], c: 2, cat: "Res. 810" },
+            { q: "Quando marcar 'NA' na planilha de danos?", opts: ["Sempre que houver dano", "Sempre que houver dúvida", "Quando o item não puder ser tecnicamente avaliado", "Quando o veículo tiver mais de dois danos"], c: 2, cat: "Res. 810" },
+            { q: "O agente deve classificar danos:", opts: ["Sempre, mesmo sem dano", "Para qualquer veículo envolvido, desde que haja dano efetivo", "Somente com vítima", "Somente se o condutor solicitar"], c: 1, cat: "Res. 810" },
+            { q: "Danos preexistentes devem ser registrados:", opts: ["No campo de observações da planilha", "Por foto apenas", "Em anexo separado", "No DETRAN"], c: 0, cat: "Res. 810" },
+            { q: "As imagens do veículo devem ser obtidas:", opts: ["Somente no pátio", "Somente se a vítima autorizar", "Preferencialmente no local, antes de remoção", "Apenas pela seguradora"], c: 2, cat: "Res. 810" },
+            { q: "Se não for possível anexar imagens ao BO-e, o que fazer?", opts: ["Anotar nada", "Justificar a impossibilidade no campo próprio", "Enviar ao DETRAN sem justificativa", "Aguardar perícia"], c: 1, cat: "Res. 810" },
+            { q: "A classificação de dano depende:", opts: ["Da opinião do condutor", "Da seguradora", "De critérios objetivos da planilha PMO", "Apenas do policial mais antigo"], c: 2, cat: "Res. 810" },
+            { q: "A planilha PMO deve ser preenchida:", opts: ["Para todos os veículos, sempre", "Somente para veículos com dano", "Somente se houver vítimas", "Somente quando houver duas partes"], c: 1, cat: "Res. 810" },
+            { q: "A constatação física do dano deve ocorrer:", opts: ["A distância", "Somente via foto", "No veículo inspecionado pelo agente", "Somente no pátio"], c: 2, cat: "Res. 810" },
+            { q: "Qual órgão cria a classificação de dano da Resolução 810?", opts: ["Polícia Civil", "DETRAN", "CONTRAN", "Exército"], c: 2, cat: "Res. 810" },
+            { q: "A Res. 810 se aplica:", opts: ["Apenas a caminhões", "A qualquer veículo terrestre automotor", "Somente motos", "Somente ônibus"], c: 1, cat: "Res. 810" },
+            { q: "Veículos sem dano devem receber:", opts: ["Classificação DPM", "Nenhuma classificação", "Classificação provisória", "Classificação de fabricante"], c: 1, cat: "Res. 810" },
+            { q: "A classificação deve refletir:", opts: ["A opinião das partes", "A vontade da seguradora", "A análise técnica objetiva do agente", "O valor do veículo"], c: 2, cat: "Res. 810" },
+            { q: "O agente deve registrar dano em veículo de terceiro não envolvido?", opts: ["Sim, se houver dano", "Não", "Apenas se dono pedir", "Somente polícia judiciária"], c: 0, cat: "Res. 810" },
+            { q: "A classificação de dano serve para:", opts: ["Definir responsabilidade", "Indicar gravidade estrutural para circulação e regularização", "Ajudar na perícia criminal", "Calcular multa"], c: 1, cat: "Res. 810" },
+            { q: "O que acontece se houver erro na classificação?", opts: ["Nada", "PM é punido automaticamente", "Há possibilidade de recurso do proprietário", "Classificação vira automática"], c: 2, cat: "Res. 810" },
+            { q: "A classificação reduzida (DPM/DMM/DGM) é baseada:", opts: ["No valor do reparo", "No laudo da seguradora", "Na quantidade de itens SIM ou NA", "No tipo de veículo"], c: 2, cat: "Res. 810" },
+            { q: "Planilhas diferentes existem porque:", opts: ["PMO gosta de dificultar", "Tipos de veículos possuem estruturas diferentes", "O DETRAN exige", "As seguradoras pediram"], c: 1, cat: "Res. 810" },
+            
+            // Conceitos Gerais
+            { q: "O DETRAN utiliza a classificação para:", opts: ["Determinar culpado", "Avaliar estado de circulação/sucateamento", "Aplicar multa", "Criar estatística"], c: 1, cat: "Conceitos" },
+            { q: "DGM implica:", opts: ["Autorização especial", "Sucateamento", "Reparo leve", "Multa ao condutor"], c: 1, cat: "Conceitos" },
+            { q: "DMM implica:", opts: ["Proibição total", "Reparo com alinhamento estrutural", "Nada", "Perda total"], c: 1, cat: "Conceitos" },
+            { q: "Veículo com DPM:", opts: ["Pode circular após reparo adequado", "É sucateado", "Não pode circular nunca", "Vai para leilão"], c: 0, cat: "Conceitos" },
+            { q: "Recurso contra classificação deve ser feito:", opts: ["Junto à PM", "Ao DETRAN", "Ao COPOM", "Ao seguro"], c: 1, cat: "Conceitos" },
+            { q: "Sem fotos do veículo, a classificação:", opts: ["Não pode ser homologada", "Segue normal", "É automática", "Não existe"], c: 0, cat: "Conceitos" },
+            { q: "Planilhas PMO servem para:", opts: ["Opinião pessoal", "Critério técnico objetivo", "Avaliação estética", "Cálculo de multa"], c: 1, cat: "Conceitos" },
+            { q: "Classificação incorreta pode gerar:", opts: ["Nada", "Recurso e revisão", "Prisão do PM", "Perda do veículo automaticamente"], c: 1, cat: "Conceitos" },
+            { q: "A Resolução 810 exige:", opts: ["Registros subjetivos", "Critérios objetivos", "Que o PM decida visualmente", "Apenas fotos"], c: 1, cat: "Conceitos" }
+        ];
+
+        // Variáveis para controlar o estado do quiz
+        let currentQuestion = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let quizSubmitted = false;
+
+        // Elementos DOM
+        const quizContainer = document.getElementById('quiz-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsDiv = document.getElementById('results');
+        const correctCountElem = document.getElementById('correct-count');
+        const incorrectCountElem = document.getElementById('incorrect-count');
+        const percentageElem = document.getElementById('percentage');
+        const messageElem = document.getElementById('message');
+        const restartBtn = document.getElementById('restart-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const questionCounter = document.getElementById('question-counter');
+        const explanationElem = document.getElementById('explanation');
+        const totalQuestionsElem = document.getElementById('total-questions');
+        const answeredQuestionsElem = document.getElementById('answered-questions');
+        const remainingQuestionsElem = document.getElementById('remaining-questions');
+
+        // Função para inicializar o quiz
+        function initializeQuiz() {
+            totalQuestionsElem.textContent = quizData.length;
+            updateStats();
+            showQuestion(currentQuestion);
+            updateButtons();
+            updateProgressBar();
+        }
+
+        // Função para atualizar estatísticas
+        function updateStats() {
+            const answered = userAnswers.filter(answer => answer !== null).length;
+            const remaining = quizData.length - answered;
+            
+            answeredQuestionsElem.textContent = answered;
+            remainingQuestionsElem.textContent = remaining;
+        }
+
+        // Função para mostrar uma pergunta
+        function showQuestion(index) {
+            quizContainer.innerHTML = '';
+            const questionData = quizData[index];
+            
+            const questionElement = document.createElement('div');
+            questionElement.className = 'question';
+            
+            // Adiciona categoria
+            const categoryElement = document.createElement('div');
+            categoryElement.className = 'category';
+            categoryElement.textContent = questionData.cat;
+            questionElement.appendChild(categoryElement);
+            
+            const questionTitle = document.createElement('h3');
+            questionTitle.textContent = questionData.q;
+            questionElement.appendChild(questionTitle);
+            
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'options';
+            
+            questionData.opts.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                
+                // Adiciona classe se já foi respondida e o quiz foi submetido
+                if (quizSubmitted) {
+                    if (optionIndex === questionData.c) {
+                        optionElement.classList.add('correct');
+                    } else if (userAnswers[index] === optionIndex && userAnswers[index] !== questionData.c) {
+                        optionElement.classList.add('incorrect');
+                    }
+                } else if (userAnswers[index] === optionIndex) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.textContent = option;
+                optionElement.dataset.optionIndex = optionIndex;
+                
+                optionElement.addEventListener('click', () => {
+                    if (!quizSubmitted) {
+                        selectOption(index, optionIndex);
+                    }
+                });
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            questionElement.appendChild(optionsContainer);
+            quizContainer.appendChild(questionElement);
+            
+            // Atualiza o contador de perguntas
+            questionCounter.textContent = `Pergunta ${index + 1} de ${quizData.length}`;
+            
+            // Mostra explicação se o quiz foi submetido
+            if (quizSubmitted) {
+                showExplanation(index);
+            } else {
+                explanationElem.style.display = 'none';
+            }
+        }
+
+        // Função para mostrar explicação da resposta
+        function showExplanation(index) {
+            const questionData = quizData[index];
+            const userAnswer = userAnswers[index];
+            const correctAnswer = questionData.c;
+            
+            explanationElem.innerHTML = '';
+            
+            if (userAnswer !== null) {
+                explanationElem.style.display = 'block';
+                
+                const explanationTitle = document.createElement('div');
+                explanationTitle.style.fontWeight = 'bold';
+                explanationTitle.style.marginBottom = '10px';
+                
+                if (userAnswer === correctAnswer) {
+                    explanationTitle.textContent = '✓ Resposta Correta!';
+                    explanationTitle.style.color = '#28a745';
+                } else {
+                    explanationTitle.textContent = '✗ Resposta Incorreta';
+                    explanationTitle.style.color = '#dc3545';
+                }
+                
+                explanationElem.appendChild(explanationTitle);
+                
+                const correctOption = document.createElement('div');
+                correctOption.textContent = `Resposta correta: ${questionData.opts[correctAnswer]}`;
+                correctOption.style.marginBottom = '10px';
+                explanationElem.appendChild(correctOption);
+            } else {
+                explanationElem.style.display = 'none';
+            }
+        }
+
+        // Função para selecionar uma opção
+        function selectOption(questionIndex, optionIndex) {
+            userAnswers[questionIndex] = optionIndex;
+            showQuestion(questionIndex);
+            updateButtons();
+            updateStats();
+        }
+
+        // Função para atualizar os botões de navegação
+        function updateButtons() {
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === quizData.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = userAnswers[currentQuestion] === null;
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = userAnswers[currentQuestion] === null;
+            }
+        }
+
+        // Função para atualizar a barra de progresso
+        function updateProgressBar() {
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Função para verificar as respostas
+        function checkAnswers() {
+            let correctCount = 0;
+            
+            quizData.forEach((questionData, index) => {
+                if (userAnswers[index] === questionData.c) {
+                    correctCount++;
+                }
+            });
+            
+            const incorrectCount = quizData.length - correctCount;
+            const percentage = Math.round((correctCount / quizData.length) * 100);
+            
+            // Atualiza a contagem
+            correctCountElem.textContent = correctCount;
+            incorrectCountElem.textContent = incorrectCount;
+            percentageElem.textContent = `${percentage}% de acerto`;
+            
+            // Mensagem personalizada baseada no desempenho
+            let message = "";
+            if (percentage >= 90) {
+                message = "Excelente! Você domina completamente o assunto!";
+            } else if (percentage >= 70) {
+                message = "Muito bom! Você tem um conhecimento sólido sobre PMO.";
+            } else if (percentage >= 50) {
+                message = "Bom! Revise alguns conceitos para melhorar seu desempenho.";
+            } else {
+                message = "Estude mais os materiais para melhorar seu conhecimento.";
+            }
+            messageElem.textContent = message;
+            
+            // Mostra os resultados
+            resultsDiv.style.display = 'block';
+            
+            // Desabilita o botão de envio
+            submitBtn.disabled = true;
+            quizSubmitted = true;
+            
+            // Mostra todas as perguntas com feedback
+            showQuestion(currentQuestion);
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+                updateButtons();
+                updateProgressBar();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+                updateButtons();
+                updateProgressBar();
+            }
+        });
+
+        submitBtn.addEventListener('click', checkAnswers);
+
+        restartBtn.addEventListener('click', () => {
+            currentQuestion = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            quizSubmitted = false;
+            resultsDiv.style.display = 'none';
+            explanationElem.style.display = 'none';
+            initializeQuiz();
+        });
+
+        // Inicializa o quiz quando a página carrega
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+</html>
