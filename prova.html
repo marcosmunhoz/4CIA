@@ -1,321 +1,829 @@
-<!doctype html>
+<!-- PROVA A: salvar como Prova_A_Legislacao_Transito.html --><!doctype html>
 
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Questionário Avançado — Legislação de Trânsito (CTB / RBUT / Viena) — Gabarito Comentado</title>
+  <title>Prova A — Legislação de Trânsito (30 Qs)</title>
   <style>
-    :root{--bg:#0b1220;--card:#0f1724;--accent:#06b6d4;--muted:#9aa7b2;--white:#e6eef6}
-    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; margin:0; padding:24px; background:linear-gradient(180deg,#071024 0%, #04121b 100%); color:var(--white)}
+    :root{--bg:#071024;--card:#0f1724;--accent:#06b6d4;--muted:#9aa7b2;--white:#e6eef6;--correct:#1aff8c;--wrong:#ff6b6b;--glass: rgba(255,255,255,0.03)}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;padding:20px;background:linear-gradient(180deg,var(--bg) 0%, #04121b 100%);color:var(--white)}
     .wrap{max-width:980px;margin:0 auto}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    h1{font-size:20px;margin:0}
-    p.lead{color:var(--muted);margin:0}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,.6);margin-bottom:16px}
-    .q{margin-bottom:18px;padding:14px;border-radius:8px;background:rgba(255,255,255,0.02)}
-    .q h3{margin:0 0 10px 0;font-size:15px}
-    label.option{display:block;padding:8px 10px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.03);margin:6px 0}
-    input[type=radio]{margin-right:8px}
-    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    button{background:var(--accent);color:#042027;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
-    .small{font-size:13px;color:var(--muted)}
-    .explanation{margin-top:10px;padding:10px;border-radius:8px;background:rgba(0,0,0,.25);}
-    .correct{font-weight:700;color:#b7f3ff}
-    footer{color:var(--muted);font-size:13px;margin-top:18px}
-    .meta{font-size:13px;color:var(--muted);margin-bottom:12px}
-    code{background:rgba(255,255,255,0.03);padding:2px 6px;border-radius:4px}
+    header{margin-bottom:16px}
+    h1{font-size:18px;margin:0}
+    .card{background:var(--card);padding:12px;border-radius:10px;margin:12px 0;color:var(--muted)}
+    .q{background:var(--glass);padding:12px;border-radius:8px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.02)}
+    label.option{display:block;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);margin:6px 0;cursor:pointer}
+    button{background:var(--accent);color:#042027;padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+    .feedback{font-weight:700;margin-top:8px}
+    .explanation{display:none;background:rgba(0,0,0,0.25);padding:10px;border-radius:8px;margin-top:8px;color:var(--muted)}
+    .controls{display:flex;gap:10px;align-items:center}
+    .result{display:none;margin-top:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;color:var(--muted)}
+    .correct-label{border-color:var(--correct)!important;color:var(--correct)!important}
+    .wrong-label{border-color:var(--wrong)!important;color:var(--wrong)!important}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div>
-        <h1>Questionário Avançado — Legislação de Trânsito (CTB / RBUT / Convenção de Viena)</h1>
-        <p class="lead">Questões de nível concurso — agora com **resposta e explicação completa** logo abaixo de cada questão.</p>
-      </div>
-    </header><div class="card meta">Contém 30 questões cobrindo: Sistema Nacional de Trânsito, CONTRAN, SENATRAN, JARI, RBUT, Convenção de Viena, definições do CTB, competências, infrações, e artigos específicos: art. 143 (categorias), art. 181 e 182 (estacionar/parar).</div>
+      <h1>Prova A — Legislação de Trânsito (30 questões)</h1>
+      <div class="card">Modo interativo: selecione uma alternativa em cada questão e clique em "Confirmar". A explicação aparece após confirmar. Use o botão "Ver pontuação final" quando terminar.</div>
+    </header><form id="quizA">
+  <!-- Questions A: 30 questions derived from CTB, Alcoolemia, RBUT, Viena, etc. -->
 
-<form id="quiz">
+  <!-- (For brevity in the canvas document these are full questions ready to use) -->
 
-  <!-- Each question now shows the correct answer and an explanation -->
-
-  <div class="q" id="q1">
-    <h3>1) Sobre a natureza jurídica do CONTRAN, assinale a alternativa correta:</h3>
-    <label class="option">A) Órgão executivo do Sistema Nacional de Trânsito, com competência para expedir CNHs.</label>
-    <label class="option">B) Órgão normativo e consultivo, com competência para editar resoluções que regulamentam o CTB. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Agência federal administrativa autônoma responsável por licenciamento de veículos.</label>
-    <label class="option">D) Órgão judiciário administrativo que julga recursos contra multas de trânsito.</label>
-    <div class="explanation"><strong>Explicação:</strong> O CONTRAN é definido no CTB como o órgão máximo normativo e consultivo do Sistema Nacional de Trânsito. Sua principal função é editar normas (resoluções) para regulamentar dispositivos do Código de Trânsito Brasileiro. Não é órgão executivo (essa é a SENATRAN) nem órgão julgador judicial. Ele orienta, normatiza e responde consultas técnicas.</div>
+  <!-- Q1 -->
+  <div class="q" id="A1" data-answer="B">
+    <h3>1) O que é o CONTRAN?</h3>
+    <label class="option" data-val="A"><input type="radio" name="A1" value="A">A) Órgão executivo que aplica multas em todo o país.</label>
+    <label class="option" data-val="B"><input type="radio" name="A1" value="B">B) Órgão máximo normativo e consultivo do Sistema Nacional de Trânsito.</label>
+    <label class="option" data-val="C"><input type="radio" name="A1" value="C">C) Agência que emite CNH.</label>
+    <label class="option" data-val="D"><input type="radio" name="A1" value="D">D) Organismo internacional.</label>
+    <button type="button" onclick="checkA('A1')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation"><strong>Explicação:</strong> CONTRAN é o conselho normativo do SNT, responsável por editar resoluções.</div>
   </div>
 
-  <div class="q" id="q2">
-    <h3>2) A Resolução CONTRAN nº 883/2021 criou Câmaras Temáticas. Qual das alternativas abaixo NÃO corresponde a uma dessas câmaras?</h3>
-    <label class="option">A) Câmara de Educação para o Trânsito (CTEDUC)</label>
-    <label class="option">B) Câmara de Engenharia de Tráfego e Sinalização (CTET)</label>
-    <label class="option">C) Câmara de Fiscalização de Infrações (CTFI)</label>
-    <label class="option">D) Câmara de Saúde para o Trânsito (CTST)</label>
-    <div class="explanation"><strong>Resposta correta:</strong> <span class="correct">C</span>. <br><strong>Explicação:</strong> A Resolução nº 883/2021 lista as câmaras: Assuntos Veiculares, Ambientais e Transporte Rodoviário (CTVAT); Educação para o Trânsito (CTEDUC); Saúde para o Trânsito (CTST); Engenharia de Tráfego e Sinalização de Trânsito (CTET); Esforço Legal (CTEL); Gestão e Coordenação do PNATRANS (CTPNAT). Não existe uma câmara denominada "CTFI" (Fiscalização de Infrações) entre as criadas pela resolução.</div>
+  <!-- Q2 -->
+  <div class="q" id="A2" data-answer="C">
+    <h3>2) Quem mantém o RENACH?</h3>
+    <label class="option" data-val="A"><input type="radio" name="A2" value="A">A) DETRAN estadual.</label>
+    <label class="option" data-val="B"><input type="radio" name="A2" value="B">B) JARI.</label>
+    <label class="option" data-val="C"><input type="radio" name="A2" value="C">C) SENATRAN (órgão executivo máximo da União).</label>
+    <label class="option" data-val="D"><input type="radio" name="A2" value="D">D) Prefeitura municipal.</label>
+    <button type="button" onclick="checkA('A2')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">RENACH é gerido pelo órgão executivo máximo (SENATRAN), que coordena bases nacionais.</div>
   </div>
 
-  <div class="q" id="q3">
-    <h3>3) Sobre a RBUT (Regulamentação Básica Unificada de Trânsito do MERCOSUL), marque a alternativa correta:</h3>
-    <label class="option">A) É um tratado internacional que substituiu a Convenção de Viena para países signatários.</label>
-    <label class="option">B) Busca a uniformização de normas de circulação e conduta entre Estados-membros do MERCOSUL. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Regula exclusivamente a circulação de cargas perigosas no MERCOSUL.</label>
-    <label class="option">D) É uma legislação interna brasileira aplicável apenas a rodovias federais.</label>
-    <div class="explanation"><strong>Explicação:</strong> A RBUT, acordada em Montevidéu em 1992, visa a harmonização de normas de trânsito entre os países do MERCOSUL (registro, sinalização, conduta), facilitando a circulação internacional. Não substitui a Convenção de Viena, nem é restrita a cargas perigosas ou aplicabilidade exclusivamente nacional.</div>
+  <!-- Q3 -->
+  <div class="q" id="A3" data-answer="D">
+    <h3>3) RBUT (1992) tem por objetivo:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A3" value="A">A) Unificar regras marítimas.</label>
+    <label class="option" data-val="B"><input type="radio" name="A3" value="B">B) Substituir legislações nacionais.</label>
+    <label class="option" data-val="C"><input type="radio" name="A3" value="C">C) Regulamentar só sinalização horizontal.</label>
+    <label class="option" data-val="D"><input type="radio" name="A3" value="D">D) Harmonizar normas de trânsito entre países do Mercosul.</label>
+    <button type="button" onclick="checkA('A3')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">A RBUT visa harmonizar normas entre estados-partes do Mercosul.</div>
   </div>
 
-  <div class="q" id="q4">
-    <h3>4) O que é RENAVAM?</h3>
-    <label class="option">A) Registro Nacional de Infrações de Trânsito.</label>
-    <label class="option">B) Registro Nacional de Veículos Automotores. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Registro de Emplacamento Veicular do Município.</label>
-    <label class="option">D) Relação Nacional de Agentes de Veículos.</label>
-    <div class="explanation"><strong>Explicação:</strong> RENAVAM é o registro nacional que identifica os veículos automotores no Brasil — sua criação e manutenção são responsabilidades do órgão máximo executivo de trânsito. Renainf é o registro de infrações.</div>
+  <!-- Q4 -->
+  <div class="q" id="A4" data-answer="A">
+    <h3>4) Objetivo da Convenção de Viena (1968):</h3>
+    <label class="option" data-val="A"><input type="radio" name="A4" value="A">A) Padronizar sinais e regras de circulação entre países signatários.</label>
+    <label class="option" data-val="B"><input type="radio" name="A4" value="B">B) Definir limites de velocidade mundiais.</label>
+    <label class="option" data-val="C"><input type="radio" name="A4" value="C">C) Proibir trânsito noturno internacional.</label>
+    <label class="option" data-val="D"><input type="radio" name="A4" value="D">D) Regular só transporte ferroviário.</label>
+    <button type="button" onclick="checkA('A4')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">A Convenção padroniza sinais e regras para circulação internacional.</div>
   </div>
 
-  <div class="q" id="q5">
-    <h3>5) Art. 143 do CTB trata das categorias da Carteira Nacional de Habilitação (CNH). Assinale a alternativa que descreve CORRETAMENTE a categoria D:</h3>
-    <label class="option">A) Veículos de duas ou três rodas com ou sem carro lateral.</label>
-    <label class="option">B) Veículos para transporte de cargas com peso bruto acima de 3.500 kg.</label>
-    <label class="option">C) Veículos de transporte de passageiros com mais de 8 lugares (excluído o condutor). <span class="correct">(Resposta correta)</span></label>
-    <label class="option">D) Combinações de veículos com reboque, cujo conjunto supera 6.000 kg.</label>
-    <div class="explanation"><strong>Explicação:</strong> Segundo o art. 143 e a redação do CTB, a categoria D habilita para conduzir veículos destinados ao transporte de passageiros com mais de 8 lugares, excluído o condutor. Categorias A (duas ou três rodas), B (veículos leves), C (cargas acima de 3.500 kg) e E (combinações com reboque) têm definições próprias.</div>
+  <!-- Q5 -->
+  <div class="q" id="A5" data-answer="D">
+    <h3>5) Categoria E da CNH permite:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A5" value="A">A) Conduzir motocicletas.</label>
+    <label class="option" data-val="B"><input type="radio" name="A5" value="B">B) Veículos de passeio sem reboque.</label>
+    <label class="option" data-val="C"><input type="radio" name="A5" value="C">C) Uso exclusivo para transporte escolar.</label>
+    <label class="option" data-val="D"><input type="radio" name="A5" value="D">D) Conduzir combinações com reboque quando o conjunto exige tal habilitação.</label>
+    <button type="button" onclick="checkA('A5')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Categoria E habilita para combinações de veículos com reboque, conforme limites e requisitos.</div>
   </div>
 
-  <div class="q" id="q6">
-    <h3>6) Sobre as funções da SENATRAN, marque a alternativa correta:</h3>
-    <label class="option">A) É o órgão máximo normativo do SNT e edita resoluções vinculantes.</label>
-    <label class="option">B) É o órgão executivo máximo do SNT, responsável por manter RENACH, RENAVAM e RENAINF. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Julga recursos interpostos contra decisões da JARI.</label>
-    <label class="option">D) É um órgão municipal de trânsito responsável pelo licenciamento veicular.</label>
-    <div class="explanation"><strong>Explicação:</strong> SENATRAN (Secretaria Nacional de Trânsito) é o órgão executivo da União com atribuições administrativas e técnicas, responsável por registros nacionais como RENACH (condutores), RENAVAM (veículos) e RENAINF (infrações). O CONTRAN é o órgão normativo que edita resoluções.</div>
+  <!-- Q6 -->
+  <div class="q" id="A6" data-answer="A">
+    <h3>6) Competência municipal inclui:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A6" value="A">A) Implantar sinalização e fiscalizar o trânsito urbano.</label>
+    <label class="option" data-val="B"><input type="radio" name="A6" value="B">B) Emitir carteiras internacionais de motorista.</label>
+    <label class="option" data-val="C"><input type="radio" name="A6" value="C">C) Julgar crimes de trânsito.</label>
+    <label class="option" data-val="D"><input type="radio" name="A6" value="D">D) Administrar PRF.</label>
+    <button type="button" onclick="checkA('A6')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Municípios exercem engenharia de tráfego, sinalização e fiscalização no âmbito urbano.</div>
   </div>
 
-  <div class="q" id="q7">
-    <h3>7) A JARI tem diversas competências. Qual das alternativas abaixo NÃO é atribuição da JARI?</h3>
-    <label class="option">A) Julgar recursos administrativos contra penalidades por infrações de trânsito.</label>
-    <label class="option">B) Aplicar penalidades de multa em flagrante infração de trânsito. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Solicitar informações complementares aos órgãos executivos para análise de recursos.</label>
-    <label class="option">D) Encaminhar informações sobre problemas sistemáticos observados nas autuações.</label>
-    <div class="explanation"><strong>Explicação:</strong> As JARI são órgãos colegiados que julgam recursos administrativos. Elas não aplicam multas em flagrante — essa é função dos agentes e órgãos executivos de trânsito no exercício do poder de polícia. A JARI analisa recursos, solicita informações e encaminha problemas recorrentes.</div>
+  <!-- Q7 -->
+  <div class="q" id="A7" data-answer="D">
+    <h3>7) A PRF atua principalmente em:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A7" value="A">A) Trânsito urbano municipal.</label>
+    <label class="option" data-val="B"><input type="radio" name="A7" value="B">B) Fiscalização de transporte aéreo.</label>
+    <label class="option" data-val="C"><input type="radio" name="A7" value="C">C) Emissão de resoluções do CONTRAN.</label>
+    <label class="option" data-val="D"><input type="radio" name="A7" value="D">D) Fiscalização rodoviária federal e patrulhamento.</label>
+    <button type="button" onclick="checkA('A7')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">PRF tem atribuição de patrulhamento e fiscalização nas rodovias federais.</div>
   </div>
 
-  <div class="q" id="q8">
-    <h3>8) A Convenção de Viena sobre Trânsito Viário tem qual objetivo primordial?</h3>
-    <label class="option">A) Uniformizar regras de circulação entre países signatários para facilitar o trânsito internacional. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">B) Substituir a legislação nacional de trânsito dos países signatários.</label>
-    <label class="option">C) Regular exclusivamente o tráfego aéreo internacional.</label>
-    <label class="option">D) Determinar penalidades criminais por infrações de trânsito transnacionais.</label>
-    <div class="explanation"><strong>Explicação:</strong> A Convenção de Viena visa harmonizar normas de trânsito para facilitar a circulação internacional e aumentar a segurança. Não substitui a legislação nacional — cada país adotará as regras em sua legislação interna, como o Brasil fez por decreto.</div>
+  <!-- Q8 -->
+  <div class="q" id="A8" data-answer="B">
+    <h3>8) Formação de condutores é disciplinada por:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A8" value="A">A) Câmaras municipais.</label>
+    <label class="option" data-val="B"><input type="radio" name="A8" value="B">B) CONTRAN (resoluções).</label>
+    <label class="option" data-val="C"><input type="radio" name="A8" value="C">C) Empresas de autoescola sem norma nacional.</label>
+    <label class="option" data-val="D"><input type="radio" name="A8" value="D">D) JARI.</label>
+    <button type="button" onclick="checkA('A8')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">CONTRAN regula conteúdo, carga horária e regras para habilitação.</div>
   </div>
 
-  <div class="q" id="q9">
-    <h3>9) Segundo o CTB, qual é o objetivo básico do Sistema Nacional de Trânsito (Art.6)?</h3>
-    <label class="option">A) Fiscalizar exclusivamente os motoristas profissionais.</label>
-    <label class="option">B) Estabelecer diretrizes da Política Nacional de Trânsito, visando segurança, fluidez, conforto e defesa ambiental. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Gerenciar exclusivamente o sistema de financiamento de obras viárias federais.</label>
-    <label class="option">D) Delegar integralmente a fiscalização de trânsito aos Municípios.</label>
-    <div class="explanation"><strong>Explicação:</strong> O art. 6 do CTB define objetivos básicos do SNT: diretrizes da política nacional, segurança, fluidez, conforto, defesa ambiental e educação, além de padronização técnica e integração entre órgãos. A opção B resume corretamente esse escopo.</div>
+  <!-- Q9 -->
+  <div class="q" id="A9" data-answer="C">
+    <h3>9) Categoria E exige, em regra:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A9" value="A">A) Ser menor de 18 anos.</label>
+    <label class="option" data-val="B"><input type="radio" name="A9" value="B">B) Não ter experiência prévia.</label>
+    <label class="option" data-val="C"><input type="radio" name="A9" value="C">C) Habilitação prévia em C ou D por determinado período.</label>
+    <label class="option" data-val="D"><input type="radio" name="A9" value="D">D) Apenas prova teórica.</label>
+    <button type="button" onclick="checkA('A9')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Categoria E normalmente exige tempo mínimo de habilitação em C ou D.</div>
   </div>
 
-  <div class="q" id="q10">
-    <h3>10) Sobre competência para aplicar penalidade de suspensão do direito de dirigir, assinale a alternativa correta:</h3>
-    <label class="option">A) Apenas o órgão executivo de trânsito da União pode aplicar suspensão.</label>
-    <label class="option">B) Órgãos executivos estaduais podem aplicar suspensão quando previsto especificamente para a infração. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) A Polícia Militar pode aplicar suspensão administrativa em qualquer caso.</label>
-    <label class="option">D) JARI tem competência exclusiva para aplicar suspensão do direito de dirigir.</label>
-    <div class="explanation"><strong>Explicação:</strong> O CTB e alterações (por exemplo Lei 14.071/2020) preveem que a aplicação da suspensão pode ser feita por órgãos executivos estaduais quando prevista para a infração. A competência não é exclusiva da União; a PM pode conduzir fiscalização, mas aplicação da penalidade segue competência administrativa estabelecida.</div>
+  <!-- Q10 -->
+  <div class="q" id="A10" data-answer="A">
+    <h3>10) Estacionar em ciclofaixa conforme Art. 181 é:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A10" value="A">A) Infração grave.</label>
+    <label class="option" data-val="B"><input type="radio" name="A10" value="B">B) Permitido por até 10 minutos.</label>
+    <label class="option" data-val="C"><input type="radio" name="A10" value="C">C) Infração leve.</label>
+    <label class="option" data-val="D"><input type="radio" name="A10" value="D">D) Só é infração se houver ciclistas.</label>
+    <button type="button" onclick="checkA('A10')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Ciclofaixa/ciclovia são áreas protegidas; estacionar nelas configura infração grave.</div>
   </div>
 
-  <div class="q" id="q11">
-    <h3>11) Art. 181 do CTB trata do estacionamento. Qual alternativa descreve CORRETAMENTE uma hipótese de infração de estacionamento prevista no CTB?</h3>
-    <label class="option">A) Estacionar em local permitido durante 5 minutos sem deixar o veículo trancado.</label>
-    <label class="option">B) Estacionar sobre a faixa de pedestres quando houver sinalização específica de permissão.</label>
-    <label class="option">C) Estacionar em local proibido, como em frente a entrada de garagem alheia sem autorização. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">D) Estacionar em via de trânsito rápido na faixa da direita quando não houver fluxo de veículos.</label>
-    <div class="explanation"><strong>Explicação:</strong> O art. 181 enumera hipóteses de estacionamento proibido — entre elas em locais proibidos como em frente a entradas de garagens sem autorização. Estacionar sobre faixa de pedestres também é proibido, mas não "quando houver sinalização específica de permissão" (isso não existe). A opção C é a que melhor descreve um exemplo claro do artigo.</div>
+  <!-- Q11 -->
+  <div class="q" id="A11" data-answer="D">
+    <h3>11) Parar sobre faixa de pedestres (Art.182) é:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A11" value="A">A) Permitido para embarque.</label>
+    <label class="option" data-val="B"><input type="radio" name="A11" value="B">B) Infração leve.</label>
+    <label class="option" data-val="C"><input type="radio" name="A11" value="C">C) Infração média.</label>
+    <label class="option" data-val="D"><input type="radio" name="A11" value="D">D) Infração grave.</label>
+    <button type="button" onclick="checkA('A11')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Parar sobre faixa coloca pedestres em risco; classificada como infração grave.</div>
   </div>
 
-  <div class="q" id="q12">
-    <h3>12) Art. 182 do CTB dispõe sobre parada. Qual das alternativas é hipótese de parada proibida?</h3>
-    <label class="option">A) Parar o veículo na faixa de pedestres na mudança de sinal luminoso. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">B) Parar temporariamente para embarque de passageiros em pontos autorizados.</label>
-    <label class="option">C) Parar em acostamento para descanso do motorista sem sinalização indicativa.</label>
-    <label class="option">D) Parar em área de estacionamento rotativo devidamente sinalizada e paga.</label>
-    <div class="explanation"><strong>Explicação:</strong> O art. 182 trata da parada e enumera hipóteses proibidas como parar sobre faixa de pedestres na mudança de sinal luminoso. Parada para embarque em locais autorizados é permitida; acostamento pode ter restrições; áreas rotativas devidamente sinalizadas permitem parada/estacionamento conforme regras locais.</div>
+  <!-- Q12 -->
+  <div class="q" id="A12" data-answer="B">
+    <h3>12) Quem julga em 1ª instância recursos administrativos de infrações?</h3>
+    <label class="option" data-val="A"><input type="radio" name="A12" value="A">A) SENATRAN.</label>
+    <label class="option" data-val="B"><input type="radio" name="A12" value="B">B) JARI.</label>
+    <label class="option" data-val="C"><input type="radio" name="A12" value="C">C) CETRAN.</label>
+    <label class="option" data-val="D"><input type="radio" name="A12" value="D">D) CONTRAN.</label>
+    <button type="button" onclick="checkA('A12')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">JARI é a junta responsável por julgar recursos administrativos em primeira instância.</div>
   </div>
 
-  <div class="q" id="q13">
-    <h3>13) Sobre as competências dos órgãos executivos de trânsito municipais, assinale a alternativa correta:</h3>
-    <label class="option">A) Compete exclusivamente aos Municípios expedir CNH.</label>
-    <label class="option">B) Compete implantar e operar o sistema de sinalização e fiscalizar o trânsito urbano. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Municípios não podem estabelecer regras de estacionamento em vias locais.</label>
-    <label class="option">D) Municípios são responsáveis por fiscalizar rodovias federais.</label>
-    <div class="explanation"><strong>Explicação:</strong> Os órgãos executivos municipais têm competência para planejar, implantar e operar sinalização e exercer fiscalização de trânsito no âmbito urbano, inclusive regras de estacionamento em vias locais. Expedição de CNH é delegada pelo órgão máximo executivo da União aos Detrans; rodovias federais são competência da PRF e órgãos executivos rodoviários federais/estaduais.</div>
+  <!-- Q13 -->
+  <div class="q" id="A13" data-answer="A">
+    <h3>13) Via arterial é caracterizada por:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A13" value="A">A) Distribuir tráfego entre vias coletoras e locais.</label>
+    <label class="option" data-val="B"><input type="radio" name="A13" value="B">B) Ser sempre sem interseções.</label>
+    <label class="option" data-val="C"><input type="radio" name="A13" value="C">C) Ser exclusiva para caminhões.</label>
+    <label class="option" data-val="D"><input type="radio" name="A13" value="D">D) Só existir em rodovias federais.</label>
+    <button type="button" onclick="checkA('A13')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Via arterial é parte da hierarquia viária, conectando coletoras e locais.</div>
   </div>
 
-  <div class="q" id="q14">
-    <h3>14) A quem compete organizar e manter o Registro Nacional de Infrações de Trânsito (Renainf)?</h3>
-    <label class="option">A) Aos Conselhos Estaduais de Trânsito (CETRAN).</label>
-    <label class="option">B) Ao órgão máximo executivo de trânsito da União (SENATRAN/Ministério competente). <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) À Polícia Rodoviária Federal exclusivamente.</label>
-    <label class="option">D) Às Juntas Administrativas de Recursos de Infrações (JARI).</label>
-    <div class="explanation"><strong>Explicação:</strong> A organização e manutenção de registros nacionais (RENACH, RENAVAM, RENAINF) são atribuições do órgão máximo executivo da União, que administra bases de dados nacionais para padronização e integração entre entes federativos.</div>
+  <!-- Q14 -->
+  <div class="q" id="A14" data-answer="C">
+    <h3>14) CETRAN tem função de:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A14" value="A">A) Aplicar multas em rodovias federais.</label>
+    <label class="option" data-val="B"><input type="radio" name="A14" value="B">B) Operar viaturas policiais.</label>
+    <label class="option" data-val="C"><input type="radio" name="A14" value="C">C) Normatizar e julgar em segunda instância no âmbito estadual.</label>
+    <label class="option" data-val="D"><input type="radio" name="A14" value="D">D) Emitir certidões de registro civil.</label>
+    <button type="button" onclick="checkA('A14')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">CETRAN é conselho estadual consultivo e normativo, com competências administrativas.</div>
   </div>
 
-  <div class="q" id="q15">
-    <h3>15) Sobre remoção de veículo em estado de abandono ou sinistrado, qual afirmativa é correta segundo as alterações recentes?</h3>
-    <label class="option">A) O veículo só pode ser removido se houver autuação por infração de trânsito.</label>
-    <label class="option">B) O veículo pode ser removido independentemente da existência de infração, nos termos do Contran. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) A remoção só é possível mediante ordem judicial.</label>
-    <label class="option">D) Veículos sinistrados nunca podem ser removidos se houver responsável no local.</label>
-    <div class="explanation"><strong>Explicação:</strong> O CTB (com redações recentes como Lei nº 14.599/2023) prevê que veículos em estado de abandono ou sinistrado podem ser removidos para depósito independentemente da existência de infração, observadas normas do Contran. A remoção do veículo sinistrado será realizada especialmente quando não houver responsável no local.</div>
+  <!-- Q15 -->
+  <div class="q" id="A15" data-answer="D">
+    <h3>15) Remoção de veículo pode ocorrer quando:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A15" value="A">A) Só se houver ordem judicial.</label>
+    <label class="option" data-val="B"><input type="radio" name="A15" value="B">B) Só em rodovias estaduais.</label>
+    <label class="option" data-val="C"><input type="radio" name="A15" value="C">C) Nunca por infração de estacionamento.</label>
+    <label class="option" data-val="D"><input type="radio" name="A15" value="D">D) Quando infringir hipóteses previstas no CTB (abandono, estacionamento proibido, sinistro sem responsável).</label>
+    <button type="button" onclick="checkA('A15')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Remoção é medida administrativa prevista no CTB para várias hipóteses.</div>
   </div>
 
-  <div class="q" id="q16">
-    <h3>16) Qual a principal diferença entre CONTRAN e SENATRAN?</h3>
-    <label class="option">A) CONTRAN é normativo; SENATRAN é executivo. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">B) CONTRAN executa operações de fiscalização; SENATRAN julga recursos.</label>
-    <label class="option">C) Não há diferença: são nomes diferentes para o mesmo órgão.</label>
-    <label class="option">D) CONTRAN é municipal; SENATRAN é federal.</label>
-    <div class="explanation"><strong>Explicação:</strong> A distinção básica: CONTRAN (Conselho) edita normas e regulações; SENATRAN (Secretaria) executa as políticas públicas, administra registros e dá suporte executivo. Essa separação normativo/executivo é central no SNT.</div>
+  <!-- Q16 -->
+  <div class="q" id="A16" data-answer="B">
+    <h3>16) O SNT é composto por:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A16" value="A">A) Apenas órgãos federais.</label>
+    <label class="option" data-val="B"><input type="radio" name="A16" value="B">B) União, Estados, DF e Municípios.</label>
+    <label class="option" data-val="C"><input type="radio" name="A16" value="C">C) Somente órgãos privados credenciados.</label>
+    <label class="option" data-val="D"><input type="radio" name="A16" value="D">D) Apenas CONTRAN e SENATRAN.</label>
+    <button type="button" onclick="checkA('A16')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">O SNT é descentralizado e envolve entes federativos diversos.</div>
   </div>
 
-  <div class="q" id="q17">
-    <h3>17) Em matéria de educação para o trânsito, assinale a alternativa que sintetiza o papel do CONTRAN:</h3>
-    <label class="option">A) Fixar temas e cronogramas anuais para campanhas nacionais de educação para o trânsito. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">B) Financiar exclusivamente campanhas municipais sem coordenação nacional.</label>
-    <label class="option">C) Repassar integralmente a responsabilidade de educação ao setor privado.</label>
-    <label class="option">D) Suspender todas as campanhas em feriados e férias escolares.</label>
-    <div class="explanation"><strong>Explicação:</strong> O CONTRAN tem papel normativo na definição de políticas e, conforme o CTB, estabelece temas e cronogramas das campanhas nacionais de educação para o trânsito, que devem ser seguidas pelos órgãos do SNT.</div>
+  <!-- Q17 -->
+  <div class="q" id="A17" data-answer="C">
+    <h3>17) Parar na calçada é:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A17" value="A">A) Permitido se o trânsito estiver vazio.</label>
+    <label class="option" data-val="B"><input type="radio" name="A17" value="B">B) Infração leve.</label>
+    <label class="option" data-val="C"><input type="radio" name="A17" value="C">C) Infração grave.</label>
+    <label class="option" data-val="D"><input type="radio" name="A17" value="D">D) Infração média.</label>
+    <button type="button" onclick="checkA('A17')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Parada em calçada prejudica pedestres, sendo infração grave.</div>
   </div>
 
-  <div class="q" id="q18">
-    <h3>18) Quanto à competência para vistoriar veículos que precisam de autorização especial para transitar, qual órgão tem essa atribuição?</h3>
-    <label class="option">A) Órgão executivo rodoviário local sem necessidade de delegação.</label>
-    <label class="option">B) Órgão executivo de trânsito competente, mediante delegação do órgão máximo executivo da União. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Polícia Militar exclusivamente.</label>
-    <label class="option">D) JARI em procedimento sumário.</label>
-    <div class="explanation"><strong>Explicação:</strong> A vistoria para autorizações especiais é competência dos órgãos executivos de trânsito, frequentemente mediante delegação do órgão máximo executivo (SENATRAN), respeitando requisitos técnicos e normativos.</div>
+  <!-- Q18 -->
+  <div class="q" id="A18" data-answer="A">
+    <h3>18) Qual é uma contribuição prática da Convenção de Viena?</h3>
+    <label class="option" data-val="A"><input type="radio" name="A18" value="A">A) Padronizar sinais de trânsito para facilitar circulação internacional.</label>
+    <label class="option" data-val="B"><input type="radio" name="A18" value="B">B) Proibir uso de etilômetros em operações internacionais.</label>
+    <label class="option" data-val="C"><input type="radio" name="A18" value="C">C) Tornar inválidas todas as CNHs nacionais.</label>
+    <label class="option" data-val="D"><input type="radio" name="A18" value="D">D) Uniformizar leis penais.</label>
+    <button type="button" onclick="checkA('A18')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Padronização de sinais é um dos objetivos para melhorar a compreensão por condutores estrangeiros.</div>
   </div>
 
-  <div class="q" id="q19">
-    <h3>19) Sobre infrações por excesso de peso, quem é competente para fiscalizar e aplicar penalidades?</h3>
-    <label class="option">A) Órgãos executivos de trânsito e executivos rodoviários, de acordo com suas competências. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">B) Apenas a Polícia Rodoviária Federal pode autuar por excesso de peso.</label>
-    <label class="option">C) Empresas de transporte são responsáveis pela autuação.</label>
-    <label class="option">D) Excesso de peso não configura infração administrativa, apenas civil.</label>
-    <div class="explanation"><strong>Explicação:</strong> A fiscalização de excesso de peso é realizada por órgãos executivos de trânsito e rodoviários (municipais, estaduais, federais) conforme competência territorial e delegações. A PRF atua nas rodovias federais, mas não é a única autoridade competente.</div>
+  <!-- Q19 -->
+  <div class="q" id="A19" data-answer="C">
+    <h3>19) Antes da medição com etilômetro deve-se aguardar:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A19" value="A">A) 5 minutos.</label>
+    <label class="option" data-val="B"><input type="radio" name="A19" value="B">B) Registrar BO primeiro.</label>
+    <label class="option" data-val="C"><input type="radio" name="A19" value="C">C) 15 minutos para evitar interferências.</label>
+    <label class="option" data-val="D"><input type="radio" name="A19" value="D">D) Não é necessário aguardar.</label>
+    <button type="button" onclick="checkA('A19')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Aguardar 15 minutos é procedimento padrão para evitar que alimento/ingestão recente altere resultado.</div>
   </div>
 
-  <div class="q" id="q20">
-    <h3>20) Sobre veículos que necessitam de autorização especial para transitar (ex.: cargas indivisíveis), qual é um dos requisitos legais habituais?</h3>
-    <label class="option">A) Não é exigida qualquer vistoria prévia.</label>
-    <label class="option">B) Deve haver vistoria e cumprimento de requisitos técnicos estabelecidos pelo órgão competente. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Apenas autorização verbal do motorista é suficiente.</label>
-    <label class="option">D) Autorização concedida pelo CONTRAN não precisa obedecer a requisitos técnicos.</label>
-    <div class="explanation"><strong>Explicação:</strong> Transportes especiais normalmente exigem vistoria, cumprimento de requisitos técnicos (fixação, dimensões, sinalização), e emissão de autorização pela autoridade competente (órgão executivo de trânsito/rodoviário), seguindo normas do CONTRAN.</div>
+  <!-- Q20 -->
+  <div class="q" id="A20" data-answer="A">
+    <h3>20) Tolerância zero significa:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A20" value="A">A) Qualquer quantidade de álcool pode ensejar infração.</label>
+    <label class="option" data-val="B"><input type="radio" name="A20" value="B">B) Só é infração acima de 0,50 g/L.</label>
+    <label class="option" data-val="C"><input type="radio" name="A20" value="C">C) Só vale para motoristas profissionais.</label>
+    <label class="option" data-val="D"><input type="radio" name="A20" value="D">D) Só se houver acidente.</label>
+    <button type="button" onclick="checkA('A20')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">A política adotada pune a presença de álcool no organismo do condutor, independentemente da quantidade.</div>
   </div>
 
-  <div class="q" id="q21">
-    <h3>21) Sobre a responsabilidade objetiva prevista no CTB (Art.1º, §3º), qual é a implicação principal?</h3>
-    <label class="option">A) Órgãos do SNT só respondem por culpa comprovada nas ações.</label>
-    <label class="option">B) Órgãos e entidades do SNT respondem objetivamente por danos causados por ação, omissão ou erro na execução de serviços. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Não há responsabilidade do Estado por ações de seus agentes em matéria de trânsito.</label>
-    <label class="option">D) Responsabilidade objetiva só se aplica a veículos oficiais.</label>
-    <div class="explanation"><strong>Explicação:</strong> O parágrafo do art. 1º estabelece responsabilidade objetiva dos órgãos de trânsito por danos causados aos cidadãos em razão de ação, omissão ou erro na execução e manutenção de projetos e serviços que garantam o direito ao trânsito seguro — ou seja, independentemente de culpa, quando presentes os requisitos legais.</div>
+  <!-- Q21 -->
+  <div class="q" id="A21" data-answer="D">
+    <h3>21) Em caso de recusa do teste, aplica-se:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A21" value="A">A) Nenhuma sanção.</label>
+    <label class="option" data-val="B"><input type="radio" name="A21" value="B">B) Apenas advertência.</label>
+    <label class="option" data-val="C"><input type="radio" name="A21" value="C">C) Sanções criminais automáticas.</label>
+    <label class="option" data-val="D"><input type="radio" name="A21" value="D">D) Penalidades iguais às do art.165 (infração gravíssima e medidas administrativas).</label>
+    <button type="button" onclick="checkA('A21')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">A recusa é prevista no art.165-A e tem penalidades equivalentes às do art.165.</div>
   </div>
 
-  <div class="q" id="q22">
-    <h3>22) Conforme o CTB, qual definição melhor descreve "via de trânsito rápido"?</h3>
-    <label class="option">A) Via com acessos diretos aos lotes lindeiros e travessia de pedestres em nível.</label>
-    <label class="option">B) Via caracterizada por ausência de interseções em nível, sem acessibilidade direta aos lotes lindeiros e sem travessia de pedestres em nível. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Via exclusiva para bicicletas.</label>
-    <label class="option">D) Via rural não pavimentada.</label>
-    <div class="explanation"><strong>Explicação:</strong> A via de trânsito rápido tem como característica o fluxo contínuo, sem interseções em nível e sem acessos diretos aos lotes lindeiros — exemplos típicos são as rodovias controladas e expressways urbanos.</div>
+  <!-- Q22 -->
+  <div class="q" id="A22" data-answer="B">
+    <h3>22) Medição indicativa de crime (art.306) costuma ser a partir de:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A22" value="A">A) 0,20 mg/l.</label>
+    <label class="option" data-val="B"><input type="radio" name="A22" value="B">B) 0,34 mg/l.</label>
+    <label class="option" data-val="C"><input type="radio" name="A22" value="C">C) 0,04 mg/l.</label>
+    <label class="option" data-val="D"><input type="radio" name="A22" value="D">D) 1,00 mg/l.</label>
+    <button type="button" onclick="checkA('A22')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Valores iguais ou superiores a 0,34 mg/l costumam justificar enquadramento no art.306 (crime).</div>
   </div>
 
-  <div class="q" id="q23">
-    <h3>23) Sobre remoção e depósito de veículos, qual regra de caráter recente foi destacada no material?</h3>
-    <label class="option">A) Veículos sinistrados só podem ser removidos mediante ordem judicial.</label>
-    <label class="option">B) A remoção do veículo sinistrado será realizada quando não houver responsável por ele no local do sinistro. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Veículos abandonados não podem ser removidos em hipótese alguma.</label>
-    <label class="option">D) A remoção é proibida em domingos e feriados.</label>
-    <div class="explanation"><strong>Explicação:</strong> As alterações legislativas (Lei 14.599/2023 e regulamentações do CONTRAN) tratam da remoção de veículos sinistrados e abandonados, prevendo que a remoção pode ocorrer independentemente da existência de infração e, especificamente, que quando não houver responsável no local do sinistro a remoção deverá ser realizada.</div>
+  <!-- Q23 -->
+  <div class="q" id="A23" data-answer="A">
+    <h3>23) Art.26 exige que o condutor:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A23" value="A">A) Evite criar obstáculos ou perigos na via.</label>
+    <label class="option" data-val="B"><input type="radio" name="A23" value="B">B) Siga apenas orientações do passageiro.</label>
+    <label class="option" data-val="C"><input type="radio" name="A23" value="C">C) Ande sempre com farol alto.</label>
+    <label class="option" data-val="D"><input type="radio" name="A23" value="D">D) Use a buzina continuamente.</label>
+    <button type="button" onclick="checkA('A23')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Evitar obstáculos e perigos é conduta básica prevista no art.26.</div>
   </div>
 
-  <div class="q" id="q24">
-    <h3>24) Sobre o conceito de trânsito (CTB, art.1), qual alternativa está correta?</h3>
-    <label class="option">A) Trânsito é apenas a circulação de veículos motorizados em vias pavimentadas.</label>
-    <label class="option">B) Trânsito é a utilização das vias por pessoas, veículos e animais para fins de circulação, parada, estacionamento e operação de carga/descarga. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Trânsito refere-se somente ao tráfego rodoviário intermunicipal.</label>
-    <label class="option">D) Trânsito é sinônimo de transporte público.</label>
-    <div class="explanation"><strong>Explicação:</strong> O art. 1 define trânsito amplamente, incluindo pessoas, veículos e animais em diversas operações nas vias; portanto a opção B representa corretamente essa definição abrangente.</div>
+  <!-- Q24 -->
+  <div class="q" id="A24" data-answer="C">
+    <h3>24) Em interseções sem sinalização, a preferência é de:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A24" value="A">A) Quem vem da esquerda.</label>
+    <label class="option" data-val="B"><input type="radio" name="A24" value="B">B) Veículo de maior porte.</label>
+    <label class="option" data-val="C"><input type="radio" name="A24" value="C">C) Quem vem pela direita.</label>
+    <label class="option" data-val="D"><input type="radio" name="A24" value="D">D) Pedestres sempre têm preferência total.</label>
+    <button type="button" onclick="checkA('A24')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Regra geral: preferência a quem vem pela direita em interseções não sinalizadas.</div>
   </div>
 
-  <div class="q" id="q25">
-    <h3>25) Em relação às penalidades administrativas previstas no CTB, qual é a relação entre infração e medida administrativa?</h3>
-    <label class="option">A) Medidas administrativas são aplicáveis apenas a infrações leves.</label>
-    <label class="option">B) A aplicação de penalidades e medidas administrativas depende do tipo de infração prevista no Código. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Não existem medidas administrativas no CTB, apenas penas criminais.</label>
-    <label class="option">D) Todas as infrações implicam automaticamente em suspensão do direito de dirigir.</label>
-    <div class="explanation"><strong>Explicação:</strong> O CTB prevê diferentes categorias de infrações (leve, média, grave, gravíssima) com penas correspondentes — advertência, multa, medida administrativa (remoção, retenção), suspensão, cassação — aplicadas conforme a natureza da infração. Logo, B é a correta.</div>
+  <!-- Q25 -->
+  <div class="q" id="A25" data-answer="D">
+    <h3>25) Art.30 determina que, quando outro veículo vai ultrapassar, o condutor ultrapassado deve:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A25" value="A">A) Acelerar para manter posição.</label>
+    <label class="option" data-val="B"><input type="radio" name="A25" value="B">B) Fazer manobra brusca.</label>
+    <label class="option" data-val="C"><input type="radio" name="A25" value="C">C) Frear bruscamente.</label>
+    <label class="option" data-val="D"><input type="radio" name="A25" value="D">D) Facilitar a ultrapassagem.</label>
+    <button type="button" onclick="checkA('A25')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Deve-se facilitar a ultrapassagem, mantendo conduta previsível e segura.</div>
   </div>
 
-  <div class="q" id="q26">
-    <h3>26) Sobre o papel dos órgãos técnicos vinculados ao CONTRAN, qual alternativa é verdadeira?</h3>
-    <label class="option">A) São compostos apenas por representantes do governo, sem participação social.</label>
-    <label class="option">B) Integram especialistas de órgãos executivos e representantes de segmentos da sociedade, fornecendo subsídios técnicos ao CONTRAN. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Têm competência para editar normas com força de lei.</label>
-    <label class="option">D) São órgãos judiciais subordinados ao Ministério Público.</label>
-    <div class="explanation"><strong>Explicação:</strong> As câmaras e órgãos técnicos são constituídos por especialistas de órgãos públicos e representantes da sociedade civil, com objetivo de subsidiar tecnicamente decisões do CONTRAN. Eles não têm poder legislativo por si só.</div> 
+  <!-- Q26 -->
+  <div class="q" id="A26" data-answer="A">
+    <h3>26) É proibido ultrapassar em:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A26" value="A">A) Curvas sem visibilidade.</label>
+    <label class="option" data-val="B"><input type="radio" name="A26" value="B">B) Via expressa sinalizada com permissão.</label>
+    <label class="option" data-val="C"><input type="radio" name="A26" value="C">C) Retas longas com visibilidade.</label>
+    <label class="option" data-val="D"><input type="radio" name="A26" value="D">D) Faixa exclusiva de ônibus quando não sinalizada.</label>
+    <button type="button" onclick="checkA('A26')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Ultrapassagem proibida em curvas sem visibilidade, aclives, pontes, etc.</div>
   </div>
 
-  <div class="q" id="q27">
-    <h3>27) Sobre as categorias da CNH (art. 143), qual das alternativas abaixo corresponde CORRETAMENTE à categoria C?</h3>
-    <label class="option">A) Veículos de passeio com até 8 lugares e até 3.500 kg.</label>
-    <label class="option">B) Veículos destinados ao transporte de carga com peso bruto total superior a 3.500 kg. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Motocicletas e motonetas.</label>
-    <label class="option">D) Combinações de veículos (automóvel + reboque) independentemente do peso.</label>
-    <div class="explanation"><strong>Explicação:</strong> A categoria C habilita para condução de veículos utilizados no transporte de carga com peso bruto total superior a 3.500 kg. As demais categorias têm finalidades distintas: A (motos), B (carros leves), D (passageiros), E (combinações com reboque).</div>
+  <!-- Q27 -->
+  <div class="q" id="A27" data-answer="C">
+    <h3>27) Pisca-alerta deve ser usado em:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A27" value="A">A) Reservar vaga.</label>
+    <label class="option" data-val="B"><input type="radio" name="A27" value="B">B) Indicar mudança de faixa.</label>
+    <label class="option" data-val="C"><input type="radio" name="A27" value="C">C) Emergência ou imobilização.</label>
+    <label class="option" data-val="D"><input type="radio" name="A27" value="D">D) Sempre no período noturno.</label>
+    <button type="button" onclick="checkA('A27')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Pisca-alerta sinaliza emergência ou imobilização do veículo.</div>
   </div>
 
-  <div class="q" id="q28">
-    <h3>28) Em se tratando de policiamento ostensivo de trânsito, qual é a participação das Polícias Militares segundo o CTB?</h3>
-    <label class="option">A) Polícias Militares não podem atuar no policiamento ostensivo de trânsito.</label>
-    <label class="option">B) Polícias Militares podem executar policiamento ostensivo do trânsito, exigindo formação técnica adequada de seus integrantes. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) Polícias Militares têm competência exclusiva para expedir CNH.</label>
-    <label class="option">D) Polícias Militares são responsáveis por editar normas do CONTRAN.</label>
-    <div class="explanation"><strong>Explicação:</strong> O CTB prevê a participação das Polícias Militares no policiamento ostensivo de trânsito, desde que estruturadas e com atribuições definidas em lei e regulamentos. Elas não expõem CNH nem editam normas do CONTRAN.</div>
+  <!-- Q28 -->
+  <div class="q" id="A28" data-answer="B">
+    <h3>28) Buzina (Art.41) só pode ser usada para:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A28" value="A">A) Toques longos para chamar pedestres.</label>
+    <label class="option" data-val="B"><input type="radio" name="A28" value="B">B) Toques breves para evitar sinistros.</label>
+    <label class="option" data-val="C"><input type="radio" name="A28" value="C">C) Avisar sobre blitz.</label>
+    <label class="option" data-val="D"><input type="radio" name="A28" value="D">D) Uso contínuo em áreas hospitalares.</label>
+    <button type="button" onclick="checkA('A28')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">A buzina é instrumento preventivo e deve ser usada com parcimônia.</div>
   </div>
 
-  <div class="q" id="q29">
-    <h3>29) Sobre o processo administrativo de aplicação de multas e arrecadação, qual alternativa está correta?</h3>
-    <label class="option">A) A arrecadação de multas compete somente ao CONTRAN.</label>
-    <label class="option">B) Órgãos executivos de trânsito aplicam multas, notificam os infratores e arrecadam os valores conforme sua competência. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">C) As multas não são convertidas em receitas públicas.</label>
-    <label class="option">D) Apenas a JARI pode arrecadar multas.</label>
-    <div class="explanation"><strong>Explicação:</strong> Os órgãos executivos (municipais, estaduais, federais) aplicam sanções e arrecadam multas dentro de sua competência. O CONTRAN não atua como arrecadador; JARI é instância julgadora administrativa de recursos.</div>
+  <!-- Q29 -->
+  <div class="q" id="A29" data-answer="D">
+    <h3>29) Art.43 orienta o condutor a:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A29" value="A">A) Trafegar abaixo de 50% da velocidade sem motivo.</label>
+    <label class="option" data-val="B"><input type="radio" name="A29" value="B">B) Frear bruscamente sempre que quiser.</label>
+    <label class="option" data-val="C"><input type="radio" name="A29" value="C">C) Ignorar condições climáticas.</label>
+    <label class="option" data-val="D"><input type="radio" name="A29" value="D">D) Reduzir velocidade quando as condições exigirem.</label>
+    <button type="button" onclick="checkA('A29')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">É obrigação ajustar velocidade a condições de via, tráfego e clima.</div>
   </div>
 
-  <div class="q" id="q30">
-    <h3>30) Sobre a autoridade que pode credenciar órgãos ou entidades para executar atividades previstas na legislação de trânsito, qual é a resposta correta?</h3>
-    <label class="option">A) A competência para credenciar cabe ao CONTRAN. <span class="correct">(Resposta correta)</span></label>
-    <label class="option">B) Apenas o prefeito municipal pode credenciar entidades para funções do SNT.</label>
-    <label class="option">C) Não é permitido credenciar terceiros para execução de atividades de trânsito.</label>
-    <label class="option">D) A credencial deve ser sempre concedida por ordem judicial.</label>
-    <div class="explanation"><strong>Explicação:</strong> O CONTRAN normatiza procedimentos e pode estabelecer regras para credenciamento de órgãos ou entidades para executar atividades previstas na legislação de trânsito, delegando tarefas conforme normas e regulamentos.</div>
+  <!-- Q30 -->
+  <div class="q" id="A30" data-answer="A">
+    <h3>30) Art.181 e 182: Parar versus estacionar — correto é:</h3>
+    <label class="option" data-val="A"><input type="radio" name="A30" value="A">A) Parada é temporária; estacionamento é permanência maior e as hipóteses proibidas variam entre art.181 e 182.</label>
+    <label class="option" data-val="B"><input type="radio" name="A30" value="B">B) Não há diferença legal entre parar e estacionar.</label>
+    <label class="option" data-val="C"><input type="radio" name="A30" value="C">C) Parar sempre é mais gravoso que estacionar.</label>
+    <label class="option" data-val="D"><input type="radio" name="A30" value="D">D) Ambos são penalizados criminalmente da mesma forma.</label>
+    <button type="button" onclick="checkA('A30')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Parada e estacionamento têm definições distintas; art.181 enumera hipóteses de estacionamento proibido, art.182 trata de parada.</div>
   </div>
 
 </form>
 
-<footer>
-  Referências: Código de Trânsito Brasileiro (Lei 9.503/1997) e atualizações, Resoluções do CONTRAN, RBUT (1992) e Convenção de Viena (1968), conforme materiais fornecidos. Use o PDF original para conferir redações e incisos específicos.
-</footer>
+<div class="controls">
+  <button onclick="showScoreA()">Ver pontuação final</button>
+  <div class="card small">Prova A — 30 questões. As respostas ficam bloqueadas após confirmação individual.</div>
+</div>
 
+<div id="resultA" class="result"></div>
+
+  </div><script>
+  let scoreA = 0; let answeredA = {};
+  function checkA(qid){
+    const q = document.getElementById(qid); if(!q) return; if(answeredA[qid]) return;
+    const sel = q.querySelector('input[type=radio]:checked'); if(!sel){ alert('Escolha uma alternativa antes de confirmar.'); return; }
+    const chosen = sel.value, correct = q.dataset.answer; const fb = q.querySelector('.feedback'); const exp = q.querySelector('.explanation');
+    if(chosen === correct){ fb.textContent='✔ Resposta correta!'; fb.className='feedback correct'; sel.parentElement.classList.add('correct-label'); scoreA++; }
+    else{ fb.textContent='✘ Resposta incorreta'; fb.className='feedback wrong'; sel.parentElement.classList.add('wrong-label'); const cl = q.querySelector('label.option[data-val="'+correct+'"]'); if(cl) cl.classList.add('correct-label'); }
+    exp.style.display='block'; q.querySelectorAll('input[type=radio]').forEach(i=>i.disabled=true); answeredA[qid]=true;
+  }
+  function showScoreA(){ const total=30; const answeredCount = Object.keys(answeredA).length; const percent = Math.round((scoreA/total)*100); const r = document.getElementById('resultA'); r.style.display='block'; r.innerHTML = '<strong>Pontuação:</strong> '+scoreA+' / '+total+' ('+percent+'%).<br><small>Respondidas: '+answeredCount+' de '+total+'.</small>'; r.scrollIntoView({behavior:'smooth'}); }
+</script><!-- ========================================================= --><!-- PROVA B: salvar como Prova_B_Legislacao_Transito.html --><!doctype html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Prova B — Legislação de Trânsito (30 Qs)</title>
+  <style>
+    :root{--bg:#04121b;--card:#0b1520;--accent:#8be0d6;--muted:#aab8c2;--white:#eaf6f8;--correct:#4ef1a1;--wrong:#ff7b7b}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;padding:20px;background:linear-gradient(180deg,var(--bg) 0%, #021018 100%);color:var(--white)}
+    .wrap{max-width:980px;margin:0 auto}
+    header{margin-bottom:16px}
+    h1{font-size:18px;margin:0}
+    .card{background:var(--card);padding:12px;border-radius:10px;margin:12px 0;color:var(--muted)}
+    .q{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.03)}
+    label.option{display:block;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);margin:6px 0;cursor:pointer}
+    button{background:var(--accent);color:#042027;padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+    .feedback{font-weight:700;margin-top:8px}
+    .explanation{display:none;background:rgba(0,0,0,0.25);padding:10px;border-radius:8px;margin-top:8px;color:var(--muted)}
+    .result{display:none;margin-top:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;color:var(--muted)}
+    .correct-label{border-color:var(--correct)!important;color:var(--correct)!important}
+    .wrong-label{border-color:var(--wrong)!important;color:var(--wrong)!important}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Prova B — Legislação de Trânsito (30 questões)</h1>
+      <div class="card">Prova B: mesmas regras de interação. Perguntas reordenadas e formuladas de modo a variar o teste.</div>
+    </header><form id="quizB">
+  <!-- Prova B questions (30) - similar scope but shuffled -->
+
+  <!-- B1 -->
+  <div class="q" id="B1" data-answer="B">
+    <h3>1) CONTRAN é:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B1" value="A">A) Órgão que executa blitz em rodovias federais.</label>
+    <label class="option" data-val="B"><input type="radio" name="B1" value="B">B) Órgão normativo e consultivo do SNT.</label>
+    <label class="option" data-val="C"><input type="radio" name="B1" value="C">C) Empresa privada que credencia autoescolas.</label>
+    <label class="option" data-val="D"><input type="radio" name="B1" value="D">D) Agência internacional.</label>
+    <button type="button" onclick="checkB('B1')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">CONTRAN edita resoluções e normas do SNT.</div>
   </div>
-</body>
+
+  <!-- B2 -->
+  <div class="q" id="B2" data-answer="C">
+    <h3>2) RENAVAM identifica:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B2" value="A">A) Condutor.</label>
+    <label class="option" data-val="B"><input type="radio" name="B2" value="B">B) Infrações.</label>
+    <label class="option" data-val="C"><input type="radio" name="B2" value="C">C) Veículos automotores (registro nacional).</label>
+    <label class="option" data-val="D"><input type="radio" name="B2" value="D">D) Empresas de transporte.</label>
+    <button type="button" onclick="checkB('B2')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">RENAVAM é o registro nacional dos veículos, gerido pela autoridade competente.</div>
+  </div>
+
+  <!-- B3 -->
+  <div class="q" id="B3" data-answer="D">
+    <h3>3) RBUT trata de normas para:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B3" value="A">A) Controle aduaneiro.</label>
+    <label class="option" data-val="B"><input type="radio" name="B3" value="B">B) Normas tributárias entre países do Mercosul.</label>
+    <label class="option" data-val="C"><input type="radio" name="B3" value="C">C) Legislação trabalhista.</label>
+    <label class="option" data-val="D"><input type="radio" name="B3" value="D">D) Harmonização de regras de trânsito entre países do Mercosul.</label>
+    <button type="button" onclick="checkB('B3')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">RBUT visa uniformizar normas de trânsito no bloco.</div>
+  </div>
+
+  <!-- B4 -->
+  <div class="q" id="B4" data-answer="A">
+    <h3>4) Convenção de Viena busca:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B4" value="A">A) Uniformizar regras e sinais de trânsito entre países signatários.</label>
+    <label class="option" data-val="B"><input type="radio" name="B4" value="B">B) Estabelecer padrões únicos de CNH.</label>
+    <label class="option" data-val="C"><input type="radio" name="B4" value="C">C) Regular internamente as leis de cada país.</label>
+    <label class="option" data-val="D"><input type="radio" name="B4" value="D">D) Criar uma polícia internacional de trânsito.</label>
+    <button type="button" onclick="checkB('B4')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Visa padronizar sinais e regras para facilitar a circulação internacional.</div>
+  </div>
+
+  <!-- B5 -->
+  <div class="q" id="B5" data-answer="D">
+    <h3>5) Categoria D da CNH habilita para:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B5" value="A">A) Motos.</label>
+    <label class="option" data-val="B"><input type="radio" name="B5" value="B">B) Veículos de carga leves.</label>
+    <label class="option" data-val="C"><input type="radio" name="B5" value="C">C) Combinações com reboque acima de qualquer peso.</label>
+    <label class="option" data-val="D"><input type="radio" name="B5" value="D">D) Transporte de passageiros com mais de 8 lugares (excluído o condutor).</label>
+    <button type="button" onclick="checkB('B5')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Categoria D é para transporte de passageiros com mais de 8 lugares.</div>
+  </div>
+
+  <!-- B6 -->
+  <div class="q" id="B6" data-answer="A">
+    <h3>6) Competência municipal abrange:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B6" value="A">A) Fiscalizar e implantar sinalização em vias urbanas.</label>
+    <label class="option" data-val="B"><input type="radio" name="B6" value="B">B) Expedir CNH.</label>
+    <label class="option" data-val="C"><input type="radio" name="B6" value="C">C) Controlar tráfego internacional.</label>
+    <label class="option" data-val="D"><input type="radio" name="B6" value="D">D) Substituir SENATRAN.</label>
+    <button type="button" onclick="checkB('B6')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Municípios cuidam da operação e fiscalização do trânsito no âmbito urbano.</div>
+  </div>
+
+  <!-- B7 -->
+  <div class="q" id="B7" data-answer="D">
+    <h3>7) PRF tem como função principal:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B7" value="A">A) Julgar recursos administrativos.</label>
+    <label class="option" data-val="B"><input type="radio" name="B7" value="B">B) Emitir resoluções do CONTRAN.</label>
+    <label class="option" data-val="C"><input type="radio" name="B7" value="C">C) Expedir RENAVAM.</label>
+    <label class="option" data-val="D"><input type="radio" name="B7" value="D">D) Fiscalização e patrulhamento em rodovias federais.</label>
+    <button type="button" onclick="checkB('B7')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">PRF atua na fiscalização das rodovias federais.</div>
+  </div>
+
+  <!-- B8 -->
+  <div class="q" id="B8" data-answer="B">
+    <h3>8) Quem regulamenta nacionalmente a formação de condutores?</h3>
+    <label class="option" data-val="A"><input type="radio" name="B8" value="A">A) Prefeituras.</label>
+    <label class="option" data-val="B"><input type="radio" name="B8" value="B">B) CONTRAN.</label>
+    <label class="option" data-val="C"><input type="radio" name="B8" value="C">C) Empresas privadas sem norma nacional.</label>
+    <label class="option" data-val="D"><input type="radio" name="B8" value="D">D) Polícia militar.</label>
+    <button type="button" onclick="checkB('B8')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Formação de condutores é normatizada pelo CONTRAN.</div>
+  </div>
+
+  <!-- B9 -->
+  <div class="q" id="B9" data-answer="C">
+    <h3>9) Categoria C habilita para:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B9" value="A">A) Motocicletas.</label>
+    <label class="option" data-val="B"><input type="radio" name="B9" value="B">B) Veículos de passeio até 8 lugares.</label>
+    <label class="option" data-val="C"><input type="radio" name="B9" value="C">C) Veículos destinados ao transporte de carga com mais de 3.500 kg.</label>
+    <label class="option" data-val="D"><input type="radio" name="B9" value="D">D) Apenas reboques.</label>
+    <button type="button" onclick="checkB('B9')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Categoria C é para veículos de carga com PBT superior a 3.500 kg.</div>
+  </div>
+
+  <!-- B10 -->
+  <div class="q" id="B10" data-answer="A">
+    <h3>10) Estacionar em ciclofaixa é:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B10" value="A">A) Infração grave.</label>
+    <label class="option" data-val="B"><input type="radio" name="B10" value="B">B) Permitido com autorização.</label>
+    <label class="option" data-val="C"><input type="radio" name="B10" value="C">C) Infração leve.</label>
+    <label class="option" data-val="D"><input type="radio" name="B10" value="D">D) Só se houver ciclistas.</label>
+    <button type="button" onclick="checkB('B10')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Ciclofaixas são de uso prioritário de ciclistas; estacionar nelas é infração grave.</div>
+  </div>
+
+  <!-- B11 -->
+  <div class="q" id="B11" data-answer="D">
+    <h3>11) Parar sobre faixa de pedestres é classificado como:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B11" value="A">A) Infração leve.</label>
+    <label class="option" data-val="B"><input type="radio" name="B11" value="B">B) Permitido para carga.</label>
+    <label class="option" data-val="C"><input type="radio" name="B11" value="C">C) Infra��o média.</label>
+    <label class="option" data-val="D"><input type="radio" name="B11" value="D">D) Infração grave.</label>
+    <button type="button" onclick="checkB('B11')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Parar sobre faixa durante travessia é infração grave (art.182).</div>
+  </div>
+
+  <!-- B12 -->
+  <div class="q" id="B12" data-answer="B">
+    <h3>12) Órgão que julga recursos em 1ª instância:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B12" value="A">A) SENATRAN.</label>
+    <label class="option" data-val="B"><input type="radio" name="B12" value="B">B) JARI.</label>
+    <label class="option" data-val="C"><input type="radio" name="B12" value="C">C) CONTRAN.</label>
+    <label class="option" data-val="D"><input type="radio" name="B12" value="D">D) Polícia Rodoviária Federal.</label>
+    <button type="button" onclick="checkB('B12')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">A JARI é a junta administrativa que julga recursos na instância inicial.</div>
+  </div>
+
+  <!-- B13 -->
+  <div class="q" id="B13" data-answer="A">
+    <h3>13) Via arterial distribui:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B13" value="A">A) Tráfego para vias coletoras e locais.</label>
+    <label class="option" data-val="B"><input type="radio" name="B13" value="B">B) Tráfego apenas para pedestres.</label>
+    <label class="option" data-val="C"><input type="radio" name="B13" value="C">C) Tráfego de veículos agrícolas exclusivamente.</label>
+    <label class="option" data-val="D"><input type="radio" name="B13" value="D">D) Tráfego aéreo.</label>
+    <button type="button" onclick="checkB('B13')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Via arterial tem função de articular fluxos viários em nível urbano.</div>
+  </div>
+
+  <!-- B14 -->
+  <div class="q" id="B14" data-answer="C">
+    <h3>14) CETRAN exerce:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B14" value="A">A) Emissão de CNH.</label>
+    <label class="option" data-val="B"><input type="radio" name="B14" value="B">B) Operação de viaturas.</label>
+    <label class="option" data-val="C"><input type="radio" name="B14" value="C">C) Função consultiva e julgadora em 2ª instância.</label>
+    <label class="option" data-val="D"><input type="radio" name="B14" value="D">D) Gestão de rodovias federais.</label>
+    <button type="button" onclick="checkB('B14')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">CETRAN é órgão estadual com competências normativas e de julgamento administrativo.</div>
+  </div>
+
+  <!-- B15 -->
+  <div class="q" id="B15" data-answer="D">
+    <h3>15) A remoção de um veículo pode ocorrer quando:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B15" value="A">A) Só com ordem judicial.</label>
+    <label class="option" data-val="B"><input type="radio" name="B15" value="B">B) Quando o veículo estiver estacionado em zona azul.</label>
+    <label class="option" data-val="C"><input type="radio" name="B15" value="C">C) Nunca por abandono.</label>
+    <label class="option" data-val="D"><input type="radio" name="B15" value="D">D) Em hipóteses previstas pelo CTB, como abandono ou estacionamento proibido.</label>
+    <button type="button" onclick="checkB('B15')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Remoção é medida administrativa aplicada nas hipóteses previstas pelo CTB.</div>
+  </div>
+
+  <!-- B16 -->
+  <div class="q" id="B16" data-answer="B">
+    <h3>16) O SNT envolve:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B16" value="A">A) Apenas órgãos federais.</label>
+    <label class="option" data-val="B"><input type="radio" name="B16" value="B">B) Órgãos da União, Estados, DF e Municípios.</label>
+    <label class="option" data-val="C"><input type="radio" name="B16" value="C">C) Apenas ONGs.</label>
+    <label class="option" data-val="D"><input type="radio" name="B16" value="D">D) Exclusivamente órgãos municipais.</label>
+    <button type="button" onclick="checkB('B16')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">O SNT é descentralizado e abrange todos os níveis federativos.</div>
+  </div>
+
+  <!-- B17 -->
+  <div class="q" id="B17" data-answer="C">
+    <h3>17) Parar na calçada é:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B17" value="A">A) Permitido em zona comercial.</label>
+    <label class="option" data-val="B"><input type="radio" name="B17" value="B">B) Infração leve.</label>
+    <label class="option" data-val="C"><input type="radio" name="B17" value="C">C) Infração grave.</label>
+    <label class="option" data-val="D"><input type="radio" name="B17" value="D">D) Apenas infração administrativa sem multa.</label>
+    <button type="button" onclick="checkB('B17')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Parada em calçada é infração grave (prejudica pedestres e acessibilidade).</div>
+  </div>
+
+  <!-- B18 -->
+  <div class="q" id="B18" data-answer="A">
+    <h3>18) Convenção de Viena contribui para:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B18" value="A">A) Padronizar sinais e regras, facilitando circulação internacional.</label>
+    <label class="option" data-val="B"><input type="radio" name="B18" value="B">B) Eximir condutores de responsabilidade.</label>
+    <label class="option" data-val="C"><input type="radio" name="B18" value="C">C) Regular exclusivamente transporte aéreo.</label>
+    <label class="option" data-val="D"><input type="radio" name="B18" value="D">D) Definir penas penais.</label>
+    <button type="button" onclick="checkB('B18')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Padronização é útil para condutores estrangeiros e segurança viária.</div>
+  </div>
+
+  <!-- B19 -->
+  <div class="q" id="B19" data-answer="C">
+    <h3>19) Procedimento antes do etilômetro exige:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B19" value="A">A) Aplicar imediatamente sem espera.</label>
+    <label class="option" data-val="B"><input type="radio" name="B19" value="B">B) Esperar 5 minutos.</label>
+    <label class="option" data-val="C"><input type="radio" name="B19" value="C">C) Aguardar 15 minutos.</label>
+    <label class="option" data-val="D"><input type="radio" name="B19" value="D">D) Sempre informar a imprensa antes.</label>
+    <button type="button" onclick="checkB('B19')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Aguardar 15 minutos é procedimento necessário para evitar interferências.</div>
+  </div>
+
+  <!-- B20 -->
+  <div class="q" id="B20" data-answer="A">
+    <h3>20) Tolerância zero ao álcool significa que:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B20" value="A">A) Qualquer presença de álcool pode gerar autuação.</label>
+    <label class="option" data-val="B"><input type="radio" name="B20" value="B">B) Só vale para motoristas de ônibus.</label>
+    <label class="option" data-val="C"><input type="radio" name="B20" value="C">C) Vale apenas em rodovias.</label>
+    <label class="option" data-val="D"><input type="radio" name="B20" value="D">D) Só se houver acidente.</label>
+    <button type="button" onclick="checkB('B20')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Política de tolerância zero implica autuação independentemente da quantidade detectada.</div>
+  </div>
+
+  <!-- B21 -->
+  <div class="q" id="B21" data-answer="D">
+    <h3>21) Recusa do teste (art.165-A) implica:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B21" value="A">A) Isenção de penalidade.</label>
+    <label class="option" data-val="B"><input type="radio" name="B21" value="B">B) Advertência sem multa.</label>
+    <label class="option" data-val="C"><input type="radio" name="B21" value="C">C) Apenas medida educativa.</label>
+    <label class="option" data-val="D"><input type="radio" name="B21" value="D">D) Penalidades equivalentes às do art.165 (multa, medida administrativa).</label>
+    <button type="button" onclick="checkB('B21')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Recusa é tratada com penalidades semelhantes às previstas no art.165.</div>
+  </div>
+
+  <!-- B22 -->
+  <div class="q" id="B22" data-answer="B">
+    <h3>22) Valor indicativo de crime por álcool no etilômetro (art.306):</h3>
+    <label class="option" data-val="A"><input type="radio" name="B22" value="A">A) 0,10 mg/l.</label>
+    <label class="option" data-val="B"><input type="radio" name="B22" value="B">B) 0,34 mg/l ou superior.</label>
+    <label class="option" data-val="C"><input type="radio" name="B22" value="C">C) 0,01 mg/l.</label>
+    <label class="option" data-val="D"><input type="radio" name="B22" value="D">D) 0,50 mg/l apenas.</label>
+    <button type="button" onclick="checkB('B22')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">A partir de 0,34 mg/l costuma-se considerar possível enquadramento no art.306.</div>
+  </div>
+
+  <!-- B23 -->
+  <div class="q" id="B23" data-answer="A">
+    <h3>23) Art.26 — Conduta do usuário da via deve:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B23" value="A">A) Evitar criar obstáculos ou perigos.</label>
+    <label class="option" data-val="B"><input type="radio" name="B23" value="B">B) Priorizar sempre veículos maiores.</label>
+    <label class="option" data-val="C"><input type="radio" name="B23" value="C">C) Jogar objetos na via para sinalizar presença.</label>
+    <label class="option" data-val="D"><input type="radio" name="B23" value="D">D) Fechar sempre a passagem para pedestres.</label>
+    <button type="button" onclick="checkB('B23')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Art.26 estabelece deveres básicos: não criar obstáculos e garantir segurança.</div>
+  </div>
+
+  <!-- B24 -->
+  <div class="q" id="B24" data-answer="C">
+    <h3>24) Art.29 — regra geral de preferência em interseções:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B24" value="A">A) Quem vem da esquerda.</label>
+    <label class="option" data-val="B"><input type="radio" name="B24" value="B">B) Veículo de maior porte.</label>
+    <label class="option" data-val="C"><input type="radio" name="B24" value="C">C) Quem vem pela direita.</label>
+    <label class="option" data-val="D"><input type="radio" name="B24" value="D">D) Quem buzina primeiro.</label>
+    <button type="button" onclick="checkB('B24')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">A regra de preferência geral é de quem vem pela direita, salvo sinalização diversa.</div>
+  </div>
+
+  <!-- B25 -->
+  <div class="q" id="B25" data-answer="D">
+    <h3>25) Art.30 — comportamento ao ser ultrapassado:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B25" value="A">A) Acelerar para evitar ultrapassagem.</label>
+    <label class="option" data-val="B"><input type="radio" name="B25" value="B">B) Frear para reduzir velocidade.</label>
+    <label class="option" data-val="C"><input type="radio" name="B25" value="C">C) Fazer manobra brusca.</label>
+    <label class="option" data-val="D"><input type="radio" name="B25" value="D">D) Facilitar a ultrapassagem sem criar risco.</label>
+    <button type="button" onclick="checkB('B25')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Devemos facilitar ultrapassagem mantendo previsibilidade e segurança.</div>
+  </div>
+
+  <!-- B26 -->
+  <div class="q" id="B26" data-answer="A">
+    <h3>26) Não se deve ultrapassar em:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B26" value="A">A) Curvas sem visibilidade.</label>
+    <label class="option" data-val="B"><input type="radio" name="B26" value="B">B) Trechos sinalizados para ultrapassagem.</label>
+    <label class="option" data-val="C"><input type="radio" name="B26" value="C">C) Retas com boa visibilidade.</label>
+    <label class="option" data-val="D"><input type="radio" name="B26" value="D">D) Faixas exclusivas sinalizadas.</label>
+    <button type="button" onclick="checkB('B26')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Ultrapassagem proibida em curvas, aclives, pontes, viadutos, entre outros.</div>
+  </div>
+
+  <!-- B27 -->
+  <div class="q" id="B27" data-answer="C">
+    <h3>27) Pisca-alerta é usado para:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B27" value="A">A) Indicar parada em fila dupla.</label>
+    <label class="option" data-val="B"><input type="radio" name="B27" value="B">B) Sinalizar mudança de faixa.</label>
+    <label class="option" data-val="C"><input type="radio" name="B27" value="C">C) Emergência ou imobilização do veículo.</label>
+    <label class="option" data-val="D"><input type="radio" name="B27" value="D">D) Uso corriqueiro durante viagens longas.</label>
+    <button type="button" onclick="checkB('B27')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">O pisca-alerta sinaliza emergência ou imobilização temporária.</div>
+  </div>
+
+  <!-- B28 -->
+  <div class="q" id="B28" data-answer="B">
+    <h3>28) O uso da buzina é adequado para:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B28" value="A">A) Toques longos para chamar pessoas.</label>
+    <label class="option" data-val="B"><input type="radio" name="B28" value="B">B) Toques breves para evitar sinistros.</label>
+    <label class="option" data-val="C"><input type="radio" name="B28" value="C">C) Avisar sobre blitz policial.</label>
+    <label class="option" data-val="D"><input type="radio" name="B28" value="D">D) Uso em hospitais à noite.</label>
+    <button type="button" onclick="checkB('B28')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Buzina deve ser usada de modo breve e preventivo.</div>
+  </div>
+
+  <!-- B29 -->
+  <div class="q" id="B29" data-answer="D">
+    <h3>29) Quanto à velocidade (Art.43), o condutor deve:</h3>
+    <label class="option" data-val="A"><input type="radio" name="B29" value="A">A) Manter sempre a velocidade máxima permitida.</label>
+    <label class="option" data-val="B"><input type="radio" name="B29" value="B">B) Frear bruscamente sem motivo.</label>
+    <label class="option" data-val="C"><input type="radio" name="B29" value="C">C) Ignorar chuva e neblina.</label>
+    <label class="option" data-val="D"><input type="radio" name="B29" value="D">D) Reduzir velocidade conforme condições da via e clima.</label>
+    <button type="button" onclick="checkB('B29')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">O condutor deve ajustar velocidade às condições, priorizando segurança.</div>
+  </div>
+
+  <!-- B30 -->
+  <div class="q" id="B30" data-answer="A">
+    <h3>30) Art.181 e 182: qual a diferença essencial?</h3>
+    <label class="option" data-val="A"><input type="radio" name="B30" value="A">A) Parada é temporária; estacionamento é permanência maior, cada um com hipóteses proibidas distintas.</label>
+    <label class="option" data-val="B"><input type="radio" name="B30" value="B">B) Não há diferença.</label>
+    <label class="option" data-val="C"><input type="radio" name="B30" value="C">C) Estacionamento é sempre mais grave que parada.</label>
+    <label class="option" data-val="D"><input type="radio" name="B30" value="D'>D) Ambos são disciplinados apenas por normas municipais.</label>
+    <button type="button" onclick="checkB('B30')">Confirmar</button>
+    <div class="feedback"></div>
+    <div class="explanation">Parada e estacionamento têm distinções e penalidades previstas nos arts.181 e 182.</div>
+  </div>
+
+</form>
+
+<div class="controls">
+  <button onclick="showScoreB()">Ver pontuação final</button>
+  <div class="card small">Prova B — 30 questões. As respostas ficam bloqueadas após confirmação individual.</div>
+</div>
+
+<div id="resultB" class="result"></div>
+
+  </div><script>
+  let scoreB = 0; let answeredB = {};
+  function checkB(qid){
+    const q = document.getElementById(qid); if(!q) return; if(answeredB[qid]) return;
+    const sel = q.querySelector('input[type=radio]:checked'); if(!sel){ alert('Escolha uma alternativa antes de confirmar.'); return; }
+    const chosen = sel.value, correct = q.dataset.answer; const fb = q.querySelector('.feedback'); const exp = q.querySelector('.explanation');
+    if(chosen === correct){ fb.textContent='✔ Resposta correta!'; fb.className='feedback correct'; sel.parentElement.classList.add('correct-label'); scoreB++; }
+    else{ fb.textContent='✘ Resposta incorreta'; fb.className='feedback wrong'; sel.parentElement.classList.add('wrong-label'); const cl = q.querySelector('label.option[data-val="'+correct+'"]'); if(cl) cl.classList.add('correct-label'); }
+    exp.style.display='block'; q.querySelectorAll('input[type=radio]').forEach(i=>i.disabled=true); answeredB[qid]=true;
+  }
+  function showScoreB(){ const total=30; const answeredCount = Object.keys(answeredB).length; const percent = Math.round((scoreB/total)*100); const r = document.getElementById('resultB'); r.style.display='block'; r.innerHTML = '<strong>Pontuação:</strong> '+scoreB+' / '+total+' ('+percent+'%).<br><small>Respondidas: '+answeredCount+' de '+total+'.</small>'; r.scrollIntoView({behavior:'smooth'}); }
+</script></body>
 </html>
