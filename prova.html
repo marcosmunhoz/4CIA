@@ -4,423 +4,318 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Quiz Avançado - BO-e e Classificação de Danos</title>
+  <title>Questionário Avançado — Legislação de Trânsito (CTB / RBUT / Viena) — Gabarito Comentado</title>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#9ca3af;--ok:#16a34a;--err:#ef4444}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;background:linear-gradient(180deg,#041025 0%,#071227 100%);color:#e6eef6;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px}
-    .wrap{width:100%;max-width:900px}
-    header{display:flex;gap:12px;align-items:center;margin-bottom:14px}
-    header h1{font-size:18px;margin:0}
-    header p{margin:0;color:var(--muted);font-size:13px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:14px;border-radius:12px;box-shadow:0 8px 24px rgba(2,6,23,0.6)}
-    .q{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
-    .question{font-weight:600;font-size:15px}
-    .meta{color:var(--muted);font-size:12px}
-    .options{margin-top:10px;display:grid;gap:8px}
-    .opt{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;cursor:pointer;display:flex;gap:8px;align-items:center}
-    .opt input{appearance:none;width:18px;height:18px;border-radius:5px;border:2px solid rgba(255,255,255,0.06);display:inline-block;margin-right:8px}
-    .opt.selected{border-color:rgba(6,182,212,0.25);box-shadow:0 4px 12px rgba(6,182,212,0.06)}
-    .controls{display:flex;gap:8px;margin-top:12px}
-    button{background:var(--accent);border:none;color:#022;padding:10px 12px;border-radius:8px;font-weight:600;cursor:pointer}
-    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
-    .result{margin-top:12px;padding:10px;border-radius:8px;font-size:14px}
-    .correct{background:linear-gradient(90deg, rgba(22,163,74,0.12), rgba(22,163,74,0.04));border:1px solid rgba(22,163,74,0.12);color:var(--ok)}
-    .wrong{background:linear-gradient(90deg, rgba(239,68,68,0.06), rgba(239,68,68,0.02));border:1px solid rgba(239,68,68,0.08);color:var(--err)}
-    .explain{margin-top:8px;color:var(--muted);font-size:13px}
-    footer{margin-top:12px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
-    .progress{height:8px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa);width:0%}
-    @media (max-width:520px){body{padding:14px}.question{font-size:15px}.card{padding:12px}}
+    :root{--bg:#0b1220;--card:#0f1724;--accent:#06b6d4;--muted:#9aa7b2;--white:#e6eef6}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; margin:0; padding:24px; background:linear-gradient(180deg,#071024 0%, #04121b 100%); color:var(--white)}
+    .wrap{max-width:980px;margin:0 auto}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    p.lead{color:var(--muted);margin:0}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,.6);margin-bottom:16px}
+    .q{margin-bottom:18px;padding:14px;border-radius:8px;background:rgba(255,255,255,0.02)}
+    .q h3{margin:0 0 10px 0;font-size:15px}
+    label.option{display:block;padding:8px 10px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.03);margin:6px 0}
+    input[type=radio]{margin-right:8px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    button{background:var(--accent);color:#042027;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .small{font-size:13px;color:var(--muted)}
+    .explanation{margin-top:10px;padding:10px;border-radius:8px;background:rgba(0,0,0,.25);}
+    .correct{font-weight:700;color:#b7f3ff}
+    footer{color:var(--muted);font-size:13px;margin-top:18px}
+    .meta{font-size:13px;color:var(--muted);margin-bottom:12px}
+    code{background:rgba(255,255,255,0.03);padding:2px 6px;border-radius:4px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <div>
-        <h1>Quiz Avançado — BO-e & Classificação de Danos (nível concurso)</h1>
-        <p>20 questões — revele a resposta ao submeter cada questão. Respostas explicadas.</p>
+        <h1>Questionário Avançado — Legislação de Trânsito (CTB / RBUT / Convenção de Viena)</h1>
+        <p class="lead">Questões de nível concurso — agora com **resposta e explicação completa** logo abaixo de cada questão.</p>
       </div>
-    </header><div id="quiz" class="card"></div>
+    </header><div class="card meta">Contém 30 questões cobrindo: Sistema Nacional de Trânsito, CONTRAN, SENATRAN, JARI, RBUT, Convenção de Viena, definições do CTB, competências, infrações, e artigos específicos: art. 143 (categorias), art. 181 e 182 (estacionar/parar).</div>
+
+<form id="quiz">
+
+  <!-- Each question now shows the correct answer and an explanation -->
+
+  <div class="q" id="q1">
+    <h3>1) Sobre a natureza jurídica do CONTRAN, assinale a alternativa correta:</h3>
+    <label class="option">A) Órgão executivo do Sistema Nacional de Trânsito, com competência para expedir CNHs.</label>
+    <label class="option">B) Órgão normativo e consultivo, com competência para editar resoluções que regulamentam o CTB. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Agência federal administrativa autônoma responsável por licenciamento de veículos.</label>
+    <label class="option">D) Órgão judiciário administrativo que julga recursos contra multas de trânsito.</label>
+    <div class="explanation"><strong>Explicação:</strong> O CONTRAN é definido no CTB como o órgão máximo normativo e consultivo do Sistema Nacional de Trânsito. Sua principal função é editar normas (resoluções) para regulamentar dispositivos do Código de Trânsito Brasileiro. Não é órgão executivo (essa é a SENATRAN) nem órgão julgador judicial. Ele orienta, normatiza e responde consultas técnicas.</div>
+  </div>
+
+  <div class="q" id="q2">
+    <h3>2) A Resolução CONTRAN nº 883/2021 criou Câmaras Temáticas. Qual das alternativas abaixo NÃO corresponde a uma dessas câmaras?</h3>
+    <label class="option">A) Câmara de Educação para o Trânsito (CTEDUC)</label>
+    <label class="option">B) Câmara de Engenharia de Tráfego e Sinalização (CTET)</label>
+    <label class="option">C) Câmara de Fiscalização de Infrações (CTFI)</label>
+    <label class="option">D) Câmara de Saúde para o Trânsito (CTST)</label>
+    <div class="explanation"><strong>Resposta correta:</strong> <span class="correct">C</span>. <br><strong>Explicação:</strong> A Resolução nº 883/2021 lista as câmaras: Assuntos Veiculares, Ambientais e Transporte Rodoviário (CTVAT); Educação para o Trânsito (CTEDUC); Saúde para o Trânsito (CTST); Engenharia de Tráfego e Sinalização de Trânsito (CTET); Esforço Legal (CTEL); Gestão e Coordenação do PNATRANS (CTPNAT). Não existe uma câmara denominada "CTFI" (Fiscalização de Infrações) entre as criadas pela resolução.</div>
+  </div>
+
+  <div class="q" id="q3">
+    <h3>3) Sobre a RBUT (Regulamentação Básica Unificada de Trânsito do MERCOSUL), marque a alternativa correta:</h3>
+    <label class="option">A) É um tratado internacional que substituiu a Convenção de Viena para países signatários.</label>
+    <label class="option">B) Busca a uniformização de normas de circulação e conduta entre Estados-membros do MERCOSUL. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Regula exclusivamente a circulação de cargas perigosas no MERCOSUL.</label>
+    <label class="option">D) É uma legislação interna brasileira aplicável apenas a rodovias federais.</label>
+    <div class="explanation"><strong>Explicação:</strong> A RBUT, acordada em Montevidéu em 1992, visa a harmonização de normas de trânsito entre os países do MERCOSUL (registro, sinalização, conduta), facilitando a circulação internacional. Não substitui a Convenção de Viena, nem é restrita a cargas perigosas ou aplicabilidade exclusivamente nacional.</div>
+  </div>
+
+  <div class="q" id="q4">
+    <h3>4) O que é RENAVAM?</h3>
+    <label class="option">A) Registro Nacional de Infrações de Trânsito.</label>
+    <label class="option">B) Registro Nacional de Veículos Automotores. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Registro de Emplacamento Veicular do Município.</label>
+    <label class="option">D) Relação Nacional de Agentes de Veículos.</label>
+    <div class="explanation"><strong>Explicação:</strong> RENAVAM é o registro nacional que identifica os veículos automotores no Brasil — sua criação e manutenção são responsabilidades do órgão máximo executivo de trânsito. Renainf é o registro de infrações.</div>
+  </div>
+
+  <div class="q" id="q5">
+    <h3>5) Art. 143 do CTB trata das categorias da Carteira Nacional de Habilitação (CNH). Assinale a alternativa que descreve CORRETAMENTE a categoria D:</h3>
+    <label class="option">A) Veículos de duas ou três rodas com ou sem carro lateral.</label>
+    <label class="option">B) Veículos para transporte de cargas com peso bruto acima de 3.500 kg.</label>
+    <label class="option">C) Veículos de transporte de passageiros com mais de 8 lugares (excluído o condutor). <span class="correct">(Resposta correta)</span></label>
+    <label class="option">D) Combinações de veículos com reboque, cujo conjunto supera 6.000 kg.</label>
+    <div class="explanation"><strong>Explicação:</strong> Segundo o art. 143 e a redação do CTB, a categoria D habilita para conduzir veículos destinados ao transporte de passageiros com mais de 8 lugares, excluído o condutor. Categorias A (duas ou três rodas), B (veículos leves), C (cargas acima de 3.500 kg) e E (combinações com reboque) têm definições próprias.</div>
+  </div>
+
+  <div class="q" id="q6">
+    <h3>6) Sobre as funções da SENATRAN, marque a alternativa correta:</h3>
+    <label class="option">A) É o órgão máximo normativo do SNT e edita resoluções vinculantes.</label>
+    <label class="option">B) É o órgão executivo máximo do SNT, responsável por manter RENACH, RENAVAM e RENAINF. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Julga recursos interpostos contra decisões da JARI.</label>
+    <label class="option">D) É um órgão municipal de trânsito responsável pelo licenciamento veicular.</label>
+    <div class="explanation"><strong>Explicação:</strong> SENATRAN (Secretaria Nacional de Trânsito) é o órgão executivo da União com atribuições administrativas e técnicas, responsável por registros nacionais como RENACH (condutores), RENAVAM (veículos) e RENAINF (infrações). O CONTRAN é o órgão normativo que edita resoluções.</div>
+  </div>
+
+  <div class="q" id="q7">
+    <h3>7) A JARI tem diversas competências. Qual das alternativas abaixo NÃO é atribuição da JARI?</h3>
+    <label class="option">A) Julgar recursos administrativos contra penalidades por infrações de trânsito.</label>
+    <label class="option">B) Aplicar penalidades de multa em flagrante infração de trânsito. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Solicitar informações complementares aos órgãos executivos para análise de recursos.</label>
+    <label class="option">D) Encaminhar informações sobre problemas sistemáticos observados nas autuações.</label>
+    <div class="explanation"><strong>Explicação:</strong> As JARI são órgãos colegiados que julgam recursos administrativos. Elas não aplicam multas em flagrante — essa é função dos agentes e órgãos executivos de trânsito no exercício do poder de polícia. A JARI analisa recursos, solicita informações e encaminha problemas recorrentes.</div>
+  </div>
+
+  <div class="q" id="q8">
+    <h3>8) A Convenção de Viena sobre Trânsito Viário tem qual objetivo primordial?</h3>
+    <label class="option">A) Uniformizar regras de circulação entre países signatários para facilitar o trânsito internacional. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">B) Substituir a legislação nacional de trânsito dos países signatários.</label>
+    <label class="option">C) Regular exclusivamente o tráfego aéreo internacional.</label>
+    <label class="option">D) Determinar penalidades criminais por infrações de trânsito transnacionais.</label>
+    <div class="explanation"><strong>Explicação:</strong> A Convenção de Viena visa harmonizar normas de trânsito para facilitar a circulação internacional e aumentar a segurança. Não substitui a legislação nacional — cada país adotará as regras em sua legislação interna, como o Brasil fez por decreto.</div>
+  </div>
+
+  <div class="q" id="q9">
+    <h3>9) Segundo o CTB, qual é o objetivo básico do Sistema Nacional de Trânsito (Art.6)?</h3>
+    <label class="option">A) Fiscalizar exclusivamente os motoristas profissionais.</label>
+    <label class="option">B) Estabelecer diretrizes da Política Nacional de Trânsito, visando segurança, fluidez, conforto e defesa ambiental. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Gerenciar exclusivamente o sistema de financiamento de obras viárias federais.</label>
+    <label class="option">D) Delegar integralmente a fiscalização de trânsito aos Municípios.</label>
+    <div class="explanation"><strong>Explicação:</strong> O art. 6 do CTB define objetivos básicos do SNT: diretrizes da política nacional, segurança, fluidez, conforto, defesa ambiental e educação, além de padronização técnica e integração entre órgãos. A opção B resume corretamente esse escopo.</div>
+  </div>
+
+  <div class="q" id="q10">
+    <h3>10) Sobre competência para aplicar penalidade de suspensão do direito de dirigir, assinale a alternativa correta:</h3>
+    <label class="option">A) Apenas o órgão executivo de trânsito da União pode aplicar suspensão.</label>
+    <label class="option">B) Órgãos executivos estaduais podem aplicar suspensão quando previsto especificamente para a infração. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) A Polícia Militar pode aplicar suspensão administrativa em qualquer caso.</label>
+    <label class="option">D) JARI tem competência exclusiva para aplicar suspensão do direito de dirigir.</label>
+    <div class="explanation"><strong>Explicação:</strong> O CTB e alterações (por exemplo Lei 14.071/2020) preveem que a aplicação da suspensão pode ser feita por órgãos executivos estaduais quando prevista para a infração. A competência não é exclusiva da União; a PM pode conduzir fiscalização, mas aplicação da penalidade segue competência administrativa estabelecida.</div>
+  </div>
+
+  <div class="q" id="q11">
+    <h3>11) Art. 181 do CTB trata do estacionamento. Qual alternativa descreve CORRETAMENTE uma hipótese de infração de estacionamento prevista no CTB?</h3>
+    <label class="option">A) Estacionar em local permitido durante 5 minutos sem deixar o veículo trancado.</label>
+    <label class="option">B) Estacionar sobre a faixa de pedestres quando houver sinalização específica de permissão.</label>
+    <label class="option">C) Estacionar em local proibido, como em frente a entrada de garagem alheia sem autorização. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">D) Estacionar em via de trânsito rápido na faixa da direita quando não houver fluxo de veículos.</label>
+    <div class="explanation"><strong>Explicação:</strong> O art. 181 enumera hipóteses de estacionamento proibido — entre elas em locais proibidos como em frente a entradas de garagens sem autorização. Estacionar sobre faixa de pedestres também é proibido, mas não "quando houver sinalização específica de permissão" (isso não existe). A opção C é a que melhor descreve um exemplo claro do artigo.</div>
+  </div>
+
+  <div class="q" id="q12">
+    <h3>12) Art. 182 do CTB dispõe sobre parada. Qual das alternativas é hipótese de parada proibida?</h3>
+    <label class="option">A) Parar o veículo na faixa de pedestres na mudança de sinal luminoso. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">B) Parar temporariamente para embarque de passageiros em pontos autorizados.</label>
+    <label class="option">C) Parar em acostamento para descanso do motorista sem sinalização indicativa.</label>
+    <label class="option">D) Parar em área de estacionamento rotativo devidamente sinalizada e paga.</label>
+    <div class="explanation"><strong>Explicação:</strong> O art. 182 trata da parada e enumera hipóteses proibidas como parar sobre faixa de pedestres na mudança de sinal luminoso. Parada para embarque em locais autorizados é permitida; acostamento pode ter restrições; áreas rotativas devidamente sinalizadas permitem parada/estacionamento conforme regras locais.</div>
+  </div>
+
+  <div class="q" id="q13">
+    <h3>13) Sobre as competências dos órgãos executivos de trânsito municipais, assinale a alternativa correta:</h3>
+    <label class="option">A) Compete exclusivamente aos Municípios expedir CNH.</label>
+    <label class="option">B) Compete implantar e operar o sistema de sinalização e fiscalizar o trânsito urbano. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Municípios não podem estabelecer regras de estacionamento em vias locais.</label>
+    <label class="option">D) Municípios são responsáveis por fiscalizar rodovias federais.</label>
+    <div class="explanation"><strong>Explicação:</strong> Os órgãos executivos municipais têm competência para planejar, implantar e operar sinalização e exercer fiscalização de trânsito no âmbito urbano, inclusive regras de estacionamento em vias locais. Expedição de CNH é delegada pelo órgão máximo executivo da União aos Detrans; rodovias federais são competência da PRF e órgãos executivos rodoviários federais/estaduais.</div>
+  </div>
+
+  <div class="q" id="q14">
+    <h3>14) A quem compete organizar e manter o Registro Nacional de Infrações de Trânsito (Renainf)?</h3>
+    <label class="option">A) Aos Conselhos Estaduais de Trânsito (CETRAN).</label>
+    <label class="option">B) Ao órgão máximo executivo de trânsito da União (SENATRAN/Ministério competente). <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) À Polícia Rodoviária Federal exclusivamente.</label>
+    <label class="option">D) Às Juntas Administrativas de Recursos de Infrações (JARI).</label>
+    <div class="explanation"><strong>Explicação:</strong> A organização e manutenção de registros nacionais (RENACH, RENAVAM, RENAINF) são atribuições do órgão máximo executivo da União, que administra bases de dados nacionais para padronização e integração entre entes federativos.</div>
+  </div>
+
+  <div class="q" id="q15">
+    <h3>15) Sobre remoção de veículo em estado de abandono ou sinistrado, qual afirmativa é correta segundo as alterações recentes?</h3>
+    <label class="option">A) O veículo só pode ser removido se houver autuação por infração de trânsito.</label>
+    <label class="option">B) O veículo pode ser removido independentemente da existência de infração, nos termos do Contran. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) A remoção só é possível mediante ordem judicial.</label>
+    <label class="option">D) Veículos sinistrados nunca podem ser removidos se houver responsável no local.</label>
+    <div class="explanation"><strong>Explicação:</strong> O CTB (com redações recentes como Lei nº 14.599/2023) prevê que veículos em estado de abandono ou sinistrado podem ser removidos para depósito independentemente da existência de infração, observadas normas do Contran. A remoção do veículo sinistrado será realizada especialmente quando não houver responsável no local.</div>
+  </div>
+
+  <div class="q" id="q16">
+    <h3>16) Qual a principal diferença entre CONTRAN e SENATRAN?</h3>
+    <label class="option">A) CONTRAN é normativo; SENATRAN é executivo. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">B) CONTRAN executa operações de fiscalização; SENATRAN julga recursos.</label>
+    <label class="option">C) Não há diferença: são nomes diferentes para o mesmo órgão.</label>
+    <label class="option">D) CONTRAN é municipal; SENATRAN é federal.</label>
+    <div class="explanation"><strong>Explicação:</strong> A distinção básica: CONTRAN (Conselho) edita normas e regulações; SENATRAN (Secretaria) executa as políticas públicas, administra registros e dá suporte executivo. Essa separação normativo/executivo é central no SNT.</div>
+  </div>
+
+  <div class="q" id="q17">
+    <h3>17) Em matéria de educação para o trânsito, assinale a alternativa que sintetiza o papel do CONTRAN:</h3>
+    <label class="option">A) Fixar temas e cronogramas anuais para campanhas nacionais de educação para o trânsito. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">B) Financiar exclusivamente campanhas municipais sem coordenação nacional.</label>
+    <label class="option">C) Repassar integralmente a responsabilidade de educação ao setor privado.</label>
+    <label class="option">D) Suspender todas as campanhas em feriados e férias escolares.</label>
+    <div class="explanation"><strong>Explicação:</strong> O CONTRAN tem papel normativo na definição de políticas e, conforme o CTB, estabelece temas e cronogramas das campanhas nacionais de educação para o trânsito, que devem ser seguidas pelos órgãos do SNT.</div>
+  </div>
+
+  <div class="q" id="q18">
+    <h3>18) Quanto à competência para vistoriar veículos que precisam de autorização especial para transitar, qual órgão tem essa atribuição?</h3>
+    <label class="option">A) Órgão executivo rodoviário local sem necessidade de delegação.</label>
+    <label class="option">B) Órgão executivo de trânsito competente, mediante delegação do órgão máximo executivo da União. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Polícia Militar exclusivamente.</label>
+    <label class="option">D) JARI em procedimento sumário.</label>
+    <div class="explanation"><strong>Explicação:</strong> A vistoria para autorizações especiais é competência dos órgãos executivos de trânsito, frequentemente mediante delegação do órgão máximo executivo (SENATRAN), respeitando requisitos técnicos e normativos.</div>
+  </div>
+
+  <div class="q" id="q19">
+    <h3>19) Sobre infrações por excesso de peso, quem é competente para fiscalizar e aplicar penalidades?</h3>
+    <label class="option">A) Órgãos executivos de trânsito e executivos rodoviários, de acordo com suas competências. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">B) Apenas a Polícia Rodoviária Federal pode autuar por excesso de peso.</label>
+    <label class="option">C) Empresas de transporte são responsáveis pela autuação.</label>
+    <label class="option">D) Excesso de peso não configura infração administrativa, apenas civil.</label>
+    <div class="explanation"><strong>Explicação:</strong> A fiscalização de excesso de peso é realizada por órgãos executivos de trânsito e rodoviários (municipais, estaduais, federais) conforme competência territorial e delegações. A PRF atua nas rodovias federais, mas não é a única autoridade competente.</div>
+  </div>
+
+  <div class="q" id="q20">
+    <h3>20) Sobre veículos que necessitam de autorização especial para transitar (ex.: cargas indivisíveis), qual é um dos requisitos legais habituais?</h3>
+    <label class="option">A) Não é exigida qualquer vistoria prévia.</label>
+    <label class="option">B) Deve haver vistoria e cumprimento de requisitos técnicos estabelecidos pelo órgão competente. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Apenas autorização verbal do motorista é suficiente.</label>
+    <label class="option">D) Autorização concedida pelo CONTRAN não precisa obedecer a requisitos técnicos.</label>
+    <div class="explanation"><strong>Explicação:</strong> Transportes especiais normalmente exigem vistoria, cumprimento de requisitos técnicos (fixação, dimensões, sinalização), e emissão de autorização pela autoridade competente (órgão executivo de trânsito/rodoviário), seguindo normas do CONTRAN.</div>
+  </div>
+
+  <div class="q" id="q21">
+    <h3>21) Sobre a responsabilidade objetiva prevista no CTB (Art.1º, §3º), qual é a implicação principal?</h3>
+    <label class="option">A) Órgãos do SNT só respondem por culpa comprovada nas ações.</label>
+    <label class="option">B) Órgãos e entidades do SNT respondem objetivamente por danos causados por ação, omissão ou erro na execução de serviços. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Não há responsabilidade do Estado por ações de seus agentes em matéria de trânsito.</label>
+    <label class="option">D) Responsabilidade objetiva só se aplica a veículos oficiais.</label>
+    <div class="explanation"><strong>Explicação:</strong> O parágrafo do art. 1º estabelece responsabilidade objetiva dos órgãos de trânsito por danos causados aos cidadãos em razão de ação, omissão ou erro na execução e manutenção de projetos e serviços que garantam o direito ao trânsito seguro — ou seja, independentemente de culpa, quando presentes os requisitos legais.</div>
+  </div>
+
+  <div class="q" id="q22">
+    <h3>22) Conforme o CTB, qual definição melhor descreve "via de trânsito rápido"?</h3>
+    <label class="option">A) Via com acessos diretos aos lotes lindeiros e travessia de pedestres em nível.</label>
+    <label class="option">B) Via caracterizada por ausência de interseções em nível, sem acessibilidade direta aos lotes lindeiros e sem travessia de pedestres em nível. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Via exclusiva para bicicletas.</label>
+    <label class="option">D) Via rural não pavimentada.</label>
+    <div class="explanation"><strong>Explicação:</strong> A via de trânsito rápido tem como característica o fluxo contínuo, sem interseções em nível e sem acessos diretos aos lotes lindeiros — exemplos típicos são as rodovias controladas e expressways urbanos.</div>
+  </div>
+
+  <div class="q" id="q23">
+    <h3>23) Sobre remoção e depósito de veículos, qual regra de caráter recente foi destacada no material?</h3>
+    <label class="option">A) Veículos sinistrados só podem ser removidos mediante ordem judicial.</label>
+    <label class="option">B) A remoção do veículo sinistrado será realizada quando não houver responsável por ele no local do sinistro. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Veículos abandonados não podem ser removidos em hipótese alguma.</label>
+    <label class="option">D) A remoção é proibida em domingos e feriados.</label>
+    <div class="explanation"><strong>Explicação:</strong> As alterações legislativas (Lei 14.599/2023 e regulamentações do CONTRAN) tratam da remoção de veículos sinistrados e abandonados, prevendo que a remoção pode ocorrer independentemente da existência de infração e, especificamente, que quando não houver responsável no local do sinistro a remoção deverá ser realizada.</div>
+  </div>
+
+  <div class="q" id="q24">
+    <h3>24) Sobre o conceito de trânsito (CTB, art.1), qual alternativa está correta?</h3>
+    <label class="option">A) Trânsito é apenas a circulação de veículos motorizados em vias pavimentadas.</label>
+    <label class="option">B) Trânsito é a utilização das vias por pessoas, veículos e animais para fins de circulação, parada, estacionamento e operação de carga/descarga. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Trânsito refere-se somente ao tráfego rodoviário intermunicipal.</label>
+    <label class="option">D) Trânsito é sinônimo de transporte público.</label>
+    <div class="explanation"><strong>Explicação:</strong> O art. 1 define trânsito amplamente, incluindo pessoas, veículos e animais em diversas operações nas vias; portanto a opção B representa corretamente essa definição abrangente.</div>
+  </div>
+
+  <div class="q" id="q25">
+    <h3>25) Em relação às penalidades administrativas previstas no CTB, qual é a relação entre infração e medida administrativa?</h3>
+    <label class="option">A) Medidas administrativas são aplicáveis apenas a infrações leves.</label>
+    <label class="option">B) A aplicação de penalidades e medidas administrativas depende do tipo de infração prevista no Código. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Não existem medidas administrativas no CTB, apenas penas criminais.</label>
+    <label class="option">D) Todas as infrações implicam automaticamente em suspensão do direito de dirigir.</label>
+    <div class="explanation"><strong>Explicação:</strong> O CTB prevê diferentes categorias de infrações (leve, média, grave, gravíssima) com penas correspondentes — advertência, multa, medida administrativa (remoção, retenção), suspensão, cassação — aplicadas conforme a natureza da infração. Logo, B é a correta.</div>
+  </div>
+
+  <div class="q" id="q26">
+    <h3>26) Sobre o papel dos órgãos técnicos vinculados ao CONTRAN, qual alternativa é verdadeira?</h3>
+    <label class="option">A) São compostos apenas por representantes do governo, sem participação social.</label>
+    <label class="option">B) Integram especialistas de órgãos executivos e representantes de segmentos da sociedade, fornecendo subsídios técnicos ao CONTRAN. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Têm competência para editar normas com força de lei.</label>
+    <label class="option">D) São órgãos judiciais subordinados ao Ministério Público.</label>
+    <div class="explanation"><strong>Explicação:</strong> As câmaras e órgãos técnicos são constituídos por especialistas de órgãos públicos e representantes da sociedade civil, com objetivo de subsidiar tecnicamente decisões do CONTRAN. Eles não têm poder legislativo por si só.</div>
+  </div>
+
+  <div class="q" id="q27">
+    <h3>27) Sobre as categorias da CNH (art. 143), qual das alternativas abaixo corresponde CORRETAMENTE à categoria C?</h3>
+    <label class="option">A) Veículos de passeio com até 8 lugares e até 3.500 kg.</label>
+    <label class="option">B) Veículos destinados ao transporte de carga com peso bruto total superior a 3.500 kg. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Motocicletas e motonetas.</label>
+    <label class="option">D) Combinações de veículos (automóvel + reboque) independentemente do peso.</label>
+    <div class="explanation"><strong>Explicação:</strong> A categoria C habilita para condução de veículos utilizados no transporte de carga com peso bruto total superior a 3.500 kg. As demais categorias têm finalidades distintas: A (motos), B (carros leves), D (passageiros), E (combinações com reboque).</div>
+  </div>
+
+  <div class="q" id="q28">
+    <h3>28) Em se tratando de policiamento ostensivo de trânsito, qual é a participação das Polícias Militares segundo o CTB?</h3>
+    <label class="option">A) Polícias Militares não podem atuar no policiamento ostensivo de trânsito.</label>
+    <label class="option">B) Polícias Militares podem executar policiamento ostensivo do trânsito, exigindo formação técnica adequada de seus integrantes. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) Polícias Militares têm competência exclusiva para expedir CNH.</label>
+    <label class="option">D) Polícias Militares são responsáveis por editar normas do CONTRAN.</label>
+    <div class="explanation"><strong>Explicação:</strong> O CTB prevê a participação das Polícias Militares no policiamento ostensivo de trânsito, desde que estruturadas e com atribuições definidas em lei e regulamentos. Elas não expõem CNH nem editam normas do CONTRAN.</div>
+  </div>
+
+  <div class="q" id="q29">
+    <h3>29) Sobre o processo administrativo de aplicação de multas e arrecadação, qual alternativa está correta?</h3>
+    <label class="option">A) A arrecadação de multas compete somente ao CONTRAN.</label>
+    <label class="option">B) Órgãos executivos de trânsito aplicam multas, notificam os infratores e arrecadam os valores conforme sua competência. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">C) As multas não são convertidas em receitas públicas.</label>
+    <label class="option">D) Apenas a JARI pode arrecadar multas.</label>
+    <div class="explanation"><strong>Explicação:</strong> Os órgãos executivos (municipais, estaduais, federais) aplicam sanções e arrecadam multas dentro de sua competência. O CONTRAN não atua como arrecadador; JARI é instância julgadora administrativa de recursos.</div>
+  </div>
+
+  <div class="q" id="q30">
+    <h3>30) Sobre a autoridade que pode credenciar órgãos ou entidades para executar atividades previstas na legislação de trânsito, qual é a resposta correta?</h3>
+    <label class="option">A) A competência para credenciar cabe ao CONTRAN. <span class="correct">(Resposta correta)</span></label>
+    <label class="option">B) Apenas o prefeito municipal pode credenciar entidades para funções do SNT.</label>
+    <label class="option">C) Não é permitido credenciar terceiros para execução de atividades de trânsito.</label>
+    <label class="option">D) A credencial deve ser sempre concedida por ordem judicial.</label>
+    <div class="explanation"><strong>Explicação:</strong> O CONTRAN normatiza procedimentos e pode estabelecer regras para credenciamento de órgãos ou entidades para executar atividades previstas na legislação de trânsito, delegando tarefas conforme normas e regulamentos.</div>
+  </div>
+
+</form>
 
 <footer>
-  <div class="meta">Desenvolvido para estudo — Marcos Munhoz</div>
-  <div style="width:40%">
-    <div class="progress" aria-hidden><i id="bar"></i></div>
-  </div>
+  Referências: Código de Trânsito Brasileiro (Lei 9.503/1997) e atualizações, Resoluções do CONTRAN, RBUT (1992) e Convenção de Viena (1968), conforme materiais fornecidos. Use o PDF original para conferir redações e incisos específicos.
 </footer>
 
-  </div><script>
-// Questões (difíceis) cobrindo todo o resumo. Formato: {q, meta, opts:[{k,text}], answer:'A', explanation}
-const questions = [
-  {q: '1) O que caracteriza a obrigatoriedade de elaboração do BO-e?', meta:'Direito/Procedimento', opts:[
-    {k:'A',text:'Qualquer chamada recebida pela Base Operacional'},
-    {k:'B',text:'Ocorrência com infração penal, dano patrimonial ou preservação de direito'},
-    {k:'C',text:'Encaminhamento de pessoa a outro órgão'},
-    {k:'D',text:'Trote com despacho'},
-  ], answer:'B', explanation:'O BO-e é obrigatório quando houver infração penal, dano patrimonial ou necessidade de preservação de direito; situações como trote ou simples encaminhamentos são dispensáveis.'},
-
-  {q: '2) Se o SIOPM estiver indisponível, qual procedimento correto?', meta:'Formulários', opts:[
-    {k:'A',text:'Não registrar nada até voltar o sistema'},
-    {k:'B',text:'Usar apenas os anexos do PMO-58 correlacionados ao atendimento'},
-    {k:'C',text:'Preencher BO-e online em outro posto sem justificar'},
-    {k:'D',text:'Registrar somente a folha de rosto'},
-  ], answer:'B', explanation:'Em indisponibilidade do SIOPM, devem-se usar os anexos do PMO-58 que tenham correlação com o atendimento; tecnicamente folha de rosto, qualificação e relatório são comuns.'},
-
-  {q: '3) Ao registrar um sinistro que envolva roubo seguido de acidente, o policial deve:', meta:'BO-e / Sinistro', opts:[
-    {k:'A',text:'Lavrar apenas BO-e do roubo (crime) e ignorar o sinistro'},
-    {k:'B',text:'Lavrar BO-e referente ao crime e também BO-e referente ao sinistro de trânsito, com desdobramento adequado'},
-    {k:'C',text:'Aguardar decisão da delegacia antes de qualquer registro'},
-    {k:'D',text:'Somente preencher a planilha de dano e não BO-e'},
-  ], answer:'B', explanation:'Nas ocorrências de roubo/furto com sinistro, devem ser lavrados tanto o BO-e referente ao crime quanto o BO-e referente ao sinistro (com desdobramentos L08/L09 conforme materiais).'},
-
-  {q: '4) A qual norma o croqui deve obedecer?', meta:'Croqui / Norma', opts:[
-    {k:'A',text:'CONTRAN Resolução 810/20'},
-    {k:'B',text:'ABNT NBR 10697/20'},
-    {k:'C',text:'Instrução interna do posto'},
-    {k:'D',text:'Não existe norma para croqui'},
-  ], answer:'B', explanation:'O croqui deve seguir a ABNT NBR 10697/20 e a simbologia do PMO-58, garantindo padronização do desenho do sinistro.'},
-
-  {q: '5) No RAPM, qual item NÃO deve constar?', meta:'RAPM', opts:[
-    {k:'A',text:'Opinião pessoal do policial sobre culpa'},
-    {k:'B',text:'Data e hora do fato'},
-    {k:'C',text:'Descrição detalhada do modo como ocorreu'},
-    {k:'D',text:'Quem são as partes envolvidas'},
-  ], answer:'A', explanation:'O RAPM deve evitar opiniões pessoais, distorções ou afirmações tendenciosas; descrever fatos objetivos: quando, onde, quem, o que, como e por quê.'},
-
-  {q: '6) Sobre as imagens do veículo, marque a alternativa correta:', meta:'Registro fotográfico', opts:[
-    {k:'A',text:'As imagens são opcionais e nunca justificadas se ausentes'},
-    {k:'B',text:'As imagens devem ser obtidas preferencialmente quando o veículo estiver em condições normais de análise; sua impossibilidade deve ser justificada'},
-    {k:'C',text:'Basta uma foto do veículo inteira uma vez'},
-    {k:'D',text:'Fotos só são necessárias para danos de grande monta'},
-  ], answer:'B', explanation:'As imagens devem ser obtidas preferencialmente em condições normais; se não for possível juntá-las, a impossibilidade precisa ser justificada no campo de observação.'},
-
-  {q: '7) Classificação PMO-52: quantos itens “SIM”/"NA" caracterizam Dano de Média Monta (DMM)?', meta:'Classificação PMO-52', opts:[
-    {k:'A',text:'0 itens'},
-    {k:'B',text:'1 item'},
-    {k:'C',text:'2 a 6 itens'},
-    {k:'D',text:'7 a 22 itens'},
-  ], answer:'C', explanation:'Para automóveis (PMO-52): Pequena monta = 1 item; Média monta = 2 a 6 itens; Grande monta = 7 a 22 itens.'},
-
-  {q: '8) A classificação "Grande Monta" aplicada ao chassi exige:', meta:'Consequências DGM', opts:[
-    {k:'A',text:'Reparo simples e liberação imediata'},
-    {k:'B',text:'Restrição administrativa temporária'},
-    {k:'C',text:'Sucateamento do veículo como um todo (irrecuperável) quando se aplica ao chassi'},
-    {k:'D',text:'Multa ao proprietário'},
-  ], answer:'C', explanation:'A classificação de Grande Monta no chassi acarreta sucateamento do veículo como um todo; é uma consequência administrativa grave.'},
-
-  {q: '9) Para veículos classificados como DMM, o órgão executivo do Estado tem quantos dias úteis para incluir a restrição administrativa no sistema?', meta:'Prazos', opts:[
-    {k:'A',text:'5 dias úteis'},
-    {k:'B',text:'10 dias úteis'},
-    {k:'C',text:'30 dias corridos'},
-    {k:'D',text:'60 dias'},
-  ], answer:'B', explanation:'O órgão executivo de trânsito do Estado tem 10 dias úteis para incluir a restrição administrativa no sistema após o ofício.'},
-
-  {q: '10) O proprietário de veículo classificado como DMM ou DGM tem qual prazo para interpor recurso para reenquadramento?', meta:'Recurso', opts:[
-    {k:'A',text:'30 dias'},
-    {k:'B',text:'60 dias'},
-    {k:'C',text:'90 dias'},
-    {k:'D',text:'180 dias'},
-  ], answer:'C', explanation:'O proprietário pode apresentar recurso em 90 dias a contar da data de registro do BOe.'},
-
-  {q: '11) Em ocorrência de trânsito, antes de registrar um BO-e individualmente, o policial deve:', meta:'Pesquisa prévia', opts:[
-    {k:'A',text:'Iniciar um novo BO-e sem pesquisar'},
-    {k:'B',text:'Pesquisar no SIOPM por placas, local, data e horário para verificar se já existe registro e, se existir, complementar o existente'},
-    {k:'C',text:'Enviar mensagem à base solicitando autorização'},
-    {k:'D',text:'Aguardar a outra parte registrar'},
-  ], answer:'B', explanation:'O policial deve pesquisar no SIOPM para checar se já existe BO-e sobre o sinistro; se houver, complementar o registro em vez de criar novo.'},
-
-  {q: '12) Ao gerar um BO-e complementar, o que acontece com o original?', meta:'BO-e complementar', opts:[
-    {k:'A',text:'Apaga-se o original automaticamente'},
-    {k:'B',text:'O original passa a exibir uma inscrição que identifica o BO-e complementar vinculado'},
-    {k:'C',text:'Nada, ficam independentes'},
-    {k:'D',text:'O original é transferido ao DETRAN'},
-  ], answer:'B', explanation:'Ao gerar BO-e complementar, o original passa a constar com inscrição identificando que há complemento vinculado; todos os complementares serão listados automaticamente.'},
-
-  {q: '13) Em sinistro de trânsito com vítima, quais informações complementares são essenciais no RAPM?', meta:'Informações de vítima', opts:[
-    {k:'A',text:'Nome do socorrista, prefixo da unidade de resgate, nome do hospital, nome do médico e CRM, região do corpo e tipo de lesão'},
-    {k:'B',text:'Apenas o nome do motorista do guincho'},
-    {k:'C',text:'Somente a placa do veículo envolvido'},
-    {k:'D',text:'Nada além do relato do condutor'},
-  ], answer:'A', explanation:'Em sinistros com vítima é preciso registrar detalhes do socorro: socorrista, unidade, hospital, médico e CRM, região do corpo e tipo de lesão, entre outros.'},
-
-  {q: '14) Ao lavrar a planilha de classificação de danos, o policial deve preencher planilha para:', meta:'Planilha de dano', opts:[
-    {k:'A',text:'Todos os veículos envolvidos, independentemente de estarem danificados'},
-    {k:'B',text:'Apenas os veículos que apresentem danos'},
-    {k:'C',text:'Somente o veículo do autor do sinistro'},
-    {k:'D',text:'Somente veículos apreendidos pela autoridade'},
-  ], answer:'B', explanation:'O PMRv deve qualificar todos os veículos envolvidos, mas lavrar a planilha de classificação de dano apenas para os veículos que apresentem danos.'},
-
-  {q: '15) Sobre fotos e imagens redistro: qual a orientação em relação ao momento ideal para captar imagens?', meta:'Imagens', opts:[
-    {k:'A',text:'Quando o veículo estiver em condições normais de análise'},
-    {k:'B',text:'Enquanto o veículo estiver sendo rebocado apenas'},
-    {k:'C',text:'Fotos só após reparo'},
-    {k:'D',text:'Fotos não são necessárias'},
-  ], answer:'A', explanation:'As imagens devem ser obtidas preferencialmente quando o veículo estiver em condições normais de análise para melhor avaliação das avarias.'},
-
-  {q: '16) Quais anexos PMO são usados para classificação de danos em motocicletas?', meta:'PMO', opts:[
-    {k:'A',text:'PMO-52'},
-    {k:'B',text:'PMO-53'},
-    {k:'C',text:'PMO-54'},
-    {k:'D',text:'PMO-55'},
-  ], answer:'C', explanation:'PMO-054 é a planilha destinada a classificação de danos em motocicletas, motonetas, ciclomotores, triciclos e quadriciclos.'},
-
-  {q: '17) Qual das alternativas é VERDADEIRA a respeito da classificação de danos em caminhões com chassi?', meta:'Caminhões', opts:[
-    {k:'A',text:'Grande monta pode ser aplicada à carroceria causando sucateamento automático'},
-    {k:'B',text:'Grande monta não se aplica ao chassi'},
-    {k:'C',text:'Grande monta no chassi acarreta sucateamento do veículo como um todo'},
-    {k:'D',text:'Cabine e carroceria e chassi são sempre avaliados em conjunto numa única regra'},
-  ], answer:'C', explanation:'A classificação de Grande Monta no chassi implica sucateamento do veículo como um todo; já cabine e carroçaria são avaliadas separadamente e DGM não se aplica a elas.'},
-
-  {q: '18) Se um veículo for classificado como DMM, o CRLV/CLA apresentará na observação:', meta:'CRLV', opts:[
-    {k:'A',text:'Nada, o CRLV não é alterado'},
-    {k:'B',text:'A expressão “sinistrado” ou “DMM” até a baixa definitiva do veículo'},
-    {k:'C',text:'A imediata baixa definitiva do veículo'},
-    {k:'D',text:'Apenas uma multa ao proprietário'},
-  ], answer:'B', explanation:'Veículo classificado DMM constará no campo de observação do CRLV/CLA a palavra “sinistrado” ou “DMM”, que permanecerá até a baixa definitiva.'},
-
-  {q: '19) Em caso de complementação proposta por parte interessada, quem decide sobre o complemento?', meta:'Complemento', opts:[
-    {k:'A',text:'Unidade de serviço que solicitou'},
-    {k:'B',text:'Cmt Cia ou equivalente, que decidirá pela autorização ou não'},
-    {k:'C',text:'DETRAN local automaticamente'},
-    {k:'D',text:'O delegado de plantão, sem nenhuma anuência'},
-  ], answer:'B', explanation:'Quando o complemento é proposto por parte interessada ou pelo próprio componente da US, a solicitação é encaminhada ao Cmt Cia (ou equivalente) para decisão final.'},
-
-  {q: '20) Prazos: o órgão fiscalizador tem quantos dias a partir do sinistro para expedir ofício ao órgão executivo do Estado?', meta:'Prazos ofício', opts:[
-    {k:'A',text:'30 dias'},
-    {k:'B',text:'60 dias'},
-    {k:'C',text:'15 dias'},
-    {k:'D',text:'90 dias'},
-  ], answer:'B', explanation:'Em caso de média e grande monta, o órgão fiscalizador responsável tem 60 dias a partir da data do sinistro para expedir ofício ao órgão executivo do Estado para a restrição administrativa.'},
-
-  // --- Perguntas adicionais (25) sobre assuntos faltantes ---
-
-  {q: '21) Em relação às formas de comunicação previstas para o registro de ocorrências, qual alternativa apresenta a forma que pressupõe ciência inequívoca da autoridade policial e gera obrigação formal de registro?', meta:'Formas de Comunicação', opts:[
-    {k:'A',text:'Comunicação verbal'},
-    {k:'B',text:'Comunicação prévia'},
-    {k:'C',text:'Comunicação formal'},
-    {k:'D',text:'Comunicação pessoal'},
-  ], answer:'C', explanation:'A comunicação formal pressupõe registro e obrigação formal; é aquela que formaliza a ciência da autoridade.'},
-
-  {q: '22) A comunicação prévia caracteriza-se por:', meta:'Formas de Comunicação', opts:[
-    {k:'A',text:'Ser utilizada somente em ocorrências com vítima'},
-    {k:'B',text:'Ser a comunicação inicial da equipe ao COPOM/BOP, indicando natureza e local'},
-    {k:'C',text:'Ser obrigatoriamente escrita'},
-    {k:'D',text:'Ser forma de comunicação que substitui o BO-e quando não houver dano'},
-  ], answer:'B', explanation:'Comunicação prévia é a comunicação inicial da equipe à base sobre natureza e local do fato.'},
-
-  {q: '23) A comunicação pessoal ocorre quando:', meta:'Formas de Comunicação', opts:[
-    {k:'A',text:'O policial é comunicado diretamente por e-mail institucional'},
-    {k:'B',text:'Uma autoridade ou cidadão comparece fisicamente à unidade para relatar fato'},
-    {k:'C',text:'O policial telefona para outra equipe repassando dados'},
-    {k:'D',text:'Existe apenas entre Polícia Militar e Polícia Civil'},
-  ], answer:'B', explanation:'Comunicação pessoal refere-se ao comparecimento físico do comunicante à unidade.'},
-
-  {q: '24) De acordo com a Resolução SSP 057/15, a Notificação de Ocorrência (NOc) tem como finalidade:', meta:'NOc', opts:[
-    {k:'A',text:'Substituir o BO-e em ocorrências com vítima leve'},
-    {k:'B',text:'Formalizar comunicação imediata à Polícia Civil em situações previstas, como acidentes com vítima, mesmo antes da finalização do BO-e'},
-    {k:'C',text:'Registrar ocorrências de trânsito sem vítimas'},
-    {k:'D',text:'Registrar exclusivamente crimes ambientais'},
-  ], answer:'B', explanation:'A NOc formaliza comunicação imediata à Polícia Civil em situações previstas, antes mesmo do encerramento do BO-e.'},
-
-  {q: '25) A NOc deve ser emitida obrigatoriamente quando:', meta:'NOc', opts:[
-    {k:'A',text:'Houver dano ao patrimônio público, independentemente de vítima'},
-    {k:'B',text:'Houver crime de ação penal pública incondicionada com autor no local'},
-    {k:'C',text:'O fato exigir comunicação prévia imediata à Polícia Civil pela gravidade, independentemente da conclusão do BO-e'},
-    {k:'D',text:'Sofrer indisponibilidade do SIOPM'},
-  ], answer:'C', explanation:'NOc é usada quando é necessária comunicação imediata pela gravidade do fato, independentemente da conclusão do BO-e.'},
-
-  {q: '26) Assinale a alternativa que traz situação onde a NOc não deve ser utilizada:', meta:'NOc', opts:[
-    {k:'A',text:'Acidente de trânsito com vítima'},
-    {k:'B',text:'Ocorrência com autor detido'},
-    {k:'C',text:'Crime ambiental'},
-    {k:'D',text:'Crime de menor potencial ofensivo sem autor no local'},
-  ], answer:'D', explanation:'Crimes de menor potencial ofensivo sem autor no local são normalmente encaminhados via delegacia eletrônica, não exigindo NOc.'},
-
-  {q: '27) A Lei Federal 5.970/73, sobre acidentes de trânsito, prevê:', meta:'Leis', opts:[
-    {k:'A',text:'Obrigatoriedade de lavratura de AIT em vítima fatal'},
-    {k:'B',text:'Dispensa de apresentação imediata do envolvido à autoridade policial em acidentes sem vítima ou sem fuga'},
-    {k:'C',text:'Proibição do recolhimento de CNH independentemente do caso'},
-    {k:'D',text:'Encaminhamento compulsório de todos os envolvidos à delegacia'},
-  ], answer:'B', explanation:'A Lei trata de procedimentos em acidentes, incluindo hipóteses de dispensa de apresentação imediata quando não há vítimas ou fuga.'},
-
-  {q: '28) Sobre a Lei 6.174/74, é correto afirmar:', meta:'Leis', opts:[
-    {k:'A',text:'Define critérios para responsabilização penal imediata'},
-    {k:'B',text:'Estabelece medidas administrativas específicas aplicáveis pela autoridade de trânsito, complementando o CTB'},
-    {k:'C',text:'Permite ao policial dispensar cadastro do veículo nos autos'},
-    {k:'D',text:'Revoga integralmente procedimentos de recolhimento do veículo'},
-  ], answer:'B', explanation:'A Lei trata de medidas administrativas aplicáveis no âmbito do trânsito, complementando disposições do CTB.'},
-
-  {q: '29) Em relação às Leis 5.970/73 e 6.174/74, assinale a alternativa correta:', meta:'Leis', opts:[
-    {k:'A',text:'Ambas retiram da autoridade policial militar o poder de agir em acidentes'},
-    {k:'B',text:'Ambas tratam especificamente de crimes ambientais'},
-    {k:'C',text:'Ambas fornecem base jurídica para procedimentos do PMRv em acidentes, incluindo comunicação à autoridade competente e medidas administrativas'},
-    {k:'D',text:'Nenhuma delas se aplica ao trabalho rodoviário'},
-  ], answer:'C', explanation:'As leis fornecem base jurídica para procedimentos administrativos e de atuação em acidentes rodoviários.'},
-
-  {q: '30) Assinale o item que é obrigatório constar no croqui e no RAPM quando houver vestígios físicos:', meta:'Registro técnico', opts:[
-    {k:'A',text:'Condições de visibilidade do perito'},
-    {k:'B',text:'Marcas de frenagem e sua posição na pista'},
-    {k:'C',text:'Preço estimado do dano'},
-    {k:'D',text:'Turno de serviço do policial'},
-  ], answer:'B', explanation:'Marcas de frenagem e sua posição são vestígios físicos relevantes e devem constar no croqui e no RAPM.'},
-
-  {q: '31) Em relação à remoção do veículo, o BO-e deve obrigatoriamente constar:', meta:'Remoção', opts:[
-    {k:'A',text:'Apenas o nome do motorista do guincho'},
-    {k:'B',text:'Marca/modelo e placa do guincho, além do endereço para onde o veículo foi transportado'},
-    {k:'C',text:'Apenas placa do guincho'},
-    {k:'D',text:'Somente o endereço da seguradora'},
-  ], answer:'B', explanation:'Deve constar identificação do guincho e para onde o veículo foi levado para responsabilidade e rastreio.'},
-
-  {q: '32) Sobre as condições do local e pista, marque a alternativa correta:', meta:'Local', opts:[
-    {k:'A',text:'Registrar tipo de pavimento é facultativo'},
-    {k:'B',text:'O relevo da pista e separação física central são elementos obrigatórios de observação'},
-    {k:'C',text:'Obras não devem ser citadas para evitar erros interpretativos'},
-    {k:'D',text:'A sinalização vertical só deve ser citada se estiver incorreta'},
-  ], answer:'B', explanation:'Relevo, separador e outros elementos da via influenciam dinâmica e são parte da observação obrigatória.'},
-
-  {q: '33) Quando a perícia não comparece ao local, torna-se ainda mais relevante o registro de:', meta:'Perícia', opts:[
-    {k:'A',text:'Estado emocional das vítimas'},
-    {k:'B',text:'Marcas de frenagem e choque, indicando posição exata e sentido'},
-    {k:'C',text:'Endereço do hospital da vítima'},
-    {k:'D',text:'Dados do perito substituto'},
-  ], answer:'B', explanation:'Sem perícia técnica, registros de vestígios físicos como marcas de frenagem são fundamentais para análise posterior.'},
-
-  {q: '34) A Resolução 915/22 estabelece que veículos N2 são:', meta:'Categorias', opts:[
-    {k:'A',text:'Veículos destinados ao transporte de carga com massa menor que 2 t'},
-    {k:'B',text:'Veículos de transporte de carga com massa maior que 12 t'},
-    {k:'C',text:'Veículos de transporte de carga com massa superior a 3,5 t e até 12 t'},
-    {k:'D',text:'Veículos de passeio com chassi reforçado'},
-  ], answer:'C', explanation:'N2 corresponde a veículos para transporte de carga com massa superior a 3,5 t e até 12 t.'},
-
-  {q: '35) A F-350, conforme classificação técnica, é considerada:', meta:'Categorias', opts:[
-    {k:'A',text:'Automóvel leve'},
-    {k:'B',text:'Caminhonete (até 3.500 kg)'},
-    {k:'C',text:'Caminhão (acima de 3.500 kg)'},
-    {k:'D',text:'Microcaminhão N1'},
-  ], answer:'C', explanation:'Modelos como F-350 geralmente enquadram-se como caminhão por terem peso bruto acima de 3.500 kg.'},
-
-  {q: '36) A Resolução 952/22 prevê isenção de para-choque traseiro em:', meta:'952/22', opts:[
-    {k:'A',text:'Todos os caminhões N1'},
-    {k:'B',text:'Veículos completos N2 e N3 com para-choque incorporado ao projeto original'},
-    {k:'C',text:'Apenas veículos de transporte escolar'},
-    {k:'D',text:'Veículos de carga que utilizem terceiros implementos'},
-  ], answer:'B', explanation:'A isenção é para veículos completos das categorias N2 e N3 que tenham para-choque traseiro incorporado ao projeto original.'},
-
-  {q: '37) Assinale a situação que configura erro grave na coleta de versão:', meta:'Erros comuns', opts:[
-    {k:'A',text:'Registrar a versão no campo adequado'},
-    {k:'B',text:'Permitir que o envolvido leia o que foi escrito'},
-    {k:'C',text:'Alterar dados após obter a assinatura, ocasionando perda da validade da assinatura'},
-    {k:'D',text:'Informar o prazo decadencial da representação'},
-  ], answer:'C', explanation:'Alterar após assinatura compromete validade; assinatura pode ser perdida se editar depois.'},
-
-  {q: '38) Em relação à qualificação dos envolvidos, é correto afirmar:', meta:'Qualificação', opts:[
-    {k:'A',text:'A ausência do RG não impede o registro'},
-    {k:'B',text:'A qualificação deve ser completa e é obrigatória para todos os envolvidos, inclusive testemunhas'},
-    {k:'C',text:'A qualificação é obrigatória apenas para condutores'},
-    {k:'D',text:'Qualificar vítima é facultativo se ela não desejar representar'},
-  ], answer:'B', explanation:'Qualificação completa é obrigatória para partes e testemunhas para manter identificação e responsabilização.'},
-
-  {q: '39) Sobre a integridade do policial militar envolvid'},
-];
-
-
-
-const quizEl = document.getElementById('quiz');
-let idx = 0; let score=0;
-
-function render(){
-  const item = questions[idx];
-  quizEl.innerHTML = `
-    <div class="q">
-      <div>
-        <div class="question">${item.q}</div>
-        <div class="meta">${item.meta} — Questão ${idx+1} de ${questions.length}</div>
-        <div class="options" id="opts"></div>
-        <div class="controls">
-          <button id="check">Verificar resposta</button>
-          <button class="secondary" id="next">Próxima</button>
-          <button class="secondary" id="goback">Voltar</button>
-        </div>
-        <div id="res"></div>
-      </div>
-      <div style="min-width:140px;text-align:right">
-        <div style="font-size:13px;color:var(--muted)">Pontuação</div>
-        <div style="font-size:22px;font-weight:700">${score} / ${questions.length}</div>
-        <div style="margin-top:18px;color:var(--muted);font-size:12px">Progresso</div>
-      </div>
-    </div>
-  `;
-  const optsEl = document.getElementById('opts');
-  item.opts.forEach(o=>{
-    const d = document.createElement('label'); d.className='opt'; d.tabIndex=0;
-    d.innerHTML = `<input type="radio" name="opt" value="${o.k}" aria-label="${o.k}"><div><strong>${o.k}.</strong> ${o.text}</div>`;
-    d.addEventListener('click',()=>{ selectOption(d); });
-    optsEl.appendChild(d);
-  });
-  document.getElementById('check').addEventListener('click',check);
-  document.getElementById('next').addEventListener('click',next);
-  document.getElementById('goback').addEventListener('click',prev);
-  updateProgress();
-}
-
-function selectOption(el){
-  const same = document.querySelectorAll('.opt');
-  same.forEach(s=>s.classList.remove('selected'));
-  el.classList.add('selected');
-  const r = el.querySelector('input'); r.checked=true;
-}
-
-function getSelected(){
-  const inp = document.querySelector('input[name="opt"]:checked');
-  return inp?inp.value:null;
-}
-
-function check(){
-  const selected = getSelected();
-  const resEl = document.getElementById('res');
-  resEl.innerHTML='';
-  if(!selected){ resEl.innerHTML = '<div class="result wrong">Selecione uma alternativa antes de verificar.</div>'; return }
-  const correct = questions[idx].answer;
-  const explanation = questions[idx].explanation;
-  if(selected === correct){
-    score += 1; resEl.innerHTML = `<div class="result correct">Correto — Alternativa ${correct}.</div><div class="explain">${explanation}</div>`;
-  } else {
-    resEl.innerHTML = `<div class="result wrong">Errado — você marcou ${selected}. Resposta correta: ${correct}.</div><div class="explain">${explanation}</div>`;
-  }
-  // disable options after check
-  document.querySelectorAll('input[name="opt"]').forEach(i=>i.disabled=true);
-  updateProgress();
-}
-
-function next(){
-  if(idx < questions.length-1){ idx++; render(); } else { showFinish(); }
-}
-function prev(){ if(idx>0){ idx--; render(); } }
-
-function showFinish(){
-  quizEl.innerHTML = `
-    <div style="text-align:center;padding:18px">
-      <h2>Fim do Quiz</h2>
-      <p class="meta">Sua pontuação: <strong>${score}</strong> de ${questions.length}</p>
-      <p class="meta">% de acerto: <strong>${Math.round((score/questions.length)*100)}%</strong></p>
-      <div style="margin-top:12px"><button id="restart">Reiniciar</button> <button class="secondary" id="review">Revisar questões</button></div>
-    </div>
-  `;
-  document.getElementById('restart').addEventListener('click',()=>{ idx=0; score=0; render(); });
-  document.getElementById('review').addEventListener('click',()=>{ idx=0; render(); });
-  updateProgress(true);
-}
-
-function updateProgress(final){
-  const bar = document.getElementById('bar');
-  const pct = Math.round(((idx + (final?1:0)) / questions.length) * 100);
-  bar.style.width = pct + '%';
-}
-
-// inicializa
-render();
-</script><!-- Novas questões adicionadas --><script>
-// Aqui você pode inserir lógica JS adicional para as novas questões se necessário
-</script></body>
+  </div>
+</body>
 </html>
