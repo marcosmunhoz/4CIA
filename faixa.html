@@ -1,0 +1,184 @@
+<!doctype html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora de Faixas Refletivas (BR)</title>
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;}
+    body{padding:20px;background:#f6f8fb;color:#0b1220}
+    .card{max-width:980px;margin:0 auto;background:white;padding:18px;border-radius:12px;box-shadow:0 6px 24px rgba(11,18,32,0.08)}
+    h1{font-size:20px;margin:0 0 8px}
+    p.lead{margin:0 0 16px;color:#334155}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .field{display:flex;flex-direction:column;margin-bottom:8px}
+    label{font-size:13px;color:#334155;margin-bottom:6px}
+    input,select{padding:8px;border:1px solid #e6e9ef;border-radius:8px;font-size:14px}
+    .row{display:flex;gap:8px}
+    button{background:#0ea5a3;color:white;padding:10px 12px;border-radius:10px;border:none;cursor:pointer}
+    .output{margin-top:12px;background:#f8fafc;padding:12px;border-radius:8px;border:1px solid #eef2ff}
+    small.note{color:#6b7280}
+    footer{margin-top:14px;color:#6b7280;font-size:13px}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Calculadora de Faixas Refletivas (BR)</h1>
+    <p class="lead">Calcula a metragem e número de tiras necessárias segundo regras de película retrorrefletiva (ex.: veículos de carga pesados). Insira medidas em metros.</p><div class="grid">
+  <div>
+    <div class="field">
+      <label>Tipo de veículo</label>
+      <select id="vehicleType">
+        <option value="truck_heavy">Caminhão (PBT &gt; 4.536 kg)</option>
+        <option value="truck_light">Caminhão (PBT ≤ 4.536 kg)</option>
+        <option value="bus">Ônibus / Micro-ônibus</option>
+        <option value="car">Automóvel / Utilitário</option>
+        <option value="motorcycle">Motocicleta / Ciclomotor</option>
+        <option value="semi">Semirreboque / Reboque</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>PBT (kg) — Peso Bruto Total (opcional)</label>
+      <input id="pbt" type="number" placeholder="ex: 4536" />
+      <small class="note">Use para checar se o veículo está dentro da obrigatoriedade.</small>
+    </div>
+
+    <div class="field">
+      <label>Comprimento da borda inferior (lateral) — em metros</label>
+      <input id="lateralLength" type="number" step="0.01" placeholder="ex: 6.00" />
+      <small class="note">Medida total da lateral (m). Se tiver mais de uma carroceria, some as bordas inferiores.</small>
+    </div>
+
+    <div class="field">
+      <label>Largura traseira (m)</label>
+      <input id="rearWidth" type="number" step="0.01" placeholder="ex: 2.20" />
+    </div>
+
+    <div class="field">
+      <label>Altura traseira (m) — (opcional)</label>
+      <input id="rearHeight" type="number" step="0.01" placeholder="ex: 1.20" />
+      <small class="note">Se não souber, deixe em branco e insira o perímetro manualmente.</small>
+    </div>
+
+    <div class="field">
+      <label>Perímetro traseiro (m) — alternativamente calcule com largura e altura</label>
+      <input id="rearPerimeter" type="number" step="0.01" placeholder="ou deixe em branco para calcular" />
+    </div>
+
+    <div class="field">
+      <label>Tamanho da tira/peça de faixa (m)</label>
+      <input id="stripLength" type="number" step="0.01" value="0.30" />
+      <small class="note">Ex.: 0.30 m (30 cm). Use para calcular quantas tiras serão necessárias.</small>
+    </div>
+
+  </div>
+
+  <div>
+    <div class="field">
+      <label>Regras aplicadas (valores padrão)</label>
+      <div style="padding:8px;border:1px dashed #e6e9ef;border-radius:8px;background:#fbfdff">
+        <div><strong>Lateral (veículos de carga pesados):</strong> 33.33% da borda inferior</div>
+        <div><strong>Traseira (veículos de carga pesados):</strong> 80% do perímetro do painel traseiro</div>
+        <div><strong>Observação:</strong> outros tipos de veículo podem ter exigências distintas ou ser facultativos.</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Opções</label>
+      <div class="row">
+        <label style="flex:1"><input id="mirrorPattern" type="checkbox" checked/> Aplicar padrão espelhado na traseira</label>
+      </div>
+    </div>
+
+    <div style="margin-top:6px;display:flex;gap:8px">
+      <button id="calcBtn">Calcular</button>
+      <button id="resetBtn" style="background:#ef4444">Limpar</button>
+    </div>
+
+    <div class="output" id="result" aria-live="polite">
+      <strong>Resultado:</strong>
+      <div id="resContent">Preencha os dados e clique em <em>Calcular</em>.</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div>Use este cálculo como auxílio prático. Para tomada de decisão oficial consulte a Resolução CONTRAN aplicável e órgãos competentes.</div>
+</footer>
+
+  </div>  <script>
+    // Regras padrão (padrões adotados na interface)
+    const LATERAL_PERCENT = 0.3333; // 33.33%
+    const REAR_PERCENT = 0.80; // 80%
+
+    function formatM(m){ return (Math.round(m*100)/100).toFixed(2) + ' m'; }
+
+    document.getElementById('calcBtn').addEventListener('click', ()=>{
+      const type = document.getElementById('vehicleType').value;
+      const pbt = Number(document.getElementById('pbt').value) || null;
+      const lateralLength = Number(document.getElementById('lateralLength').value) || 0;
+      const rearWidth = Number(document.getElementById('rearWidth').value) || 0;
+      const rearHeight = Number(document.getElementById('rearHeight').value) || 0;
+      const rearPerimeterInput = Number(document.getElementById('rearPerimeter').value) || 0;
+      const stripLength = Number(document.getElementById('stripLength').value) || 0.30;
+      const mirror = document.getElementById('mirrorPattern').checked;
+
+      // Decide se a obrigatoriedade se aplica (regra geral: PBT > 4536 kg)
+      const obligated = (pbt && pbt > 4536) || type === 'truck_heavy' || type === 'bus' || type === 'semi';
+
+      // Cálculo lateral
+      const requiredLateralMeters = lateralLength * LATERAL_PERCENT;
+      const lateralStrips = stripLength>0? Math.ceil(requiredLateralMeters / stripLength) : 0;
+
+      // Cálculo traseiro: usa perímetro se informado, senão calcula com largura/altura
+      let rearPerimeter = rearPerimeterInput;
+      if(!rearPerimeter && rearWidth>0 && rearHeight>0){
+        // perímetro simples: duas larguras + duas alturas (contorno)
+        rearPerimeter = 2*rearWidth + 2*rearHeight;
+      }
+      const requiredRearMeters = rearPerimeter * REAR_PERCENT;
+      const rearStrips = stripLength>0? Math.ceil(requiredRearMeters / stripLength) : 0;
+
+      // Monta resultado
+      const lines = [];
+      lines.push('<div><strong>Obrigatoriedade aparente:</strong> ' + (obligated? '<span style="color:green">Aplicável</span>' : '<span style="color:orange">Pode não ser obrigatória (verifique PBT/resolução)</span>') + '</div>');
+
+      lines.push('<hr/>');
+
+      lines.push('<div><strong>Lateral</strong> — borda inferior: ' + formatM(lateralLength) + '</div>');
+      lines.push('<div>Necessário: <strong>' + formatM(requiredLateralMeters) + '</strong> (' + (LATERAL_PERCENT*100).toFixed(2) + '%)</div>');
+      lines.push('<div>Tamanho da tira: ' + (stripLength*100).toFixed(0) + ' cm — <strong>' + lateralStrips + '</strong> tiras</div>');
+
+      lines.push('<hr/>');
+
+      if(rearPerimeter>0){
+        lines.push('<div><strong>Traseira</strong> — perímetro: ' + formatM(rearPerimeter) + '</div>');
+        lines.push('<div>Necessário: <strong>' + formatM(requiredRearMeters) + '</strong> (' + (REAR_PERCENT*100).toFixed(0) + '%)</div>');
+        lines.push('<div>Tamanho da tira: ' + (stripLength*100).toFixed(0) + ' cm — <strong>' + rearStrips + '</strong> tiras</div>');
+        if(mirror) lines.push('<div><small class="note">Padrão espelhado recomendado na montagem traseira para contraste.</small></div>');
+      } else {
+        lines.push('<div><strong>Traseira</strong> — perímetro não informado. Informe largura e altura ou perímetro.</div>');
+      }
+
+      lines.push('<hr/>');
+      lines.push('<div><small class="note">Observação: medidas são orientativas. Consulte normas técnicas e o órgão de trânsito antes de aplicar em frota.</small></div>');
+
+      document.getElementById('resContent').innerHTML = lines.join('\n');
+
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      document.getElementById('pbt').value = '';
+      document.getElementById('lateralLength').value = '';
+      document.getElementById('rearWidth').value = '';
+      document.getElementById('rearHeight').value = '';
+      document.getElementById('rearPerimeter').value = '';
+      document.getElementById('stripLength').value = '0.30';
+      document.getElementById('resContent').innerHTML = 'Preencha os dados e clique em <em>Calcular</em>.';
+    });
+  </script></body>
+</html>
