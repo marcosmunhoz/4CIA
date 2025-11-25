@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Editor NBR 10696 — Símbolos de Acidentes</title>
+  <title>Editor de Diagramas de Acidentes (NBR 10696)</title>
   <style>
     :root{--bg:#f4f6f8;--panel:#ffffff;--accent:#1f6feb;--muted:#666}
-    body{font-family:Inter,system-ui,Arial;margin:0;height:100vh;display:flex;gap:12px;background:var(--bg)}
-    .sidebar{width:360px;background:var(--panel);padding:14px;box-shadow:0 6px 18px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:10px}
-    .toolbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .symbol{height:76px;border:1px solid #e6e9ee;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;padding:6px}
-    .symbol svg{max-width:92%;max-height:40px}
-    .symbol .name{font-size:11px;text-align:center;color:var(--muted);margin-top:6px}
+    body{font-family:Inter,system-ui,Arial;margin:0;height:100vh;display:flex;gap:12px;background:var(--bg);}
+    header{grid-area:head}
+    .sidebar{width:320px;background:var(--panel);padding:14px;box-shadow:0 6px 18px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:10px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    .symbol{width:56px;height:56px;border:1px solid #e6e9ee;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none}
+    .symbol span{font-size:11px;text-align:center;color:var(--muted);display:block}
     .canvas-wrap{flex:1;display:flex;flex-direction:column;padding:14px}
     .canvas{flex:1;background:#fff;border:1px solid #e1e5ea;border-radius:8px;position:relative;overflow:hidden}
     .topbar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
@@ -19,66 +19,63 @@
     button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(31,111,235,.15)}
     .props{background:var(--panel);padding:10px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.04);}
     label{font-size:13px;color:#333}
-    input[type=text], select{width:100%;padding:8px;margin-top:6px;border:1px solid #e6e9ee;border-radius:6px}
+    input[type=text]{width:100%;padding:8px;margin-top:6px;border:1px solid #e6e9ee;border-radius:6px}
     #legendList{max-height:220px;overflow:auto;margin-top:6px}
     .legend-item{display:flex;gap:8px;align-items:center;padding:6px;border-bottom:1px dashed #eee}
     .legend-color{width:28px;height:20px;border-radius:4px;border:1px solid #ddd}
     .hint{font-size:12px;color:var(--muted)}
+    /* draggable handles (for mobile) */
+    .dragging{opacity:.8;transform:scale(.98)}
+    /* small controls */
+    .controls{margin-left:auto;display:flex;gap:8px}
+    .symbol-name{font-size:11px;margin-top:6px}
+    /* canvas elements styles */
     .placed{cursor:move}
     .label-box{font-size:12px;padding:2px 6px;background:rgba(255,255,255,.9);border-radius:4px;border:1px solid #ddd}
-    .uploader{display:flex;gap:8px;align-items:center;margin-top:8px}
-    .small{font-size:12px}
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h3>Paleta de símbolos — versão aproximada (NBR 10696)</h3>
-    <div class="toolbar" id="palette"></div>
+    <h3>Paleta de símbolos</h3>
+    <div class="toolbar" id="palette">
+      <!-- symbols inserted by JS -->
+    </div>
 
     <div class="props">
-      <label>Adicionar símbolo personalizado (SVG)</label>
-      <div class="uploader">
-        <input id="svgFile" type="file" accept="image/svg+xml" />
-        <input id="svgName" type="text" placeholder="Nome do símbolo" style="flex:1" />
-        <button id="uploadBtn" class="ghost">Importar</button>
-      </div>
-      <div style="height:8px"></div>
       <label>Nome do item selecionado</label>
-      <input id="selName" type="text" placeholder="Selecione um item no croqui" />
+      <input id="selName" type="text" placeholder="Selecione um símbolo na tela ou clique em um item do painel" />
       <div style="height:8px"></div>
       <label>Adicionar texto livre (caixa editável)</label>
       <input id="addTextVal" type="text" placeholder="Texto da caixa" />
       <div style="display:flex;gap:8px;margin-top:8px">
         <button id="addTextBtn" class="ghost">Adicionar Caixa</button>
-        <button id="addNoteBtn" class="ghost">Adicionar Nota Rápida</button>
+        <button id="addNoteBtn" class="ghost">Adicionar Nota</button>
       </div>
       <hr />
       <label>Legenda</label>
       <div id="legendList"></div>
       <div style="display:flex;gap:8px;margin-top:8px">
-        <button id="addLegendBtn" class="ghost">Atualizar legenda</button>
+        <button id="addLegendBtn" class="ghost">Criar/Atualizar legenda</button>
         <button id="clearLegendBtn" class="ghost">Limpar legenda</button>
       </div>
       <div style="height:8px"></div>
-      <div class="hint">Dicas: toque para inserir símbolo. Arraste com o dedo para mover. Duplo-clique em textos para editar. Toque longo (ou botão direito) para remover.</div>
-      <div style="height:8px"></div>
-      <div class="small">Observação: estes símbolos são representações vetoriais aproximadas baseadas em materiais públicos (manuais e anexos). Se você tiver o PDF oficial da NBR 10696, envie os SVGs e eu os substituo para garantir fidelidade total.</div>
+      <div class="hint">Dicas: clique para inserir símbolo, arraste no canvas para mover, duplo-clique em textos para editar, botão direito para apagar.</div>
     </div>
   </div>
 
   <div class="canvas-wrap">
     <div class="topbar">
-      <h2 style="margin:0">Editor — Diagrama de Acidente (NBR 10696)</h2>
-      <div style="margin-left:auto;display:flex;gap:8px">
+      <h2 style="margin:0">Editor de Croqui / Diagrama</h2>
+      <div class="controls">
         <button id="previewBtn">Visualizar</button>
         <button id="exportBtn" class="ghost">Exportar PNG</button>
-        <button id="downloadHtmlBtn" class="ghost">Baixar HTML</button>
         <button id="resetBtn" class="ghost">Limpar</button>
       </div>
     </div>
 
     <div class="canvas" id="canvas">
-      <svg id="svg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid meet" style="background:linear-gradient(180deg,#fff,#fbfdff)">
+      <!-- an SVG drawing area -->
+      <svg id="svg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" style="background:linear-gradient(180deg,#fff,#fbfdff)">
         <defs id="defs"></defs>
         <g id="placedElements"></g>
       </svg>
@@ -86,157 +83,298 @@
   </div>
 
   <script>
-    // --- Símbolos aproximados baseados em materiais públicos relacionados à NBR 10696 ---
+    // --- Symbol definitions (simple SVG icons) ---
     const SYMBOLS = [
-      {id:'veh_moving', name:'Veículo em movimento', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="10" width="50" height="12" rx="3" fill="#1f6feb"/><rect x="40" y="6" width="20" height="12" rx="2" fill="#1f6feb"/><circle cx="14" cy="26" r="3" fill="#000"/><circle cx="46" cy="26" r="3" fill="#000"/></svg>`},
-      {id:'veh_stopped', name:'Veículo parado', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="12" width="56" height="10" rx="3" fill="#9aa5b1"/><circle cx="18" cy="26" r="3" fill="#000"/><circle cx="46" cy="26" r="3" fill="#000"/></svg>`},
-      {id:'veh_reversing', name:'Veículo em marcha à ré', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="12" width="56" height="10" rx="3" fill="#1f6feb"/><path d="M48 18 L56 12 L56 24 Z" fill="#111"/></svg>`},
-      {id:'car', name:'Carro', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="12" width="60" height="10" rx="3" fill="#1162a8"/><circle cx="18" cy="26" r="3" fill="#000"/><circle cx="46" cy="26" r="3" fill="#000"/></svg>`},
-      {id:'truck', name:'Caminhão', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="12" width="36" height="10" rx="3" fill="#0b6b3a"/><rect x="36" y="6" width="20" height="12" rx="2" fill="#0b6b3a"/><circle cx="14" cy="26" r="3" fill="#000"/><circle cx="46" cy="26" r="3" fill="#000"/></svg>`},
-      {id:'motorcycle', name:'Motocicleta', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="24" r="4" fill="#111"/><circle cx="44" cy="24" r="4" fill="#111"/><path d="M24 18 L34 14 L40 18" stroke="#111" stroke-width="2" fill="none"/></svg>`},
-      {id:'bicycle', name:'Bicicleta', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="24" r="4" fill="#111"/><circle cx="44" cy="24" r="4" fill="#111"/><path d="M16 24 L28 16 L36 16 L44 24" stroke="#111" stroke-width="2" fill="none"/></svg>`},
-      {id:'ped_moving', name:'Pedestre em movimento', svg:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="4" r="2" fill="#d93d2a"/><path d="M7 9c1 0 10 0 10 0v8c0 1-1 2-2 2H9c-1 0-2-1-2-2V9z" fill="#d93d2a"/></svg>`},
-      {id:'ped_stopped', name:'Pedestre parado', svg:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="4" r="2" fill="#d93d2a"/><rect x="9" y="8" width="6" height="10" fill="#d93d2a"/></svg>`},
-      {id:'collision_frontal', name:'Colisão frontal', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><path d="M10 24 L26 12" stroke="#d32f2f" stroke-width="3"/><path d="M54 24 L38 12" stroke="#d32f2f" stroke-width="3"/></svg>`},
-      {id:'collision_rear', name:'Colisão traseira', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="12" width="26" height="10" rx="2" fill="#1162a8"/><rect x="36" y="12" width="22" height="10" rx="2" fill="#1162a8"/><path d="M34 18 L30 14" stroke="#d32f2f" stroke-width="3"/></svg>`},
-      {id:'collision_side', name:'Colisão lateral (t-bone)', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="12" width="38" height="10" rx="2" fill="#1162a8"/><rect x="34" y="6" width="10" height="30" rx="2" fill="#d32f2f"/></svg>`},
-      {id:'rollover', name:'Capotamento', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><ellipse cx="20" cy="20" rx="18" ry="6" fill="#bdbdbd"/><path d="M8 14 L20 8 L32 14" stroke="#d32f2f" stroke-width="2" fill="none"/></svg>`},
-      {id:'skid', name:'Marcas de derrapagem', svg:`<svg viewBox="0 0 80 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 16 C12 8, 28 12, 40 6 C52 0, 68 14, 76 10" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`},
-      {id:'impact', name:'Ponto de impacto', svg:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" fill="#ffb020"/><circle cx="12" cy="12" r="7" fill="none" stroke="#ffb020" stroke-width="1.2" stroke-dasharray="3 3"/></svg>`},
-      {id:'victim_fatal', name:'Vítima fatal', svg:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="5" r="2" fill="#000"/><path d="M7 20c0-4 5-6 5-6s5 2 5 6" fill="#000"/></svg>`},
-      {id:'victim_serious', name:'Vítima grave', svg:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="5" r="2" fill="#a12020"/><rect x="9" y="9" width="6" height="9" fill="#a12020"/></svg>`},
-      {id:'victim_minor', name:'Vítima leve', svg:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="5" r="2" fill="#f39c12"/><rect x="9" y="9" width="6" height="8" fill="#f39c12"/></svg>`},
-      {id:'ped_hit', name:'Atropelamento', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><path d="M18 10 L34 22" stroke="#d93d2a" stroke-width="3"/><circle cx="46" cy="24" r="4" fill="#111"/></svg>`},
-      {id:'road_block', name:'Obstáculo na via', svg:`<svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="10" width="40" height="14" rx="2" fill="#b71c1c"/><text x="32" y="20" fill="#fff" font-size="8" text-anchor="middle">OB</text></svg>`},
-      {id:'sign', name:'Sinal vertical / placa', svg:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="3" width="12" height="10" rx="1" fill="#ffd54f" stroke="#000"/><rect x="11" y="13" width="2" height="8" fill="#777"/></svg>`}
+      {id:'car', name:'Veículo (carro)', svg:`<svg width="48" height="28" viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="12" width="60" height="12" rx="3" fill="#1f6feb"/><circle cx="18" cy="26" r="4" fill="#000"/><circle cx="46" cy="26" r="4" fill="#000"/></svg>`},
+      {id:'truck', name:'Veículo (caminhão)', svg:`<svg width="48" height="28" viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="12" width="38" height="12" rx="3" fill="#0b6b3a"/><rect x="38" y="8" width="18" height="16" rx="2" fill="#0b6b3a"/><circle cx="14" cy="26" r="4" fill="#000"/><circle cx="46" cy="26" r="4" fill="#000"/></svg>`},
+      {id:'ped', name:'Pedestre', svg:`<svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="3" r="2" fill="#d93d2a"/><path d="M8 8c1 0 8 0 8 0v8c0 1-1 2-2 2H10c-1 0-2-1-2-2V8z" fill="#d93d2a"/></svg>`},
+      {id:'impact', name:'Ponto de impacto', svg:`<svg width="36" height="36" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4" fill="#ffb020"/><circle cx="12" cy="12" r="8" fill="none" stroke="#ffb020" stroke-width="1.5" stroke-dasharray="3 3"/></svg>`},
+      {id:'arrow', name:'Seta (direção)', svg:`<svg width="48" height="20" viewBox="0 0 60 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10 L48 10" stroke="#111" stroke-width="2" stroke-linecap="round"/><path d="M42 4 L54 10 L42 16" fill="#111"/></svg>`},
+      {id:'skid', name:'Marcas de derrapagem', svg:`<svg width="60" height="20" viewBox="0 0 60 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 14 C10 10, 20 12, 28 6 C36 0, 46 10, 54 8" stroke="#444" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`},
+      {id:'fatal', name:'Vítima fatal', svg:`<svg width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="6" r="2" fill="#000"/><path d="M6 20c0-4 4-6 6-6s6 2 6 6" fill="#000"/></svg>`}
     ];
 
+    // Populate palette
     const palette = document.getElementById('palette');
+    SYMBOLS.forEach(s => {
+      const el = document.createElement('div');
+      el.className = 'symbol';
+      el.innerHTML = s.svg + `<div class="symbol-name">${s.name}</div>`;
+      el.title = s.name;
+      el.dataset.sym = s.id;
+      el.addEventListener('click', ()=> insertSymbol(s.id));
+      palette.appendChild(el);
+    });
+
     const svg = document.getElementById('svg');
     const placed = document.getElementById('placedElements');
-    let counter = 0; let selected = null;
+    let counter = 0;
+    let selected = null;
 
-    function buildPalette(){
-      palette.innerHTML = '';
-      SYMBOLS.forEach(s=>{
-        const el = document.createElement('div'); el.className='symbol'; el.title=s.name; el.dataset.sym=s.id;
-        el.innerHTML = `${s.svg}<div class="name">${s.name}</div>`;
-        el.addEventListener('click', ()=> insertSymbol(s.id));
-        palette.appendChild(el);
-      });
-    }
-    buildPalette();
-
-    function insertSymbol(symId, x=120, y=120){
+    function insertSymbol(symId, x = 100, y = 100) {
       const info = SYMBOLS.find(s=>s.id===symId);
       if(!info) return;
       counter++;
       const g = document.createElementNS('http://www.w3.org/2000/svg','g');
       g.classList.add('placed');
-      g.setAttribute('transform',`translate(${x},${y}) scale(1)`);
-      g.setAttribute('data-id','elem_'+counter);
-      g.setAttribute('data-sym',info.id);
-      g.setAttribute('data-name',info.name);
+      g.setAttribute('transform',`translate(${x},${y})`);
+      g.setAttribute('data-id', 'elem_' + counter);
+      g.setAttribute('data-sym', info.id);
+      g.setAttribute('data-name', info.name);
 
+      // embed the symbol inside a foreignObject so HTML markup can be used (keeps colors crisp)
       const fo = document.createElementNS('http://www.w3.org/2000/svg','foreignObject');
-      fo.setAttribute('width',160); fo.setAttribute('height',80);
-      fo.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" style="width:160px;height:80px;display:flex;align-items:center;justify-content:center">${info.svg}</div>`;
+      fo.setAttribute('width',120);
+      fo.setAttribute('height',80);
+      fo.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" style="width:120px;height:80px;display:flex;align-items:center;justify-content:center">${info.svg}</div>`;
       g.appendChild(fo);
 
+      // label
       const label = document.createElementNS('http://www.w3.org/2000/svg','foreignObject');
-      label.setAttribute('x',0); label.setAttribute('y',60); label.setAttribute('width',260); label.setAttribute('height',30);
+      label.setAttribute('x',0);
+      label.setAttribute('y',50);
+      label.setAttribute('width',220);
+      label.setAttribute('height',28);
       label.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="label-box" contenteditable="true">${info.name}</div>`;
       g.appendChild(label);
 
-      // pointer events for drag & simple scale with wheel (for desktop)
+      // interaction
       g.addEventListener('pointerdown', startDrag);
-      g.addEventListener('dblclick', ()=>{ g.querySelector('.label-box').focus(); });
-      g.addEventListener('contextmenu', (ev)=>{ ev.preventDefault(); if(confirm('Apagar este item?')){ g.remove(); updateLegendFromCanvas(); } });
-      g.querySelector('.label-box').addEventListener('input', ()=>{ g.dataset.name = g.querySelector('.label-box').innerText.trim(); updateLegendFromCanvas(); });
-
-      // pinch-to-zoom & two-finger rotate are left to future improvements; basic scaling via shift+wheel supported
-      g.addEventListener('wheel', (ev)=>{
-        if(!ev.shiftKey) return; ev.preventDefault();
-        const tr = g.getAttribute('transform');
-        const m = /translate\(([-0-9.]+),?\s*([-0-9.]+)\) scale\(([-0-9.]+)\)/.exec(tr);
-        let sx = 1; if(m) sx = parseFloat(m[3]);
-        sx += ev.deltaY>0 ? -0.05 : 0.05; if(sx<0.2) sx=0.2; if(sx>4) sx=4;
-        const tx = m ? parseFloat(m[1]) : 0; const ty = m ? parseFloat(m[2]) : 0;
-        g.setAttribute('transform', `translate(${tx},${ty}) scale(${sx})`);
+      g.addEventListener('dblclick', ()=> {
+        // focus the label for editing
+        const lab = g.querySelector('.label-box');
+        lab.focus();
+      });
+      g.addEventListener('contextmenu', (ev)=>{
+        ev.preventDefault();
+        if(confirm('Apagar este item?')) { g.remove(); updateLegendFromCanvas(); }
+      });
+      // when label changes, update data-name and legend
+      g.querySelector('.label-box').addEventListener('input', ()=>{
+        g.dataset.name = g.querySelector('.label-box').innerText.trim();
+        updateLegendFromCanvas();
       });
 
-      placed.appendChild(g); selectElement(g); updateLegendFromCanvas();
+      placed.appendChild(g);
+      selectElement(g);
+      updateLegendFromCanvas();
     }
 
-    // drag logic (touch/mouse)
+    // allow dropping where clicked
+    document.getElementById('canvas').addEventListener('dblclick', (ev)=>{
+      // compute svg coords
+      const pt = svg.createSVGPoint(); pt.x = ev.offsetX; pt.y = ev.offsetY;
+      const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+      // if a palette symbol is selected (by clicking), insert last used; else do nothing
+    });
+
+    // drag logic
     let dragTarget = null; let dragOffset = {x:0,y:0};
     function startDrag(e){
       e.preventDefault();
       dragTarget = e.currentTarget;
-      dragTarget.setPointerCapture(e.pointerId);
       const ctm = svg.getScreenCTM();
       const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
       const loc = p.matrixTransform(ctm.inverse());
-      const tr = dragTarget.getAttribute('transform') || 'translate(0,0) scale(1)';
-      const m = /translate\(([-0-9.]+),?\s*([-0-9.]+)\) scale\(([-0-9.]+)\)/.exec(tr);
-      let cx = m ? parseFloat(m[1]) : 0; let cy = m ? parseFloat(m[2]) : 0;
-      dragOffset.x = loc.x - cx; dragOffset.y = loc.y - cy;
+      // get current translate
+      const tr = dragTarget.getAttribute('transform') || 'translate(0,0)';
+      const m = /translate\(([-0-9.]+),?\s*([-0-9.]+)\)/.exec(tr);
+      let cx = m ? parseFloat(m[1]) : 0;
+      let cy = m ? parseFloat(m[2]) : 0;
+      dragOffset.x = loc.x - cx;
+      dragOffset.y = loc.y - cy;
       dragTarget.classList.add('dragging');
+      selectElement(dragTarget);
 
       window.addEventListener('pointermove', onDrag);
       window.addEventListener('pointerup', endDrag, {once:true});
-      selectElement(dragTarget);
     }
     function onDrag(e){
       if(!dragTarget) return;
-      const ctm = svg.getScreenCTM(); const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+      const ctm = svg.getScreenCTM();
+      const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
       const loc = p.matrixTransform(ctm.inverse());
-      const nx = loc.x - dragOffset.x; const ny = loc.y - dragOffset.y;
-      // keep transform scale if present
-      const tr = dragTarget.getAttribute('transform');
-      const m = /scale\(([-0-9.]+)\)/.exec(tr);
-      const sc = m ? parseFloat(m[1]) : 1;
-      dragTarget.setAttribute('transform', `translate(${nx},${ny}) scale(${sc})`);
+      const nx = loc.x - dragOffset.x;
+      const ny = loc.y - dragOffset.y;
+      dragTarget.setAttribute('transform',`translate(${nx},${ny})`);
     }
-    function endDrag(){ if(dragTarget) dragTarget.classList.remove('dragging'); dragTarget=null; updateLegendFromCanvas(); window.removeEventListener('pointermove', onDrag); }
+    function endDrag(){
+      if(dragTarget) dragTarget.classList.remove('dragging');
+      dragTarget = null;
+      updateLegendFromCanvas();
+      window.removeEventListener('pointermove', onDrag);
+    }
 
-    function selectElement(el){ [...placed.children].forEach(ch=> ch.querySelector('.label-box')?.style.borderColor = '#ddd'); selected = el; if(!el){ document.getElementById('selName').value=''; return; } const name = el.dataset.name || el.getAttribute('data-name') || el.dataset.sym; document.getElementById('selName').value = name; el.querySelector('.label-box').style.borderColor = 'rgba(31,111,235,.6)'; }
-    document.getElementById('selName').addEventListener('input', ()=>{ if(!selected) return; const v=document.getElementById('selName').value.trim(); selected.dataset.name=v; selected.querySelector('.label-box').innerText=v; updateLegendFromCanvas(); });
+    function selectElement(el){
+      // clear previous
+      [...placed.children].forEach(ch=> ch.querySelector('.label-box')?.style.borderColor = '#ddd');
+      selected = el;
+      if(!el) { document.getElementById('selName').value = ''; return; }
+      const name = el.dataset.name || el.getAttribute('data-name') || el.dataset.sym;
+      document.getElementById('selName').value = name;
+      // highlight
+      el.querySelector('.label-box').style.borderColor = 'rgba(31,111,235,.6)';
+    }
 
-    document.getElementById('addTextBtn').addEventListener('click', ()=>{ const t=document.getElementById('addTextVal').value.trim(); if(!t){ alert('Digite um texto para a caixa'); return; } counter++; const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.classList.add('placed'); g.setAttribute('transform','translate(220,120) scale(1)'); g.setAttribute('data-id','elem_'+counter); g.setAttribute('data-sym','text'); g.setAttribute('data-name',t); const fo=document.createElementNS('http://www.w3.org/2000/svg','foreignObject'); fo.setAttribute('width',300); fo.setAttribute('height',60); fo.innerHTML=`<div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" class="label-box" style="min-width:60px;min-height:20px">${t}</div>`; g.appendChild(fo); g.addEventListener('pointerdown', startDrag); g.addEventListener('contextmenu',(ev)=>{ev.preventDefault(); if(confirm('Apagar este item?')){ g.remove(); updateLegendFromCanvas(); }}); g.querySelector('.label-box').addEventListener('input', ()=>{ g.dataset.name=g.querySelector('.label-box').innerText.trim(); updateLegendFromCanvas(); }); placed.appendChild(g); selectElement(g); updateLegendFromCanvas(); });
-
-    document.getElementById('addNoteBtn').addEventListener('click', ()=>{ const t=document.getElementById('addTextVal').value.trim()||'Nota'; insertSymbol('impact',300,200); const last=placed.lastChild; last.querySelector('.label-box').innerText=t; last.dataset.name=t; updateLegendFromCanvas(); });
-
-    // legend extraction
-    function updateLegendFromCanvas(){ const list={}; [...placed.children].forEach(ch=>{ const sym=ch.dataset.sym||'item'; const name=(ch.dataset.name||ch.getAttribute('data-name')||sym).trim(); if(!name) return; if(!list[name]) list[name]={sym:sym,count:0}; list[name].count++; }); renderLegend(list); }
-    function renderLegend(list){ const cont=document.getElementById('legendList'); cont.innerHTML=''; Object.keys(list).forEach(name=>{ const row=document.createElement('div'); row.className='legend-item'; const color=document.createElement('div'); color.className='legend-color'; color.style.background='#eee'; const title=document.createElement('div'); title.innerHTML=`<strong>${name}</strong><div style="font-size:12px;color:#666">${list[name].sym} • ${list[name].count}x</div>`; row.appendChild(color); row.appendChild(title); cont.appendChild(row); }); }
-
-    document.getElementById('addLegendBtn').addEventListener('click', ()=>{ updateLegendFromCanvas(); alert('Legenda atualizada'); });
-    document.getElementById('clearLegendBtn').addEventListener('click', ()=>{ document.getElementById('legendList').innerHTML=''; });
-
-    // upload custom SVG
-    document.getElementById('uploadBtn').addEventListener('click', ()=>{
-      const f = document.getElementById('svgFile').files[0]; const name = document.getElementById('svgName').value.trim();
-      if(!f){ alert('Selecione um arquivo SVG para importar'); return; }
-      if(!name){ alert('Defina um nome para este símbolo'); return; }
-      const reader = new FileReader(); reader.onload = (e)=>{
-        const contents = e.target.result;
-        // create new symbol entry
-        const id = 'custom_'+Date.now();
-        SYMBOLS.push({id:id,name:name,svg:contents});
-        buildPalette();
-        alert('Símbolo importado. Clique no símbolo na paleta para inserir.');
-      };
-      reader.readAsText(f);
+    // update name from input
+    document.getElementById('selName').addEventListener('input', ()=>{
+      if(!selected) return;
+      const v = document.getElementById('selName').value.trim();
+      selected.dataset.name = v;
+      const lab = selected.querySelector('.label-box');
+      lab.innerText = v;
+      updateLegendFromCanvas();
     });
 
-    // preview
+    // add text box
+    document.getElementById('addTextBtn').addEventListener('click', ()=>{
+      const t = document.getElementById('addTextVal').value.trim();
+      if(!t) { alert('Digite um texto para a caixa'); return; }
+      counter++;
+      const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+      g.classList.add('placed'); g.setAttribute('transform','translate(220,120)');
+      g.setAttribute('data-id','elem_'+counter); g.setAttribute('data-sym','text'); g.setAttribute('data-name',t);
+      const fo = document.createElementNS('http://www.w3.org/2000/svg','foreignObject'); fo.setAttribute('width',260); fo.setAttribute('height',60);
+      fo.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" class="label-box" style="min-width:60px;min-height:20px">${t}</div>`;
+      g.appendChild(fo);
+      g.addEventListener('pointerdown', startDrag);
+      g.addEventListener('contextmenu', (ev)=>{ ev.preventDefault(); if(confirm('Apagar este item?')) { g.remove(); updateLegendFromCanvas(); } });
+      g.querySelector('.label-box').addEventListener('input', ()=>{ g.dataset.name = g.querySelector('.label-box').innerText.trim(); updateLegendFromCanvas(); });
+      placed.appendChild(g); selectElement(g); updateLegendFromCanvas();
+    });
+
+    document.getElementById('addNoteBtn').addEventListener('click', ()=>{
+      const t = document.getElementById('addTextVal').value.trim() || 'nota';
+      insertSymbol('impact', 300, 200);
+      // then add a small label
+      const last = placed.lastChild;
+      last.querySelector('.label-box').innerText = t;
+      last.dataset.name = t;
+      updateLegendFromCanvas();
+    });
+
+    // legend logic: extract unique names and symbols from canvas
+    function updateLegendFromCanvas(){
+      const list = {};
+      [...placed.children].forEach(ch=>{
+        const sym = ch.dataset.sym || 'item';
+        const name = (ch.dataset.name || ch.getAttribute('data-name') || sym).trim();
+        if(!name) return;
+        if(!list[name]) list[name] = {sym:sym,count:0};
+        list[name].count++;
+      });
+      renderLegend(list);
+    }
+    function renderLegend(list){
+      const cont = document.getElementById('legendList'); cont.innerHTML='';
+      Object.keys(list).forEach(name=>{
+        const row = document.createElement('div'); row.className='legend-item';
+        const color = document.createElement('div'); color.className='legend-color'; color.style.background='#eee';
+        const title = document.createElement('div'); title.innerHTML = `<strong>${name}</strong><div style="font-size:12px;color:#666">${list[name].sym} • ${list[name].count}x</div>`;
+        row.appendChild(color); row.appendChild(title);
+        cont.appendChild(row);
+      });
+    }
+
+    document.getElementById('addLegendBtn').addEventListener('click', ()=>{
+      // simply ensures legend is up to date (already is)
+      updateLegendFromCanvas();
+      alert('Legenda atualizada (veja painel esquerdo)');
+    });
+    document.getElementById('clearLegendBtn').addEventListener('click', ()=>{
+      document.getElementById('legendList').innerHTML='';
+    });
+
+    // preview/export
     document.getElementById('previewBtn').addEventListener('click', ()=>{
-      const svgHtml = svg.outerHTML; const legendHtml = document.getElementById('legendList').outerHTML;
-      const html = `<!doctype html><html><head><meta charset="utf-8"><title>Preview - Diagrama</title><style>body{font-family:Arial;padding:10px} .wrap{display:flex;gap:20px} .card{border:1px solid #ddd;padding:10px}</style></head><body><h2>Preview do Diagrama</h2><div class="wrap"><div class="card">${svgHtml}</div><div class="card"><h3>Legenda</h3>${legendHtml}</div></div></body></html>`;
+      const svgHtml = svg.outerHTML;
+      const legendHtml = document.getElementById('legendList').outerHTML;
+      const html = `<!doctype html><html><head><meta charset="utf-8"><title>Preview - Diagrama</title><style>body{font-family:Arial;padding:10px} .wrap{display:flex;gap:20px} .card{border:1px solid #ddd;padding:10px}</style></head><body><h2>Preview do Diagrama</h2><div class="wrap"><div class="card">${svgHtml}</div><div class="card"><h3>Legenda</h3>${legendHtml}</div></div>  <!-- Added full symbol library as inline SVG buttons -->
+  <script>
+    // Symbol definitions (SVG strings)
+    const symbols = [
+      { name: "Veículo marcha à frente", svg: `<svg width='60' height='30'><polygon points='5,5 45,5 55,15 45,25 5,25' stroke='black' fill='none'/></svg>` },
+      { name: "Veículo marcha à ré", svg: `<svg width='60' height='30'><polygon points='15,5 55,5 55,25 15,25 5,15' stroke='black' fill='none'/></svg>` },
+      { name: "Seta sentido movimento", svg: `<svg width='60' height='20'><line x1='5' y1='10' x2='50' y2='10' stroke='black' stroke-width='2'/><polygon points='50,5 60,10 50,15'/></svg>` },
+      { name: "Pedestre em movimento", svg: `<svg width='30' height='30'><circle cx='15' cy='15' r='10' stroke='black' fill='none'/><line x1='25' y1='15' x2='35' y2='15' stroke='black'/></svg>` },
+      { name: "Pedestre parado", svg: `<svg width='30' height='30'><circle cx='15' cy='15' r='10' stroke='black' fill='none'/></svg>` },
+      { name: "Obstáculo sinalização", svg: `<svg width='30' height='30'><rect x='5' y='5' width='20' height='20' stroke='black' fill='none'/></svg>` },
+      { name: "Sinal semafórico", svg: `<svg width='30' height='60'><rect x='5' y='5' width='20' height='50' stroke='black' fill='none'/><line x1='5' y1='20' x2='25' y2='20' stroke='black'/><line x1='5' y1='35' x2='25' y2='35' stroke='black'/><line x1='5' y1='50' x2='25' y2='50' stroke='black'/></svg>` }
+    ];
+
+    const toolbar = document.getElementById("toolbar");
+
+    symbols.forEach(sym => {
+      const btn = document.createElement("button");
+      btn.innerHTML = sym.svg + `<br><span style='font-size:12px'>${sym.name}</span>`;
+      btn.onclick = () => addSymbol(sym.svg);
+      toolbar.appendChild(btn);
+    });
+
+    function addSymbol(svgMarkup) {
+      const el = document.createElement('div');
+      el.className = 'symbol';
+      el.innerHTML = svgMarkup;
+      el.style.top = '50px';
+      el.style.left = '50px';
+      makeInteractive(el);
+      document.getElementById('canvas').appendChild(el);
+    }
+
+    function makeInteractive(el) {
+      el.onpointerdown = e => {
+        el.setPointerCapture(e.pointerId);
+        const startX = e.clientX - el.offsetLeft;
+        const startY = e.clientY - el.offsetTop;
+
+        el.onpointermove = ev => {
+          el.style.left = ev.clientX - startX + 'px';
+          el.style.top = ev.clientY - startY + 'px';
+        };
+
+        el.onpointerup = () => {
+          el.onpointermove = null;
+        };
+      };
+    }
+  </script>
+
+</body></html>`;
       const w = window.open(); w.document.write(html); w.document.close();
     });
 
-    // export PNG
-    document.getElementById('exportBtn').addEventListener('click', ()=>{
-      const serializer = new XMLSerializer(); cons
+    // export PNG (rasterize SVG)
+    document.getElementById('exportBtn').addEventListener('click', async ()=>{
+      const serializer = new XMLSerializer();
+      const svgStr = serializer.serializeToString(svg);
+      const blob = new Blob([svgStr], {type:'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      img.onload = ()=>{
+        const canvasEl = document.createElement('canvas'); canvasEl.width = img.width; canvasEl.height = img.height;
+        const ctx = canvasEl.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvasEl.width,canvasEl.height); ctx.drawImage(img,0,0);
+        URL.revokeObjectURL(url);
+        const png = canvasEl.toDataURL('image/png');
+        const a = document.createElement('a'); a.href = png; a.download = 'diagrama.png'; a.click();
+      };
+      img.src = url;
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      if(!confirm('Remover todos os itens do diagrama?')) return; placed.innerHTML=''; updateLegendFromCanvas();
+    });
+
+    // basic selection by clicking on canvas element
+    svg.addEventListener('pointerdown', (ev)=>{
+      // if clicking empty area, clear selection
+      if(ev.target === svg || ev.target === placed || ev.target === document.getElementById('defs')){ selectElement(null); }
+    });
+
+    // initialize with a couple of symbols for example
+    insertSymbol('car', 120, 140);
+    insertSymbol('truck', 300, 140);
+    insertSymbol('arrow', 220, 180);
+
+  </script>
+</body>
+</html>
