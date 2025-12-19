@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -53,18 +52,15 @@ input {
 }
 
 button {
-    width: 28px;
-    height: 28px;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 6px;
+    font-size: 15px;
     color: #fff;
-    background: #007bff;
+    padding: 6px 10px;
 }
 
-.menos {
-    background: #dc3545;
-}
+.add { background: #007bff; }
+.menos { background: #dc3545; }
 
 .contador {
     min-width: 22px;
@@ -77,10 +73,15 @@ button {
     padding: 12px;
     font-size: 16px;
     background: #25d366;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    margin-top: 15px;
+    margin-top: 10px;
+}
+
+.encerrar {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: #6c757d;
+    margin-top: 10px;
 }
 </style>
 </head>
@@ -98,156 +99,140 @@ button {
 <div id="lista"></div>
 
 <button class="whats" onclick="enviarWhats()">Enviar para WhatsApp</button>
+<button class="encerrar" onclick="encerrarTurno()">Encerrar Turno</button>
 
 <script>
-// ================= LISTA FIXA =================
+// ================= ITENS =================
 const itensFixos = [
-    "AP fiscalizado",
-    "CA fiscalizado",
-    "OA fiscalizado",
-    "MO fiscalizado",
-    "BOATRv",
-    "BOPM",
-    "Liberação ARD",
-    "AI AP",
-    "AI CA",
-    "AI OA",
-    "AI MO",
-    "CRLV Recolhido AP",
-    "CRLV Recolhido CA",
-    "CRLV Recolhido OA",
-    "CRLV Recolhido MO",
-    "CNH Recolhido AP",
-    "CNH Recolhido CA",
-    "CNH Recolhido OA",
-    "CNH Recolhido MO",
-    "Busca Pessoal",
-    "Informações",
-    "SOS",
-    "AI RTPP"
+    "AP fiscalizado","CA fiscalizado","OA fiscalizado","MO fiscalizado",
+    "BOATRv","BOPM","Liberação ARD",
+    "AI AP","AI CA","AI OA","AI MO",
+    "CRLV Recolhido AP","CRLV Recolhido CA","CRLV Recolhido OA","CRLV Recolhido MO",
+    "CNH Recolhido AP","CNH Recolhido CA","CNH Recolhido OA","CNH Recolhido MO",
+    "Busca Pessoal","Informações","SOS","AI RTPP"
 ];
 
-// ================= CRIA LISTA =================
 const lista = document.getElementById("lista");
 let itens = [];
 
-// fixa
-itensFixos.forEach((nome, i) => {
-    itens.push({ id: "fixo" + i, nome, editavel: false });
-});
-
-// 20 linhas em branco
-for (let i = 1; i <= 20; i++) {
-    itens.push({ id: "livre" + i, nome: "", editavel: true });
-}
+// fixos
+itensFixos.forEach((n,i)=>itens.push({id:"f"+i,nome:n,edit:false}));
+// 20 livres
+for(let i=1;i<=20;i++) itens.push({id:"l"+i,nome:"",edit:true});
 
 // ================= RENDER =================
-itens.forEach(it => {
+itens.forEach(it=>{
     lista.innerHTML += `
     <div class="item">
-        ${it.editavel
-            ? `<input placeholder="Escreva o artigo" id="nome_${it.id}">`
-            : `<div class="titulo">${it.nome}</div>`
-        }
+        ${it.edit
+            ? `<input id="nome_${it.id}" placeholder="Escreva o artigo">`
+            : `<div class="titulo">${it.nome}</div>`}
 
-        ${linha("Encarregado", "e", it.id)}
-        ${linha("Motorista", "m", it.id)}
-        ${linha("Auxiliar", "a", it.id)}
+        ${linha("Encarregado","e",it.id)}
+        ${linha("Motorista","m",it.id)}
+        ${linha("Auxiliar","a",it.id)}
     </div>`;
 });
 
-function linha(label, prefixo, id) {
+function linha(t,p,id){
     return `
     <div class="linha">
-        <span>${label}</span>
+        <span>${t}</span>
         <div class="ctrl">
-            <button class="menos" onclick="alterar('${prefixo}${id}',-1)">-</button>
-            <span id="${prefixo}${id}" class="contador">0</span>
-            <button onclick="alterar('${prefixo}${id}',1)">+</button>
+            <button class="menos" onclick="alterar('${p}${id}',-1)">-</button>
+            <span id="${p}${id}" class="contador">0</span>
+            <button class="add" onclick="alterar('${p}${id}',1)">+</button>
         </div>
     </div>`;
 }
 
 // ================= SALVAR =================
-function salvar() {
-    const dados = {
-        encarregado: encarregado.value,
-        motorista: motorista.value,
-        auxiliar: auxiliar.value,
-        nomes: {},
-        contadores: {}
-    };
-
-    itens.forEach(it => {
-        if (it.editavel) {
-            dados.nomes[it.id] = document.getElementById("nome_" + it.id).value;
-        }
-        ["e","m","a"].forEach(p => {
-            dados.contadores[p + it.id] =
-                document.getElementById(p + it.id).innerText;
+function salvar(){
+    const d={enc:encarregado.value,mot:motorista.value,aux:auxiliar.value,n:{},c:{}};
+    itens.forEach(it=>{
+        if(it.edit) d.n[it.id]=document.getElementById("nome_"+it.id).value;
+        ["e","m","a"].forEach(p=>{
+            d.c[p+it.id]=document.getElementById(p+it.id).innerText;
         });
     });
-
-    localStorage.setItem("controleFiscalizacao", JSON.stringify(dados));
+    localStorage.setItem("controleFiscalizacao",JSON.stringify(d));
 }
 
-function carregar() {
-    const dados = JSON.parse(localStorage.getItem("controleFiscalizacao"));
-    if (!dados) return;
+function carregar(){
+    const d=JSON.parse(localStorage.getItem("controleFiscalizacao"));
+    if(!d) return;
+    encarregado.value=d.enc;
+    motorista.value=d.mot;
+    auxiliar.value=d.aux;
 
-    encarregado.value = dados.encarregado;
-    motorista.value = dados.motorista;
-    auxiliar.value = dados.auxiliar;
-
-    for (let k in dados.nomes) {
-        const el = document.getElementById("nome_" + k);
-        if (el) el.value = dados.nomes[k];
+    for(let k in d.n){
+        let e=document.getElementById("nome_"+k);
+        if(e)e.value=d.n[k];
     }
-
-    for (let k in dados.contadores) {
-        const el = document.getElementById(k);
-        if (el) el.innerText = dados.contadores[k];
+    for(let k in d.c){
+        let e=document.getElementById(k);
+        if(e)e.innerText=d.c[k];
     }
 }
 
-function alterar(id, v) {
-    const el = document.getElementById(id);
-    let n = parseInt(el.innerText) + v;
-    if (n < 0) n = 0;
-    el.innerText = n;
+function alterar(id,v){
+    const el=document.getElementById(id);
+    let n=parseInt(el.innerText)+v;
+    if(n<0)n=0;
+    el.innerText=n;
     salvar();
 }
 
-encarregado.addEventListener("input", salvar);
-motorista.addEventListener("input", salvar);
-auxiliar.addEventListener("input", salvar);
-window.onload = carregar;
+["encarregado","motorista","auxiliar"].forEach(i=>{
+    document.getElementById(i).addEventListener("input",salvar);
+});
+
+window.onload=carregar;
 
 // ================= WHATSAPP =================
-function enviarWhats() {
-    let texto = `📋 *Fiscalização*\n\n`;
-    texto += `👷 Encarregado: *${encarregado.value || "-"}*\n`;
-    texto += `🚚 Motorista: *${motorista.value || "-"}*\n`;
-    texto += `👥 Auxiliar: *${auxiliar.value || "-"}*\n\n`;
+function enviarWhats(){
+    let texto=`📋 *Fiscalização*\n\n`;
+    texto+=`👷 Encarregado: *${encarregado.value||"-"}*\n`;
+    texto+=`🚚 Motorista: *${motorista.value||"-"}*\n`;
+    texto+=`👥 Auxiliar: *${auxiliar.value||"-"}*\n\n`;
 
-    itens.forEach(it => {
-        let nome = it.editavel
-            ? document.getElementById("nome_" + it.id).value
-            : it.nome;
+    let temAlgo=false;
 
-        if (!nome) return;
+    itens.forEach(it=>{
+        let nome=it.edit ? document.getElementById("nome_"+it.id).value : it.nome;
+        if(!nome) return;
 
-        texto += `*${nome}*\n`;
-        texto += `- Encarregado: ${document.getElementById("e" + it.id).innerText}\n`;
-        texto += `- Motorista: ${document.getElementById("m" + it.id).innerText}\n`;
-        texto += `- Auxiliar: ${document.getElementById("a" + it.id).innerText}\n\n`;
+        let e=+document.getElementById("e"+it.id).innerText;
+        let m=+document.getElementById("m"+it.id).innerText;
+        let a=+document.getElementById("a"+it.id).innerText;
+
+        if(e+m+a===0) return;
+
+        temAlgo=true;
+        texto+=`*${nome}*\n`;
+        if(e>0) texto+=`- Encarregado: ${e}\n`;
+        if(m>0) texto+=`- Motorista: ${m}\n`;
+        if(a>0) texto+=`- Auxiliar: ${a}\n`;
+        texto+="\n";
     });
 
-    window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank");
+    if(!temAlgo){
+        alert("Nenhum registro para enviar.");
+        return;
+    }
+
+    window.open("https://wa.me/?text="+encodeURIComponent(texto),"_blank");
+}
+
+// ================= ENCERRAR TURNO =================
+function encerrarTurno(){
+    if(!confirm("Encerrar turno e zerar todos os dados?")) return;
+    localStorage.removeItem("controleFiscalizacao");
+    location.reload();
 }
 
 // ================= PWA =================
-if ("serviceWorker" in navigator) {
+if("serviceWorker" in navigator){
     navigator.serviceWorker.register("service-worker.js");
 }
 </script>
