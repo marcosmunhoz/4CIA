@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle de Fiscalização</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    padding: 10px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.box, .item {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.titulo {
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.ctrl {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #fff;
+    background: #007bff;
+}
+
+.menos {
+    background: #dc3545;
+}
+
+.contador {
+    min-width: 22px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.whats {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: #25d366;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Controle de Fiscalização</h2>
+
+<div class="box">
+    <input id="encarregado" placeholder="Nome do Encarregado">
+    <input id="motorista" placeholder="Nome do Motorista">
+    <input id="auxiliar" placeholder="Nome do Auxiliar">
+</div>
+
+<div id="lista"></div>
+
+<button class="whats" onclick="enviarWhats()">Enviar para WhatsApp</button>
+
+<script>
+// ================= LISTA FIXA =================
+const itensFixos = [
+    "AP fiscalizado",
+    "CA fiscalizado",
+    "OA fiscalizado",
+    "MO fiscalizado",
+    "BOATRv",
+    "BOPM",
+    "Liberação ARD",
+    "AI AP",
+    "AI CA",
+    "AI OA",
+    "AI MO",
+    "CRLV Recolhido AP",
+    "CRLV Recolhido CA",
+    "CRLV Recolhido OA",
+    "CRLV Recolhido MO",
+    "CNH Recolhido AP",
+    "CNH Recolhido CA",
+    "CNH Recolhido OA",
+    "CNH Recolhido MO",
+    "Busca Pessoal",
+    "Informações",
+    "SOS",
+    "AI RTPP"
+];
+
+// ================= CRIA LISTA =================
+const lista = document.getElementById("lista");
+let itens = [];
+
+// fixa
+itensFixos.forEach((nome, i) => {
+    itens.push({ id: "fixo" + i, nome, editavel: false });
+});
+
+// 20 linhas em branco
+for (let i = 1; i <= 20; i++) {
+    itens.push({ id: "livre" + i, nome: "", editavel: true });
+}
+
+// ================= RENDER =================
+itens.forEach(it => {
+    lista.innerHTML += `
+    <div class="item">
+        ${it.editavel
+            ? `<input placeholder="Escreva o artigo" id="nome_${it.id}">`
+            : `<div class="titulo">${it.nome}</div>`
+        }
+
+        ${linha("Encarregado", "e", it.id)}
+        ${linha("Motorista", "m", it.id)}
+        ${linha("Auxiliar", "a", it.id)}
+    </div>`;
+});
+
+function linha(label, prefixo, id) {
+    return `
+    <div class="linha">
+        <span>${label}</span>
+        <div class="ctrl">
+            <button class="menos" onclick="alterar('${prefixo}${id}',-1)">-</button>
+            <span id="${prefixo}${id}" class="contador">0</span>
+            <button onclick="alterar('${prefixo}${id}',1)">+</button>
+        </div>
+    </div>`;
+}
+
+// ================= SALVAR =================
+function salvar() {
+    const dados = {
+        encarregado: encarregado.value,
+        motorista: motorista.value,
+        auxiliar: auxiliar.value,
+        nomes: {},
+        contadores: {}
+    };
+
+    itens.forEach(it => {
+        if (it.editavel) {
+            dados.nomes[it.id] = document.getElementById("nome_" + it.id).value;
+        }
+        ["e","m","a"].forEach(p => {
+            dados.contadores[p + it.id] =
+                document.getElementById(p + it.id).innerText;
+        });
+    });
+
+    localStorage.setItem("controleFiscalizacao", JSON.stringify(dados));
+}
+
+function carregar() {
+    const dados = JSON.parse(localStorage.getItem("controleFiscalizacao"));
+    if (!dados) return;
+
+    encarregado.value = dados.encarregado;
+    motorista.value = dados.motorista;
+    auxiliar.value = dados.auxiliar;
+
+    for (let k in dados.nomes) {
+        const el = document.getElementById("nome_" + k);
+        if (el) el.value = dados.nomes[k];
+    }
+
+    for (let k in dados.contadores) {
+        const el = document.getElementById(k);
+        if (el) el.innerText = dados.contadores[k];
+    }
+}
+
+function alterar(id, v) {
+    const el = document.getElementById(id);
+    let n = parseInt(el.innerText) + v;
+    if (n < 0) n = 0;
+    el.innerText = n;
+    salvar();
+}
+
+encarregado.addEventListener("input", salvar);
+motorista.addEventListener("input", salvar);
+auxiliar.addEventListener("input", salvar);
+window.onload = carregar;
+
+// ================= WHATSAPP =================
+function enviarWhats() {
+    let texto = `📋 *Fiscalização*\n\n`;
+    texto += `👷 Encarregado: *${encarregado.value || "-"}*\n`;
+    texto += `🚚 Motorista: *${motorista.value || "-"}*\n`;
+    texto += `👥 Auxiliar: *${auxiliar.value || "-"}*\n\n`;
+
+    itens.forEach(it => {
+        let nome = it.editavel
+            ? document.getElementById("nome_" + it.id).value
+            : it.nome;
+
+        if (!nome) return;
+
+        texto += `*${nome}*\n`;
+        texto += `- Encarregado: ${document.getElementById("e" + it.id).innerText}\n`;
+        texto += `- Motorista: ${document.getElementById("m" + it.id).innerText}\n`;
+        texto += `- Auxiliar: ${document.getElementById("a" + it.id).innerText}\n\n`;
+    });
+
+    window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank");
+}
+
+// ================= PWA =================
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>
