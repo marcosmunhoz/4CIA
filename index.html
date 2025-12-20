@@ -15,16 +15,12 @@
       overflow-x: hidden;
       color: white;
       background-color: #000;
-      touch-action: manipulation;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
     }
 
     nav {
       display: flex;
       align-items: center;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.3);
       padding: 8px 20px;
       user-select: none;
       z-index: 1000;
@@ -38,7 +34,7 @@
     }
 
     nav.scrolled {
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0, 0, 0, 0.8);
       box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
@@ -63,7 +59,7 @@
       margin: 0;
       padding: 0 0 0 20px;
       display: flex;
-      gap: 20px;
+      gap: 30px;
       flex-wrap: nowrap;
     }
 
@@ -98,7 +94,7 @@
       margin: 0;
       padding: 5px 0;
       display: none;
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0, 0, 0, 0.8);
       border-radius: 3px;
       position: absolute;
       left: 50%;
@@ -142,7 +138,16 @@
       body.menu-open { overflow: hidden; height: 100%; }
     }
 
-    /* Vídeo de fundo */
+    /* Mantive sua definição global */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    /* ---------- VÍDEO DE FUNDO CORRIGIDO ---------- */
     #background-video {
       position: fixed;
       inset: 0;
@@ -154,48 +159,23 @@
       background-color: #000;
     }
 
-    /* Menu circular principal - TAMANHO AUMENTADO */
+    /* Menu circular principal - AUMENTADO */
     .menu-circle {
       position: fixed;
       top: 50%;
       left: 50%;
-      width: 90vmin; /* Aumentado de 500px para 90% da tela menor */
-      height: 90vmin;
-      min-width: 320px;
-      min-height: 320px;
-      max-width: 600px;
-      max-height: 600px;
+      width: 650px; /* Aumentado de 500px */
+      height: 650px; /* Aumentado de 500px */
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.7);
       display: flex;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
       transition: all 0.3s ease;
       z-index: 100;
-      border: 3px solid rgba(135, 206, 235, 0.3);
-      box-shadow: 0 0 30px rgba(0, 100, 200, 0.5);
-      touch-action: none;
-    }
-
-    /* Círculo central para rotação */
-    .menu-center {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      background: rgba(135, 206, 235, 0.2);
-      border-radius: 50%;
-      z-index: 102;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: center;
-      cursor: pointer;
-      border: 2px solid rgba(135, 206, 235, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
     .menu-item {
@@ -204,69 +184,60 @@
       align-items: center;
       justify-content: center;
       position: absolute;
-      width: 120px; /* Aumentado */
-      height: 120px; /* Aumentado */
-      background: rgba(135, 206, 235, 0.25);
+      width: 130px; /* Aumentado de 100px */
+      height: 130px; /* Aumentado de 100px */
+      background: rgba(255, 255, 255, 0.25);
       color: white;
       border-radius: 50%;
       text-align: center;
-      font-size: 16px; /* Aumentado */
+      font-size: 14px;
       cursor: pointer;
       transition: all 0.3s ease;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      z-index: 101;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    .menu-item:hover, .menu-item.active {
-      background: rgba(135, 206, 235, 0.4);
-      transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(135, 206, 235, 0.5);
-      border-color: #87CEEB;
-    }
-
-    .menu-text { 
-      font-size: 16px; 
-      margin-bottom: 5px; 
-      font-weight: bold; 
-      color: #fff;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-    }
-    
-    .menu-emoji { font-size: 24px; }
+    .menu-text { font-size: 16px; margin-bottom: 5px; font-weight: bold; }
+    .menu-emoji { font-size: 28px; }
 
     .menu-icon { 
-      width: 70px; /* Aumentado */
-      height: 70px; /* Aumentado */
+      width: 75px; /* Aumentado de 60px */
+      height: 75px; /* Aumentado de 60px */
       object-fit: contain; 
-      pointer-events: none;
-      filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+      pointer-events: none; 
+      transition: transform 0.3s ease;
     }
 
-    /* Posições dos itens do menu (agora rotacionáveis) */
-    .menu-item:nth-child(1) { transform: rotate(0deg) translate(calc(45vmin)) rotate(0deg); }
-    .menu-item:nth-child(2) { transform: rotate(45deg) translate(calc(45vmin)) rotate(-45deg); }
-    .menu-item:nth-child(3) { transform: rotate(90deg) translate(calc(45vmin)) rotate(-90deg); }
-    .menu-item:nth-child(4) { transform: rotate(135deg) translate(calc(45vmin)) rotate(-135deg); }
-    .menu-item:nth-child(5) { transform: rotate(180deg) translate(calc(45vmin)) rotate(-180deg); }
-    .menu-item:nth-child(6) { transform: rotate(225deg) translate(calc(45vmin)) rotate(-225deg); }
-    .menu-item:nth-child(7) { transform: rotate(270deg) translate(calc(45vmin)) rotate(-270deg); }
-    .menu-item:nth-child(8) { transform: rotate(315deg) translate(calc(45vmin)) rotate(-315deg); }
+    .menu-item:hover { 
+      background: rgba(255, 255, 255, 0.4); 
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .menu-item:hover .menu-icon {
+      transform: scale(1.1);
+    }
 
-    /* Submenu circular - TAMANHO AUMENTADO */
+    /* Ajustes nas posições para o tamanho maior */
+    .menu-item:nth-child(1) { transform: rotate(0deg) translate(260px) rotate(0deg); }
+    .menu-item:nth-child(2) { transform: rotate(45deg) translate(260px) rotate(-45deg); }
+    .menu-item:nth-child(3) { transform: rotate(90deg) translate(260px) rotate(-90deg); }
+    .menu-item:nth-child(4) { transform: rotate(135deg) translate(260px) rotate(-135deg); }
+    .menu-item:nth-child(5) { transform: rotate(180deg) translate(260px) rotate(-180deg); }
+    .menu-item:nth-child(6) { transform: rotate(225deg) translate(260px) rotate(-225deg); }
+    .menu-item:nth-child(7) { transform: rotate(270deg) translate(260px) rotate(-270deg); }
+    .menu-item:nth-child(8) { transform: rotate(315deg) translate(260px) rotate(-315deg); }
+
+    /* Submenu circular - AUMENTADO */
     .submenu-circle {
       position: fixed;
-      width: 75vmin; /* Aumentado */
-      height: 75vmin;
-      min-width: 280px;
-      min-height: 280px;
-      max-width: 500px;
-      max-height: 500px;
+      width: 520px; /* Aumentado de 400px */
+      height: 520px; /* Aumentado de 400px */
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.7);
       display: none;
       justify-content: center;
       align-items: center;
@@ -274,8 +245,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 101;
-      border: 3px solid rgba(255, 140, 0, 0.3);
-      box-shadow: 0 0 30px rgba(255, 140, 0, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
     .submenu-item {
@@ -283,13 +253,13 @@
       align-items: center;
       justify-content: center;
       position: absolute;
-      width: 100px; /* Aumentado */
-      height: 100px; /* Aumentado */
-      background: rgba(255, 140, 0, 0.3);
+      width: 100px; /* Aumentado de 80px */
+      height: 100px; /* Aumentado de 80px */
+      background: rgba(255, 255, 255, 0.35);
       color: #fff;
       border-radius: 50%;
       text-align: center;
-      font-size: 14px; /* Aumentado */
+      font-size: 13px;
       cursor: pointer;
       white-space: nowrap;
       overflow: hidden;
@@ -298,24 +268,18 @@
       line-height: 1.2;
       user-select: none;
       transition: all 0.3s ease;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     .submenu-icon { 
-      width: 60px; /* Aumentado */
-      height: 60px; /* Aumentado */
+      width: 65px; /* Aumentado de 50px */
+      height: 65px; /* Aumentado de 50px */
       object-fit: contain; 
       margin-bottom: 5px;
-      filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+      transition: transform 0.3s ease;
     }
-    
-    .submenu-text { 
-      font-size: 14px; /* Aumentado */
-      margin-bottom: 2px; 
-      color: #fff;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-    }
+    .submenu-text { font-size: 13px; margin-bottom: 2px; }
 
     .submenu-item a { 
       color: white; 
@@ -327,129 +291,105 @@
       width:100%; 
       height:100%; 
       padding:5px; 
-      border-radius: 50%;
     }
     
-    .submenu-item:hover, .submenu-item.active {
-      background: rgba(255, 140, 0, 0.5);
+    .submenu-item:hover { 
+      background: rgba(255, 255, 255, 0.5); 
       transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(255, 140, 0, 0.5);
-      border-color: #FF8C00;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .submenu-item:hover .submenu-icon {
+      transform: scale(1.1);
     }
 
-    /* Indicação de rotação */
-    .rotation-indicator {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: #87CEEB;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      display: none;
-      z-index: 1000;
-      border: 1px solid #87CEEB;
-      text-align: center;
-      max-width: 90%;
-    }
+    /* Ajustes nas posições para o tamanho maior */
+    .submenu-item:nth-child(1) { transform: rotate(0deg) translate(195px) rotate(0deg); }
+    .submenu-item:nth-child(2) { transform: rotate(72deg) translate(195px) rotate(-72deg); }
+    .submenu-item:nth-child(3) { transform: rotate(144deg) translate(195px) rotate(-144deg); }
+    .submenu-item:nth-child(4) { transform: rotate(216deg) translate(195px) rotate(-216deg); }
+    .submenu-item:nth-child(5) { transform: rotate(288deg) translate(195px) rotate(-288deg); }
 
-    /* Para telas muito pequenas */
     @media only screen and (max-width: 768px) {
-      .menu-circle {
-        width: 95vmin;
-        height: 95vmin;
+      .menu-circle { 
+        width: 420px; /* Aumentado de 320px */
+        height: 420px; /* Aumentado de 320px */
       }
-      
-      .menu-item {
-        width: 100px;
-        height: 100px;
+      .menu-item { 
+        width: 90px; /* Aumentado de 70px */
+        height: 90px; /* Aumentado de 70px */
       }
-      
-      .menu-icon {
-        width: 60px;
-        height: 60px;
+      .menu-icon { 
+        width: 55px; /* Aumentado de 40px */
+        height: 55px; /* Aumentado de 40px */
       }
-      
-      .menu-text {
-        font-size: 14px;
+      .menu-item:nth-child(1) { transform: rotate(0deg) translate(160px) rotate(0deg); }
+      .menu-item:nth-child(2) { transform: rotate(45deg) translate(160px) rotate(-45deg); }
+      .menu-item:nth-child(3) { transform: rotate(90deg) translate(160px) rotate(-90deg); }
+      .menu-item:nth-child(4) { transform: rotate(135deg) translate(160px) rotate(-135deg); }
+      .menu-item:nth-child(5) { transform: rotate(180deg) translate(160px) rotate(-180deg); }
+      .menu-item:nth-child(6) { transform: rotate(225deg) translate(160px) rotate(-225deg); }
+      .menu-item:nth-child(7) { transform: rotate(270deg) translate(160px) rotate(-270deg); }
+      .menu-item:nth-child(8) { transform: rotate(315deg) translate(160px) rotate(-315deg); }
+
+      .submenu-circle { 
+        width: 340px; /* Aumentado de 260px */
+        height: 340px; /* Aumentado de 260px */
       }
-      
-      .submenu-circle {
-        width: 80vmin;
-        height: 80vmin;
+      .submenu-item { 
+        width: 80px; /* Aumentado de 60px */
+        height: 80px; /* Aumentado de 60px */
       }
-      
-      .submenu-item {
-        width: 85px;
-        height: 85px;
+      .submenu-icon { 
+        width: 50px; /* Aumentado de 35px */
+        height: 50px; /* Aumentado de 35px */
       }
-      
-      .submenu-icon {
-        width: 50px;
-        height: 50px;
-      }
-      
-      .rotation-indicator {
-        display: block;
-        top: 80px;
-      }
+      .submenu-item:nth-child(1) { transform: rotate(0deg) translate(130px) rotate(0deg); }
+      .submenu-item:nth-child(2) { transform: rotate(72deg) translate(130px) rotate(-72deg); }
+      .submenu-item:nth-child(3) { transform: rotate(144deg) translate(130px) rotate(-144deg); }
+      .submenu-item:nth-child(4) { transform: rotate(216deg) translate(130px) rotate(-216deg); }
+      .submenu-item:nth-child(5) { transform: rotate(288deg) translate(130px) rotate(-288deg); }
     }
 
     @media only screen and (max-width: 480px) {
-      .menu-circle {
-        width: 98vmin;
-        height: 98vmin;
+      .menu-circle { 
+        width: 360px; /* Aumentado de 280px */
+        height: 360px; /* Aumentado de 280px */
       }
-      
-      .menu-item {
-        width: 90px;
-        height: 90px;
+      .menu-item { 
+        width: 75px; /* Aumentado de 60px */
+        height: 75px; /* Aumentado de 60px */
       }
-      
-      .menu-icon {
-        width: 50px;
-        height: 50px;
+      .menu-icon { 
+        width: 45px; /* Aumentado de 35px */
+        height: 45px; /* Aumentado de 35px */
       }
-      
-      .submenu-circle {
-        width: 85vmin;
-        height: 85vmin;
-      }
-      
-      .submenu-item {
-        width: 75px;
-        height: 75px;
-      }
-      
-      .submenu-icon {
-        width: 45px;
-        height: 45px;
-      }
-      
-      .rotation-indicator {
-        font-size: 12px;
-        padding: 8px 15px;
-      }
-    }
+      .menu-item:nth-child(1) { transform: rotate(0deg) translate(140px) rotate(0deg); }
+      .menu-item:nth-child(2) { transform: rotate(45deg) translate(140px) rotate(-45deg); }
+      .menu-item:nth-child(3) { transform: rotate(90deg) translate(140px) rotate(-90deg); }
+      .menu-item:nth-child(4) { transform: rotate(135deg) translate(140px) rotate(-135deg); }
+      .menu-item:nth-child(5) { transform: rotate(180deg) translate(140px) rotate(-180deg); }
+      .menu-item:nth-child(6) { transform: rotate(225deg) translate(140px) rotate(-225deg); }
+      .menu-item:nth-child(7) { transform: rotate(270deg) translate(140px) rotate(-270deg); }
+      .menu-item:nth-child(8) { transform: rotate(315deg) translate(140px) rotate(-315deg); }
 
-    /* Efeito de seleção */
-    .selection-highlight {
-      position: absolute;
-      width: 130px;
-      height: 130px;
-      border: 3px solid #FFD700;
-      border-radius: 50%;
-      z-index: 99;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      box-shadow: 0 0 20px #FFD700;
-    }
-    
-    .selection-highlight.active {
-      opacity: 1;
+      .submenu-circle { 
+        width: 280px; /* Aumentado de 220px */
+        height: 280px; /* Aumentado de 220px */
+      }
+      .submenu-item { 
+        width: 65px; /* Aumentado de 50px */
+        height: 65px; /* Aumentado de 50px */
+      }
+      .submenu-icon { 
+        width: 40px; /* Aumentado de 30px */
+        height: 40px; /* Aumentado de 30px */
+      }
+      .submenu-item:nth-child(1) { transform: rotate(0deg) translate(110px) rotate(0deg); }
+      .submenu-item:nth-child(2) { transform: rotate(72deg) translate(110px) rotate(-72deg); }
+      .submenu-item:nth-child(3) { transform: rotate(144deg) translate(110px) rotate(-144deg); }
+      .submenu-item:nth-child(4) { transform: rotate(216deg) translate(110px) rotate(-216deg); }
+      .submenu-item:nth-child(5) { transform: rotate(288deg) translate(110px) rotate(-288deg); }
     }
   </style>
 </head>
@@ -475,13 +415,19 @@
           <li><a href="manual.html">Vigilante Rodoviário</a></li>
         </ul>
       </li>
+      <!-- NOVO MENU MODELOS -->
+      <li>
+        <a>MODELOS</a>
+        <ul class="submenu-horizontal">
+          <li><a href="#">Modelo 1</a></li>
+          <li><a href="#">Modelo 2</a></li>
+          <li><a href="#">Modelo 3</a></li>
+          <li><a href="#">Modelo 4</a></li>
+          <li><a href="#">Modelo 5</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
-
-  <!-- Indicação de rotação -->
-  <div class="rotation-indicator" id="rotationIndicator">
-    ⚡ Gire o dedo no centro para navegar ⚡
-  </div>
 
   <!-- Vídeo de fundo -->
   <video id="background-video" autoplay loop muted playsinline>
@@ -489,154 +435,38 @@
     Seu navegador não suporta vídeo HTML5.
   </video>
 
-  <!-- Highlight de seleção -->
-  <div class="selection-highlight" id="selectionHighlight"></div>
-
   <!-- Menu principal (circular) -->
   <div class="menu-circle" id="mainMenu">
-    <div class="menu-center" id="menuCenter">
-      GIRAR
-      <br>
-      ⚡
-    </div>
-    
-    <!-- Items com links ou ações -->
-    <div class="menu-item" data-index="1" data-action="submenu" data-submenu="submenu1">
-      <img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" />
-      <div class="menu-text">FORMULÁRIOS</div>
-    </div>
-    
-    <div class="menu-item" data-index="2" data-action="submenu" data-submenu="submenu2">
-      <img src="img/logo/VPN.png" alt="VPN" class="menu-icon" />
-      <div class="menu-text">VPN</div>
-    </div>
-    
-    <div class="menu-item" data-index="3" data-action="link" data-href="#">
-      <img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" />
-      <div class="menu-text">MAPA</div>
-    </div>
-    
-    <div class="menu-item" data-index="4" data-action="link" data-href="https://www.simsgmder.der.sp.gov.br/simsgmder/">
-      <img src="img/logo/DER.png" alt="DER" class="menu-icon" />
-      <div class="menu-text">DER</div>
-    </div>
-    
-    <div class="menu-item" data-index="5" data-action="link" data-href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf">
-      <img src="img/logo/email.png" alt="INOTES" class="menu-icon" />
-      <div class="menu-text">I-NOTES</div>
-    </div>
-    
-    <div class="menu-item" data-index="6" data-action="link" data-href="https://cronotacografo.rbmlq.gov.br/certificados/consultar">
-      <img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" />
-      <div class="menu-text">INMETRO</div>
-    </div>
-    
-    <div class="menu-item" data-index="7" data-action="link" data-href="https://minhaarea.sp.gov.br/plataformasp">
-      <img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" />
-      <div class="menu-text">SEI</div>
-    </div>
-    
-    <div class="menu-item" data-index="8" data-action="submenu" data-submenu="submenu8">
-      <img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" />
-      <div class="menu-text">CONTATOS</div>
-    </div>
+    <div class="menu-item" onclick="toggleSubmenu(1)"><img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" /></div>
+    <div class="menu-item" onclick="toggleSubmenu(2)"><img src="img/logo/VPN.png" alt="VPN" class="menu-icon" /></div>
+    <div class="menu-item"><a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" /></a></div>
+    <div class="menu-item" onclick="toggleSubmenu(8)"><img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" /></div>
   </div>
 
   <!-- Submenus -->
   <div class="submenu-circle" id="submenu1">
-    <div class="submenu-item" data-action="link" data-href="manutenção.html">
-      <img src="img/logo/manutenção.png" alt="MANUTENÇÂO" class="submenu-icon" />
-      <div class="submenu-text">MANUTENÇÃO</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode">
-      <img src="img/logo/amigo.png" alt="AMIGOS" class="submenu-icon" />
-      <div class="submenu-text">AMIGOS</div>
-    </div>
-    
-    <div class="submenu-item" data-action="none">
-      <div class="submenu-text">EM BREVE</div>
-    </div>
-    
-    <div class="submenu-item" data-action="none">
-      <div class="submenu-text">EM BREVE</div>
-    </div>
-    
-    <div class="submenu-item" data-action="none">
-      <div class="submenu-text">EM BREVE</div>
-    </div>
+    <div class="submenu-item"><a href="manutenção.html"><img src="img/logo/manutenção.png" alt="MANUTENÇÂO" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode"><img src="img/logo/amigo.png" alt="AMIGOS" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
   </div>
 
   <div class="submenu-circle" id="submenu2">
-    <div class="submenu-item" data-action="link" data-href="http://www.intranet.policiamilitar.sp.gov.br/">
-      <img src="img/logo/intranet.png" alt="INTRANET" class="submenu-icon" />
-      <div class="submenu-text">INTRANET</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="http://10.61.15.39/Login">
-      <img src="img/logo/PPRI.png" alt="PPRI" class="submenu-icon" />
-      <div class="submenu-text">PPRI</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login">
-      <img src="img/logo/assentamento.png" alt="ASSENTAMENTO" class="submenu-icon" />
-      <div class="submenu-text">ASSENT.</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="consulta.html">
-      <img src="img/logo/dejem.png" alt="DEJEM-DELEGADA" class="submenu-icon" />
-      <div class="submenu-text">DEJEM</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/">
-      <img src="img/logo/prodesp.png" alt="PRODESP" class="submenu-icon" />
-      <div class="submenu-text">PRODESP</div>
-    </div>
-  </div>
-
-  <div class="submenu-circle" id="submenu8">
-    <div class="submenu-item" data-action="link" data-href="#">
-      <div class="submenu-text">COMANDO</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="#">
-      <div class="submenu-text">SEÇÕES</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="#">
-      <div class="submenu-text">COMPANHIAS</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="#">
-      <div class="submenu-text">ÓRGÃOS</div>
-    </div>
-    
-    <div class="submenu-item" data-action="link" data-href="#">
-      <div class="submenu-text">EMERGÊNCIA</div>
-    </div>
+    <div class="submenu-item"><a href="http://www.intranet.policiamilitar.sp.gov.br/"><img src="img/logo/intranet.png" alt="INTRANET" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="http://10.61.15.39/Login"><img src="img/logo/PPRI.png" alt="PPRI" class="submenu-icon" /><span class="submenu-text">PPRI</span></a></div>
+    <div class="submenu-item"><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login"><img src="img/logo/assentamento.png" alt="ASSENTAMENTO" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="consulta.html"><img src="img/logo/dejem.png" alt="DEJEM-DELEGADA" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/"><img src="img/logo/prodesp.png" alt="PRODESP" class="submenu-icon" /></a></div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
   <script>
-    // Variáveis para controle de rotação
-    let isRotating = false;
-    let startAngle = 0;
-    let currentAngle = 0;
-    let selectedIndex = -1;
-    let activeSubmenu = null;
-    let rotationStartTime = 0;
-    let touchStartX = 0;
-    let touchStartY = 0;
-    
-    // Elementos DOM
-    const mainMenu = document.getElementById('mainMenu');
-    const menuCenter = document.getElementById('menuCenter');
-    const menuItems = document.querySelectorAll('.menu-item');
-    const submenus = document.querySelectorAll('.submenu-circle');
-    const selectionHighlight = document.getElementById('selectionHighlight');
-    const rotationIndicator = document.getElementById('rotationIndicator');
-    
     // Funções do menu horizontal
     window.addEventListener('scroll', function() {
       const nav = document.getElementById('mainNav');
@@ -647,7 +477,27 @@
       }
     });
 
-    // Fechar submenus horizontais ao clicar fora
+    document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {
+          if (sub !== this.nextElementSibling) {
+            sub.classList.remove('active');
+          }
+        });
+
+        if (this.nextElementSibling && this.nextElementSibling.classList.contains('submenu-horizontal')) {
+          e.preventDefault();
+          this.nextElementSibling.classList.toggle('active');
+
+          if (this.nextElementSibling.classList.contains('active')) {
+            document.body.classList.add('menu-open');
+          } else {
+            document.body.classList.remove('menu-open');
+          }
+        }
+      });
+    });
+
     document.addEventListener('click', function(e) {
       if (!e.target.closest('nav')) {
         document.querySelectorAll('.submenu-horizontal.active').forEach(sub => {
@@ -657,264 +507,26 @@
       }
     });
 
-    // Sistema de rotação por toque
-    function startRotation(event) {
-      event.preventDefault();
-      isRotating = true;
-      rotationStartTime = Date.now();
-      
-      const rect = mainMenu.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      // Obter coordenadas do toque
-      let clientX, clientY;
-      if (event.type.includes('mouse')) {
-        clientX = event.clientX;
-        clientY = event.clientY;
-      } else {
-        clientX = event.touches[0].clientX;
-        clientY = event.touches[0].clientY;
-      }
-      
-      touchStartX = clientX;
-      touchStartY = clientY;
-      startAngle = Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
-      
-      // Mostrar indicação de rotação
-      rotationIndicator.style.display = 'block';
-      setTimeout(() => {
-        rotationIndicator.style.display = 'none';
-      }, 3000);
-      
-      // Ajustar cursor/touch-action
-      document.body.style.cursor = 'grabbing';
-    }
-    
-    function rotateMenu(event) {
-      if (!isRotating) return;
-      
-      event.preventDefault();
-      
-      const rect = mainMenu.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      // Obter coordenadas atuais
-      let clientX, clientY;
-      if (event.type.includes('mouse')) {
-        clientX = event.clientX;
-        clientY = event.clientY;
-      } else {
-        clientX = event.touches[0].clientX;
-        clientY = event.touches[0].clientY;
-      }
-      
-      // Calcular ângulo atual
-      const currentAngleRad = Math.atan2(clientY - centerY, clientX - centerX);
-      const currentAngleDeg = currentAngleRad * (180 / Math.PI);
-      
-      // Calcular diferença de ângulo
-      let angleDiff = currentAngleDeg - startAngle;
-      
-      // Normalizar para rotação suave
-      if (angleDiff > 180) angleDiff -= 360;
-      if (angleDiff < -180) angleDiff += 360;
-      
-      // Aplicar rotação ao menu
-      currentAngle += angleDiff * 0.5; // Suavizar rotação
-      mainMenu.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
-      
-      // Atualizar ângulo inicial para próximo movimento
-      startAngle = currentAngleDeg;
-      
-      // Atualizar seleção baseada na rotação
-      updateSelection();
-    }
-    
-    function stopRotation(event) {
-      if (!isRotating) return;
-      
-      isRotating = false;
-      document.body.style.cursor = '';
-      
-      // Se a rotação foi muito rápida, considerar como clique
-      const rotationDuration = Date.now() - rotationStartTime;
-      const rect = mainMenu.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      let clientX, clientY;
-      if (event.type.includes('mouse')) {
-        clientX = event.clientX;
-        clientY = event.clientY;
-      } else if (event.changedTouches) {
-        clientX = event.changedTouches[0].clientX;
-        clientY = event.changedTouches[0].clientY;
-      }
-      
-      const distance = Math.sqrt(
-        Math.pow(clientX - touchStartX, 2) + 
-        Math.pow(clientY - touchStartY, 2)
-      );
-      
-      // Se foi um toque curto e próximo, considerar como clique
-      if (rotationDuration < 300 && distance < 50 && selectedIndex !== -1) {
-        activateSelectedItem();
-      }
-      
-      // Resetar seleção após um tempo
-      setTimeout(() => {
-        selectionHighlight.classList.remove('active');
-        selectedIndex = -1;
-      }, 500);
-    }
-    
-    function updateSelection() {
-      // Calcular qual item está mais próximo do topo (0 graus)
-      const normalizedAngle = ((currentAngle % 360) + 360) % 360;
-      const itemAngle = 360 / menuItems.length;
-      
-      // Encontrar o item mais próximo do topo
-      let closestIndex = -1;
-      let minDifference = 360;
-      
-      menuItems.forEach((item, index) => {
-        const itemBaseAngle = index * itemAngle;
-        const itemCurrentAngle = (itemBaseAngle - normalizedAngle + 360) % 360;
-        const difference = Math.min(itemCurrentAngle, 360 - itemCurrentAngle);
-        
-        if (difference < minDifference) {
-          minDifference = difference;
-          closestIndex = index;
-        }
-      });
-      
-      // Atualizar seleção
-      if (closestIndex !== -1 && closestIndex !== selectedIndex) {
-        selectedIndex = closestIndex;
-        
-        // Remover classe active de todos os itens
-        menuItems.forEach(item => item.classList.remove('active'));
-        
-        // Adicionar classe active ao item selecionado
-        menuItems[selectedIndex].classList.add('active');
-        
-        // Atualizar highlight
-        const selectedItem = menuItems[selectedIndex];
-        const rect = selectedItem.getBoundingClientRect();
-        selectionHighlight.style.left = (rect.left + rect.width/2) + 'px';
-        selectionHighlight.style.top = (rect.top + rect.height/2) + 'px';
-        selectionHighlight.classList.add('active');
+    // Funções do menu circular
+    function toggleSubmenu(index) {
+      const submenus = document.querySelectorAll(".submenu-circle");
+      submenus.forEach(menu => menu.style.display = "none");
+
+      const submenu = document.getElementById("submenu" + index);
+      if (submenu) {
+        submenu.style.display = "flex";
       }
     }
-    
-    function activateSelectedItem() {
-      if (selectedIndex === -1) return;
-      
-      const selectedItem = menuItems[selectedIndex];
-      const action = selectedItem.dataset.action;
-      
-      if (action === 'submenu') {
-        // Fechar submenus abertos
-        closeAllSubmenus();
-        
-        // Abrir submenu correspondente
-        const submenuId = selectedItem.dataset.submenu;
-        const submenu = document.getElementById(submenuId);
-        if (submenu) {
-          submenu.style.display = 'flex';
-          activeSubmenu = submenuId;
-          
-          // Adicionar evento de toque para o submenu
-          setupSubmenuInteraction(submenu);
-        }
-      } else if (action === 'link') {
-        const href = selectedItem.dataset.href;
-        if (href && href !== '#') {
-          window.open(href, '_blank');
-        }
-      }
-    }
-    
-    function closeAllSubmenus() {
-      submenus.forEach(submenu => {
-        submenu.style.display = 'none';
-      });
-      activeSubmenu = null;
-    }
-    
-    function setupSubmenuInteraction(submenu) {
-      const submenuItems = submenu.querySelectorAll('.submenu-item');
-      
-      // Resetar submenu items
-      submenuItems.forEach(item => {
-        item.classList.remove('active');
-        
-        item.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const action = this.dataset.action;
-          const href = this.dataset.href;
-          
-          if (action === 'link' && href && href !== '#') {
-            window.open(href, '_blank');
-          }
-        });
-        
-        // Adicionar eventos de toque
-        item.addEventListener('touchstart', function(e) {
-          e.stopPropagation();
-          this.classList.add('active');
-        });
-        
-        item.addEventListener('touchend', function(e) {
-          e.stopPropagation();
-          this.classList.remove('active');
-          
-          // Pequeno delay para permitir visualização do clique
-          setTimeout(() => {
-            const action = this.dataset.action;
-            const href = this.dataset.href;
-            
-            if (action === 'link' && href && href !== '#') {
-              window.open(href, '_blank');
-            }
-          }, 100);
-        });
-      });
-    }
-    
-    // Configurar eventos de rotação
-    menuCenter.addEventListener('mousedown', startRotation);
-    menuCenter.addEventListener('touchstart', startRotation);
-    
-    document.addEventListener('mousemove', rotateMenu);
-    document.addEventListener('touchmove', rotateMenu);
-    
-    document.addEventListener('mouseup', stopRotation);
-    document.addEventListener('touchend', stopRotation);
-    document.addEventListener('touchcancel', stopRotation);
-    
-    // Prevenir scroll padrão no menu
-    mainMenu.addEventListener('touchstart', function(e) {
-      if (e.target.closest('.menu-item') || e.target.closest('.menu-center')) {
-        e.preventDefault();
-      }
-    }, { passive: false });
-    
-    // Fechar submenus ao tocar fora
-    document.addEventListener('click', function(e) {
-      if (activeSubmenu && !e.target.closest('.submenu-circle') && !e.target.closest('.menu-item[data-action="submenu"]')) {
-        closeAllSubmenus();
+
+    document.addEventListener("click", function(e) {
+      if (!e.target.classList.contains("menu-item") &&
+          !e.target.closest('.menu-item') &&
+          !e.target.classList.contains("submenu-item") &&
+          !e.target.closest('.submenu-item')) {
+        const submenus = document.querySelectorAll(".submenu-circle");
+        submenus.forEach(menu => menu.style.display = "none");
       }
     });
-    
-    // Para dispositivos touch, usar touch events para os itens também
-    menuItems.forEach(item => {
-      item.addEventListener('click', function(e) {
-        const action = this.dataset.action;
-        const href = this.dataset.href;
-        
-        if (action === 'link' && href && href !== '#') {
-          window.open(href, '_blank');
-        } else if (action
+  </script>
+</body>
+</html>
