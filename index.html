@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
   <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       font-family: 'Kanit', sans-serif;
@@ -17,10 +18,11 @@
       background-color: #000;
     }
 
-    nav {
+    /* NAV DESKTOP */
+    nav.desktop-nav {
       display: flex;
       align-items: center;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       padding: 8px 20px;
       user-select: none;
       z-index: 1000;
@@ -29,14 +31,8 @@
       box-sizing: border-box;
       flex-wrap: wrap;
       top: 0;
-      transition: background 0.3s ease;
-      justify-content: flex-start;
       box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-
-    nav.scrolled {
-      background: rgba(0, 0, 0, 0.9);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+      justify-content: space-between;
     }
 
     .logo img.logo-img {
@@ -55,28 +51,28 @@
       align-items: center;
     }
 
-    ul.menu-horizontal {
+    /* MENU DESKTOP */
+    ul.desktop-menu {
       list-style: none;
       margin: 0;
-      padding: 0 0 0 20px;
+      padding: 0;
       display: flex;
-      gap: 10px;
+      gap: 5px;
       flex-wrap: nowrap;
     }
 
-    ul.menu-horizontal > li {
+    ul.desktop-menu > li {
       position: relative;
       cursor: pointer;
-      padding-bottom: 10px;
     }
 
-    ul.menu-horizontal > li > a {
+    ul.desktop-menu > li > a {
       color: white;
       text-decoration: none;
       font-weight: 600;
-      font-size: 1.2rem;
+      font-size: 1rem;
       white-space: nowrap;
-      padding: 12px 8px;
+      padding: 15px 10px;
       border-bottom: 2px solid transparent;
       transition: all 0.3s ease;
       position: relative;
@@ -85,9 +81,8 @@
       gap: 5px;
     }
 
-    ul.menu-horizontal > li > a:hover,
-    ul.menu-horizontal > li > a:active,
-    ul.menu-horizontal > li > a.active {
+    ul.desktop-menu > li > a:hover,
+    ul.desktop-menu > li > a.active {
       color: #87CEEB !important;
       border-bottom: 2px solid #87CEEB !important;
     }
@@ -98,12 +93,13 @@
       object-fit: contain;
     }
 
-    ul.submenu-horizontal {
+    /* SUBMENU DESKTOP */
+    ul.desktop-submenu {
       list-style: none;
       margin: 0;
       padding: 10px 0;
       display: none;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.95);
       border-radius: 5px;
       position: absolute;
       left: 0;
@@ -115,21 +111,21 @@
       border: 1px solid rgba(255,255,255,0.1);
     }
 
-    ul.submenu-horizontal.active {
+    ul.desktop-submenu.active {
       display: block;
     }
 
-    ul.submenu-horizontal li {
+    ul.desktop-submenu li {
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    ul.submenu-horizontal li:last-child {
+    ul.desktop-submenu li:last-child {
       border-bottom: none;
     }
 
-    ul.submenu-horizontal li a {
+    ul.desktop-submenu li a {
       color: white;
-      font-size: 1rem;
+      font-size: 0.9rem;
       text-decoration: none;
       white-space: nowrap;
       padding: 10px 15px;
@@ -139,9 +135,8 @@
       gap: 10px;
     }
 
-    ul.submenu-horizontal li a:hover,
-    ul.submenu-horizontal li a:active,
-    ul.submenu-horizontal li a.active {
+    ul.desktop-submenu li a:hover,
+    ul.desktop-submenu li a.active {
       background-color: rgba(135, 206, 235, 0.2) !important;
       color: #87CEEB !important;
     }
@@ -160,55 +155,193 @@
 
     .submenu-group-title {
       color: #87CEEB;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       font-weight: bold;
       padding: 8px 15px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    @media (max-width: 992px) {
-      nav {
-        padding: 10px 15px;
-        justify-content: space-between;
-      }
-      
-      ul.menu-horizontal {
-        flex-wrap: wrap;
-        gap: 5px;
-        padding-left: 10px;
-        justify-content: flex-start;
-      }
-      
-      ul.menu-horizontal > li > a {
-        font-size: 1rem;
-        padding: 8px 5px;
-      }
-      
-      .logo img.logo-img {
-        height: 40px;
-      }
-      
-      ul.submenu-horizontal {
-        position: fixed;
-        left: 10px;
-        right: 10px;
-        top: 70px;
-        width: auto;
-        max-height: 70vh;
-        overflow-y: auto;
+    /* NAV MOBILE */
+    nav.mobile-nav {
+      display: none;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 10px 15px;
+      user-select: none;
+      z-index: 1000;
+      position: fixed;
+      width: 100%;
+      box-sizing: border-box;
+      top: 0;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .mobile-nav .logo a {
+      color: white;
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .mobile-logo-img {
+      height: 40px;
+      object-fit: contain;
+    }
+
+    /* BOTÃO HAMBÚRGUER */
+    .hamburger-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 1002;
+    }
+
+    /* MENU LATERAL MOBILE */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 280px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.98);
+      z-index: 1001;
+      transition: right 0.4s ease;
+      overflow-y: auto;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+      padding-top: 70px;
+    }
+
+    .mobile-sidebar.active {
+      right: 0;
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      display: none;
+    }
+
+    .sidebar-overlay.active {
+      display: block;
+    }
+
+    /* MENU MOBILE */
+    ul.mobile-menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul.mobile-menu > li {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    ul.mobile-menu > li > a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    ul.mobile-menu > li > a:hover,
+    ul.mobile-menu > li > a.active {
+      background-color: rgba(135, 206, 235, 0.2);
+      color: #87CEEB;
+    }
+
+    .mobile-arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-arrow.rotated {
+      transform: rotate(180deg);
+    }
+
+    /* SUBMENU MOBILE */
+    ul.mobile-submenu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      background: rgba(20, 20, 20, 0.9);
+      display: none;
+      border-left: 3px solid #87CEEB;
+    }
+
+    ul.mobile-submenu.active {
+      display: block;
+    }
+
+    ul.mobile-submenu li {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    ul.mobile-submenu li:last-child {
+      border-bottom: none;
+    }
+
+    ul.mobile-submenu li a {
+      color: #ddd;
+      font-size: 0.9rem;
+      text-decoration: none;
+      padding: 12px 20px 12px 35px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+
+    ul.mobile-submenu li a:hover {
+      background-color: rgba(135, 206, 235, 0.1);
+      color: #87CEEB;
+    }
+
+    .mobile-submenu-icon {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .mobile-group-title {
+      color: #87CEEB;
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 15px 20px 5px 35px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 1200px) {
+      ul.desktop-menu > li > a {
+        font-size: 0.9rem;
+        padding: 15px 8px;
       }
     }
 
-    @media (max-width: 768px) {
-      ul.menu-horizontal > li > a {
-        font-size: 0.9rem;
-        padding: 6px 4px;
+    @media (max-width: 992px) {
+      nav.desktop-nav {
+        display: none;
       }
       
-      .menu-icon-small {
-        width: 16px;
-        height: 16px;
+      nav.mobile-nav {
+        display: flex;
       }
     }
 
@@ -224,9 +357,9 @@
       background-color: #000;
     }
 
-    /* Conteúdo principal */
+    /* Área central vazia para futuros projetos */
     .main-content {
-      padding-top: 80px;
+      padding-top: 70px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -238,85 +371,48 @@
       padding-right: 20px;
     }
 
-    .welcome-title {
-      font-size: 3.5rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-      color: #87CEEB;
-    }
-
-    .welcome-subtitle {
-      font-size: 1.5rem;
+    .placeholder-text {
+      font-size: 1.2rem;
       font-weight: 300;
-      margin-bottom: 40px;
-      max-width: 800px;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 600px;
+      margin-top: 20px;
     }
 
-    .stats-container {
-      display: flex;
-      gap: 30px;
-      margin-top: 40px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .stat-box {
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-      padding: 20px;
-      min-width: 150px;
-      border: 1px solid rgba(135, 206, 235, 0.3);
-    }
-
-    .stat-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #87CEEB;
-    }
-
-    .stat-label {
-      font-size: 1rem;
-      font-weight: 300;
+    .spacer {
+      height: 40vh;
     }
 
     @media (max-width: 768px) {
-      .welcome-title {
-        font-size: 2.5rem;
+      .mobile-sidebar {
+        width: 85%;
+        right: -85%;
       }
       
-      .welcome-subtitle {
-        font-size: 1.2rem;
+      .main-content {
+        padding-top: 60px;
       }
       
-      .stats-container {
-        gap: 15px;
-      }
-      
-      .stat-box {
-        min-width: 120px;
-        padding: 15px;
-      }
-      
-      .stat-value {
-        font-size: 2rem;
+      .placeholder-text {
+        font-size: 1rem;
+        padding: 0 15px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- MENU SUPERIOR COMPLETO -->
-  <nav id="mainNav">
+  <!-- NAV DESKTOP (para telas maiores) -->
+  <nav class="desktop-nav">
     <div class="logo">
       <a href="index.html">
         <img src="img/logo/icon-pmrv.png" alt="Polícia Rodoviária" class="logo-img">
       </a>
     </div>
-    <ul class="menu-horizontal" id="menu">
+    
+    <ul class="desktop-menu" id="desktopMenu">
       <li>
         <a>POLICIAL MILITAR</a>
-        <ul class="submenu-horizontal">
+        <ul class="desktop-submenu">
           <li><a href="mbft.html">MBFT</a></li>
           <li><a href="https://www.ctbdigital.com.br">CTB Digital</a></li>
           <li><a href="municipios.html">Código de Município</a></li>
@@ -330,7 +426,7 @@
       
       <li>
         <a><img src="img/logo/formulario.png" class="menu-icon-small" alt=""> FORMULÁRIOS</a>
-        <ul class="submenu-horizontal">
+        <ul class="desktop-submenu">
           <li><a href="manutenção.html"><img src="img/logo/manutenção.png" class="submenu-icon-small" alt=""> MANUTENÇÃO</a></li>
           <li><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode"><img src="img/logo/amigo.png" class="submenu-icon-small" alt=""> AMIGOS</a></li>
         </ul>
@@ -338,7 +434,7 @@
       
       <li>
         <a><img src="img/logo/VPN.png" class="menu-icon-small" alt=""> VPN</a>
-        <ul class="submenu-horizontal">
+        <ul class="desktop-submenu">
           <li><a href="http://www.intranet.policiamilitar.sp.gov.br/"><img src="img/logo/intranet.png" class="submenu-icon-small" alt=""> INTRANET</a></li>
           <li><a href="http://10.61.15.39/Login"><img src="img/logo/PPRI.png" class="submenu-icon-small" alt=""> PPRI</a></li>
           <li><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login"><img src="img/logo/assentamento.png" class="submenu-icon-small" alt=""> ASSENTAMENTO</a></li>
@@ -369,7 +465,7 @@
       
       <li>
         <a><img src="img/logo/contatos.png" class="menu-icon-small" alt=""> CONTATOS</a>
-        <ul class="submenu-horizontal">
+        <ul class="desktop-submenu">
           <div class="submenu-group-title">Contatos Internos</div>
           <li><a href="#">Comando Regional</a></li>
           <li><a href="#">Seções Administrativas</a></li>
@@ -383,62 +479,122 @@
     </ul>
   </nav>
 
+  <!-- NAV MOBILE (para telas menores) -->
+  <nav class="mobile-nav">
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo/icon-pmrv.png" alt="Polícia Rodoviária" class="mobile-logo-img">
+      </a>
+    </div>
+    
+    <button class="hamburger-btn" id="hamburgerBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- OVERLAY PARA FECHAR MENU MOBILE -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MENU LATERAL MOBILE -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <ul class="mobile-menu">
+      <li>
+        <a href="#" class="mobile-menu-item">POLICIAL MILITAR <i class="fas fa-chevron-down mobile-arrow"></i></a>
+        <ul class="mobile-submenu">
+          <li><a href="mbft.html"><img src="img/logo/formulario.png" class="mobile-submenu-icon" alt=""> MBFT</a></li>
+          <li><a href="https://www.ctbdigital.com.br"><img src="img/logo/formulario.png" class="mobile-submenu-icon" alt=""> CTB Digital</a></li>
+          <li><a href="municipios.html"><img src="img/logo/formulario.png" class="mobile-submenu-icon" alt=""> Código de Município</a></li>
+          <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx"><img src="img/logo/formulario.png" class="mobile-submenu-icon" alt=""> Holerite</a></li>
+          <li><a href="https://marcosmunhoz.github.io/4CIA/assets/index.html"><img src="img/logo/formulario.png" class="mobile-submenu-icon" alt=""> Produtividade PDR</a></li>
+          <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca"><img src="img/logo/formulario.png" class="mobile-submenu-icon" alt=""> Portal BNMP</a></li>
+          <li><a href="debito.html"><img src="img/logo/formulario.png" class="mobile-submenu-icon" alt=""> Débito de Veículos</a></li>
+          <li><a href="manual.html"><img src="img/logo/formulario.png" class="mobile-submenu-icon" alt=""> Vigilante Rodoviário</a></li>
+        </ul>
+      </li>
+      
+      <li>
+        <a href="#" class="mobile-menu-item">FORMULÁRIOS <i class="fas fa-chevron-down mobile-arrow"></i></a>
+        <ul class="mobile-submenu">
+          <li><a href="manutenção.html"><img src="img/logo/manutenção.png" class="mobile-submenu-icon" alt=""> MANUTENÇÃO</a></li>
+          <li><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode"><img src="img/logo/amigo.png" class="mobile-submenu-icon" alt=""> AMIGOS</a></li>
+        </ul>
+      </li>
+      
+      <li>
+        <a href="#" class="mobile-menu-item">VPN <i class="fas fa-chevron-down mobile-arrow"></i></a>
+        <ul class="mobile-submenu">
+          <li><a href="http://www.intranet.policiamilitar.sp.gov.br/"><img src="img/logo/intranet.png" class="mobile-submenu-icon" alt=""> INTRANET</a></li>
+          <li><a href="http://10.61.15.39/Login"><img src="img/logo/PPRI.png" class="mobile-submenu-icon" alt=""> PPRI</a></li>
+          <li><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login"><img src="img/logo/assentamento.png" class="mobile-submenu-icon" alt=""> ASSENTAMENTO</a></li>
+          <li><a href="consulta.html"><img src="img/logo/dejem.png" class="mobile-submenu-icon" alt=""> DEJEM-DELEGADA</a></li>
+          <li><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/"><img src="img/logo/prodesp.png" class="mobile-submenu-icon" alt=""> PRODESP</a></li>
+        </ul>
+      </li>
+      
+      <li>
+        <a href="#" class="mobile-menu-item">MAPA</a>
+      </li>
+      
+      <li>
+        <a href="https://www.simsgmder.der.sp.gov.br/simsgmder/" class="mobile-menu-item">DER</a>
+      </li>
+      
+      <li>
+        <a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf" class="mobile-menu-item">I-NOTES</a>
+      </li>
+      
+      <li>
+        <a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar" class="mobile-menu-item">INMETRO</a>
+      </li>
+      
+      <li>
+        <a href="https://minhaarea.sp.gov.br/plataformasp" class="mobile-menu-item">SEI</a>
+      </li>
+      
+      <li>
+        <a href="#" class="mobile-menu-item">CONTATOS <i class="fas fa-chevron-down mobile-arrow"></i></a>
+        <ul class="mobile-submenu">
+          <div class="mobile-group-title">Contatos Internos</div>
+          <li><a href="#"><img src="img/logo/contatos.png" class="mobile-submenu-icon" alt=""> Comando Regional</a></li>
+          <li><a href="#"><img src="img/logo/contatos.png" class="mobile-submenu-icon" alt=""> Seções Administrativas</a></li>
+          <li><a href="#"><img src="img/logo/contatos.png" class="mobile-submenu-icon" alt=""> Companhias</a></li>
+          
+          <div class="mobile-group-title">Contatos Externos</div>
+          <li><a href="#"><img src="img/logo/contatos.png" class="mobile-submenu-icon" alt=""> Órgãos Parceiros</a></li>
+          <li><a href="#"><img src="img/logo/contatos.png" class="mobile-submenu-icon" alt=""> Emergências</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
   <!-- Vídeo de fundo -->
   <video id="background-video" autoplay loop muted playsinline>
     <source src="videos/pm4.mp4" type="video/mp4">
     Seu navegador não suporta vídeo HTML5.
   </video>
 
-  <!-- Conteúdo Principal -->
+  <!-- Área central vazia para futuros projetos -->
   <div class="main-content">
-    <h1 class="welcome-title">ÁREA POLICIAL</h1>
-    <p class="welcome-subtitle">Sistema Integrado de Recursos e Ferramentas para a Polícia Militar Rodoviária</p>
-    
-    <div class="stats-container">
-      <div class="stat-box">
-        <div class="stat-value">24/7</div>
-        <div class="stat-label">Disponibilidade</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value">50+</div>
-        <div class="stat-label">Ferramentas</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value">100%</div>
-        <div class="stat-label">Segurança</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value">Rápido</div>
-        <div class="stat-label">Acesso</div>
-      </div>
-    </div>
+    <div class="spacer"></div>
+    <p class="placeholder-text">Área disponível para futuros projetos e implementações</p>
+    <div class="spacer"></div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
   <script>
-    // Funções do menu horizontal
-    window.addEventListener('scroll', function() {
-      const nav = document.getElementById('mainNav');
-      if (window.scrollY > 50) {
-        nav.classList.add('scrolled');
-      } else {
-        nav.classList.remove('scrolled');
-      }
-    });
-
-    // Gerenciamento de submenus
-    document.querySelectorAll('ul.menu-horizontal > li > a').forEach(link => {
+    // FUNÇÕES PARA MENU DESKTOP
+    document.querySelectorAll('ul.desktop-menu > li > a').forEach(link => {
       link.addEventListener('click', function(e) {
         // Fecha todos os submenus exceto o atual
-        document.querySelectorAll('ul.submenu-horizontal.active').forEach(sub => {
+        document.querySelectorAll('ul.desktop-submenu.active').forEach(sub => {
           if (sub !== this.nextElementSibling) {
             sub.classList.remove('active');
           }
         });
 
         // Se o item tem submenu, alterna sua visibilidade
-        if (this.nextElementSibling && this.nextElementSibling.classList.contains('submenu-horizontal')) {
+        if (this.nextElementSibling && this.nextElementSibling.classList.contains('desktop-submenu')) {
           e.preventDefault();
           e.stopPropagation();
           this.nextElementSibling.classList.toggle('active');
@@ -446,28 +602,90 @@
       });
     });
 
-    // Fecha submenus ao clicar fora
+    // Fecha submenus desktop ao clicar fora
     document.addEventListener('click', function(e) {
-      if (!e.target.closest('ul.menu-horizontal > li')) {
-        document.querySelectorAll('.submenu-horizontal.active').forEach(sub => {
+      if (!e.target.closest('ul.desktop-menu > li')) {
+        document.querySelectorAll('.desktop-submenu.active').forEach(sub => {
           sub.classList.remove('active');
         });
       }
     });
 
-    // Fecha submenus ao rolar a página (mobile)
-    window.addEventListener('scroll', function() {
-      if (window.innerWidth <= 992) {
-        document.querySelectorAll('.submenu-horizontal.active').forEach(sub => {
-          sub.classList.remove('active');
-        });
+    // FUNÇÕES PARA MENU MOBILE
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    // Abrir/fechar menu lateral
+    hamburgerBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mobileSidebar.classList.toggle('active');
+      sidebarOverlay.classList.toggle('active');
+      
+      // Alternar ícone do botão hambúrguer
+      const icon = this.querySelector('i');
+      if (mobileSidebar.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
       }
     });
 
-    // Adiciona classe ativa ao item de menu quando seu submenu está aberto
-    document.querySelectorAll('ul.submenu-horizontal').forEach(submenu => {
-      submenu.addEventListener('click', function(e) {
-        e.stopPropagation();
+    // Fechar menu ao clicar no overlay
+    sidebarOverlay.addEventListener('click', function() {
+      mobileSidebar.classList.remove('active');
+      this.classList.remove('active');
+      hamburgerBtn.querySelector('i').classList.remove('fa-times');
+      hamburgerBtn.querySelector('i').classList.add('fa-bars');
+    });
+
+    // Fechar menu ao clicar fora em telas pequenas
+    document.addEventListener('click', function(e) {
+      if (window.innerWidth <= 992 && 
+          !e.target.closest('.mobile-sidebar') && 
+          !e.target.closest('.hamburger-btn')) {
+        mobileSidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        hamburgerBtn.querySelector('i').classList.remove('fa-times');
+        hamburgerBtn.querySelector('i').classList.add('fa-bars');
+      }
+    });
+
+    // Gerenciar submenus no mobile
+    document.querySelectorAll('.mobile-menu-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const submenu = this.nextElementSibling;
+        const arrow = this.querySelector('.mobile-arrow');
+        
+        if (submenu && submenu.classList.contains('mobile-submenu')) {
+          // Fecha outros submenus abertos
+          document.querySelectorAll('.mobile-submenu.active').forEach(activeSubmenu => {
+            if (activeSubmenu !== submenu) {
+              activeSubmenu.classList.remove('active');
+              activeSubmenu.previousElementSibling.querySelector('.mobile-arrow').classList.remove('rotated');
+            }
+          });
+          
+          // Alterna o submenu atual
+          submenu.classList.toggle('active');
+          arrow.classList.toggle('rotated');
+        }
+      });
+    });
+
+    // Fechar submenus ao clicar em um link (opcional)
+    document.querySelectorAll('.mobile-submenu a').forEach(link => {
+      link.addEventListener('click', function() {
+        // Fecha o menu lateral após um pequeno delay
+        setTimeout(() => {
+          mobileSidebar.classList.remove('active');
+          sidebarOverlay.classList.remove('active');
+          hamburgerBtn.querySelector('i').classList.remove('fa-times');
+          hamburgerBtn.querySelector('i').classList.add('fa-bars');
+        }, 300);
       });
     });
   </script>
