@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nota de Empenho - Modelo Padrão</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      max-width: 800px;
+      width: 100%;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 3px solid #1a2a6c;
+      padding-bottom: 20px;
+    }
+    
+    .header h1 {
+      color: #1a2a6c;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    .header h2 {
+      color: #2c3e50;
+      font-size: 18px;
+      font-weight: normal;
+    }
+    
+    .text-container {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 30px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      color: #333;
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .copy-btn {
+      background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
+    }
+    
+    .copy-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(26, 42, 108, 0.5);
+      background: linear-gradient(135deg, #2c3e50, #1a2a6c);
+    }
+    
+    .copy-btn:active {
+      transform: translateY(1px);
+    }
+    
+    .copy-btn i {
+      font-size: 20px;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: none;
+      z-index: 1000;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .footer a {
+      color: #1a2a6c;
+      text-decoration: none;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      .header h1 {
+        font-size: 22px;
+      }
+      
+      .text-container {
+        padding: 15px;
+        font-size: 14px;
+      }
+      
+      .copy-btn {
+        padding: 12px 30px;
+        font-size: 16px;
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>NOTA DE EMPENHO - MODELO PADRÃO</h1>
+      <h2>4ª Cia do 4º BPRv – 1º Pelotão</h2>
+    </div>
+    
+    <div class="text-container" id="textToCopy">
+*4ª Cia do 4º BPRv – 1º Pelotão*
+*NOTA DE EMPENHO EM PONTO DE ESTACIONAMENTO* 
+
+Data: 20DEZ25
+Hora: 10:00 às 11h30
+Natureza: 
+Equipe: *R-*  
+Local: SP    km 
+Resenha: Op. CINTO DE SEGURANÇA
+*Talão:     *
+
+Total fiscalizados: 
+AP: 
+CA: 
+MO: 
+OA:
+
+Autuações: 
+Total AI-e: 
+Total AI-e em MO: 
+165/165A:
+203 V:
+167: 
+252: 
+
+RD-e: 
+RV-e:
+Testes passivos: 
+Testes ativos:
+Imagens Radar: 
+Obs: 
+
+*A Paz No Trânsito Começa Por Você*
+*Polícia Militar, rumo aos 200 anos. Vamos todos juntos. Ninguém fica para trás*
+    </div>
+    
+    <div class="buttons">
+      <button class="copy-btn" id="copyButton">
+        📋 COPIAR TEXTO COMPLETO
+      </button>
+    </div>
+    
+    <div class="footer">
+      <p>Clique no botão acima para copiar o texto padrão automaticamente</p>
+      <p>Desenvolvido para agilizar o envio de produtividade do turno de serviço</p>
+    </div>
+  </div>
+  
+  <div class="notification" id="notification">
+    ✅ Texto copiado para a área de transferência!
+  </div>
+  
+  <script>
+    const copyButton = document.getElementById('copyButton');
+    const textToCopy = document.getElementById('textToCopy');
+    const notification = document.getElementById('notification');
+    
+    copyButton.addEventListener('click', async () => {
+      try {
+        // Usando a API moderna Clipboard
+        await navigator.clipboard.writeText(textToCopy.textContent);
+        
+        // Mostrar notificação
+        notification.style.display = 'block';
+        
+        // Mudar texto do botão temporariamente
+        const originalText = copyButton.innerHTML;
+        copyButton.innerHTML = '✅ COPIADO!';
+        copyButton.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+        
+        // Restaurar botão após 2 segundos
+        setTimeout(() => {
+          copyButton.innerHTML = originalText;
+          copyButton.style.background = 'linear-gradient(135deg, #1a2a6c, #2c3e50)';
+          notification.style.display = 'none';
+        }, 2000);
+        
+      } catch (err) {
+        // Fallback para navegadores mais antigos
+        const textArea = document.createElement('textarea');
+        textArea.value = textToCopy.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Mostrar notificação
+        notification.style.display = 'block';
+        notification.textContent = '✅ Texto copiado!';
+        
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 2000);
+      }
+    });
+    
+    // Pode adicionar mais botões para diferentes modelos se quiser
+  </script>
+</body>
+</html>
