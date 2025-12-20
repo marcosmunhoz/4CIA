@@ -15,6 +15,12 @@
       overflow-x: hidden;
       color: white;
       background-color: #000;
+      background-image: url('img/aguia.jpg'); /* IMAGEM DE FUNDO ADICIONADA */
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
     }
 
     nav {
@@ -145,18 +151,6 @@
       height: 100%;
       overflow: hidden;
       font-family: sans-serif;
-    }
-
-    /* ---------- VÍDEO DE FUNDO CORRIGIDO ---------- */
-    #background-video {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      z-index: -1;
-      background-color: #000;
     }
 
     /* Menu circular principal - AUMENTADO */
@@ -428,12 +422,6 @@
       </li>
     </ul>
   </nav>
-
-  <!-- Vídeo de fundo -->
-  <video id="background-video" autoplay loop muted playsinline>
-    <source src="videos/pm4.mp4" type="video/mp4">
-    Seu navegador não suporta vídeo HTML5.
-  </video>
 
   <!-- Menu principal (circular) -->
   <div class="menu-circle" id="mainMenu">
