@@ -18,7 +18,6 @@
       background: #000;
       color: white;
       min-height: 100vh;
-      overflow-x: hidden;
     }
 
     /* Vídeo de fundo */
@@ -30,23 +29,49 @@
       height: 100%;
       object-fit: cover;
       z-index: -1;
-      filter: brightness(0.7);
+      filter: brightness(0.6);
     }
 
-    /* Header */
-    .header {
+    /* Layout Principal - Desktop e Mobile Diferentes */
+    .page-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* MENU LATERAL PARA MOBILE (sempre visível) */
+    .mobile-menu-sidebar {
+      display: none;
+      width: 280px;
+      background: rgba(0, 0, 0, 0.95);
+      border-right: 2px solid #0066cc;
+      overflow-y: auto;
+      padding: 20px 0;
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 15px 20px;
+      height: 100vh;
       z-index: 1000;
+      box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Conteúdo Principal */
+    .main-content-area {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      margin-left: 0;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* Header para Desktop */
+    .desktop-header {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 15px 30px;
+      border-bottom: 2px solid #0066cc;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
-      border-bottom: 2px solid #0066cc;
     }
 
     .logo {
@@ -61,7 +86,7 @@
     }
 
     .logo-text {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: white;
       text-transform: uppercase;
@@ -72,32 +97,21 @@
       color: #0066cc;
     }
 
-    /* Botão do menu mobile */
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 5px;
-    }
-
-    /* Menu Principal */
-    .main-menu {
+    /* Menu Desktop */
+    .desktop-menu {
       display: flex;
-      gap: 5px;
+      gap: 10px;
       list-style: none;
     }
 
-    .menu-item {
+    .desktop-menu-item {
       position: relative;
     }
 
-    .menu-link {
+    .desktop-menu-link {
       color: white;
       text-decoration: none;
-      padding: 15px 20px;
+      padding: 18px 20px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -108,21 +122,21 @@
       white-space: nowrap;
     }
 
-    .menu-link:hover {
+    .desktop-menu-link:hover {
       background: rgba(0, 102, 204, 0.2);
       color: #4dabf7;
     }
 
-    .menu-link i {
+    .desktop-menu-link i {
       font-size: 1.2rem;
     }
 
-    /* Submenu */
-    .submenu {
+    /* Submenu Desktop */
+    .desktop-submenu {
       position: absolute;
       top: 100%;
       left: 0;
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0, 0, 0, 0.98);
       min-width: 250px;
       list-style: none;
       display: none;
@@ -134,22 +148,110 @@
       z-index: 1001;
     }
 
-    .menu-item:hover .submenu {
+    .desktop-menu-item:hover .desktop-submenu {
       display: block;
     }
 
-    .submenu-item {
+    /* Estilos do Menu Mobile (sempre visível) */
+    .mobile-menu-header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .mobile-menu-header img {
+      height: 60px;
+      width: auto;
+      margin-bottom: 10px;
+    }
+
+    .mobile-menu-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .mobile-menu-title span {
+      color: #0066cc;
+    }
+
+    /* Menu Mobile Principal */
+    .mobile-main-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+
+    .mobile-menu-item {
+      margin-bottom: 5px;
+    }
+
+    .mobile-menu-link {
+      color: white;
+      text-decoration: none;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .mobile-menu-link:hover,
+    .mobile-menu-link.active {
+      background: rgba(0, 102, 204, 0.3);
+      color: #4dabf7;
+    }
+
+    .mobile-menu-link i {
+      font-size: 1.3rem;
+      width: 25px;
+      text-align: center;
+    }
+
+    .mobile-menu-text {
+      flex: 1;
+    }
+
+    .mobile-arrow {
+      font-size: 0.9rem;
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-arrow.rotated {
+      transform: rotate(90deg);
+    }
+
+    /* Submenu Mobile */
+    .mobile-submenu {
+      list-style: none;
+      margin: 5px 0 10px 0;
+      padding-left: 30px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .mobile-submenu.active {
+      display: block;
+    }
+
+    .mobile-submenu-item {
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .submenu-item:last-child {
+    .mobile-submenu-item:last-child {
       border-bottom: none;
     }
 
-    .submenu-link {
+    .mobile-submenu-link {
       color: #e0e0e0;
       text-decoration: none;
-      padding: 15px 20px;
+      padding: 12px 15px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -158,20 +260,19 @@
       transition: all 0.3s ease;
     }
 
-    .submenu-link:hover {
-      background: rgba(0, 102, 204, 0.3);
+    .mobile-submenu-link:hover {
+      background: rgba(0, 102, 204, 0.2);
       color: #4dabf7;
-      padding-left: 25px;
+      padding-left: 20px;
     }
 
-    .submenu-link i {
+    .mobile-submenu-link i {
+      font-size: 1rem;
       width: 20px;
-      text-align: center;
-      font-size: 1.1rem;
     }
 
     /* Conteúdo Principal */
-    .main-content {
+    .content-wrapper {
       padding: 100px 20px 40px;
       max-width: 1200px;
       margin: 0 auto;
@@ -205,14 +306,14 @@
     .quick-access {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 40px;
+      gap: 25px;
+      margin-top: 50px;
     }
 
     .access-card {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 12px;
-      padding: 25px;
+      padding: 30px;
       text-align: center;
       transition: all 0.3s ease;
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -227,130 +328,182 @@
     }
 
     .card-icon {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       color: #4dabf7;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .card-title {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       color: white;
     }
 
     .card-desc {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #b0b0b0;
       line-height: 1.5;
     }
 
-    /* Responsividade */
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.8);
+      margin-top: 80px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-text {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    /* RESPONSIVIDADE */
     @media (max-width: 1200px) {
-      .main-menu {
-        gap: 0;
+      .desktop-menu {
+        gap: 5px;
       }
       
-      .menu-link {
-        padding: 15px;
+      .desktop-menu-link {
+        padding: 18px 15px;
         font-size: 0.95rem;
+      }
+      
+      .welcome-title {
+        font-size: 3rem;
       }
     }
 
     @media (max-width: 992px) {
-      .menu-toggle {
-        display: block;
-      }
-
-      .main-menu {
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.98);
-        flex-direction: column;
-        padding: 20px;
-        display: none;
-        max-height: calc(100vh - 80px);
-        overflow-y: auto;
-        border-top: 2px solid #0066cc;
-      }
-
-      .main-menu.active {
-        display: flex;
-      }
-
-      .menu-item {
-        width: 100%;
-      }
-
-      .menu-link {
-        padding: 18px;
-        font-size: 1.1rem;
-        border-radius: 8px;
-        margin-bottom: 5px;
-      }
-
-      .submenu {
-        position: static;
-        width: 100%;
-        margin-top: 5px;
-        margin-bottom: 15px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+      /* Esconde menu desktop e mostra menu mobile */
+      .desktop-header {
         display: none;
       }
-
-      .submenu.active {
+      
+      .mobile-menu-sidebar {
         display: block;
       }
-
-      .submenu-link {
-        padding: 15px 25px;
+      
+      .main-content-area {
+        margin-left: 280px;
       }
-
+      
+      .content-wrapper {
+        padding: 40px 20px;
+      }
+      
       .welcome-title {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
+      }
+      
+      .welcome-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .quick-access {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       }
     }
 
     @media (max-width: 768px) {
-      .logo-text {
-        font-size: 1.1rem;
+      .mobile-menu-sidebar {
+        width: 240px;
       }
-
-      .logo img {
-        height: 40px;
+      
+      .main-content-area {
+        margin-left: 240px;
       }
-
+      
+      .mobile-menu-link {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+      
+      .mobile-menu-link i {
+        font-size: 1.2rem;
+      }
+      
       .welcome-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
       }
-
-      .welcome-subtitle {
-        font-size: 1.1rem;
-      }
-
+      
       .quick-access {
         grid-template-columns: 1fr;
+        gap: 20px;
       }
-
+      
       .access-card {
-        padding: 20px;
+        padding: 25px;
       }
     }
 
-    @media (max-width: 480px) {
-      .header {
-        padding: 12px 15px;
+    @media (max-width: 576px) {
+      .mobile-menu-sidebar {
+        width: 220px;
       }
-
-      .main-content {
-        padding: 90px 15px 30px;
+      
+      .main-content-area {
+        margin-left: 220px;
+        padding: 15px;
       }
-
+      
+      .content-wrapper {
+        padding: 20px 10px;
+      }
+      
+      .mobile-menu-header {
+        padding: 15px;
+      }
+      
+      .mobile-menu-header img {
+        height: 50px;
+      }
+      
+      .mobile-menu-title {
+        font-size: 1.1rem;
+      }
+      
+      .mobile-main-menu {
+        padding: 0 10px;
+      }
+      
       .welcome-title {
         font-size: 1.8rem;
+      }
+      
+      .welcome-subtitle {
+        font-size: 1rem;
+      }
+      
+      .card-icon {
+        font-size: 2.2rem;
+      }
+      
+      .card-title {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .mobile-menu-sidebar {
+        width: 200px;
+      }
+      
+      .main-content-area {
+        margin-left: 200px;
+        padding: 10px;
+      }
+      
+      .mobile-menu-link {
+        padding: 10px;
+        font-size: 0.9rem;
+        gap: 10px;
+      }
+      
+      .mobile-submenu {
+        padding-left: 20px;
       }
     }
 
@@ -365,18 +518,65 @@
       100% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0); }
     }
 
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.8);
-      margin-top: 60px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    /* Botão para expandir/recolher menu no mobile */
+    .menu-toggle-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 102, 204, 0.8);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 1001;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
 
-    .footer-text {
-      color: #888;
-      font-size: 0.9rem;
+    @media (max-width: 992px) {
+      .menu-toggle-btn {
+        display: flex;
+      }
+      
+      .mobile-menu-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .mobile-menu-sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content-area {
+        margin-left: 0;
+      }
+      
+      .mobile-menu-sidebar.active ~ .main-content-area {
+        margin-left: 280px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-sidebar.active ~ .main-content-area {
+        margin-left: 240px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .mobile-menu-sidebar.active ~ .main-content-area {
+        margin-left: 220px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .mobile-menu-sidebar.active ~ .main-content-area {
+        margin-left: 200px;
+      }
     }
   </style>
 </head>
@@ -386,245 +586,312 @@
     <source src="videos/pm4.mp4" type="video/mp4">
   </video>
 
-  <!-- Header com Menu -->
-  <header class="header">
+  <!-- Botão para expandir/recolher menu mobile -->
+  <button class="menu-toggle-btn" id="menuToggleBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Menu Lateral Mobile (sempre visível quando expandido) -->
+  <div class="mobile-menu-sidebar" id="mobileMenuSidebar">
+    <div class="mobile-menu-header">
+      <img src="img/logo/icon-pmrv.png" alt="Logo PMRV">
+      <div class="mobile-menu-title">Área <span>Policial</span></div>
+    </div>
+
+    <ul class="mobile-main-menu" id="mobileMainMenu">
+      <li class="mobile-menu-item">
+        <a href="#" class="mobile-menu-link" data-submenu="submenu1">
+          <i class="fas fa-shield-alt"></i>
+          <span class="mobile-menu-text">POLICIAL MILITAR</span>
+          <i class="fas fa-chevron-right mobile-arrow"></i>
+        </a>
+        <ul class="mobile-submenu" id="submenu1">
+          <li class="mobile-submenu-item"><a href="mbft.html" class="mobile-submenu-link"><i class="fas fa-file-alt"></i> MBFT</a></li>
+          <li class="mobile-submenu-item"><a href="https://www.ctbdigital.com.br" class="mobile-submenu-link" target="_blank"><i class="fas fa-book"></i> CTB Digital</a></li>
+          <li class="mobile-submenu-item"><a href="municipios.html" class="mobile-submenu-link"><i class="fas fa-map-marker-alt"></i> Código Município</a></li>
+          <li class="mobile-submenu-item"><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx" class="mobile-submenu-link" target="_blank"><i class="fas fa-money-check-alt"></i> Holerite</a></li>
+          <li class="mobile-submenu-item"><a href="https://marcosmunhoz.github.io/4CIA/assets/index.html" class="mobile-submenu-link" target="_blank"><i class="fas fa-chart-line"></i> Produtividade PDR</a></li>
+          <li class="mobile-submenu-item"><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca" class="mobile-submenu-link" target="_blank"><i class="fas fa-gavel"></i> Portal BNMP</a></li>
+          <li class="mobile-submenu-item"><a href="debito.html" class="mobile-submenu-link"><i class="fas fa-car"></i> Débito Veículos</a></li>
+          <li class="mobile-submenu-item"><a href="manual.html" class="mobile-submenu-link"><i class="fas fa-user-shield"></i> Vigilante Rodoviário</a></li>
+        </ul>
+      </li>
+
+      <li class="mobile-menu-item">
+        <a href="#" class="mobile-menu-link" data-submenu="submenu2">
+          <i class="fas fa-clipboard-list"></i>
+          <span class="mobile-menu-text">FORMULÁRIOS</span>
+          <i class="fas fa-chevron-right mobile-arrow"></i>
+        </a>
+        <ul class="mobile-submenu" id="submenu2">
+          <li class="mobile-submenu-item"><a href="manutenção.html" class="mobile-submenu-link"><i class="fas fa-tools"></i> MANUTENÇÃO</a></li>
+          <li class="mobile-submenu-item"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode" class="mobile-submenu-link" target="_blank"><i class="fas fa-user-friends"></i> AMIGOS</a></li>
+        </ul>
+      </li>
+
+      <li class="mobile-menu-item">
+        <a href="#" class="mobile-menu-link" data-submenu="submenu3">
+          <i class="fas fa-network-wired"></i>
+          <span class="mobile-menu-text">VPN</span>
+          <i class="fas fa-chevron-right mobile-arrow"></i>
+        </a>
+        <ul class="mobile-submenu" id="submenu3">
+          <li class="mobile-submenu-item"><a href="http://www.intranet.policiamilitar.sp.gov.br/" class="mobile-submenu-link" target="_blank"><i class="fas fa-globe"></i> INTRANET</a></li>
+          <li class="mobile-submenu-item"><a href="http://10.61.15.39/Login" class="mobile-submenu-link" target="_blank"><i class="fas fa-lock"></i> PPRI</a></li>
+          <li class="mobile-submenu-item"><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login" class="mobile-submenu-link" target="_blank"><i class="fas fa-edit"></i> ASSENTAMENTO</a></li>
+          <li class="mobile-submenu-item"><a href="consulta.html" class="mobile-submenu-link"><i class="fas fa-search"></i> DEJEM-DELEGADA</a></li>
+          <li class="mobile-submenu-item"><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/" class="mobile-submenu-link" target="_blank"><i class="fas fa-server"></i> PRODESP</a></li>
+        </ul>
+      </li>
+
+      <li class="mobile-menu-item">
+        <a href="#" class="mobile-menu-link">
+          <i class="fas fa-map"></i>
+          <span class="mobile-menu-text">MAPA</span>
+        </a>
+      </li>
+
+      <li class="mobile-menu-item">
+        <a href="https://www.simsgmder.der.sp.gov.br/simsgmder/" class="mobile-menu-link" target="_blank">
+          <i class="fas fa-road"></i>
+          <span class="mobile-menu-text">DER</span>
+        </a>
+      </li>
+
+      <li class="mobile-menu-item">
+        <a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf" class="mobile-menu-link" target="_blank">
+          <i class="fas fa-envelope"></i>
+          <span class="mobile-menu-text">I-NOTES</span>
+        </a>
+      </li>
+
+      <li class="mobile-menu-item">
+        <a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar" class="mobile-menu-link" target="_blank">
+          <i class="fas fa-tachometer-alt"></i>
+          <span class="mobile-menu-text">INMETRO</span>
+        </a>
+      </li>
+
+      <li class="mobile-menu-item">
+        <a href="https://minhaarea.sp.gov.br/plataformasp" class="mobile-menu-link" target="_blank">
+          <i class="fas fa-file-contract"></i>
+          <span class="mobile-menu-text">SEI</span>
+        </a>
+      </li>
+
+      <li class="mobile-menu-item">
+        <a href="#" class="mobile-menu-link" data-submenu="submenu4">
+          <i class="fas fa-address-book"></i>
+          <span class="mobile-menu-text">CONTATOS</span>
+          <i class="fas fa-chevron-right mobile-arrow"></i>
+        </a>
+        <ul class="mobile-submenu" id="submenu4">
+          <li class="mobile-submenu-item"><a href="#" class="mobile-submenu-link"><i class="fas fa-phone"></i> Comando Regional</a></li>
+          <li class="mobile-submenu-item"><a href="#" class="mobile-submenu-link"><i class="fas fa-building"></i> Seções Administrativas</a></li>
+          <li class="mobile-submenu-item"><a href="#" class="mobile-submenu-link"><i class="fas fa-users"></i> Companhias</a></li>
+          <li class="mobile-submenu-item"><a href="#" class="mobile-submenu-link"><i class="fas fa-handshake"></i> Órgãos Parceiros</a></li>
+          <li class="mobile-submenu-item"><a href="#" class="mobile-submenu-link"><i class="fas fa-ambulance"></i> Emergências</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Header Desktop -->
+  <header class="desktop-header">
     <div class="logo">
       <img src="img/logo/icon-pmrv.png" alt="Logo PMRV">
       <div class="logo-text">Área <span>Policial</span></div>
     </div>
 
-    <button class="menu-toggle" id="menuToggle">
-      <i class="fas fa-bars"></i>
-    </button>
-
-    <ul class="main-menu" id="mainMenu">
-      <li class="menu-item">
-        <a href="#" class="menu-link">
+    <ul class="desktop-menu">
+      <li class="desktop-menu-item">
+        <a href="#" class="desktop-menu-link">
           <i class="fas fa-shield-alt"></i>
           <span>POLICIAL MILITAR</span>
         </a>
-        <ul class="submenu">
-          <li class="submenu-item"><a href="mbft.html" class="submenu-link"><i class="fas fa-file-alt"></i> MBFT</a></li>
-          <li class="submenu-item"><a href="https://www.ctbdigital.com.br" class="submenu-link" target="_blank"><i class="fas fa-book"></i> CTB Digital</a></li>
-          <li class="submenu-item"><a href="municipios.html" class="submenu-link"><i class="fas fa-map-marker-alt"></i> Código de Município</a></li>
-          <li class="submenu-item"><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx" class="submenu-link" target="_blank"><i class="fas fa-money-check-alt"></i> Holerite</a></li>
-          <li class="submenu-item"><a href="https://marcosmunhoz.github.io/4CIA/assets/index.html" class="submenu-link" target="_blank"><i class="fas fa-chart-line"></i> Produtividade PDR</a></li>
-          <li class="submenu-item"><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca" class="submenu-link" target="_blank"><i class="fas fa-gavel"></i> Portal BNMP</a></li>
-          <li class="submenu-item"><a href="debito.html" class="submenu-link"><i class="fas fa-car"></i> Débito de Veículos</a></li>
-          <li class="submenu-item"><a href="manual.html" class="submenu-link"><i class="fas fa-user-shield"></i> Vigilante Rodoviário</a></li>
+        <ul class="desktop-submenu">
+          <li><a href="mbft.html" class="submenu-link"><i class="fas fa-file-alt"></i> MBFT</a></li>
+          <li><a href="https://www.ctbdigital.com.br" class="submenu-link" target="_blank"><i class="fas fa-book"></i> CTB Digital</a></li>
+          <li><a href="municipios.html" class="submenu-link"><i class="fas fa-map-marker-alt"></i> Código de Município</a></li>
+          <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx" class="submenu-link" target="_blank"><i class="fas fa-money-check-alt"></i> Holerite</a></li>
+          <li><a href="https://marcosmunhoz.github.io/4CIA/assets/index.html" class="submenu-link" target="_blank"><i class="fas fa-chart-line"></i> Produtividade PDR</a></li>
+          <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca" class="submenu-link" target="_blank"><i class="fas fa-gavel"></i> Portal BNMP</a></li>
+          <li><a href="debito.html" class="submenu-link"><i class="fas fa-car"></i> Débito de Veículos</a></li>
+          <li><a href="manual.html" class="submenu-link"><i class="fas fa-user-shield"></i> Vigilante Rodoviário</a></li>
         </ul>
       </li>
 
-      <li class="menu-item">
-        <a href="#" class="menu-link">
+      <li class="desktop-menu-item">
+        <a href="#" class="desktop-menu-link">
           <i class="fas fa-clipboard-list"></i>
           <span>FORMULÁRIOS</span>
         </a>
-        <ul class="submenu">
-          <li class="submenu-item"><a href="manutenção.html" class="submenu-link"><i class="fas fa-tools"></i> MANUTENÇÃO</a></li>
-          <li class="submenu-item"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode" class="submenu-link" target="_blank"><i class="fas fa-user-friends"></i> AMIGOS</a></li>
+        <ul class="desktop-submenu">
+          <li><a href="manutenção.html" class="submenu-link"><i class="fas fa-tools"></i> MANUTENÇÃO</a></li>
+          <li><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode" class="submenu-link" target="_blank"><i class="fas fa-user-friends"></i> AMIGOS</a></li>
         </ul>
       </li>
 
-      <li class="menu-item">
-        <a href="#" class="menu-link">
+      <li class="desktop-menu-item">
+        <a href="#" class="desktop-menu-link">
           <i class="fas fa-network-wired"></i>
           <span>VPN</span>
         </a>
-        <ul class="submenu">
-          <li class="submenu-item"><a href="http://www.intranet.policiamilitar.sp.gov.br/" class="submenu-link" target="_blank"><i class="fas fa-globe"></i> INTRANET</a></li>
-          <li class="submenu-item"><a href="http://10.61.15.39/Login" class="submenu-link" target="_blank"><i class="fas fa-lock"></i> PPRI</a></li>
-          <li class="submenu-item"><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login" class="submenu-link" target="_blank"><i class="fas fa-edit"></i> ASSENTAMENTO</a></li>
-          <li class="submenu-item"><a href="consulta.html" class="submenu-link"><i class="fas fa-search"></i> DEJEM-DELEGADA</a></li>
-          <li class="submenu-item"><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/" class="submenu-link" target="_blank"><i class="fas fa-server"></i> PRODESP</a></li>
+        <ul class="desktop-submenu">
+          <li><a href="http://www.intranet.policiamilitar.sp.gov.br/" class="submenu-link" target="_blank"><i class="fas fa-globe"></i> INTRANET</a></li>
+          <li><a href="http://10.61.15.39/Login" class="submenu-link" target="_blank"><i class="fas fa-lock"></i> PPRI</a></li>
+          <li><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login" class="submenu-link" target="_blank"><i class="fas fa-edit"></i> ASSENTAMENTO</a></li>
+          <li><a href="consulta.html" class="submenu-link"><i class="fas fa-search"></i> DEJEM-DELEGADA</a></li>
+          <li><a href="https://citrix.policiamilitar.sp.gov.br/Citrix/PMESPWeb/" class="submenu-link" target="_blank"><i class="fas fa-server"></i> PRODESP</a></li>
         </ul>
       </li>
 
-      <li class="menu-item">
-        <a href="#" class="menu-link">
+      <li class="desktop-menu-item">
+        <a href="#" class="desktop-menu-link">
           <i class="fas fa-map"></i>
           <span>MAPA</span>
         </a>
       </li>
 
-      <li class="menu-item">
-        <a href="https://www.simsgmder.der.sp.gov.br/simsgmder/" class="menu-link" target="_blank">
+      <li class="desktop-menu-item">
+        <a href="https://www.simsgmder.der.sp.gov.br/simsgmder/" class="desktop-menu-link" target="_blank">
           <i class="fas fa-road"></i>
           <span>DER</span>
         </a>
       </li>
 
-      <li class="menu-item">
-        <a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf" class="menu-link" target="_blank">
+      <li class="desktop-menu-item">
+        <a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf" class="desktop-menu-link" target="_blank">
           <i class="fas fa-envelope"></i>
           <span>I-NOTES</span>
         </a>
       </li>
 
-      <li class="menu-item">
-        <a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar" class="menu-link" target="_blank">
+      <li class="desktop-menu-item">
+        <a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar" class="desktop-menu-link" target="_blank">
           <i class="fas fa-tachometer-alt"></i>
           <span>INMETRO</span>
         </a>
       </li>
 
-      <li class="menu-item">
-        <a href="https://minhaarea.sp.gov.br/plataformasp" class="menu-link" target="_blank">
+      <li class="desktop-menu-item">
+        <a href="https://minhaarea.sp.gov.br/plataformasp" class="desktop-menu-link" target="_blank">
           <i class="fas fa-file-contract"></i>
           <span>SEI</span>
         </a>
       </li>
 
-      <li class="menu-item">
-        <a href="#" class="menu-link">
+      <li class="desktop-menu-item">
+        <a href="#" class="desktop-menu-link">
           <i class="fas fa-address-book"></i>
           <span>CONTATOS</span>
         </a>
-        <ul class="submenu">
-          <li class="submenu-item"><a href="#" class="submenu-link"><i class="fas fa-phone"></i> Comando Regional</a></li>
-          <li class="submenu-item"><a href="#" class="submenu-link"><i class="fas fa-building"></i> Seções Administrativas</a></li>
-          <li class="submenu-item"><a href="#" class="submenu-link"><i class="fas fa-users"></i> Companhias</a></li>
-          <li class="submenu-item"><a href="#" class="submenu-link"><i class="fas fa-handshake"></i> Órgãos Parceiros</a></li>
-          <li class="submenu-item"><a href="#" class="submenu-link"><i class="fas fa-ambulance"></i> Emergências</a></li>
+        <ul class="desktop-submenu">
+          <li><a href="#" class="submenu-link"><i class="fas fa-phone"></i> Comando Regional</a></li>
+          <li><a href="#" class="submenu-link"><i class="fas fa-building"></i> Seções Administrativas</a></li>
+          <li><a href="#" class="submenu-link"><i class="fas fa-users"></i> Companhias</a></li>
+          <li><a href="#" class="submenu-link"><i class="fas fa-handshake"></i> Órgãos Parceiros</a></li>
+          <li><a href="#" class="submenu-link"><i class="fas fa-ambulance"></i> Emergências</a></li>
         </ul>
       </li>
     </ul>
   </header>
 
   <!-- Conteúdo Principal -->
-  <main class="main-content">
-    <section class="welcome-section">
-      <h1 class="welcome-title">SISTEMA INTEGRADO PMRV</h1>
-      <p class="welcome-subtitle">Acesso rápido e seguro às ferramentas e recursos da Polícia Militar Rodoviária</p>
-    </section>
+  <div class="main-content-area">
+    <div class="content-wrapper">
+      <section class="welcome-section">
+        <h1 class="welcome-title">SISTEMA INTEGRADO PMRV</h1>
+        <p class="welcome-subtitle">Acesso rápido e seguro às ferramentas e recursos da Polícia Militar Rodoviária</p>
+      </section>
 
-    <section class="quick-access">
-      <div class="access-card pulse">
-        <div class="card-icon">
-          <i class="fas fa-shield-alt"></i>
+      <section class="quick-access">
+        <div class="access-card pulse">
+          <div class="card-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="card-title">Segurança</h3>
+          <p class="card-desc">Acesso protegido e criptografado a todos os sistemas</p>
         </div>
-        <h3 class="card-title">Segurança</h3>
-        <p class="card-desc">Acesso protegido e criptografado a todos os sistemas</p>
-      </div>
 
-      <div class="access-card">
-        <div class="card-icon">
-          <i class="fas fa-bolt"></i>
+        <div class="access-card">
+          <div class="card-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3 class="card-title">Rapidez</h3>
+          <p class="card-desc">Navegação otimizada para acesso rápido às ferramentas</p>
         </div>
-        <h3 class="card-title">Rapidez</h3>
-        <p class="card-desc">Navegação otimizada para acesso rápido às ferramentas</p>
-      </div>
 
-      <div class="access-card">
-        <div class="card-icon">
-          <i class="fas fa-mobile-alt"></i>
+        <div class="access-card">
+          <div class="card-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="card-title">Responsivo</h3>
+          <p class="card-desc">Acesse de qualquer dispositivo, em qualquer lugar</p>
         </div>
-        <h3 class="card-title">Responsivo</h3>
-        <p class="card-desc">Acesse de qualquer dispositivo, em qualquer lugar</p>
-      </div>
 
-      <div class="access-card">
-        <div class="card-icon">
-          <i class="fas fa-sync-alt"></i>
+        <div class="access-card">
+          <div class="card-icon">
+            <i class="fas fa-sync-alt"></i>
+          </div>
+          <h3 class="card-title">Atualizado</h3>
+          <p class="card-desc">Sempre com as informações mais recentes e relevantes</p>
         </div>
-        <h3 class="card-title">Atualizado</h3>
-        <p class="card-desc">Sempre com as informações mais recentes e relevantes</p>
-      </div>
-    </section>
-  </main>
+      </section>
+    </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p class="footer-text">© 2024 Polícia Militar Rodoviária - Sistema Integrado</p>
-  </footer>
+    <footer class="footer">
+      <p class="footer-text">© 2024 Polícia Militar Rodoviária - Sistema Integrado</p>
+    </footer>
+  </div>
 
   <script>
-    // Menu Mobile
-    const menuToggle = document.getElementById('menuToggle');
-    const mainMenu = document.getElementById('mainMenu');
+    // Controle do menu mobile
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const mobileMenuSidebar = document.getElementById('mobileMenuSidebar');
+    const mobileMainMenu = document.getElementById('mobileMainMenu');
 
-    menuToggle.addEventListener('click', () => {
-      mainMenu.classList.toggle('active');
-      menuToggle.innerHTML = mainMenu.classList.contains('active') 
-        ? '<i class="fas fa-times"></i>' 
-        : '<i class="fas fa-bars"></i>';
-    });
-
-    // Fechar menu ao clicar em um link no mobile
-    document.querySelectorAll('.menu-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        if (window.innerWidth <= 992) {
-          const parent = e.target.closest('.menu-item');
-          const submenu = parent.querySelector('.submenu');
-          
-          if (submenu) {
-            e.preventDefault();
-            submenu.classList.toggle('active');
-          } else {
-            mainMenu.classList.remove('active');
-            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-          }
-        }
-      });
-    });
-
-    // Fechar menu ao clicar fora
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.header') && window.innerWidth <= 992) {
-        mainMenu.classList.remove('active');
-        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-      }
-    });
-
-    // Submenu hover para desktop
-    if (window.innerWidth > 992) {
-      document.querySelectorAll('.menu-item').forEach(item => {
-        item.addEventListener('mouseenter', () => {
-          item.querySelector('.menu-link').style.background = 'rgba(0, 102, 204, 0.2)';
-          item.querySelector('.menu-link').style.color = '#4dabf7';
-        });
-
-        item.addEventListener('mouseleave', () => {
-          item.querySelector('.menu-link').style.background = '';
-          item.querySelector('.menu-link').style.color = '';
-        });
-      });
-    }
-
-    // Efeito no header ao rolar
-    window.addEventListener('scroll', () => {
-      const header = document.querySelector('.header');
-      if (window.scrollY > 50) {
-        header.style.background = 'rgba(0, 0, 0, 0.95)';
-        header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.7)';
+    // Expandir/recolher menu mobile
+    menuToggleBtn.addEventListener('click', () => {
+      mobileMenuSidebar.classList.toggle('active');
+      const icon = menuToggleBtn.querySelector('i');
+      if (mobileMenuSidebar.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+        menuToggleBtn.style.left = 'calc(280px - 20px)';
       } else {
-        header.style.background = 'rgba(0, 0, 0, 0.9)';
-        header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.5)';
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+        menuToggleBtn.style.left = '20px';
       }
     });
 
-    // Animação para os cards
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
+    // Submenus mobile
+    document.querySelectorAll('.mobile-menu-link[data-submenu]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const submenuId = link.getAttribute('data-submenu');
+        const submenu = document.getElementById(submenuId);
+        const arrow = link.querySelector('.mobile-arrow');
+        
+        // Fecha outros submenus
+        document.querySelectorAll('.mobile-submenu.active').forEach(activeSubmenu => {
+          if (activeSubmenu.id !== submenuId) {
+            activeSubmenu.classList.remove('active');
+            activeSubmenu.previousElementSibling.querySelector('.mobile-arrow').classList.remove('rotated');
+          }
+        });
+        
+        // Alterna o submenu atual
+        submenu.classList.toggle('active');
+        arrow.classList.toggle('rotated');
+        
+        // Ativa/desativa o link
+        link.classList.toggle('active');
       });
-    }, observerOptions);
-
-    // Aplicar animação aos cards
-    document.querySelectorAll('.access-card').forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      observer.observe(card);
     });
-  </script>
-</body>
-</html>
+
+    // Links sem submenu no mobile
+    document.querySelectorAll('.mobile-menu-link:not([data-submenu])').forEach(link => {
+      link.addEventListener('click', () => {
+        // Remove classe active de todos os links
