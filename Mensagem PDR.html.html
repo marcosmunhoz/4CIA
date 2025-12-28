@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Mensagem Padrão - 4º BPRv</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .header-controls {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #fff;
+            transition: border-color 0.3s;
+        }
+        
+        textarea {
+            height: 120px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+        
+        .field-info {
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-top: 5px;
+            padding: 3px 0;
+        }
+        
+        .half-width {
+            display: inline-block;
+            width: 48%;
+            margin-right: 4%;
+            vertical-align: top;
+        }
+        
+        .half-width:nth-child(2n) {
+            margin-right: 0;
+        }
+        
+        .quarter-width {
+            display: inline-block;
+            width: 23%;
+            margin-right: 2%;
+            vertical-align: top;
+        }
+        
+        .quarter-width:nth-child(4n) {
+            margin-right: 0;
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            min-width: 140px;
+        }
+        
+        #btnGerar {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        #btnGerar:hover {
+            background-color: #27ae60;
+        }
+        
+        #btnLimpar {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        #btnLimpar:hover {
+            background-color: #c0392b;
+        }
+        
+        #btnPadrao {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        #btnPadrao:hover {
+            background-color: #2980b9;
+        }
+        
+        .message-preview {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px dashed #3498db;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .preview-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-align: center;
+            font-size: 16px;
+            background-color: #e8f4fc;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .signature {
+            text-align: center;
+            margin-top: 30px;
+            font-style: italic;
+            color: #2c3e50;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            font-size: 14px;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .status.saved {
+            background-color: #2ecc71;
+            color: white;
+            display: block;
+        }
+        
+        .status.error {
+            background-color: #e74c3c;
+            color: white;
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .half-width, .quarter-width {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-controls">
+            <button type="button" id="btnPadrao">CARREGAR MODELO PADRÃO</button>
+        </div>
+        
+        <h1>FORMULÁRIO DE MENSAGEM PADRÃO - 4º BPRv</h1>
+        
+        <form id="mensagemForm">
+            <div class="form-group">
+                <label for="tipoMensagem" class="required">Tipo de Mensagem</label>
+                <select id="tipoMensagem" required>
+                    <option value="">Selecione...</option>
+                    <option value="PRÉVIA">PRÉVIA</option>
+                    <option value="FINAL">FINAL</option>
+                </select>
+                <div class="field-info">Selecione PRÉVIA ou FINAL conforme o tipo de mensagem</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="numeroMensagem" class="required">Número da Mensagem (PPRI)</label>
+                <input type="text" id="numeroMensagem" required>
+                <div class="field-info">Número gerado automaticamente pelo PPRI (ex: 25212)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="origemMensagem" class="required">Origem da Mensagem</label>
+                <input type="text" id="origemMensagem" required>
+                <div class="field-info">Local onde está sendo feita a mensagem (ex: 44.0)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="dataMensagem" class="required">Data da Mensagem</label>
+                <input type="text" id="dataMensagem" required>
+                <div class="field-info">Formato: DDMMMAA (ex: 28DEZ25 para 28 de dezembro de 2025)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="fato" class="required">Fato</label>
+                <input type="text" id="fato" required>
+                <div class="field-info">Descrição do fato (ex: Captura de Procurado pela Justiça - Prévia)</div>
+            </div>
+            
+            <div class="form-group">
+                <div class="half-width">
+                    <label for="ambiente" class="required">Ambiente</label>
+                    <input type="text" id="ambiente" required>
+                    <div class="field-info">Local do ocorrido (ex: Rodovia)</div>
+                </div>
+                
+                <div class="half-width">
+                    <label for="dataFato" class="required">Data do Fato</label>
+                    <input type="text" id="dataFato" required>
+                    <div class="field-info">Data do ocorrido no formato DDMMMAA</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="quarter-width">
+                    <label for="horario" class="required">Horário</label>
+                    <input type="text" id="horario" required>
+                    <div class="field-info">Horário do fato (ex: 09h50)</div>
+                </div>
+                
+                <div class="quarter-width">
+                    <label for="tempoResposta" class="required">Tempo de Resposta</label>
+                    <input type="text" id="tempoResposta" required>
+                    <div class="field-info">Tempo de resposta da equipe (ex: Imediato)</div>
+                </div>
+                
+                <div class="quarter-width">
+                    <label for="efetivo" class="required">Efetivo Empenhado</label>
+                    <input type="text" id="efetivo" required>
+                    <div class="field-info">Quantidade de PMs envolvidos (ex: 04 PMRv)</div>
+                </div>
+                
+                <div class="quarter-width">
+                    <label for="pelotao" class="required">Pelotão</label>
+                    <input type="text" id="pelotao" required>
+                    <div class="field-info">Pelotão responsável (ex: 2º Pel)</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="endereco" class="required">Endereço</label>
+                <input type="text" id="endereco" required>
+                <div class="field-info">Endereço completo do local do fato</div>
+            </div>
+            
+            <div class="form-group">
+                <div class="half-width">
+                    <label for="municipio" class="required">Município</label>
+                    <input type="text" id="municipio" required>
+                    <div class="field-info">Município onde ocorreu o fato (ex: Pirassununga/SP)</div>
+                </div>
+                
+                <div class="half-width">
+                    <label for="delegacia" class="required">Delegacia</label>
+                    <input type="text" id="delegacia" required>
+                    <div class="field-info">Delegacia para onde será encaminhado (ex: Delegacia de Pirassununga/SP)</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="viaturas">Viaturas Envolvidas</label>
+                <input type="text" id="viaturas">
+                <div class="field-info">Identificação das viaturas utilizadas</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="policiais" class="required">Policiais Militares que Atenderam</label>
+                <textarea id="policiais" required></textarea>
+                <div class="field-info">Relacione todos os PMs envolvidos na ação</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="comandantes" class="required">Comandantes</label>
+                <textarea id="comandantes" required></textarea>
+                <div class="field-info">Lista dos comandantes envolvidos na cadeia de comando</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="registros" class="required">Registros</label>
+                <input type="text" id="registros" required>
+                <div class="field-info">Tokens e números de registro (ex: Token: BO202512281009132 e PPRI: 466473)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="historico" class="required">Histórico</label>
+                <textarea id="historico" required></textarea>
+                <div class="field-info">Descrição detalhada dos fatos ocorridos</div>
+            </div>
+            
+            <div class="form-group">
+                <div class="half-width">
+                    <label for="autoridadeLocal">Autoridade(s) Presente(s) no Local</label>
+                    <input type="text" id="autoridadeLocal">
+                    <div class="field-info">Autoridades que estiveram presentes no local</div>
+                </div>
+                
+                <div class="half-width">
+                    <label for="autoridadeCientificada">Autoridade(s) Cientificada(s)</label>
+                    <input type="text" id="autoridadeCientificada">
+                    <div class="field-info">Autoridades que foram informadas sobre o ocorrido</div>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button type="button" id="btnGerar">GERAR MENSAGEM</button>
+                <button type="button" id="btnLimpar">LIMPAR CAMPOS</button>
+            </div>
+        </form>
+        
+        <div class="message-preview" id="messagePreview">
+            <div class="preview-title">PRÉVIA DA MENSAGEM GERADA</div>
+            <div id="previewContent">Preencha os campos acima e clique em "GERAR MENSAGEM"</div>
+        </div>
+        
+        <div class="signature">
+            "Nós, Policiais Militares, sob a proteção de Deus, estamos compromissados com a Defesa da Vida, da Integridade Física e da Dignidade da Pessoa Humana"
+        </div>
+    </div>
+    
+    <div class="status" id="statusMessage"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos do DOM
+            const form = document.getElementById('mensagemForm');
+            const btnGerar = document.getElementById('btnGerar');
+            const btnLimpar = document.getElementById('btnLimpar');
+            const btnPadrao = document.getElementById('btnPadrao');
+            const previewContent = document.getElementById('previewContent');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            // Chaves para localStorage
+            const STORAGE_KEY = 'mensagem_bprv_form_data';
+            
+            // Função para mostrar status
+            function showStatus(message, type) {
+                statusMessage.textContent = message;
+                statusMessage.className = `status ${type}`;
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Função para salvar dados no localStorage
+            function saveToLocalStorage() {
+                const formData = {};
+                const formElements = form.elements;
+                
+                for (let element of formElements) {
+                    if (element.id && element.id !== 'btnGerar' && element.id !== 'btnLimpar' && element.id !== 'btnPadrao') {
+                        formData[element.id] = element.value;
+                    }
+                }
+                
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+                    showStatus('Dados salvos automaticamente!', 'saved');
+                } catch (e) {
+                    console.error('Erro ao salvar dados:', e);
+                    showStatus('Erro ao salvar dados!', 'error');
+                }
+            }
+            
+            // Função para carregar dados do localStorage
+            function loadFromLocalStorage() {
+                try {
+                    const savedData = localStorage.getItem(STORAGE_KEY);
+                    if (savedData) {
+                        const formData = JSON.parse(savedData);
+                        
+                        for (const [id, value] of Object.entries(formData)) {
+                            const element = document.getElementById(id);
+                            if (element) {
+                                element.value = value;
+                            }
+                        }
+                        
+                        // Se não há dados salvos, carrega o modelo padrão
+                        if (Object.keys(formData).length === 0) {
+                            loadDefaultModel();
+                        }
+                    } else {
+                        loadDefaultModel();
+                    }
+                } catch (e) {
+                    console.error('Erro ao carregar dados:', e);
+                    loadDefaultModel();
+                }
+            }
+            
+            // Função para carregar o modelo padrão
+            function loadDefaultModel() {
+                document.getElementById('tipoMensagem').value = 'PRÉVIA';
+                document.getElementById('numeroMensagem').value = '25212';
+                document.getElementById('origemMensagem').value = '44.0';
+                document.getElementById('dataMensagem').value = '28DEZ25';
+                document.getElementById('fato').value = 'Captura de Procurado pela Justiça - Prévia';
+                document.getElementById('ambiente').value = 'Rodovia';
+                document.getElementById('dataFato').value = '28DEZ25';
+                document.getElementById('horario').value = '09h50';
+                document.getElementById('tempoResposta').value = 'Imediato';
+                document.getElementById('efetivo').value = '04 PMRv';
+                document.getElementById('pelotao').value = '2º Pel';
+                document.getElementById('endereco').value = 'SP 330 - Rodovia Anhanguera, Km 208 - Pista Norte';
+                document.getElementById('municipio').value = 'Pirassununga/SP';
+                document.getElementById('delegacia').value = 'Delegacia de Pirassununga/SP';
+                document.getElementById('viaturas').value = 'R-04482 Equipe TOR';
+                document.getElementById('policiais').value = 'Encarregado 1º Sgt PM 110962-6 Marchetti, Motorista Cb PM 143043-2 Junior, Auxiliar 01 Sd PM 191871-A e Auxiliar 02 Sd PM 196058-0 Izaque, todos compondo a Viatura R-04482 Equipe TOR.';
+                document.getElementById('comandantes').value = 'NOME COMPLETO CMT CPRv: Cel PM Hugo Araujo Santos - Comandante do Pol Rv\nNOME COMPLETO CMT BTL: Ten Cel PM Geraldo de Castro Nogueira Neto - Comandante do 4° BPRv\nNOME COMPLETO CMT CIA: Cap PM Daniel Dworak Neves - Comandante da 4ª Cia do 4º BPRv\nNOME COMPLETO CMT PEL: 1º Ten PM Rodrigo Gonçalves de Campos - Comandante do 1º , 2º e 3º Pelotão da 4ª Cia do 4º BPRv';
+                document.getElementById('registros').value = 'Token: BO202512281009132 e PPRI: 466473';
+                document.getElementById('historico').value = 'Durante Operação de Fiscalização de Ônibus, realizada na Rodovia SP-330, km 208+000, sentido Norte, esta equipe procedeu à abordagem de um veículo de transporte coletivo da empresa LD Turismo, oriundo de São Paulo/SP com destino ao Estado da Bahia.\nDurante a pesquisa de antecedentes criminais dos passageiros, foi constatado mandado de prisão em aberto em desfavor de JOÃO GABRIEL SOARES PIRES DOS SANTOS, CPF nº 866.791.755-93, o qual ocupava a poltrona nº 45 do referido coletivo.\nDiante dos fatos, o indivíduo será encaminhado à Santa Casa de Pirassununga/SP para avaliação médica e expedição de laudo, sendo posteriormente apresentado à Delegacia de Polícia de Pirassununga/SP, para as providências de Polícia Judiciária cabíveis.';
+                document.getElementById('autoridadeLocal').value = '1º Sgt PM 110962-6 Marchetti';
+                document.getElementById('autoridadeCientificada').value = '1º Ten PM Rodrigo Gonçalves de Campos - Comandante do 1º, 2º e 3° Pelotão da 4ª Cia do 4º BPRv';
+                
+                showStatus('Modelo padrão carregado!', 'saved');
+                saveToLocalStorage(); // Salva o modelo padrão no localStorage
+            }
+            
+            // Função para gerar a mensagem formatada
+            function gerarMensagem() {
+                // Verificar se o formulário é válido
+                if (!form.checkValidity()) {
+                    alert('Por favor, preencha todos os campos obrigatórios (*)');
+                    form.reportValidity();
+                    return;
+                }
+                
+                // Obter valores dos campos
+                const tipoMsg = document.getElementById('tipoMensagem').value;
+                const numMsg = document.getElementById('numeroMensagem').value;
+                const origemMsg = document.getElementById('origemMensagem').value;
+                const dataMsg = document.getElementById('dataMensagem').value;
+                const fato = document.getElementById('fato').value;
+                const ambiente = document.getElementById('ambiente').value;
+                const dataFato = document.getElementById('dataFato').value;
+                const horario = document.getElementById('horario').value;
+                const tempoResposta = document.getElementById('tempoResposta').value;
+                const efetivo = document.getElementById('efetivo').value;
+                const pelotao = document.getElementById('pelotao').value;
+                const endereco = document.getElementById('endereco').value;
+                const municipio = document.getElementById('municipio').value;
+                const delegacia = document.getElementById('delegacia').value;
+                const viaturas = document.getElementById('viaturas').value;
+                const policiais = document.getElementById('policiais').value;
+                const comandantes = document.getElementById('comandantes').value;
+                const registros = document.getElementById('registros').value;
+                const historico = document.getElementById('historico').value;
+                const autoridadeLocal = document.getElementById('autoridadeLocal').value;
+                const autoridadeCientificada = document.getElementById('autoridadeCientificada').value;
+                
+                // Gerar número completo da mensagem
+                const ano = dataMsg.slice(5);
+                const numeroCompletoMsg = `4BPRv - ${numMsg}/${origemMsg}/${ano}`;
+                
+                // Construir a mensagem formatada
+                let mensagem = `MENSAGEM Nº ${numeroCompletoMsg}, de ${dataMsg}\n`;
+                mensagem += `Do Oficial de Permanência da 4ª Cia\n`;
+                mensagem += `Ao Sr. Oficial de Permanência do 4º BPRv\n`;
+                mensagem += `Assunto: ${fato}\n\n`;
+                mensagem += `          \n`;
+                mensagem += `Fato: ${fato}\n`;
+                mensagem += `Ambiente: ${ambiente}\n`;
+                mensagem += `Data: ${dataFato}\n`;
+                mensagem += `Horário: ${horario}\n`;
+                mensagem += `Tempo de Resposta: ${tempoResposta}\n`;
+                mensagem += `Efetivo Empenhado: ${efetivo}\n`;
+                mensagem += `Endereço: ${endereco}\n`;
+                mensagem += `Município: ${municipio}\n`;
+                mensagem += `Btl: 4º BPRv\n`;
+                mensagem += `Cia: 4ª Cia\n`;
+                mensagem += `Pel: ${pelotao}\n`;
+                mensagem += `Policiais militares que atenderam: ${policiais}\n`;
+                mensagem += `DP: ${delegacia}\n`;
+                
+                if (viaturas.trim()) {
+                    mensagem += `Veículo envolvido: ${viaturas}\n`;
+                }
+                
+                mensagem += `${comandantes}\n`;
+                mensagem += `Registro: ${registros}\n`;
+                mensagem += `Histórico: ${historico}\n\n`;
+                mensagem += `                            \n\n`;
+                
+                if (autoridadeLocal.trim()) {
+                    mensagem += `Autoridade presentes no local: ${autoridadeLocal}\n`;
+                }
+                
+                if (autoridadeCientificada.trim()) {
+                    mensagem += `Autoridades que foram cientificadas: ${autoridadeCientificada}\n`;
+                }
+                
+                // Exibir no preview
+                previewContent.textContent = mensagem;
+                
+                // Rolar até o preview
+                document.getElementById('messagePreview').scrollIntoView({ behavior: 'smooth' });
+                
+                // Mostrar mensagem de sucesso
+                showStatus('Mensagem gerada com sucesso!', 'saved');
+            }
+            
+            // Função para limpar todos os campos
+            function limparCampos() {
+                if (confirm('Tem certeza que deseja limpar todos os campos? Os dados serão perdidos.')) {
+                    form.reset();
+                    previewContent.textContent = 'Preencha os campos acima e clique em "GERAR MENSAGEM"';
+                    localStorage.removeItem(STORAGE_KEY);
+                    showStatus('Campos limpos e dados removidos!', 'saved');
+                }
+            }
+            
+            // Event Listeners para salvar automaticamente
+            form.addEventListener('input', function(e) {
+                if (e.target.id && e.target.id !== 'btnGerar' && e.target.id !== 'btnLimpar' && e.target.id !== 'btnPadrao') {
+                    saveToLocalStorage();
+                }
+            });
+            
+            form.addEventListener('change', function(e) {
+                if (e.target.id && e.target.id !== 'btnGerar' && e.target.id !== 'btnLimpar' && e.target.id !== 'btnPadrao') {
+                    saveToLocalStorage();
+                }
+            });
+            
+            // Adicionar evento ao botão Gerar
+            btnGerar.addEventListener('click', gerarMensagem);
+            
+            // Adicionar evento ao botão Limpar
+            btnLimpar.addEventListener('click', limparCampos);
+            
+            // Adicionar evento ao botão Padrão
+            btnPadrao.addEventListener('click', function() {
+                if (confirm('Carregar o modelo padrão? Os dados atuais serão substituídos.')) {
+                    loadDefaultModel();
+                    previewContent.textContent = 'Preencha os campos acima e clique em "GERAR MENSAGEM"';
+                }
+            });
+            
+            // Permitir enviar o formulário com Enter (exceto em textareas)
+            form.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'BUTTON') {
+                    e.preventDefault();
+                    gerarMensagem();
+                }
+            });
+            
+            // Carregar dados ao iniciar
+            loadFromLocalStorage();
+            
+            // Tentar gerar mensagem automaticamente se houver dados
+            setTimeout(() => {
+                if (document.getElementById('numeroMensagem').value !== '' && 
+                    document.getElementById('origemMensagem').value !== '') {
+                    gerarMensagem();
+                }
+            }, 500);
+            
+            // Salvar dados antes de fechar a página
+            window.addEventListener('beforeunload', function() {
+                saveToLocalStorage();
+            });
+        });
+    </script>
+</body>
+</html>
