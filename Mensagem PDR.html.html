@@ -344,7 +344,7 @@
             
             <div class="form-group">
                 <label for="veiculos">Veículos Envolvidos:</label>
-                <input type="text" id="veiculos" requered>
+                <input type="text" id="veiculos" required>
                 <div class="field-info">Identificação dos veículos</div>
             </div>
             
@@ -501,7 +501,7 @@
                 saveToLocalStorage(); // Salva o modelo padrão no localStorage
             }
             
-            // Função para gerar a mensagem formatada
+            // Função para gerar a mensagem formatada - CORRIGIDA
             function gerarMensagem() {
                 // Verificar se o formulário é válido
                 if (!form.checkValidity()) {
@@ -525,7 +525,7 @@
                 const endereco = document.getElementById('endereco').value;
                 const municipio = document.getElementById('municipio').value;
                 const delegacia = document.getElementById('delegacia').value;
-                const viaturas = document.getElementById('viaturas').value;
+                const veiculos = document.getElementById('veiculos').value;
                 const policiais = document.getElementById('policiais').value;
                 const comandantes = document.getElementById('comandantes').value;
                 const registros = document.getElementById('registros').value;
@@ -557,8 +557,8 @@
                 mensagem += `Policiais militares que atenderam: ${policiais}\n`;
                 mensagem += `DP: ${delegacia}\n`;
                 
-                if (viaturas.trim()) {
-                    mensagem += `Veículo envolvido: ${viaturas}\n`;
+                if (veiculos.trim()) {
+                    mensagem += `Veículo envolvido: ${veiculos}\n`;
                 }
                 
                 mensagem += `${comandantes}\n`;
