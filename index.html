@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Área Policial</title>
+  <!-- FAVICON ADICIONADO -->
+  <link rel="icon" href="img/logo/icon-pmrv.png" type="image/png">
+  <link rel="shortcut icon" href="img/logo/icon-pmrv.png" type="image/png">
+  <link rel="apple-touch-icon" href="img/logo/icon-pmrv.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
   <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -780,6 +784,135 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
   <script>
+    // SISTEMA PULL-TO-REFRESH
+    let startY = 0;
+    let currentY = 0;
+    let isRefreshing = false;
+    let pullDistance = 0;
+    const refreshThreshold = 80;
+
+    const refreshIndicator = document.getElementById('refreshIndicator');
+    const refreshContent = document.getElementById('refreshContent');
+
+    // Configurar eventos para pull-to-refresh
+    document.addEventListener('DOMContentLoaded', function() {
+      // Para dispositivos touch
+      document.addEventListener('touchstart', handleTouchStart, { passive: false });
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+      
+      // Para mouse (testes em desktop)
+      document.addEventListener('mousedown', handleMouseStart, { passive: false });
+      document.addEventListener('mousemove', handleMouseMove, { passive: false });
+      document.addEventListener('mouseup', handleMouseEnd);
+    });
+
+    function handleTouchStart(e) {
+      if (window.scrollY === 0 && !isRefreshing) {
+        startY = e.touches[0].pageY;
+        currentY = startY;
+      }
+    }
+
+    function handleTouchMove(e) {
+      if (startY === 0 || isRefreshing) return;
+      
+      currentY = e.touches[0].pageY;
+      pullDistance = currentY - startY;
+      
+      if (pullDistance > 0) {
+        e.preventDefault();
+        updateRefreshIndicator(pullDistance);
+      }
+    }
+
+    function handleTouchEnd() {
+      if (startY === 0) return;
+      
+      if (pullDistance >= refreshThreshold && !isRefreshing) {
+        startRefresh();
+      } else {
+        resetRefresh();
+      }
+      
+      startY = 0;
+      currentY = 0;
+    }
+
+    function handleMouseStart(e) {
+      if (window.scrollY === 0 && !isRefreshing) {
+        startY = e.pageY;
+        currentY = startY;
+      }
+    }
+
+    function handleMouseMove(e) {
+      if (startY === 0 || isRefreshing) return;
+      
+      currentY = e.pageY;
+      pullDistance = currentY - startY;
+      
+      if (pullDistance > 0) {
+        e.preventDefault();
+        updateRefreshIndicator(pullDistance);
+      }
+    }
+
+    function handleMouseEnd() {
+      if (startY === 0) return;
+      
+      if (pullDistance >= refreshThreshold && !isRefreshing) {
+        startRefresh();
+      } else {
+        resetRefresh();
+      }
+      
+      startY = 0;
+      currentY = 0;
+    }
+
+    function updateRefreshIndicator(distance) {
+      const maxDistance = 150;
+      const clampedDistance = Math.min(distance, maxDistance);
+      
+      const indicatorPosition = Math.min(clampedDistance - refreshThreshold, 60);
+      refreshIndicator.style.top = `${-60 + indicatorPosition}px`;
+      
+      if (distance > 10) {
+        refreshIndicator.classList.add('active');
+        document.body.classList.add('refresh-active');
+      }
+    }
+
+    function startRefresh() {
+      isRefreshing = true;
+      
+      refreshContent.innerHTML = `
+        <div class="refresh-spinner"></div>
+        <span>Atualizando...</span>
+      `;
+      
+      refreshIndicator.style.top = '0';
+      
+      // Recarrega a página após 1 segundo
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }
+
+    function resetRefresh() {
+      if (!isRefreshing) {
+        refreshIndicator.style.transition = 'top 0.3s ease';
+        refreshIndicator.style.top = '-60px';
+        
+        setTimeout(() => {
+          refreshIndicator.classList.remove('active');
+          document.body.classList.remove('refresh-active');
+          refreshIndicator.style.transition = '';
+        }, 300);
+      }
+    }
+
     // Funções do menu horizontal
     window.addEventListener('scroll', function() {
       const nav = document.getElementById('mainNav');
@@ -841,7 +974,7 @@
       }
     });
 
-    // NOVO: Funções de Localização
+    // Funções de Localização
     document.addEventListener('DOMContentLoaded', function() {
       const localizacaoBtn = document.getElementById('localizacaoBtn');
       const localizacaoInfo = document.getElementById('localizacaoInfo');
@@ -854,7 +987,6 @@
       
       let coordenadasAtuais = null;
       
-      // Função para formatar data/hora
       function formatarDataHora(data) {
         return data.toLocaleString('pt-BR', {
           day: '2-digit',
@@ -866,84 +998,69 @@
         });
       }
       
-      // Alternar visibilidade da caixa de localização
       localizacaoBtn.addEventListener('click', function(e) {
         e.stopPropagation();
         localizacaoInfo.classList.toggle('active');
         
-        // Se a caixa estiver abrindo e ainda não tem dados, busca localização
         if (localizacaoInfo.classList.contains('active') && !coordenadasAtuais) {
           obterLocalizacao();
         }
       });
       
-      // Fechar caixa de localização
       fecharLocalizacaoBtn.addEventListener('click', function() {
         localizacaoInfo.classList.remove('active');
       });
       
-      // Fechar ao clicar fora
       document.addEventListener('click', function(e) {
         if (!e.target.closest('.localizacao-container')) {
           localizacaoInfo.classList.remove('active');
         }
       });
       
-      // Função para obter localização
       function obterLocalizacao() {
-        // Verificar se o navegador suporta geolocalização
         if (!navigator.geolocation) {
           mostrarErro('Seu navegador não suporta geolocalização!');
           return;
         }
         
-        // Mostrar estado de carregamento
         localizacaoBtn.classList.add('loading');
         localizacaoBtn.innerHTML = '<span>🔄 Obtendo...</span>';
         
-        // Configurações
         const opcoes = {
-          enableHighAccuracy: true, // Usar GPS para maior precisão
-          timeout: 10000, // 10 segundos
-          maximumAge: 0 // Sem cache
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
         };
         
-        // Solicitar localização
         navigator.geolocation.getCurrentPosition(
-          // Sucesso
           function(posicao) {
             const latitude = posicao.coords.latitude;
             const longitude = posicao.coords.longitude;
             const timestamp = new Date(posicao.timestamp);
             
-            // Salvar coordenadas
             coordenadasAtuais = { latitude, longitude };
             
-            // Atualizar interface
             latitudeValue.textContent = latitude.toFixed(6);
             longitudeValue.textContent = longitude.toFixed(6);
             horarioValue.textContent = formatarDataHora(timestamp);
             
-            // Esconder erro se existir
             localizacaoError.style.display = 'none';
             
-            // Restaurar botão
             localizacaoBtn.classList.remove('loading');
             localizacaoBtn.innerHTML = '<span>📍 Localização</span>';
           },
           
-          // Erro
           function(erro) {
             let mensagemErro = '';
             
             switch(erro.code) {
-              case 1: // PERMISSION_DENIED
+              case 1:
                 mensagemErro = 'Permissão negada! Por favor, permita o acesso à localização nas configurações do navegador.';
                 break;
-              case 2: // POSITION_UNAVAILABLE
+              case 2:
                 mensagemErro = 'Localização indisponível! Verifique se o GPS está ativado.';
                 break;
-              case 3: // TIMEOUT
+              case 3:
                 mensagemErro = 'Tempo esgotado! Tente novamente.';
                 break;
               default:
@@ -952,7 +1069,6 @@
             
             mostrarErro(mensagemErro);
             
-            // Restaurar botão
             localizacaoBtn.classList.remove('loading');
             localizacaoBtn.innerHTML = '<span>📍 Localização</span>';
           },
@@ -961,13 +1077,11 @@
         );
       }
       
-      // Função para mostrar erro
       function mostrarErro(mensagem) {
         localizacaoError.textContent = mensagem;
         localizacaoError.style.display = 'block';
       }
       
-      // Função para copiar coordenadas
       copiarCoordenadasBtn.addEventListener('click', function() {
         if (!coordenadasAtuais) return;
         
@@ -975,7 +1089,6 @@
         
         navigator.clipboard.writeText(texto)
           .then(() => {
-            // Feedback visual
             const originalText = copiarCoordenadasBtn.textContent;
             copiarCoordenadasBtn.textContent = '✅ Copiado!';
             copiarCoordenadasBtn.style.background = 'rgba(76, 175, 80, 0.3)';
@@ -986,7 +1099,6 @@
             }, 2000);
           })
           .catch(() => {
-            // Fallback
             const textarea = document.createElement('textarea');
             textarea.value = texto;
             document.body.appendChild(textarea);
@@ -994,7 +1106,6 @@
             document.execCommand('copy');
             document.body.removeChild(textarea);
             
-            // Feedback visual
             const originalText = copiarCoordenadasBtn.textContent;
             copiarCoordenadasBtn.textContent = '✅ Copiado!';
             copiarCoordenadasBtn.style.background = 'rgba(76, 175, 80, 0.3)';
