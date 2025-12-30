@@ -91,76 +91,35 @@
       font-size: 15px;
     }
     
-    /* Estilos para os select boxes */
-    .custom-select {
-      position: relative;
+    /* Estilos para os selects nativos */
+    select {
       width: 100%;
-    }
-    
-    .select-selected {
-      background-color: #f8f9fa;
+      padding: 12px 15px;
+      font-size: 16px;
       border: 2px solid #1a2a6c;
       border-radius: 8px;
-      padding: 12px 15px;
-      cursor: pointer;
-      font-size: 16px;
-      font-family: 'Courier New', monospace;
+      background-color: #f8f9fa;
       color: #333;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s;
-    }
-    
-    .select-selected:after {
-      content: "▼";
-      font-size: 14px;
-      color: #1a2a6c;
-      transition: transform 0.3s;
-    }
-    
-    .select-selected.select-arrow-active:after {
-      transform: rotate(180deg);
-    }
-    
-    .select-items {
-      position: absolute;
-      background-color: white;
-      border: 2px solid #1a2a6c;
-      border-top: none;
-      border-radius: 0 0 8px 8px;
-      z-index: 99;
-      width: 100%;
-      max-height: 200px;
-      overflow-y: auto;
-      display: none;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-    
-    .select-items div {
-      padding: 12px 15px;
       cursor: pointer;
       font-family: 'Courier New', monospace;
-      font-size: 15px;
-      border-bottom: 1px solid #eee;
-      transition: background-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a2a6c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 16px;
     }
     
-    .select-items div:hover {
-      background-color: #e9ecef;
+    select:focus {
+      outline: none;
+      border-color: #2c3e50;
+      box-shadow: 0 0 10px rgba(26, 42, 108, 0.3);
     }
     
-    .select-items div:last-child {
-      border-bottom: none;
-    }
-    
-    .select-hide {
+    /* Remover seta padrão do IE */
+    select::-ms-expand {
       display: none;
-    }
-    
-    .same-as-selected {
-      background-color: #1a2a6c !important;
-      color: white !important;
     }
     
     /* Grupo para hora início e fim */
@@ -190,7 +149,7 @@
       white-space: nowrap;
     }
     
-    .equipo-select {
+    .equipo-select-container {
       flex: 1;
     }
     
@@ -337,14 +296,10 @@
         gap: 10px;
       }
       
-      .select-selected {
+      select {
         padding: 10px 12px;
         font-size: 15px;
-      }
-      
-      .select-items div {
-        padding: 10px 12px;
-        font-size: 14px;
+        background-position: right 12px center;
       }
     }
     
@@ -362,7 +317,7 @@
         font-size: 14px;
       }
       
-      .select-selected {
+      select {
         font-size: 14px;
       }
       
@@ -386,22 +341,16 @@
       <div class="time-group">
         <div class="time-item">
           <label class="control-label">HORA INÍCIO:</label>
-          <div class="custom-select" id="horaInicioSelect">
-            <div class="select-selected">10:00</div>
-            <div class="select-items select-hide" id="horaInicioItems">
-              <!-- Itens serão gerados por JavaScript -->
-            </div>
-          </div>
+          <select id="horaInicioSelect">
+            <!-- Itens serão gerados por JavaScript -->
+          </select>
         </div>
         
         <div class="time-item">
           <label class="control-label">HORA FIM:</label>
-          <div class="custom-select" id="horaFimSelect">
-            <div class="select-selected">11:30</div>
-            <div class="select-items select-hide" id="horaFimItems">
-              <!-- Itens serão gerados por JavaScript -->
-            </div>
-          </div>
+          <select id="horaFimSelect">
+            <!-- Itens serão gerados por JavaScript -->
+          </select>
         </div>
       </div>
       
@@ -409,23 +358,19 @@
         <label class="control-label">EQUIPE:</label>
         <div class="equipo-group">
           <div class="equipo-prefix">R-044</div>
-          <div class="custom-select equipo-select" id="equipoSelect">
-            <div class="select-selected">00</div>
-            <div class="select-items select-hide" id="equipoItems">
+          <div class="equipo-select-container">
+            <select id="equipoSelect">
               <!-- Itens serão gerados por JavaScript -->
-            </div>
+            </select>
           </div>
         </div>
       </div>
       
       <div class="control-group">
         <label class="control-label">OPERAÇÃO:</label>
-        <div class="custom-select" id="operacaoSelect">
-          <div class="select-selected">Op. CINTO DE SEGURANÇA</div>
-          <div class="select-items select-hide" id="operacaoItems">
-            <!-- Itens serão gerados por JavaScript -->
-          </div>
-        </div>
+        <select id="operacaoSelect">
+          <!-- Itens serão gerados por JavaScript -->
+        </select>
       </div>
     </div>
     
@@ -526,58 +471,27 @@ Obs:
       { display: "Operação Interior Mais Seguro", value: "Op. INTERIOR MAIS SEGURO" }
     ];
     
-    // Função para criar um custom select
-    function criarCustomSelect(selectId, items, selectedValue, onChangeCallback) {
+    // Função para popular um select com opções
+    function popularSelect(selectId, options, defaultValue) {
       const select = document.getElementById(selectId);
-      const selectedDiv = select.querySelector('.select-selected');
-      const itemsDiv = select.querySelector('.select-items');
+      select.innerHTML = '';
       
-      // Limpar itens existentes
-      itemsDiv.innerHTML = '';
-      
-      // Adicionar itens
-      items.forEach(item => {
-        const div = document.createElement('div');
-        div.textContent = item.display || item;
-        div.dataset.value = item.value || item;
-        
-        if ((item.value || item) === selectedValue) {
-          div.classList.add('same-as-selected');
-        }
-        
-        div.addEventListener('click', function() {
-          const value = this.dataset.value;
-          selectedDiv.textContent = item.display || item;
-          
-          // Atualizar classe "same-as-selected"
-          const allItems = itemsDiv.querySelectorAll('div');
-          allItems.forEach(item => item.classList.remove('same-as-selected'));
-          this.classList.add('same-as-selected');
-          
-          // Fechar dropdown
-          itemsDiv.classList.add('select-hide');
-          selectedDiv.classList.remove('select-arrow-active');
-          
-          // Chamar callback
-          if (onChangeCallback) {
-            onChangeCallback(value);
+      options.forEach(option => {
+        const optElement = document.createElement('option');
+        if (typeof option === 'object') {
+          optElement.value = option.value;
+          optElement.textContent = option.display;
+          if (option.value === defaultValue) {
+            optElement.selected = true;
           }
-        });
-        
-        itemsDiv.appendChild(div);
-      });
-      
-      // Evento para abrir/fechar dropdown
-      selectedDiv.addEventListener('click', function(e) {
-        e.stopPropagation();
-        itemsDiv.classList.toggle('select-hide');
-        this.classList.toggle('select-arrow-active');
-      });
-      
-      // Fechar dropdown ao clicar fora
-      document.addEventListener('click', function() {
-        itemsDiv.classList.add('select-hide');
-        selectedDiv.classList.remove('select-arrow-active');
+        } else {
+          optElement.value = option;
+          optElement.textContent = option;
+          if (option === defaultValue) {
+            optElement.selected = true;
+          }
+        }
+        select.appendChild(optElement);
       });
     }
     
@@ -589,15 +503,19 @@ Obs:
       const horaFimText = document.getElementById('horaFimText');
       const equipoText = document.getElementById('equipoText');
       const operacaoText = document.getElementById('operacaoText');
+      const horaInicioSelect = document.getElementById('horaInicioSelect');
+      const horaFimSelect = document.getElementById('horaFimSelect');
+      const equipoSelect = document.getElementById('equipoSelect');
+      const operacaoSelect = document.getElementById('operacaoSelect');
       const copyButton = document.getElementById('copyButton');
       const whatsappButton = document.getElementById('whatsappButton');
       const notification = document.getElementById('notification');
       
-      // Converter horários para formato de select
-      const horariosSelect = horarios.map(h => ({ display: h, value: h }));
-      
-      // Converter números da equipe para formato de select
-      const numerosSelect = numerosEquipe.map(n => ({ display: n, value: n }));
+      // Popular os selects
+      popularSelect('horaInicioSelect', horarios, '10:00');
+      popularSelect('horaFimSelect', horarios, '11:30');
+      popularSelect('equipoSelect', numerosEquipe, '00');
+      popularSelect('operacaoSelect', operacoes, 'Op. CINTO DE SEGURANÇA');
       
       // Atualizar hora início
       function atualizarHoraInicio(valor) {
@@ -619,17 +537,28 @@ Obs:
         operacaoText.textContent = valor;
       }
       
-      // Criar selects
-      criarCustomSelect('horaInicioSelect', horariosSelect, '10:00', atualizarHoraInicio);
-      criarCustomSelect('horaFimSelect', horariosSelect, '11:30', atualizarHoraFim);
-      criarCustomSelect('equipoSelect', numerosSelect, '00', atualizarEquipo);
-      criarCustomSelect('operacaoSelect', operacoes, 'Op. CINTO DE SEGURANÇA', atualizarOperacao);
-      
       // Inicializar valores
       atualizarHoraInicio('10:00');
       atualizarHoraFim('11:30');
       atualizarEquipo('00');
       atualizarOperacao('Op. CINTO DE SEGURANÇA');
+      
+      // Adicionar event listeners
+      horaInicioSelect.addEventListener('change', function() {
+        atualizarHoraInicio(this.value);
+      });
+      
+      horaFimSelect.addEventListener('change', function() {
+        atualizarHoraFim(this.value);
+      });
+      
+      equipoSelect.addEventListener('change', function() {
+        atualizarEquipo(this.value);
+      });
+      
+      operacaoSelect.addEventListener('change', function() {
+        atualizarOperacao(this.value);
+      });
       
       // Função para obter o texto completo
       function obterTextoCompleto() {
@@ -710,18 +639,6 @@ Obs:
           whatsappButton.innerHTML = originalText;
           notification.style.display = 'none';
         }, 3000);
-      });
-      
-      // Prevenir zoom e scroll horizontal em dispositivos móveis
-      document.addEventListener('touchmove', function(e) {
-        if (e.touches.length > 1) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-      
-      // Prevenir zoom com gestos
-      document.addEventListener('gesturestart', function(e) {
-        e.preventDefault();
       });
     });
   </script>
