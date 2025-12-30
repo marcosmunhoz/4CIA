@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Nota de Empenho</title>
+  <title>Nota de Empenho - Modelo Padrão</title>
   <style>
     * {
       margin: 0;
@@ -91,6 +91,28 @@
       font-size: 15px;
     }
     
+    /* Grupo para data */
+    .data-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .data-item {
+      flex: 1;
+    }
+    
+    /* Grupo para hora início e fim */
+    .time-group {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .time-item {
+      flex: 1;
+    }
+    
     /* Estilos para os selects nativos */
     select {
       width: 100%;
@@ -120,17 +142,6 @@
     /* Remover seta padrão do IE */
     select::-ms-expand {
       display: none;
-    }
-    
-    /* Grupo para hora início e fim */
-    .time-group {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-    
-    .time-item {
-      flex: 1;
     }
     
     /* Grupo para equipe */
@@ -269,7 +280,7 @@
         padding: 15px;
       }
       
-      .time-group {
+      .data-group, .time-group {
         flex-direction: column;
         gap: 15px;
       }
@@ -338,6 +349,27 @@
     </div>
     
     <div class="controls-container">
+      <div class="control-group">
+        <label class="control-label">DATA (DIAMESANO):</label>
+        <div class="data-group">
+          <div class="data-item">
+            <select id="diaSelect">
+              <!-- Dias de 1 a 31 -->
+            </select>
+          </div>
+          <div class="data-item">
+            <select id="mesSelect">
+              <!-- Meses JAN a DEZ -->
+            </select>
+          </div>
+          <div class="data-item">
+            <select id="anoSelect">
+              <!-- Anos -->
+            </select>
+          </div>
+        </div>
+      </div>
+      
       <div class="time-group">
         <div class="time-item">
           <label class="control-label">HORA INÍCIO:</label>
@@ -378,7 +410,7 @@
 *4ª Cia do 4º BPRv – 1º Pelotão*
 *NOTA DE EMPENHO EM PONTO DE ESTACIONAMENTO* 
 
-Data: 20DEZ25
+Data: <span id="dataText">20DEZ25</span>
 Hora: <span id="horaInicioText">10:00</span> às <span id="horaFimText">11h30</span>
 Natureza: Z99
 Equipe: *R-<span id="equipoText">04400</span>*  
@@ -421,7 +453,7 @@ Obs:
     </div>
     
     <div class="footer">
-      <p>Clique nos campos acima para selecionar horários, equipe e operação</p>
+      <p>Clique nos campos acima para selecionar data, horários, equipe e operação</p>
       <p>Desenvolvido para agilizar o envio de produtividade do turno de serviço</p>
     </div>
   </div>
@@ -451,6 +483,43 @@ Obs:
         numeros.push(i.toString().padStart(2, '0'));
       }
       return numeros;
+    }
+    
+    // Gerar dias de 1 a 31
+    function gerarDias() {
+      const dias = [];
+      for (let i = 1; i <= 31; i++) {
+        dias.push(i.toString().padStart(2, '0'));
+      }
+      return dias;
+    }
+    
+    // Meses em formato DIAMESANO
+    const meses = [
+      { display: "JANEIRO", value: "JAN" },
+      { display: "FEVEREIRO", value: "FEV" },
+      { display: "MARÇO", value: "MAR" },
+      { display: "ABRIL", value: "ABR" },
+      { display: "MAIO", value: "MAI" },
+      { display: "JUNHO", value: "JUN" },
+      { display: "JULHO", value: "JUL" },
+      { display: "AGOSTO", value: "AGO" },
+      { display: "SETEMBRO", value: "SET" },
+      { display: "OUTUBRO", value: "OUT" },
+      { display: "NOVEMBRO", value: "NOV" },
+      { display: "DEZEMBRO", value: "DEZ" }
+    ];
+    
+    // Gerar anos (2024 a 2030)
+    function gerarAnos() {
+      const anos = [];
+      const anoAtual = new Date().getFullYear();
+      for (let i = anoAtual; i <= anoAtual + 5; i++) {
+        // Formato: 25 (para 2025)
+        const anoCurto = i.toString().slice(2);
+        anos.push({ display: i.toString(), value: anoCurto });
+      }
+      return anos;
     }
     
     // Lista de operações
@@ -495,27 +564,65 @@ Obs:
       });
     }
     
+    // Função para obter data atual no formato DIAMESANO
+    function obterDataAtual() {
+      const hoje = new Date();
+      const dia = hoje.getDate().toString().padStart(2, '0');
+      const mesIndex = hoje.getMonth(); // 0-11
+      const mes = meses[mesIndex].value;
+      const ano = hoje.getFullYear().toString().slice(2); // Últimos 2 dígitos
+      
+      return {
+        dia: dia,
+        mes: mes,
+        ano: ano
+      };
+    }
+    
     // Inicializar
     document.addEventListener('DOMContentLoaded', function() {
       const horarios = gerarHorarios();
       const numerosEquipe = gerarNumerosEquipe();
+      const dias = gerarDias();
+      const anos = gerarAnos();
+      
+      const dataText = document.getElementById('dataText');
       const horaInicioText = document.getElementById('horaInicioText');
       const horaFimText = document.getElementById('horaFimText');
       const equipoText = document.getElementById('equipoText');
       const operacaoText = document.getElementById('operacaoText');
+      
+      const diaSelect = document.getElementById('diaSelect');
+      const mesSelect = document.getElementById('mesSelect');
+      const anoSelect = document.getElementById('anoSelect');
       const horaInicioSelect = document.getElementById('horaInicioSelect');
       const horaFimSelect = document.getElementById('horaFimSelect');
       const equipoSelect = document.getElementById('equipoSelect');
       const operacaoSelect = document.getElementById('operacaoSelect');
+      
       const copyButton = document.getElementById('copyButton');
       const whatsappButton = document.getElementById('whatsappButton');
       const notification = document.getElementById('notification');
       
+      // Obter data atual
+      const dataAtual = obterDataAtual();
+      
       // Popular os selects
+      popularSelect('diaSelect', dias, dataAtual.dia);
+      popularSelect('mesSelect', meses, dataAtual.mes);
+      popularSelect('anoSelect', anos, dataAtual.ano);
       popularSelect('horaInicioSelect', horarios, '10:00');
       popularSelect('horaFimSelect', horarios, '11:30');
       popularSelect('equipoSelect', numerosEquipe, '00');
       popularSelect('operacaoSelect', operacoes, 'Op. CINTO DE SEGURANÇA');
+      
+      // Atualizar data no formato DIAMESANO
+      function atualizarData() {
+        const dia = diaSelect.value;
+        const mes = mesSelect.value;
+        const ano = anoSelect.value;
+        dataText.textContent = dia + mes + ano;
+      }
       
       // Atualizar hora início
       function atualizarHoraInicio(valor) {
@@ -538,12 +645,18 @@ Obs:
       }
       
       // Inicializar valores
+      atualizarData();
       atualizarHoraInicio('10:00');
       atualizarHoraFim('11:30');
       atualizarEquipo('00');
       atualizarOperacao('Op. CINTO DE SEGURANÇA');
       
-      // Adicionar event listeners
+      // Adicionar event listeners para data
+      diaSelect.addEventListener('change', atualizarData);
+      mesSelect.addEventListener('change', atualizarData);
+      anoSelect.addEventListener('change', atualizarData);
+      
+      // Adicionar event listeners para horários
       horaInicioSelect.addEventListener('change', function() {
         atualizarHoraInicio(this.value);
       });
