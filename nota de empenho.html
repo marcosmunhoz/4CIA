@@ -113,6 +113,26 @@
       flex: 1;
     }
     
+    /* Grupo para local (SP e KM) */
+    .local-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .local-sp-container, .local-km-container {
+      flex: 1;
+    }
+    
+    .local-sp-label, .local-km-label {
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      font-weight: bold;
+      color: #1a2a6c;
+      white-space: nowrap;
+    }
+    
     /* Estilos para os selects nativos */
     select {
       width: 100%;
@@ -137,6 +157,31 @@
       outline: none;
       border-color: #2c3e50;
       box-shadow: 0 0 10px rgba(26, 42, 108, 0.3);
+    }
+    
+    /* Estilos para inputs de texto */
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 2px solid #1a2a6c;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+      color: #333;
+      font-family: 'Courier New', monospace;
+      transition: all 0.3s;
+    }
+    
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #2c3e50;
+      box-shadow: 0 0 10px rgba(26, 42, 108, 0.3);
+      background-color: white;
+    }
+    
+    input[type="text"]::placeholder {
+      color: #999;
+      font-style: italic;
     }
     
     /* Remover seta padrão do IE */
@@ -280,7 +325,7 @@
         padding: 15px;
       }
       
-      .data-group, .time-group {
+      .data-group, .time-group, .local-group {
         flex-direction: column;
         gap: 15px;
       }
@@ -291,7 +336,7 @@
         gap: 10px;
       }
       
-      .equipo-prefix {
+      .equipo-prefix, .local-sp-label, .local-km-label {
         text-align: center;
       }
       
@@ -307,9 +352,12 @@
         gap: 10px;
       }
       
-      select {
+      select, input[type="text"] {
         padding: 10px 12px;
         font-size: 15px;
+      }
+      
+      select {
         background-position: right 12px center;
       }
     }
@@ -328,7 +376,7 @@
         font-size: 14px;
       }
       
-      select {
+      select, input[type="text"] {
         font-size: 14px;
       }
       
@@ -387,6 +435,20 @@
       </div>
       
       <div class="control-group">
+        <label class="control-label">LOCAL:</label>
+        <div class="local-group">
+          <div class="local-sp-container">
+            <div class="local-sp-label">SP</div>
+            <input type="text" id="spInput" placeholder="Ex: 330" maxlength="3">
+          </div>
+          <div class="local-km-container">
+            <div class="local-km-label">KM</div>
+            <input type="text" id="kmInput" placeholder="Ex: 208" maxlength="7">
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-group">
         <label class="control-label">EQUIPE:</label>
         <div class="equipo-group">
           <div class="equipo-prefix">R-044</div>
@@ -414,7 +476,7 @@ Data: <span id="dataText">20DEZ25</span>
 Hora: <span id="horaInicioText">10:00</span> às <span id="horaFimText">11h30</span>
 Natureza: Z99
 Equipe: *R-<span id="equipoText">04400</span>*  
-Local: SP    km 
+Local: SP <span id="spText">   </span> km <span id="kmText"> </span>
 Resenha: <span id="operacaoText">Op. CINTO DE SEGURANÇA</span>
 *Talão:     *
 
@@ -589,6 +651,8 @@ Obs:
       const dataText = document.getElementById('dataText');
       const horaInicioText = document.getElementById('horaInicioText');
       const horaFimText = document.getElementById('horaFimText');
+      const spText = document.getElementById('spText');
+      const kmText = document.getElementById('kmText');
       const equipoText = document.getElementById('equipoText');
       const operacaoText = document.getElementById('operacaoText');
       
@@ -597,6 +661,8 @@ Obs:
       const anoSelect = document.getElementById('anoSelect');
       const horaInicioSelect = document.getElementById('horaInicioSelect');
       const horaFimSelect = document.getElementById('horaFimSelect');
+      const spInput = document.getElementById('spInput');
+      const kmInput = document.getElementById('kmInput');
       const equipoSelect = document.getElementById('equipoSelect');
       const operacaoSelect = document.getElementById('operacaoSelect');
       
@@ -616,6 +682,10 @@ Obs:
       popularSelect('equipoSelect', numerosEquipe, '00');
       popularSelect('operacaoSelect', operacoes, 'Op. CINTO DE SEGURANÇA');
       
+      // Preencher inputs com valores padrão
+      spInput.value = '330';
+      kmInput.value = '208';
+      
       // Atualizar data no formato DIAMESANO
       function atualizarData() {
         const dia = diaSelect.value;
@@ -634,6 +704,18 @@ Obs:
         horaFimText.textContent = valor.replace(':', 'h');
       }
       
+      // Atualizar SP
+      function atualizarSP(valor) {
+        // Se estiver vazio, mostra 3 espaços para manter o layout
+        spText.textContent = valor.trim() ? valor.padEnd(3, ' ') : '   ';
+      }
+      
+      // Atualizar KM
+      function atualizarKM(valor) {
+        // Se estiver vazio, mostra 1 espaço
+        kmText.textContent = valor.trim() ? valor : ' ';
+      }
+      
       // Atualizar número da equipe
       function atualizarEquipo(valor) {
         equipoText.textContent = '044' + valor;
@@ -648,6 +730,8 @@ Obs:
       atualizarData();
       atualizarHoraInicio('10:00');
       atualizarHoraFim('11:30');
+      atualizarSP('330');
+      atualizarKM('208');
       atualizarEquipo('00');
       atualizarOperacao('Op. CINTO DE SEGURANÇA');
       
@@ -663,6 +747,47 @@ Obs:
       
       horaFimSelect.addEventListener('change', function() {
         atualizarHoraFim(this.value);
+      });
+      
+      // Adicionar event listeners para SP e KM
+      spInput.addEventListener('input', function() {
+        atualizarSP(this.value);
+      });
+      
+      spInput.addEventListener('blur', function() {
+        // Se estiver vazio, restaura o valor padrão
+        if (!this.value.trim()) {
+          this.value = '330';
+          atualizarSP('330');
+        }
+      });
+      
+      kmInput.addEventListener('input', function() {
+        atualizarKM(this.value);
+      });
+      
+      kmInput.addEventListener('blur', function() {
+        // Se estiver vazio, restaura o valor padrão
+        if (!this.value.trim()) {
+          this.value = '208';
+          atualizarKM('208');
+        }
+      });
+      
+      // Permitir apenas números no KM
+      kmInput.addEventListener('keypress', function(e) {
+        // Permite números, ponto, vírgula e backspace
+        if (!/[0-9\.,]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+          e.preventDefault();
+        }
+      });
+      
+      // Permitir apenas números e hífen no SP (ex: SP-330)
+      spInput.addEventListener('keypress', function(e) {
+        // Permite números, hífen e backspace
+        if (!/[0-9\-]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+          e.preventDefault();
+        }
       });
       
       equipoSelect.addEventListener('change', function() {
