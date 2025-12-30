@@ -1,31 +1,28 @@
-<!DOCTYPE html>   
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>Dejem e Delegada</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
-  <link rel="stylesheet" href="css/fontAwesome.css" />
-  <link rel="stylesheet" href="css/light-box.css" />
-  <link rel="stylesheet" href="css/templatemo-style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
-  <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-
+  <title>Área Policial</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <style>
-    body, html {
+    body {
+      font-family: 'Kanit', sans-serif;
       margin: 0;
       padding: 0;
-      height: 100%;
-      font-family: 'Kanit', sans-serif;
-      background: #000;
       overflow-x: hidden;
       color: white;
+      background-color: #000;
+      background-image: url('img/aguia.jpg'); /* IMAGEM DE FUNDO ADICIONADA */
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
       min-height: 100vh;
     }
 
-    /* ========== MENU SUPERIOR - COPIA EXATA DO INDEX PRINCIPAL ========== */
     nav {
       display: flex;
       align-items: center;
@@ -138,273 +135,260 @@
       color: #000 !important;
     }
 
-    /* RESPONSIVIDADE - COPIA EXATA DO INDEX PRINCIPAL */
     @media (max-width: 768px) {
-      nav { 
-        padding: 10px 15px; 
-        justify-content: flex-start; 
-      }
-      
-      ul.menu-horizontal { 
-        padding-left: 10px; 
-        gap: 8px; 
-      }
-      
-      ul.menu-horizontal > li > a { 
-        font-size: 1.2rem; 
-        padding: 8px 3px; 
-      }
-      
-      .logo img.logo-img { 
-        height: 40px; 
-      }
-      
-      html, body { 
-        overflow-x: hidden; 
-        width: 100%; 
-        position: relative; 
-      }
-      
-      body.menu-open { 
-        overflow: hidden; 
-        height: 100%; 
-      }
+      nav { padding: 10px 15px; justify-content: flex-start; }
+      ul.menu-horizontal { padding-left: 10px; gap: 8px; }
+      ul.menu-horizontal > li > a { font-size: 1.2rem; padding: 8px 3px; }
+      .logo img.logo-img { height: 40px; }
+      html, body { overflow-x: hidden; width: 100%; position: relative; }
+      body.menu-open { overflow: hidden; height: 100%; }
     }
 
-    /* ========== CONTEÚDO PRINCIPAL ========== */
-    #video-container {
-      position: relative;
-      width: 100%;
-      height: 100vh;
+    /* Mantive sua definição global */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      margin-top: 0;
-      padding-top: 0;
+      font-family: sans-serif;
     }
 
-    #video-container video {
-      position: absolute;
+    /* Menu circular principal - AUMENTADO */
+    .menu-circle {
+      position: fixed;
       top: 50%;
       left: 50%;
-      min-width: 100%;
-      min-height: 100%;
+      width: 650px; /* Aumentado de 500px */
+      height: 650px; /* Aumentado de 500px */
       transform: translate(-50%, -50%);
-      z-index: 0;
-      object-fit: cover;
-      filter: brightness(0.6);
-    }
-
-    .video-content {
-      position: relative;
-      z-index: 2;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      text-align: center;
-      padding: 0 20px;
-      padding-top: 70px; /* Espaço para o menu fixo */
+      flex-wrap: wrap;
+      transition: all 0.3s ease;
+      z-index: 100;
+      border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
-    .video-content h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5em;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-
-    .video-content p {
-      font-size: 1.8rem;
-      margin-bottom: 1.5em;
-      font-weight: 400;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-    }
-
-    /* ========== FORMULÁRIO MAIOR E MAIS VISÍVEL ========== */
-    form.id-form {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 30px;
-      border-radius: 15px;
-      max-width: 500px;
-      width: 90%;
-      margin: 0 auto;
+    .menu-item {
       display: flex;
       flex-direction: column;
-      gap: 25px;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
-    }
-
-    form.id-form label {
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: white !important;
-      text-align: center;
-      margin-bottom: 10px;
-      display: block;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    }
-
-    form.id-form input[type="text"] {
-      color: white;
-      background: rgba(255, 255, 255, 0.25);
-      padding: 20px 15px;
-      border-radius: 10px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      font-size: 1.6rem;
-      height: 60px;
-      width: 100%;
-      box-sizing: border-box;
-      transition: all 0.3s ease;
-      text-align: center;
-    }
-
-    form.id-form input[type="text"]:focus {
-      outline: none;
-      border-color: #87CEEB;
-      background: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 0 15px rgba(135, 206, 235, 0.5);
-    }
-
-    form.id-form input::placeholder {
-      color: rgba(255, 255, 255, 0.7) !important;
-      font-size: 1.4rem;
-      text-align: center;
-    }
-
-    form.id-form button {
-      background: linear-gradient(145deg, #87CEEB, #5CA3C7);
-      color: #000;
-      padding: 20px;
-      border: none;
-      border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 1.8rem;
-      height: 70px;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    form.id-form button:hover {
-      background: linear-gradient(145deg, #5CA3C7, #87CEEB);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    form.id-form button:active {
-      transform: translateY(1px);
-    }
-
-    footer {
+      align-items: center;
+      justify-content: center;
       position: absolute;
-      bottom: 0;
-      width: 100%;
+      width: 130px; /* Aumentado de 100px */
+      height: 130px; /* Aumentado de 100px */
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+      border-radius: 50%;
       text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .menu-text { font-size: 16px; margin-bottom: 5px; font-weight: bold; }
+    .menu-emoji { font-size: 28px; }
+
+    .menu-icon { 
+      width: 75px; /* Aumentado de 60px */
+      height: 75px; /* Aumentado de 60px */
+      object-fit: contain; 
+      pointer-events: none; 
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover { 
+      background: rgba(255, 255, 255, 0.4); 
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .menu-item:hover .menu-icon {
+      transform: scale(1.1);
+    }
+
+    /* Ajustes nas posições para o tamanho maior */
+    .menu-item:nth-child(1) { transform: rotate(0deg) translate(260px) rotate(0deg); }
+    .menu-item:nth-child(2) { transform: rotate(45deg) translate(260px) rotate(-45deg); }
+    .menu-item:nth-child(3) { transform: rotate(90deg) translate(260px) rotate(-90deg); }
+    .menu-item:nth-child(4) { transform: rotate(135deg) translate(260px) rotate(-135deg); }
+    .menu-item:nth-child(5) { transform: rotate(180deg) translate(260px) rotate(-180deg); }
+    .menu-item:nth-child(6) { transform: rotate(225deg) translate(260px) rotate(-225deg); }
+    .menu-item:nth-child(7) { transform: rotate(270deg) translate(260px) rotate(-270deg); }
+    .menu-item:nth-child(8) { transform: rotate(315deg) translate(260px) rotate(-315deg); }
+
+    /* Submenu circular - AUMENTADO */
+    .submenu-circle {
+      position: fixed;
+      width: 520px; /* Aumentado de 400px */
+      height: 520px; /* Aumentado de 400px */
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 101;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .submenu-item {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 100px; /* Aumentado de 80px */
+      height: 100px; /* Aumentado de 80px */
+      background: rgba(255, 255, 255, 0.35);
       color: #fff;
-      font-size: 0.9rem;
-      z-index: 2;
-      background: transparent;
-      padding: 10px 0;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      border-radius: 50%;
+      text-align: center;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: bold;
+      line-height: 1.2;
+      user-select: none;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* ========== RESPONSIVIDADE DO FORMULÁRIO ========== */
-    @media (max-width: 768px) {
-      .video-content {
-        padding-top: 60px;
-      }
-      
-      .video-content h1 {
-        font-size: 3rem;
-      }
+    .submenu-icon { 
+      width: 65px; /* Aumentado de 50px */
+      height: 65px; /* Aumentado de 50px */
+      object-fit: contain; 
+      margin-bottom: 5px;
+      transition: transform 0.3s ease;
+    }
+    .submenu-text { font-size: 13px; margin-bottom: 2px; }
 
-      .video-content p {
-        font-size: 1.6rem;
-      }
-
-      form.id-form {
-        padding: 25px;
-        max-width: 450px;
-        width: 95%;
-        gap: 20px;
-      }
-
-      form.id-form label {
-        font-size: 1.6rem;
-      }
-
-      form.id-form input[type="text"] {
-        font-size: 1.5rem;
-        height: 55px;
-        padding: 15px;
-      }
-
-      form.id-form button {
-        font-size: 1.6rem;
-        height: 60px;
-        padding: 15px;
-      }
+    .submenu-item a { 
+      color: white; 
+      text-decoration: none; 
+      display:flex; 
+      flex-direction:column; 
+      align-items:center; 
+      justify-content:center; 
+      width:100%; 
+      height:100%; 
+      padding:5px; 
+    }
+    
+    .submenu-item:hover { 
+      background: rgba(255, 255, 255, 0.5); 
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .submenu-item:hover .submenu-icon {
+      transform: scale(1.1);
     }
 
-    @media (max-width: 480px) {
-      .video-content {
-        padding-top: 55px;
-      }
-      
-      .video-content h1 {
-        font-size: 2.5rem;
-      }
+    /* Ajustes nas posições para o tamanho maior */
+    .submenu-item:nth-child(1) { transform: rotate(0deg) translate(195px) rotate(0deg); }
+    .submenu-item:nth-child(2) { transform: rotate(72deg) translate(195px) rotate(-72deg); }
+    .submenu-item:nth-child(3) { transform: rotate(144deg) translate(195px) rotate(-144deg); }
+    .submenu-item:nth-child(4) { transform: rotate(216deg) translate(195px) rotate(-216deg); }
+    .submenu-item:nth-child(5) { transform: rotate(288deg) translate(195px) rotate(-288deg); }
 
-      .video-content p {
-        font-size: 1.4rem;
+    @media only screen and (max-width: 768px) {
+      .menu-circle { 
+        width: 420px; /* Aumentado de 320px */
+        height: 420px; /* Aumentado de 320px */
       }
+      .menu-item { 
+        width: 90px; /* Aumentado de 70px */
+        height: 90px; /* Aumentado de 70px */
+      }
+      .menu-icon { 
+        width: 55px; /* Aumentado de 40px */
+        height: 55px; /* Aumentado de 40px */
+      }
+      .menu-item:nth-child(1) { transform: rotate(0deg) translate(160px) rotate(0deg); }
+      .menu-item:nth-child(2) { transform: rotate(45deg) translate(160px) rotate(-45deg); }
+      .menu-item:nth-child(3) { transform: rotate(90deg) translate(160px) rotate(-90deg); }
+      .menu-item:nth-child(4) { transform: rotate(135deg) translate(160px) rotate(-135deg); }
+      .menu-item:nth-child(5) { transform: rotate(180deg) translate(160px) rotate(-180deg); }
+      .menu-item:nth-child(6) { transform: rotate(225deg) translate(160px) rotate(-225deg); }
+      .menu-item:nth-child(7) { transform: rotate(270deg) translate(160px) rotate(-270deg); }
+      .menu-item:nth-child(8) { transform: rotate(315deg) translate(160px) rotate(-315deg); }
 
-      form.id-form {
-        padding: 20px 15px;
-        max-width: 380px;
-        width: 95%;
-        gap: 15px;
+      .submenu-circle { 
+        width: 340px; /* Aumentado de 260px */
+        height: 340px; /* Aumentado de 260px */
       }
+      .submenu-item { 
+        width: 80px; /* Aumentado de 60px */
+        height: 80px; /* Aumentado de 60px */
+      }
+      .submenu-icon { 
+        width: 50px; /* Aumentado de 35px */
+        height: 50px; /* Aumentado de 35px */
+      }
+      .submenu-item:nth-child(1) { transform: rotate(0deg) translate(130px) rotate(0deg); }
+      .submenu-item:nth-child(2) { transform: rotate(72deg) translate(130px) rotate(-72deg); }
+      .submenu-item:nth-child(3) { transform: rotate(144deg) translate(130px) rotate(-144deg); }
+      .submenu-item:nth-child(4) { transform: rotate(216deg) translate(130px) rotate(-216deg); }
+      .submenu-item:nth-child(5) { transform: rotate(288deg) translate(130px) rotate(-288deg); }
+    }
 
-      form.id-form label {
-        font-size: 1.4rem;
+    @media only screen and (max-width: 480px) {
+      .menu-circle { 
+        width: 360px; /* Aumentado de 280px */
+        height: 360px; /* Aumentado de 280px */
       }
+      .menu-item { 
+        width: 75px; /* Aumentado de 60px */
+        height: 75px; /* Aumentado de 60px */
+      }
+      .menu-icon { 
+        width: 45px; /* Aumentado de 35px */
+        height: 45px; /* Aumentado de 35px */
+      }
+      .menu-item:nth-child(1) { transform: rotate(0deg) translate(140px) rotate(0deg); }
+      .menu-item:nth-child(2) { transform: rotate(45deg) translate(140px) rotate(-45deg); }
+      .menu-item:nth-child(3) { transform: rotate(90deg) translate(140px) rotate(-90deg); }
+      .menu-item:nth-child(4) { transform: rotate(135deg) translate(140px) rotate(-135deg); }
+      .menu-item:nth-child(5) { transform: rotate(180deg) translate(140px) rotate(-180deg); }
+      .menu-item:nth-child(6) { transform: rotate(225deg) translate(140px) rotate(-225deg); }
+      .menu-item:nth-child(7) { transform: rotate(270deg) translate(140px) rotate(-270deg); }
+      .menu-item:nth-child(8) { transform: rotate(315deg) translate(140px) rotate(-315deg); }
 
-      form.id-form input[type="text"] {
-        font-size: 1.3rem;
-        height: 50px;
-        padding: 12px;
+      .submenu-circle { 
+        width: 280px; /* Aumentado de 220px */
+        height: 280px; /* Aumentado de 220px */
       }
-
-      form.id-form input::placeholder {
-        font-size: 1.2rem;
+      .submenu-item { 
+        width: 65px; /* Aumentado de 50px */
+        height: 65px; /* Aumentado de 50px */
       }
-
-      form.id-form button {
-        font-size: 1.4rem;
-        height: 55px;
-        padding: 12px;
+      .submenu-icon { 
+        width: 40px; /* Aumentado de 30px */
+        height: 40px; /* Aumentado de 30px */
       }
-
-      footer {
-        font-size: 0.8rem;
-        padding: 8px 0;
-      }
+      .submenu-item:nth-child(1) { transform: rotate(0deg) translate(110px) rotate(0deg); }
+      .submenu-item:nth-child(2) { transform: rotate(72deg) translate(110px) rotate(-72deg); }
+      .submenu-item:nth-child(3) { transform: rotate(144deg) translate(110px) rotate(-144deg); }
+      .submenu-item:nth-child(4) { transform: rotate(216deg) translate(110px) rotate(-216deg); }
+      .submenu-item:nth-child(5) { transform: rotate(288deg) translate(110px) rotate(-288deg); }
     }
   </style>
 </head>
-
 <body>
-
-  <!-- MENU SUPERIOR - ESTRUTURA EXATAMENTE IGUAL AO INDEX PRINCIPAL -->
+  <!-- MENU SUPERIOR -->
   <nav id="mainNav">
     <div class="logo">
       <a href="index.html">
@@ -425,6 +409,7 @@
           <li><a href="manual.html">Vigilante Rodoviário</a></li>
         </ul>
       </li>
+      <!-- NOVO MENU MODELOS -->
       <li>
         <a>MODELOS</a>
         <ul class="submenu-horizontal">
@@ -438,38 +423,39 @@
     </ul>
   </nav>
 
-  <div id="video-container">
-    <video autoplay loop muted playsinline>
-      <source src="highway-loop.mp4" type="video/mp4" />
-      Seu navegador não suporta vídeo.
-    </video>
-
-    <div class="video-content">
-      <h1>Escala</h1>
-      <p>Dejem e Delegada</p>
-
-      <form class="id-form" onsubmit="abrirLink(); return false;">
-        <label for="numero">INSERIR O ID</label>
-        <input type="text" id="numero" placeholder="Ex: ID 12345" required />
-        <button type="submit">ENVIAR</button>
-      </form>
-    </div>
+  <!-- Menu principal (circular) -->
+  <div class="menu-circle" id="mainMenu">
+    <div class="menu-item" onclick="toggleSubmenu(1)"><img src="img/logo/formulario.png" alt="Google Forms" class="menu-icon" /></div>
+    <div class="menu-item" onclick="toggleSubmenu(2)"><img src="img/logo/VPN.png" alt="VPN" class="menu-icon" /></div>
+    <div class="menu-item"><a href="#"><img src="img/logo/mapa.png" alt="MAPA" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://www.simsgmder.der.sp.gov.br/simsgmder/"><img src="img/logo/DER.png" alt="DER" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://correio.policiamilitar.sp.gov.br/iwaredir.nsf"><img src="img/logo/email.png" alt="INOTES" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://cronotacografo.rbmlq.gov.br/certificados/consultar"><img src="img/logo/cronotacografo.png" alt="INMETRO" class="menu-icon" /></a></div>
+    <div class="menu-item"><a href="https://minhaarea.sp.gov.br/plataformasp"><img src="img/logo/sei-logo.png" alt="SEI" class="menu-icon" /></a></div>
+    <div class="menu-item" onclick="toggleSubmenu(8)"><img src="img/logo/contatos.png" alt="CONTATOS" class="menu-icon" /></div>
   </div>
 
-  <footer>
-    <p>Desenvolvido pelo SD PM 194528-9 Guidini</p>
-  </footer>
+  <!-- Submenus -->
+  <div class="submenu-circle" id="submenu1">
+    <div class="submenu-item"><a href="manutenção.html"><img src="img/logo/manutenção.png" alt="MANUTENÇÂO" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=VAxWvfUh9UqnCmelKDNpc2he-LboKNBOl8SkVLbrZWFUME1BQ1dWUVJFVUI2WTM1RkNVQTA4OVJPWi4u&origin=QRCode"><img src="img/logo/amigo.png" alt="AMIGOS" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
+    <div class="submenu-item"><a href="#">__</a></div>
+  </div>
+
+  <div class="submenu-circle" id="submenu2">
+    <div class="submenu-item"><a href="http://www.intranet.policiamilitar.sp.gov.br/"><img src="img/logo/intranet.png" alt="INTRANET" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="http://10.61.15.39/Login"><img src="img/logo/PPRI.png" alt="PPRI" class="submenu-icon" /><span class="submenu-text">PPRI</span></a></div>
+    <div class="submenu-item"><a href="http://cobomonline.ccb.policiamilitar.sp.gov.br/Singes/login"><img src="img/logo/assentamento.png" alt="ASSENTAMENTO" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="consulta.html"><img src="img/logo/dejem.png" alt="DEJEM-DELEGADA" class="submenu-icon" /></a></div>
+    <div class="submenu-item"><a href="http://10.200.82.36/Emulador/(S(adzdrn5oq4fkqem5rblgrqrl))/pages/McpT27/ePortalDynamic.aspx"><img src="img/logo/prodesp.png" alt="PRODESP" class="submenu-icon" /></a></div>
+  </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
   <script>
-    window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
-  </script>
-  <script src="js/vendor/bootstrap.min.js"></script>
-  <script src="js/plugins.js"></script>
-  <script src="js/main.js"></script>
-
-  <script>
-    // Funções do menu horizontal - COPIA EXATA DO INDEX PRINCIPAL
+    // Funções do menu horizontal
     window.addEventListener('scroll', function() {
       const nav = document.getElementById('mainNav');
       if (window.scrollY > 50) {
@@ -509,18 +495,26 @@
       }
     });
 
-    // Função do formulário
-    function abrirLink() {
-      const id = document.getElementById('numero').value.trim();
-      if (!id) {
-        alert('Por favor, insira o ID.');
-        return;
+    // Funções do menu circular
+    function toggleSubmenu(index) {
+      const submenus = document.querySelectorAll(".submenu-circle");
+      submenus.forEach(menu => menu.style.display = "none");
+
+      const submenu = document.getElementById("submenu" + index);
+      if (submenu) {
+        submenu.style.display = "flex";
       }
-
-      const urlBase = "https://sistemasadmin.intranet.policiamilitar.sp.gov.br/escala/arrelpreesc.aspx?";
-      window.location.href = urlBase + encodeURIComponent(id);
     }
-  </script>
 
+    document.addEventListener("click", function(e) {
+      if (!e.target.classList.contains("menu-item") &&
+          !e.target.closest('.menu-item') &&
+          !e.target.classList.contains("submenu-item") &&
+          !e.target.closest('.submenu-item')) {
+        const submenus = document.querySelectorAll(".submenu-circle");
+        submenus.forEach(menu => menu.style.display = "none");
+      }
+    });
+  </script>
 </body>
 </html>
