@@ -55,7 +55,7 @@
       border-radius: 10px;
       padding: 25px;
       margin-bottom: 30px;
-      max-height: 400px;
+      max-height: 500px;
       overflow-y: auto;
       font-family: 'Courier New', monospace;
       line-height: 1.6;
@@ -63,19 +63,202 @@
       color: #333;
     }
     
+    .controls-container {
+      background: white;
+      border: 2px solid #1a2a6c;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .control-group {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px dashed #ddd;
+    }
+    
+    .control-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .control-label {
+      display: block;
+      color: #1a2a6c;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    
+    .time-selector {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+    
+    .time-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 30px;
+      background: #e9ecef;
+      border-radius: 15px;
+      outline: none;
+      padding: 0 5px;
+    }
+    
+    .time-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 40px;
+      height: 40px;
+      background: #1a2a6c;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s;
+    }
+    
+    .time-slider::-webkit-slider-thumb:hover {
+      background: #2c3e50;
+      transform: scale(1.1);
+    }
+    
+    .time-display {
+      min-width: 100px;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: #1a2a6c;
+      background: #f8f9fa;
+      padding: 8px 15px;
+      border-radius: 8px;
+      border: 2px solid #1a2a6c;
+    }
+    
+    .time-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .time-btn {
+      flex: 1;
+      min-width: 60px;
+      padding: 8px 5px;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    
+    .time-btn:hover {
+      background: #e9ecef;
+      border-color: #1a2a6c;
+    }
+    
+    .time-btn.active {
+      background: #1a2a6c;
+      color: white;
+      border-color: #1a2a6c;
+      font-weight: bold;
+    }
+    
+    .equipo-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .equipo-prefix {
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: #1a2a6c;
+    }
+    
+    .equipo-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 30px;
+      background: #e9ecef;
+      border-radius: 15px;
+      outline: none;
+      padding: 0 5px;
+    }
+    
+    .equipo-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 40px;
+      height: 40px;
+      background: #2c3e50;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s;
+    }
+    
+    .equipo-slider::-webkit-slider-thumb:hover {
+      background: #1a2a6c;
+      transform: scale(1.1);
+    }
+    
+    .equipo-display {
+      min-width: 60px;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: #1a2a6c;
+      background: #f8f9fa;
+      padding: 8px 15px;
+      border-radius: 8px;
+      border: 2px solid #2c3e50;
+    }
+    
+    .operacao-selector {
+      margin-top: 10px;
+    }
+    
+    .operacao-select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #1a2a6c;
+      border-radius: 8px;
+      background: white;
+      color: #333;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      transition: all 0.3s;
+    }
+    
+    .operacao-select:focus {
+      outline: none;
+      border-color: #2c3e50;
+      box-shadow: 0 0 10px rgba(26, 42, 108, 0.3);
+    }
+    
     .buttons {
       display: flex;
       justify-content: center;
       gap: 20px;
       flex-wrap: wrap;
+      margin-top: 20px;
     }
     
-    .copy-btn {
+    .action-btn {
       background: linear-gradient(135deg, #1a2a6c, #2c3e50);
       color: white;
       border: none;
-      padding: 15px 40px;
-      font-size: 18px;
+      padding: 15px 30px;
+      font-size: 16px;
       border-radius: 50px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -84,20 +267,34 @@
       align-items: center;
       gap: 10px;
       box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
+      flex: 1;
+      min-width: 200px;
+      justify-content: center;
     }
     
-    .copy-btn:hover {
+    .action-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(26, 42, 108, 0.5);
-      background: linear-gradient(135deg, #2c3e50, #1a2a6c);
     }
     
-    .copy-btn:active {
+    .action-btn:active {
       transform: translateY(1px);
     }
     
-    .copy-btn i {
-      font-size: 20px;
+    .copy-btn {
+      background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+    }
+    
+    .copy-btn:hover {
+      background: linear-gradient(135deg, #2c3e50, #1a2a6c);
+    }
+    
+    .whatsapp-btn {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+    
+    .whatsapp-btn:hover {
+      background: linear-gradient(135deg, #128C7E, #25D366);
     }
     
     .notification {
@@ -151,11 +348,37 @@
         font-size: 14px;
       }
       
-      .copy-btn {
-        padding: 12px 30px;
-        font-size: 16px;
+      .controls-container {
+        padding: 15px;
+      }
+      
+      .time-selector, .equipo-selector {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .time-display, .equipo-display {
         width: 100%;
+      }
+      
+      .action-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+        min-width: 100%;
+        width: 100%;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      .time-buttons {
         justify-content: center;
+      }
+      
+      .time-btn {
+        flex: none;
+        width: calc(33.333% - 7px);
       }
     }
   </style>
@@ -167,16 +390,74 @@
       <h2>4ª Cia do 4º BPRv – 1º Pelotão</h2>
     </div>
     
+    <div class="controls-container">
+      <div class="control-group">
+        <label class="control-label">HORA INÍCIO:</label>
+        <div class="time-selector">
+          <input type="range" class="time-slider" id="horaInicioSlider" min="0" max="46" value="20">
+          <div class="time-display" id="horaInicioDisplay">10:00</div>
+        </div>
+        <div class="time-buttons" id="horaInicioButtons">
+          <!-- Botões serão gerados por JavaScript -->
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">HORA FIM:</label>
+        <div class="time-selector">
+          <input type="range" class="time-slider" id="horaFimSlider" min="0" max="46" value="23">
+          <div class="time-display" id="horaFimDisplay">11:30</div>
+        </div>
+        <div class="time-buttons" id="horaFimButtons">
+          <!-- Botões serão gerados por JavaScript -->
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">EQUIPE:</label>
+        <div class="equipo-selector">
+          <span class="equipo-prefix">R-044</span>
+          <input type="range" class="equipo-slider" id="equipoSlider" min="0" max="50" value="0">
+          <div class="equipo-display" id="equipoDisplay">00</div>
+        </div>
+        <div class="time-buttons" id="equipoButtons">
+          <!-- Botões serão gerados por JavaScript -->
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">OPERAÇÃO:</label>
+        <div class="operacao-selector">
+          <select class="operacao-select" id="operacaoSelect">
+            <option value="Op. CINTO DE SEGURANÇA">Operação Cinto de Segurança</option>
+            <option value="Op. HÉRCULES">Operação Hércules</option>
+            <option value="Op. SANEAMENTO">Operação Saneamento</option>
+            <option value="Op. ODS">Operação ODS</option>
+            <option value="Op. ODSI">Operação ODSI</option>
+            <option value="Op. DEJEM">Operação DEJEM</option>
+            <option value="Op. ELEIÇÕES">Operação Eleições</option>
+            <option value="Op. CARNAVAL">Operação Carnaval</option>
+            <option value="Op. SEGURANÇA VIÁRIA - ALCOOLEMIA">Operação Segurança Viária - Alcoolemia</option>
+            <option value="Op. SEGURANÇA VIÁRIA - CELULAR">Operação Segurança Viária - Celular</option>
+            <option value="Op. SEGURANÇA VIÁRIA - ULTRAPASSAGEM">Operação Segurança Viária - Ultrapassagem</option>
+            <option value="Op. SEGURANÇA VIÁRIA - EXCESSO DE VELOCIDADE">Operação Segurança Viária - Excesso de Velocidade</option>
+            <option value="Op. CAVALO DE AÇO">Operação Cavalo de Aço</option>
+            <option value="Op. INTERIOR MAIS SEGURO">Operação Interior Mais Seguro</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
     <div class="text-container" id="textToCopy">
 *4ª Cia do 4º BPRv – 1º Pelotão*
 *NOTA DE EMPENHO EM PONTO DE ESTACIONAMENTO* 
 
 Data: 20DEZ25
-Hora: 10:00 às 11h30
-Natureza: 
-Equipe: *R-*  
+Hora: <span id="horaInicioText">10:00</span> às <span id="horaFimText">11h30</span>
+Natureza: Z99
+Equipe: *R-<span id="equipoText">04400</span>*  
 Local: SP    km 
-Resenha: Op. CINTO DE SEGURANÇA
+Resenha: <span id="operacaoText">Op. CINTO DE SEGURANÇA</span>
 *Talão:     *
 
 Total fiscalizados: 
@@ -205,13 +486,16 @@ Obs:
     </div>
     
     <div class="buttons">
-      <button class="copy-btn" id="copyButton">
-        📋 COPIAR TEXTO COMPLETO
+      <button class="action-btn copy-btn" id="copyButton">
+        📋 COPIAR TEXTO
+      </button>
+      <button class="action-btn whatsapp-btn" id="whatsappButton">
+        📱 ENVIAR PARA WHATSAPP
       </button>
     </div>
     
     <div class="footer">
-      <p>Clique no botão acima para copiar o texto padrão automaticamente</p>
+      <p>Use os controles acima para ajustar horários, equipe e operação</p>
       <p>Desenvolvido para agilizar o envio de produtividade do turno de serviço</p>
     </div>
   </div>
@@ -221,50 +505,271 @@ Obs:
   </div>
   
   <script>
-    const copyButton = document.getElementById('copyButton');
-    const textToCopy = document.getElementById('textToCopy');
-    const notification = document.getElementById('notification');
+    // Gerar horas de 00:00 até 23:30 de 30 em 30 minutos
+    function gerarHorarios() {
+      const horarios = [];
+      for (let hora = 0; hora < 24; hora++) {
+        for (let minuto = 0; minuto < 60; minuto += 30) {
+          const horaStr = hora.toString().padStart(2, '0');
+          const minutoStr = minuto.toString().padStart(2, '0');
+          horarios.push(`${horaStr}:${minutoStr}`);
+        }
+      }
+      return horarios;
+    }
     
-    copyButton.addEventListener('click', async () => {
-      try {
-        // Usando a API moderna Clipboard
-        await navigator.clipboard.writeText(textToCopy.textContent);
+    // Gerar números de 00 a 50
+    function gerarNumerosEquipe() {
+      const numeros = [];
+      for (let i = 0; i <= 50; i++) {
+        numeros.push(i.toString().padStart(2, '0'));
+      }
+      return numeros;
+    }
+    
+    // Função para criar botões de hora
+    function criarBotoesHorario(containerId, horarios, onClickCallback) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      
+      // Criar botões para os horários mais comuns (6h00 até 22h00)
+      const horariosComuns = horarios.filter(h => {
+        const hora = parseInt(h.split(':')[0]);
+        return hora >= 6 && hora <= 22;
+      });
+      
+      // Agrupar em blocos de 4 para melhor visualização
+      for (let i = 0; i < horariosComuns.length; i += 4) {
+        const grupo = horariosComuns.slice(i, i + 4);
+        const grupoDiv = document.createElement('div');
+        grupoDiv.style.display = 'flex';
+        grupoDiv.style.gap = '8px';
+        grupoDiv.style.marginBottom = '5px';
+        
+        grupo.forEach(horario => {
+          const button = document.createElement('button');
+          button.className = 'time-btn';
+          button.textContent = horario;
+          button.dataset.horario = horario;
+          button.addEventListener('click', () => onClickCallback(horario));
+          grupoDiv.appendChild(button);
+        });
+        
+        container.appendChild(grupoDiv);
+      }
+    }
+    
+    // Função para criar botões de número da equipe
+    function criarBotoesEquipo(containerId, numeros, onClickCallback) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      
+      // Agrupar em blocos de 10 para melhor visualização
+      for (let i = 0; i < numeros.length; i += 10) {
+        const grupo = numeros.slice(i, i + 10);
+        const grupoDiv = document.createElement('div');
+        grupoDiv.style.display = 'flex';
+        grupoDiv.style.gap = '5px';
+        grupoDiv.style.marginBottom = '5px';
+        
+        grupo.forEach(numero => {
+          const button = document.createElement('button');
+          button.className = 'time-btn';
+          button.textContent = numero;
+          button.dataset.numero = numero;
+          button.addEventListener('click', () => onClickCallback(numero));
+          grupoDiv.appendChild(button);
+        });
+        
+        container.appendChild(grupoDiv);
+      }
+    }
+    
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+      const horarios = gerarHorarios();
+      const numerosEquipe = gerarNumerosEquipe();
+      const horaInicioSlider = document.getElementById('horaInicioSlider');
+      const horaFimSlider = document.getElementById('horaFimSlider');
+      const equipoSlider = document.getElementById('equipoSlider');
+      const operacaoSelect = document.getElementById('operacaoSelect');
+      const horaInicioDisplay = document.getElementById('horaInicioDisplay');
+      const horaFimDisplay = document.getElementById('horaFimDisplay');
+      const equipoDisplay = document.getElementById('equipoDisplay');
+      const horaInicioText = document.getElementById('horaInicioText');
+      const horaFimText = document.getElementById('horaFimText');
+      const equipoText = document.getElementById('equipoText');
+      const operacaoText = document.getElementById('operacaoText');
+      const copyButton = document.getElementById('copyButton');
+      const whatsappButton = document.getElementById('whatsappButton');
+      const notification = document.getElementById('notification');
+      
+      // Atualizar botão ativo
+      function atualizarBotaoAtivo(containerId, valorAtivo) {
+        const container = document.getElementById(containerId);
+        const botoes = container.querySelectorAll('.time-btn');
+        botoes.forEach(btn => {
+          if (btn.dataset.horario === valorAtivo || btn.dataset.numero === valorAtivo) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+      
+      // Atualizar hora início
+      function atualizarHoraInicio(indice) {
+        const horario = horarios[indice];
+        horaInicioDisplay.textContent = horario;
+        horaInicioText.textContent = horario;
+        atualizarBotaoAtivo('horaInicioButtons', horario);
+      }
+      
+      // Atualizar hora fim
+      function atualizarHoraFim(indice) {
+        const horario = horarios[indice];
+        horaFimDisplay.textContent = horario;
+        horaFimText.textContent = horario.replace(':', 'h');
+        atualizarBotaoAtivo('horaFimButtons', horario);
+      }
+      
+      // Atualizar número da equipe
+      function atualizarEquipo(indice) {
+        const numero = numerosEquipe[indice];
+        equipoDisplay.textContent = numero;
+        equipoText.textContent = '044' + numero;
+        atualizarBotaoAtivo('equipoButtons', numero);
+      }
+      
+      // Atualizar operação
+      function atualizarOperacao() {
+        const operacao = operacaoSelect.value;
+        operacaoText.textContent = operacao;
+      }
+      
+      // Configurar sliders
+      horaInicioSlider.addEventListener('input', function() {
+        atualizarHoraInicio(parseInt(this.value));
+      });
+      
+      horaFimSlider.addEventListener('input', function() {
+        atualizarHoraFim(parseInt(this.value));
+      });
+      
+      equipoSlider.addEventListener('input', function() {
+        atualizarEquipo(parseInt(this.value));
+      });
+      
+      // Configurar seletor de operação
+      operacaoSelect.addEventListener('change', atualizarOperacao);
+      
+      // Criar botões para horas
+      criarBotoesHorario('horaInicioButtons', horarios, function(horario) {
+        const indice = horarios.indexOf(horario);
+        horaInicioSlider.value = indice;
+        atualizarHoraInicio(indice);
+      });
+      
+      criarBotoesHorario('horaFimButtons', horarios, function(horario) {
+        const indice = horarios.indexOf(horario);
+        horaFimSlider.value = indice;
+        atualizarHoraFim(indice);
+      });
+      
+      // Criar botões para números da equipe
+      criarBotoesEquipo('equipoButtons', numerosEquipe, function(numero) {
+        const indice = numerosEquipe.indexOf(numero);
+        equipoSlider.value = indice;
+        atualizarEquipo(indice);
+      });
+      
+      // Inicializar com valores padrão
+      atualizarHoraInicio(20); // 10:00
+      atualizarHoraFim(23);    // 11:30
+      atualizarEquipo(0);      // 00
+      atualizarOperacao();     // Operação padrão
+      
+      // Função para obter o texto completo
+      function obterTextoCompleto() {
+        return document.getElementById('textToCopy').textContent;
+      }
+      
+      // Função para copiar texto
+      copyButton.addEventListener('click', async () => {
+        try {
+          // Obter o texto completo
+          const texto = obterTextoCompleto();
+          
+          // Usando a API moderna Clipboard
+          await navigator.clipboard.writeText(texto);
+          
+          // Mostrar notificação
+          notification.style.display = 'block';
+          notification.textContent = '✅ Texto copiado para a área de transferência!';
+          notification.style.background = '#4CAF50';
+          
+          // Mudar texto do botão temporariamente
+          const originalText = copyButton.innerHTML;
+          copyButton.innerHTML = '✅ COPIADO!';
+          copyButton.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+          
+          // Restaurar botão após 2 segundos
+          setTimeout(() => {
+            copyButton.innerHTML = originalText;
+            copyButton.style.background = 'linear-gradient(135deg, #1a2a6c, #2c3e50)';
+            notification.style.display = 'none';
+          }, 2000);
+          
+        } catch (err) {
+          // Fallback para navegadores mais antigos
+          const textArea = document.createElement('textarea');
+          textArea.value = obterTextoCompleto();
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          
+          // Mostrar notificação
+          notification.style.display = 'block';
+          notification.textContent = '✅ Texto copiado!';
+          notification.style.background = '#4CAF50';
+          
+          setTimeout(() => {
+            notification.style.display = 'none';
+          }, 2000);
+        }
+      });
+      
+      // Função para enviar para WhatsApp
+      whatsappButton.addEventListener('click', function() {
+        // Obter o texto completo
+        const texto = obterTextoCompleto();
+        
+        // Codificar o texto para URL
+        const textoCodificado = encodeURIComponent(texto);
+        
+        // Criar URL do WhatsApp
+        const whatsappURL = `https://wa.me/?text=${textoCodificado}`;
+        
+        // Abrir em nova aba
+        window.open(whatsappURL, '_blank');
         
         // Mostrar notificação
         notification.style.display = 'block';
+        notification.textContent = '📱 Abrindo WhatsApp...';
+        notification.style.background = '#25D366';
         
         // Mudar texto do botão temporariamente
-        const originalText = copyButton.innerHTML;
-        copyButton.innerHTML = '✅ COPIADO!';
-        copyButton.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+        const originalText = whatsappButton.innerHTML;
+        whatsappButton.innerHTML = '📱 ENVIANDO...';
         
-        // Restaurar botão após 2 segundos
+        // Restaurar botão após 3 segundos
         setTimeout(() => {
-          copyButton.innerHTML = originalText;
-          copyButton.style.background = 'linear-gradient(135deg, #1a2a6c, #2c3e50)';
+          whatsappButton.innerHTML = originalText;
           notification.style.display = 'none';
-        }, 2000);
-        
-      } catch (err) {
-        // Fallback para navegadores mais antigos
-        const textArea = document.createElement('textarea');
-        textArea.value = textToCopy.textContent;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        
-        // Mostrar notificação
-        notification.style.display = 'block';
-        notification.textContent = '✅ Texto copiado!';
-        
-        setTimeout(() => {
-          notification.style.display = 'none';
-        }, 2000);
-      }
+        }, 3000);
+      });
     });
-    
-    // Pode adicionar mais botões para diferentes modelos se quiser
   </script>
 </body>
 </html>
