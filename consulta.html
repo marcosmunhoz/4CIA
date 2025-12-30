@@ -5,12 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>Dejem e Delegada</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
-  <link rel="stylesheet" href="css/fontAwesome.css" />
-  <link rel="stylesheet" href="css/light-box.css" />
-  <link rel="stylesheet" href="css/templatemo-style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Kanit:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
   <style>
@@ -25,7 +22,7 @@
       min-height: 100vh;
     }
 
-    /* ========== MENU SUPERIOR - ESTILOS ORIGINAIS ========== */
+    /* ========== MENU SUPERIOR - COPIA EXATA DO INDEX PRINCIPAL ========== */
     nav {
       display: flex;
       align-items: center;
@@ -36,9 +33,10 @@
       position: fixed;
       width: 100%;
       box-sizing: border-box;
+      flex-wrap: wrap;
       top: 0;
       transition: background 0.3s ease;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
 
     nav.scrolled {
@@ -49,7 +47,6 @@
     .logo img.logo-img {
       height: 50px;
       object-fit: contain;
-      flex-shrink: 0;
     }
 
     nav .logo a {
@@ -57,25 +54,19 @@
       font-weight: 700;
       font-size: 1.6rem;
       text-decoration: none;
+      margin-right: 0;
+      font-family: 'Kanit', sans-serif;
       display: flex;
       align-items: center;
-    }
-
-    /* Container para o menu e itens */
-    .menu-container {
-      display: flex;
-      align-items: center;
-      flex: 1;
-      justify-content: flex-start;
-      margin-left: 20px;
     }
 
     ul.menu-horizontal {
       list-style: none;
       margin: 0;
-      padding: 0;
+      padding: 0 0 0 20px;
       display: flex;
       gap: 30px;
+      flex-wrap: nowrap;
     }
 
     ul.menu-horizontal > li {
@@ -109,7 +100,7 @@
       margin: 0;
       padding: 5px 0;
       display: none;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.8);
       border-radius: 3px;
       position: absolute;
       left: 50%;
@@ -117,7 +108,7 @@
       transform: translateX(-50%);
       z-index: 1001;
       box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-      min-width: 180px;
+      min-width: 110px;
       width: max-content;
     }
 
@@ -131,11 +122,10 @@
       font-size: 1.2rem;
       text-decoration: none;
       white-space: nowrap;
-      padding: 8px 15px;
+      padding: 4px 12px;
       border-radius: 2px;
       transition: all 0.3s ease;
       display: block;
-      text-align: center;
     }
 
     ul.submenu-horizontal li a:hover,
@@ -145,110 +135,14 @@
       color: #000 !important;
     }
 
-    /* ========== RESPONSIVIDADE ========== */
-    /* Tablet */
-    @media (max-width: 992px) {
-      nav {
-        padding: 8px 15px;
-      }
-      
-      ul.menu-horizontal {
-        gap: 20px;
-      }
-      
-      ul.menu-horizontal > li > a {
-        font-size: 1.2rem;
-      }
-      
-      .logo img.logo-img {
-        height: 45px;
-      }
-    }
-
-    /* Mobile - TELAS MENORES */
+    /* RESPONSIVIDADE - COPIA EXATA DO INDEX PRINCIPAL */
     @media (max-width: 768px) {
-      nav {
-        padding: 6px 10px;
-        justify-content: flex-start;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-        white-space: nowrap;
-      }
-      
-      .menu-container {
-        margin-left: 15px;
-        flex: 1;
-        min-width: 0;
-        overflow-x: auto;
-        overflow-y: hidden;
-      }
-      
-      ul.menu-horizontal {
-        gap: 15px;
-        padding-bottom: 5px;
-        flex-wrap: nowrap;
-        display: flex;
-      }
-      
-      ul.menu-horizontal > li {
-        flex-shrink: 0;
-      }
-      
-      ul.menu-horizontal > li > a {
-        font-size: 1.1rem;
-        padding: 8px 4px;
-      }
-      
-      .logo img.logo-img {
-        height: 40px;
-        flex-shrink: 0;
-      }
-      
-      ul.submenu-horizontal {
-        position: fixed;
-        left: 50%;
-        top: 60px;
-        transform: translateX(-50%);
-        width: 90%;
-        max-width: 280px;
-        z-index: 1002;
-      }
-    }
-
-    /* Mobile - TELAS MUITO PEQUENAS */
-    @media (max-width: 480px) {
-      nav {
-        padding: 5px 8px;
-      }
-      
-      .menu-container {
-        margin-left: 10px;
-      }
-      
-      ul.menu-horizontal {
-        gap: 12px;
-      }
-      
-      ul.menu-horizontal > li > a {
-        font-size: 1rem;
-        padding: 6px 3px;
-      }
-      
-      .logo img.logo-img {
-        height: 35px;
-      }
-      
-      ul.submenu-horizontal {
-        top: 55px;
-        max-width: 250px;
-      }
-      
-      ul.submenu-horizontal li a {
-        font-size: 1rem;
-        padding: 6px 12px;
-      }
+      nav { padding: 10px 15px; justify-content: flex-start; }
+      ul.menu-horizontal { padding-left: 10px; gap: 8px; }
+      ul.menu-horizontal > li > a { font-size: 1.2rem; padding: 8px 3px; }
+      .logo img.logo-img { height: 40px; }
+      html, body { overflow-x: hidden; width: 100%; position: relative; }
+      body.menu-open { overflow: hidden; height: 100%; }
     }
 
     /* ========== CONTEÚDO PRINCIPAL ========== */
@@ -262,7 +156,7 @@
       align-items: center;
       color: white;
       margin-top: 0;
-      padding-top: 0;
+      padding-top: 70px; /* Compensa o menu fixo */
     }
 
     #video-container video {
@@ -287,7 +181,7 @@
       height: 100vh;
       text-align: center;
       padding: 0 20px;
-      padding-top: 80px; /* Espaço para o menu fixo */
+      width: 100%;
     }
 
     .video-content h1 {
@@ -304,7 +198,7 @@
       text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     }
 
-    /* ========== FORMULÁRIO ========== */
+    /* ========== FORMULÁRIO MAIOR E MAIS VISÍVEL ========== */
     form.id-form {
       background: rgba(0, 0, 0, 0.6);
       padding: 30px;
@@ -398,8 +292,8 @@
 
     /* ========== RESPONSIVIDADE DO FORMULÁRIO ========== */
     @media (max-width: 768px) {
-      .video-content {
-        padding-top: 70px;
+      #video-container {
+        padding-top: 60px;
       }
       
       .video-content h1 {
@@ -435,8 +329,8 @@
     }
 
     @media (max-width: 480px) {
-      .video-content {
-        padding-top: 65px;
+      #video-container {
+        padding-top: 55px;
       }
       
       .video-content h1 {
@@ -484,42 +378,38 @@
 
 <body>
 
-  <!-- MENU SUPERIOR - ESTRUTURA SIMPLIFICADA -->
+  <!-- MENU SUPERIOR - LITERALMENTE IGUAL AO SEU INDEX PRINCIPAL -->
   <nav id="mainNav">
     <div class="logo">
       <a href="index.html">
         <img src="img/logo/icon-pmrv.png" alt="Polícia Rodoviária" class="logo-img">
       </a>
     </div>
-    
-    <div class="menu-container">
-      <ul class="menu-horizontal" id="menu">
-        <li>
-          <a>POLICIAL MILITAR</a>
-          <ul class="submenu-horizontal">
-            <li><a href="mbft.html">MBFT</a></li>
-            <li><a href="https://www.ctbdigital.com.br">CTB Digital</a></li>
-            <li><a href="municipios.html">Código de Município</a></li>
-            <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
-            <li><a href="https://marcosmunhoz.github.io/4CIA/assets/index.html">Produtividade PDR</a></li>
-            <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>
-            <li><a href="debito.html">Débito de Veículos</a></li>
-            <li><a href="manual.html">Vigilante Rodoviário</a></li>
-          </ul>
-        </li>
-        
-        <li>
-          <a>MODELOS</a>
-          <ul class="submenu-horizontal">
-            <li><a href="nota de empenho.html">NOTA DE EMPENHO</a></li>
-            <li><a href="Mensagem PDR.html">MSG PDR</a></li>
-            <li><a href="#">Modelo 3</a></li>
-            <li><a href="#">Modelo 4</a></li>
-            <li><a href="#">Modelo 5</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <ul class="menu-horizontal" id="menu">
+      <li>
+        <a>POLICIAL MILITAR</a>
+        <ul class="submenu-horizontal">
+          <li><a href="mbft.html">MBFT</a></li>
+          <li><a href="https://www.ctbdigital.com.br">CTB Digital</a></li>
+          <li><a href="municipios.html">Código de Município</a></li>
+          <li><a href="https://www.ciaf.policiamilitar.sp.gov.br/flp/mobile/mobileview.aspx">Holerite</a></li>
+          <li><a href="https://marcosmunhoz.github.io/4CIA/assets/index.html">Produtividade PDR</a></li>
+          <li><a href="https://portalbnmp.cnj.jus.br/#/pesquisa-peca">Portal BNMP</a></li>
+          <li><a href="debito.html">Débito de Veículos</a></li>
+          <li><a href="manual.html">Vigilante Rodoviário</a></li>
+        </ul>
+      </li>
+      <li>
+        <a>MODELOS</a>
+        <ul class="submenu-horizontal">
+          <li><a href="nota de empenho.html">NOTA DE EMPENHO</a></li>
+          <li><a href="Mensagem PDR.html">MSG PDR</a></li>
+          <li><a href="#">Modelo 3</a></li>
+          <li><a href="#">Modelo 4</a></li>
+          <li><a href="#">Modelo 5</a></li>
+        </ul>
+      </li>
+    </ul>
   </nav>
 
   <div id="video-container">
@@ -546,14 +436,7 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script>
-    window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
-  </script>
-  <script src="js/vendor/bootstrap.min.js"></script>
-  <script src="js/plugins.js"></script>
-  <script src="js/main.js"></script>
-
-  <script>
-    // Funções do menu horizontal
+    // Funções do menu horizontal - COPIA EXATA DO INDEX PRINCIPAL
     window.addEventListener('scroll', function() {
       const nav = document.getElementById('mainNav');
       if (window.scrollY > 50) {
@@ -601,19 +484,9 @@
         return;
       }
 
-      // Exemplo de URL base
       const urlBase = "https://sistemasadmin.intranet.policiamilitar.sp.gov.br/escala/arrelpreesc.aspx?";
-
-      // Redireciona para a URL com o ID
       window.location.href = urlBase + encodeURIComponent(id);
     }
-    
-    // Prevenir scroll horizontal no body
-    document.addEventListener('wheel', function(e) {
-      if (e.deltaX !== 0) {
-        e.preventDefault();
-      }
-    }, { passive: false });
   </script>
 
 </body>
