@@ -413,9 +413,14 @@
             const btnPadrao = document.getElementById('btnPadrao');
             const previewContent = document.getElementById('previewContent');
             const statusMessage = document.getElementById('statusMessage');
+            const tipoMensagemSelect = document.getElementById('tipoMensagem');
+            const fatoInput = document.getElementById('fato');
             
             // Chaves para localStorage
             const STORAGE_KEY = 'mensagem_bprv_form_data';
+            
+            // Frase de assinatura
+            const ASSINATURA = "\"Nós, Policiais Militares, sob a proteção de Deus, estamos compromissados com a Defesa da Vida, da Integridade Física e da Dignidade da Pessoa Humana\"";
             
             // Função para mostrar status
             function showStatus(message, type) {
@@ -424,6 +429,36 @@
                 setTimeout(() => {
                     statusMessage.style.display = 'none';
                 }, 3000);
+            }
+            
+            // Função para atualizar automático o campo "Fato" baseado no tipo selecionado
+            function atualizarCampoFato() {
+                const tipoSelecionado = tipoMensagemSelect.value;
+                const valorAtualFato = fatoInput.value;
+                
+                // Remove " - Prévia" ou " - Final" se existir
+                let baseFato = valorAtualFato;
+                if (baseFato.includes(' - Prévia')) {
+                    baseFato = baseFato.replace(' - Prévia', '');
+                }
+                if (baseFato.includes(' - Final')) {
+                    baseFato = baseFato.replace(' - Final', '');
+                }
+                
+                // Se o campo está vazio ou contém apenas o padrão, ajusta
+                if (!baseFato.trim() || baseFato === 'Captura de Procurado pela Justiça') {
+                    baseFato = 'Captura de Procurado pela Justiça';
+                }
+                
+                // Adiciona o tipo correspondente
+                if (tipoSelecionado === 'PRÉVIA') {
+                    fatoInput.value = baseFato + ' - Prévia';
+                } else if (tipoSelecionado === 'FINAL') {
+                    fatoInput.value = baseFato + ' - Final';
+                }
+                
+                // Salva automaticamente
+                saveToLocalStorage();
             }
             
             // Função para salvar dados no localStorage
@@ -501,7 +536,7 @@
                 saveToLocalStorage(); // Salva o modelo padrão no localStorage
             }
             
-            // Função para gerar a mensagem formatada - CORRIGIDA
+            // Função para gerar a mensagem formatada
             function gerarMensagem() {
                 // Verificar se o formulário é válido
                 if (!form.checkValidity()) {
@@ -574,6 +609,9 @@
                     mensagem += `Autoridades que foram cientificadas: ${autoridadeCientificada}\n`;
                 }
                 
+                // Adiciona a assinatura no final da mensagem
+                mensagem += `\n${ASSINATURA}\n`;
+                
                 // Exibir no preview
                 previewContent.textContent = mensagem;
                 
@@ -582,6 +620,9 @@
                 
                 // Mostrar mensagem de sucesso
                 showStatus('Mensagem gerada com sucesso!', 'saved');
+                
+                // Salvar automaticamente após gerar
+                saveToLocalStorage();
             }
             
             // Função para limpar todos os campos
@@ -594,9 +635,30 @@
                 }
             }
             
-            // Event Listeners para salvar automaticamente
+            // Event Listeners
+            tipoMensagemSelect.addEventListener('change', function() {
+                atualizarCampoFato();
+            });
+            
+            // Quando o campo Fato perder o foco, verifica se precisa atualizar
+            fatoInput.addEventListener('blur', function() {
+                const valorFato = fatoInput.value;
+                const tipoSelecionado = tipoMensagemSelect.value;
+                
+                if (tipoSelecionado && !valorFato.includes(tipoSelecionado)) {
+                    // Se o tipo está selecionado mas não está no campo Fato, atualiza
+                    atualizarCampoFato();
+                }
+            });
+            
+            // Salvar automaticamente ao digitar/mudar qualquer campo
             form.addEventListener('input', function(e) {
                 if (e.target.id && e.target.id !== 'btnGerar' && e.target.id !== 'btnLimpar' && e.target.id !== 'btnPadrao') {
+                    // Se estiver alterando o tipo de mensagem, atualiza o campo Fato
+                    if (e.target.id === 'tipoMensagem') {
+                        // Atualização será feita no evento 'change' acima
+                        return;
+                    }
                     saveToLocalStorage();
                 }
             });
