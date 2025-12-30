@@ -67,6 +67,7 @@
       display: flex;
       gap: 30px;
       flex-wrap: nowrap;
+      flex: 1;
     }
 
     ul.menu-horizontal > li {
@@ -135,13 +136,239 @@
       color: #000 !important;
     }
 
+    /* Botão de Localização - NOVO */
+    .localizacao-container {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .localizacao-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .localizacao-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #87CEEB;
+      color: #87CEEB;
+      transform: translateY(-2px);
+    }
+
+    .localizacao-btn:active {
+      transform: translateY(0);
+    }
+
+    .localizacao-btn.loading {
+      opacity: 0.7;
+      cursor: wait;
+    }
+
+    .localizacao-info {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 10px;
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid #87CEEB;
+      border-radius: 10px;
+      padding: 15px;
+      width: 300px;
+      z-index: 1002;
+      display: none;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .localizacao-info.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .localizacao-info h3 {
+      color: #87CEEB;
+      margin: 0 0 15px 0;
+      font-size: 1.3rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(135, 206, 235, 0.3);
+      padding-bottom: 8px;
+    }
+
+    .localizacao-data {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .localizacao-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .localizacao-item:last-child {
+      border-bottom: none;
+    }
+
+    .localizacao-label {
+      color: #87CEEB;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .localizacao-value {
+      color: white;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      text-align: right;
+      word-break: break-word;
+      max-width: 180px;
+    }
+
+    .localizacao-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .localizacao-action-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .copiar-btn {
+      background: rgba(135, 206, 235, 0.2);
+      color: #87CEEB;
+      border: 1px solid #87CEEB;
+    }
+
+    .copiar-btn:hover {
+      background: rgba(135, 206, 235, 0.3);
+    }
+
+    .fechar-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .fechar-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .localizacao-error {
+      color: #ff6b6b;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 107, 107, 0.3);
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
     @media (max-width: 768px) {
-      nav { padding: 10px 15px; justify-content: flex-start; }
-      ul.menu-horizontal { padding-left: 10px; gap: 8px; }
-      ul.menu-horizontal > li > a { font-size: 1.2rem; padding: 8px 3px; }
-      .logo img.logo-img { height: 40px; }
-      html, body { overflow-x: hidden; width: 100%; position: relative; }
-      body.menu-open { overflow: hidden; height: 100%; }
+      nav { 
+        padding: 10px 15px; 
+        justify-content: space-between; 
+      }
+      
+      ul.menu-horizontal { 
+        padding-left: 10px; 
+        gap: 8px; 
+        flex: none;
+      }
+      
+      ul.menu-horizontal > li > a { 
+        font-size: 1.2rem; 
+        padding: 8px 3px; 
+      }
+      
+      .logo img.logo-img { 
+        height: 40px; 
+      }
+      
+      .localizacao-container {
+        margin-left: 0;
+        position: static;
+      }
+      
+      .localizacao-btn {
+        padding: 6px 12px;
+        font-size: 1rem;
+      }
+      
+      .localizacao-info {
+        position: fixed;
+        top: 60px;
+        right: 15px;
+        left: 15px;
+        width: auto;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      
+      html, body { 
+        overflow-x: hidden; 
+        width: 100%; 
+        position: relative; 
+      }
+      
+      body.menu-open { 
+        overflow: hidden; 
+        height: 100%; 
+      }
+    }
+
+    @media (max-width: 480px) {
+      .localizacao-btn span {
+        display: none;
+      }
+      
+      .localizacao-btn {
+        padding: 8px;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+      }
+      
+      .localizacao-btn::before {
+        content: "📍";
+        font-size: 1.2rem;
+      }
     }
 
     /* Mantive sua definição global */
@@ -421,6 +648,38 @@
         </ul>
       </li>
     </ul>
+    
+    <!-- NOVO: Botão de Localização -->
+    <div class="localizacao-container">
+      <button class="localizacao-btn" id="localizacaoBtn">
+        <span>📍 Localização</span>
+      </button>
+      
+      <div class="localizacao-info" id="localizacaoInfo">
+        <h3>📍 Minha Localização</h3>
+        <div class="localizacao-data" id="localizacaoData">
+          <div class="localizacao-item">
+            <span class="localizacao-label">Latitude:</span>
+            <span class="localizacao-value" id="latitudeValue">-</span>
+          </div>
+          <div class="localizacao-item">
+            <span class="localizacao-label">Longitude:</span>
+            <span class="localizacao-value" id="longitudeValue">-</span>
+          </div>
+          <div class="localizacao-item">
+            <span class="localizacao-label">Horário:</span>
+            <span class="localizacao-value" id="horarioValue">-</span>
+          </div>
+        </div>
+        <div class="localizacao-error" id="localizacaoError" style="display: none;">
+          Erro ao obter localização. Verifique suas permissões e GPS.
+        </div>
+        <div class="localizacao-actions">
+          <button class="localizacao-action-btn copiar-btn" id="copiarCoordenadasBtn">Copiar</button>
+          <button class="localizacao-action-btn fechar-btn" id="fecharLocalizacaoBtn">Fechar</button>
+        </div>
+      </div>
+    </div>
   </nav>
 
   <!-- Menu principal (circular) -->
@@ -514,6 +773,172 @@
         const submenus = document.querySelectorAll(".submenu-circle");
         submenus.forEach(menu => menu.style.display = "none");
       }
+    });
+
+    // NOVO: Funções de Localização
+    document.addEventListener('DOMContentLoaded', function() {
+      const localizacaoBtn = document.getElementById('localizacaoBtn');
+      const localizacaoInfo = document.getElementById('localizacaoInfo');
+      const latitudeValue = document.getElementById('latitudeValue');
+      const longitudeValue = document.getElementById('longitudeValue');
+      const horarioValue = document.getElementById('horarioValue');
+      const localizacaoError = document.getElementById('localizacaoError');
+      const copiarCoordenadasBtn = document.getElementById('copiarCoordenadasBtn');
+      const fecharLocalizacaoBtn = document.getElementById('fecharLocalizacaoBtn');
+      
+      let coordenadasAtuais = null;
+      
+      // Função para formatar data/hora
+      function formatarDataHora(data) {
+        return data.toLocaleString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+      }
+      
+      // Alternar visibilidade da caixa de localização
+      localizacaoBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        localizacaoInfo.classList.toggle('active');
+        
+        // Se a caixa estiver abrindo e ainda não tem dados, busca localização
+        if (localizacaoInfo.classList.contains('active') && !coordenadasAtuais) {
+          obterLocalizacao();
+        }
+      });
+      
+      // Fechar caixa de localização
+      fecharLocalizacaoBtn.addEventListener('click', function() {
+        localizacaoInfo.classList.remove('active');
+      });
+      
+      // Fechar ao clicar fora
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.localizacao-container')) {
+          localizacaoInfo.classList.remove('active');
+        }
+      });
+      
+      // Função para obter localização
+      function obterLocalizacao() {
+        // Verificar se o navegador suporta geolocalização
+        if (!navigator.geolocation) {
+          mostrarErro('Seu navegador não suporta geolocalização!');
+          return;
+        }
+        
+        // Mostrar estado de carregamento
+        localizacaoBtn.classList.add('loading');
+        localizacaoBtn.innerHTML = '<span>🔄 Obtendo...</span>';
+        
+        // Configurações
+        const opcoes = {
+          enableHighAccuracy: true, // Usar GPS para maior precisão
+          timeout: 10000, // 10 segundos
+          maximumAge: 0 // Sem cache
+        };
+        
+        // Solicitar localização
+        navigator.geolocation.getCurrentPosition(
+          // Sucesso
+          function(posicao) {
+            const latitude = posicao.coords.latitude;
+            const longitude = posicao.coords.longitude;
+            const timestamp = new Date(posicao.timestamp);
+            
+            // Salvar coordenadas
+            coordenadasAtuais = { latitude, longitude };
+            
+            // Atualizar interface
+            latitudeValue.textContent = latitude.toFixed(6);
+            longitudeValue.textContent = longitude.toFixed(6);
+            horarioValue.textContent = formatarDataHora(timestamp);
+            
+            // Esconder erro se existir
+            localizacaoError.style.display = 'none';
+            
+            // Restaurar botão
+            localizacaoBtn.classList.remove('loading');
+            localizacaoBtn.innerHTML = '<span>📍 Localização</span>';
+          },
+          
+          // Erro
+          function(erro) {
+            let mensagemErro = '';
+            
+            switch(erro.code) {
+              case 1: // PERMISSION_DENIED
+                mensagemErro = 'Permissão negada! Por favor, permita o acesso à localização nas configurações do navegador.';
+                break;
+              case 2: // POSITION_UNAVAILABLE
+                mensagemErro = 'Localização indisponível! Verifique se o GPS está ativado.';
+                break;
+              case 3: // TIMEOUT
+                mensagemErro = 'Tempo esgotado! Tente novamente.';
+                break;
+              default:
+                mensagemErro = 'Erro ao obter localização.';
+            }
+            
+            mostrarErro(mensagemErro);
+            
+            // Restaurar botão
+            localizacaoBtn.classList.remove('loading');
+            localizacaoBtn.innerHTML = '<span>📍 Localização</span>';
+          },
+          
+          opcoes
+        );
+      }
+      
+      // Função para mostrar erro
+      function mostrarErro(mensagem) {
+        localizacaoError.textContent = mensagem;
+        localizacaoError.style.display = 'block';
+      }
+      
+      // Função para copiar coordenadas
+      copiarCoordenadasBtn.addEventListener('click', function() {
+        if (!coordenadasAtuais) return;
+        
+        const texto = `Latitude: ${coordenadasAtuais.latitude.toFixed(6)}\nLongitude: ${coordenadasAtuais.longitude.toFixed(6)}\nHorário: ${horarioValue.textContent}`;
+        
+        navigator.clipboard.writeText(texto)
+          .then(() => {
+            // Feedback visual
+            const originalText = copiarCoordenadasBtn.textContent;
+            copiarCoordenadasBtn.textContent = '✅ Copiado!';
+            copiarCoordenadasBtn.style.background = 'rgba(76, 175, 80, 0.3)';
+            
+            setTimeout(() => {
+              copiarCoordenadasBtn.textContent = originalText;
+              copiarCoordenadasBtn.style.background = 'rgba(135, 206, 235, 0.2)';
+            }, 2000);
+          })
+          .catch(() => {
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = texto;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Feedback visual
+            const originalText = copiarCoordenadasBtn.textContent;
+            copiarCoordenadasBtn.textContent = '✅ Copiado!';
+            copiarCoordenadasBtn.style.background = 'rgba(76, 175, 80, 0.3)';
+            
+            setTimeout(() => {
+              copiarCoordenadasBtn.textContent = originalText;
+              copiarCoordenadasBtn.style.background = 'rgba(135, 206, 235, 0.2)';
+            }, 2000);
+          });
+      });
     });
   </script>
 </body>
