@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Nota de Empenho - Modelo Padrão</title>
   <style>
     * {
@@ -19,6 +19,7 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      overflow-x: hidden;
     }
     
     .container {
@@ -28,6 +29,7 @@
       padding: 30px;
       max-width: 800px;
       width: 100%;
+      margin: 0 auto;
     }
     
     .header {
@@ -39,13 +41,13 @@
     
     .header h1 {
       color: #1a2a6c;
-      font-size: 28px;
+      font-size: 24px;
       margin-bottom: 10px;
     }
     
     .header h2 {
       color: #2c3e50;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: normal;
     }
     
@@ -61,6 +63,7 @@
       line-height: 1.6;
       white-space: pre-wrap;
       color: #333;
+      font-size: 14px;
     }
     
     .controls-container {
@@ -73,182 +76,128 @@
     }
     
     .control-group {
-      margin-bottom: 25px;
-      padding-bottom: 15px;
-      border-bottom: 1px dashed #ddd;
+      margin-bottom: 20px;
     }
     
     .control-group:last-child {
-      border-bottom: none;
       margin-bottom: 0;
-      padding-bottom: 0;
     }
     
     .control-label {
       display: block;
       color: #1a2a6c;
       font-weight: bold;
-      margin-bottom: 10px;
-      font-size: 16px;
+      margin-bottom: 8px;
+      font-size: 15px;
     }
     
-    .time-selector {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 10px;
+    /* Estilos para os select boxes */
+    .custom-select {
+      position: relative;
+      width: 100%;
     }
     
-    .time-slider {
-      flex: 1;
-      -webkit-appearance: none;
-      height: 30px;
-      background: #e9ecef;
-      border-radius: 15px;
-      outline: none;
-      padding: 0 5px;
-    }
-    
-    .time-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 40px;
-      height: 40px;
-      background: #1a2a6c;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-      transition: all 0.2s;
-    }
-    
-    .time-slider::-webkit-slider-thumb:hover {
-      background: #2c3e50;
-      transform: scale(1.1);
-    }
-    
-    .time-display {
-      min-width: 100px;
-      text-align: center;
-      font-family: 'Courier New', monospace;
-      font-size: 18px;
-      font-weight: bold;
-      color: #1a2a6c;
-      background: #f8f9fa;
-      padding: 8px 15px;
-      border-radius: 8px;
+    .select-selected {
+      background-color: #f8f9fa;
       border: 2px solid #1a2a6c;
-    }
-    
-    .time-buttons {
+      border-radius: 8px;
+      padding: 12px 15px;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: 'Courier New', monospace;
+      color: #333;
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s;
     }
     
-    .time-btn {
-      flex: 1;
-      min-width: 60px;
-      padding: 8px 5px;
-      background: #f8f9fa;
-      border: 1px solid #ddd;
-      border-radius: 6px;
+    .select-selected:after {
+      content: "▼";
+      font-size: 14px;
+      color: #1a2a6c;
+      transition: transform 0.3s;
+    }
+    
+    .select-selected.select-arrow-active:after {
+      transform: rotate(180deg);
+    }
+    
+    .select-items {
+      position: absolute;
+      background-color: white;
+      border: 2px solid #1a2a6c;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      z-index: 99;
+      width: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .select-items div {
+      padding: 12px 15px;
       cursor: pointer;
       font-family: 'Courier New', monospace;
-      font-size: 14px;
-      transition: all 0.2s;
-      text-align: center;
+      font-size: 15px;
+      border-bottom: 1px solid #eee;
+      transition: background-color 0.2s;
     }
     
-    .time-btn:hover {
-      background: #e9ecef;
-      border-color: #1a2a6c;
+    .select-items div:hover {
+      background-color: #e9ecef;
     }
     
-    .time-btn.active {
-      background: #1a2a6c;
-      color: white;
-      border-color: #1a2a6c;
-      font-weight: bold;
+    .select-items div:last-child {
+      border-bottom: none;
     }
     
-    .equipo-selector {
+    .select-hide {
+      display: none;
+    }
+    
+    .same-as-selected {
+      background-color: #1a2a6c !important;
+      color: white !important;
+    }
+    
+    /* Grupo para hora início e fim */
+    .time-group {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .time-item {
+      flex: 1;
+    }
+    
+    /* Grupo para equipe */
+    .equipo-group {
       display: flex;
       align-items: center;
       gap: 10px;
+      margin-bottom: 20px;
     }
     
     .equipo-prefix {
       font-family: 'Courier New', monospace;
-      font-size: 18px;
-      font-weight: bold;
-      color: #1a2a6c;
-    }
-    
-    .equipo-slider {
-      flex: 1;
-      -webkit-appearance: none;
-      height: 30px;
-      background: #e9ecef;
-      border-radius: 15px;
-      outline: none;
-      padding: 0 5px;
-    }
-    
-    .equipo-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 40px;
-      height: 40px;
-      background: #2c3e50;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-      transition: all 0.2s;
-    }
-    
-    .equipo-slider::-webkit-slider-thumb:hover {
-      background: #1a2a6c;
-      transform: scale(1.1);
-    }
-    
-    .equipo-display {
-      min-width: 60px;
-      text-align: center;
-      font-family: 'Courier New', monospace;
-      font-size: 18px;
-      font-weight: bold;
-      color: #1a2a6c;
-      background: #f8f9fa;
-      padding: 8px 15px;
-      border-radius: 8px;
-      border: 2px solid #2c3e50;
-    }
-    
-    .operacao-selector {
-      margin-top: 10px;
-    }
-    
-    .operacao-select {
-      width: 100%;
-      padding: 12px;
       font-size: 16px;
-      border: 2px solid #1a2a6c;
-      border-radius: 8px;
-      background: white;
-      color: #333;
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-      transition: all 0.3s;
+      font-weight: bold;
+      color: #1a2a6c;
+      white-space: nowrap;
     }
     
-    .operacao-select:focus {
-      outline: none;
-      border-color: #2c3e50;
-      box-shadow: 0 0 10px rgba(26, 42, 108, 0.3);
+    .equipo-select {
+      flex: 1;
     }
     
     .buttons {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 15px;
       flex-wrap: wrap;
       margin-top: 20px;
     }
@@ -257,7 +206,7 @@
       background: linear-gradient(135deg, #1a2a6c, #2c3e50);
       color: white;
       border: none;
-      padding: 15px 30px;
+      padding: 15px 25px;
       font-size: 16px;
       border-radius: 50px;
       cursor: pointer;
@@ -273,7 +222,7 @@
     }
     
     .action-btn:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(26, 42, 108, 0.5);
     }
     
@@ -309,6 +258,8 @@
       display: none;
       z-index: 1000;
       animation: slideIn 0.3s ease;
+      max-width: 300px;
+      text-align: center;
     }
     
     @keyframes slideIn {
@@ -324,61 +275,102 @@
     
     .footer {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 25px;
       color: #666;
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.4;
     }
     
-    .footer a {
-      color: #1a2a6c;
-      text-decoration: none;
-    }
-    
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+        overflow-x: hidden;
+      }
+      
       .container {
-        padding: 20px;
+        padding: 20px 15px;
+        border-radius: 10px;
       }
       
       .header h1 {
-        font-size: 22px;
+        font-size: 20px;
+      }
+      
+      .header h2 {
+        font-size: 14px;
       }
       
       .text-container {
         padding: 15px;
-        font-size: 14px;
+        font-size: 13px;
+        max-height: 400px;
       }
       
       .controls-container {
         padding: 15px;
       }
       
-      .time-selector, .equipo-selector {
+      .time-group {
         flex-direction: column;
-        align-items: stretch;
+        gap: 15px;
       }
       
-      .time-display, .equipo-display {
-        width: 100%;
+      .equipo-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      
+      .equipo-prefix {
+        text-align: center;
       }
       
       .action-btn {
         padding: 12px 20px;
-        font-size: 14px;
+        font-size: 15px;
         min-width: 100%;
         width: 100%;
       }
       
       .buttons {
         flex-direction: column;
+        gap: 10px;
       }
       
-      .time-buttons {
-        justify-content: center;
+      .select-selected {
+        padding: 10px 12px;
+        font-size: 15px;
       }
       
-      .time-btn {
-        flex: none;
-        width: calc(33.333% - 7px);
+      .select-items div {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 18px;
+      }
+      
+      .text-container {
+        font-size: 12px;
+        padding: 12px;
+      }
+      
+      .control-label {
+        font-size: 14px;
+      }
+      
+      .select-selected {
+        font-size: 14px;
+      }
+      
+      .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
       }
     }
   </style>
@@ -391,59 +383,48 @@
     </div>
     
     <div class="controls-container">
-      <div class="control-group">
-        <label class="control-label">HORA INÍCIO:</label>
-        <div class="time-selector">
-          <input type="range" class="time-slider" id="horaInicioSlider" min="0" max="46" value="20">
-          <div class="time-display" id="horaInicioDisplay">10:00</div>
+      <div class="time-group">
+        <div class="time-item">
+          <label class="control-label">HORA INÍCIO:</label>
+          <div class="custom-select" id="horaInicioSelect">
+            <div class="select-selected">10:00</div>
+            <div class="select-items select-hide" id="horaInicioItems">
+              <!-- Itens serão gerados por JavaScript -->
+            </div>
+          </div>
         </div>
-        <div class="time-buttons" id="horaInicioButtons">
-          <!-- Botões serão gerados por JavaScript -->
-        </div>
-      </div>
-      
-      <div class="control-group">
-        <label class="control-label">HORA FIM:</label>
-        <div class="time-selector">
-          <input type="range" class="time-slider" id="horaFimSlider" min="0" max="46" value="23">
-          <div class="time-display" id="horaFimDisplay">11:30</div>
-        </div>
-        <div class="time-buttons" id="horaFimButtons">
-          <!-- Botões serão gerados por JavaScript -->
+        
+        <div class="time-item">
+          <label class="control-label">HORA FIM:</label>
+          <div class="custom-select" id="horaFimSelect">
+            <div class="select-selected">11:30</div>
+            <div class="select-items select-hide" id="horaFimItems">
+              <!-- Itens serão gerados por JavaScript -->
+            </div>
+          </div>
         </div>
       </div>
       
       <div class="control-group">
         <label class="control-label">EQUIPE:</label>
-        <div class="equipo-selector">
-          <span class="equipo-prefix">R-044</span>
-          <input type="range" class="equipo-slider" id="equipoSlider" min="0" max="50" value="0">
-          <div class="equipo-display" id="equipoDisplay">00</div>
-        </div>
-        <div class="time-buttons" id="equipoButtons">
-          <!-- Botões serão gerados por JavaScript -->
+        <div class="equipo-group">
+          <div class="equipo-prefix">R-044</div>
+          <div class="custom-select equipo-select" id="equipoSelect">
+            <div class="select-selected">00</div>
+            <div class="select-items select-hide" id="equipoItems">
+              <!-- Itens serão gerados por JavaScript -->
+            </div>
+          </div>
         </div>
       </div>
       
       <div class="control-group">
         <label class="control-label">OPERAÇÃO:</label>
-        <div class="operacao-selector">
-          <select class="operacao-select" id="operacaoSelect">
-            <option value="Op. CINTO DE SEGURANÇA">Operação Cinto de Segurança</option>
-            <option value="Op. HÉRCULES">Operação Hércules</option>
-            <option value="Op. SANEAMENTO">Operação Saneamento</option>
-            <option value="Op. ODS">Operação ODS</option>
-            <option value="Op. ODSI">Operação ODSI</option>
-            <option value="Op. DEJEM">Operação DEJEM</option>
-            <option value="Op. ELEIÇÕES">Operação Eleições</option>
-            <option value="Op. CARNAVAL">Operação Carnaval</option>
-            <option value="Op. SEGURANÇA VIÁRIA - ALCOOLEMIA">Operação Segurança Viária - Alcoolemia</option>
-            <option value="Op. SEGURANÇA VIÁRIA - CELULAR">Operação Segurança Viária - Celular</option>
-            <option value="Op. SEGURANÇA VIÁRIA - ULTRAPASSAGEM">Operação Segurança Viária - Ultrapassagem</option>
-            <option value="Op. SEGURANÇA VIÁRIA - EXCESSO DE VELOCIDADE">Operação Segurança Viária - Excesso de Velocidade</option>
-            <option value="Op. CAVALO DE AÇO">Operação Cavalo de Aço</option>
-            <option value="Op. INTERIOR MAIS SEGURO">Operação Interior Mais Seguro</option>
-          </select>
+        <div class="custom-select" id="operacaoSelect">
+          <div class="select-selected">Op. CINTO DE SEGURANÇA</div>
+          <div class="select-items select-hide" id="operacaoItems">
+            <!-- Itens serão gerados por JavaScript -->
+          </div>
         </div>
       </div>
     </div>
@@ -495,7 +476,7 @@ Obs:
     </div>
     
     <div class="footer">
-      <p>Use os controles acima para ajustar horários, equipe e operação</p>
+      <p>Clique nos campos acima para selecionar horários, equipe e operação</p>
       <p>Desenvolvido para agilizar o envio de produtividade do turno de serviço</p>
     </div>
   </div>
@@ -527,75 +508,83 @@ Obs:
       return numeros;
     }
     
-    // Função para criar botões de hora
-    function criarBotoesHorario(containerId, horarios, onClickCallback) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = '';
+    // Lista de operações
+    const operacoes = [
+      { display: "Operação Cinto de Segurança", value: "Op. CINTO DE SEGURANÇA" },
+      { display: "Operação Hércules", value: "Op. HÉRCULES" },
+      { display: "Operação Saneamento", value: "Op. SANEAMENTO" },
+      { display: "Operação ODS", value: "Op. ODS" },
+      { display: "Operação ODSI", value: "Op. ODSI" },
+      { display: "Operação DEJEM", value: "Op. DEJEM" },
+      { display: "Operação Eleições", value: "Op. ELEIÇÕES" },
+      { display: "Operação Carnaval", value: "Op. CARNAVAL" },
+      { display: "Operação Segurança Viária - Alcoolemia", value: "Op. SEGURANÇA VIÁRIA - ALCOOLEMIA" },
+      { display: "Operação Segurança Viária - Celular", value: "Op. SEGURANÇA VIÁRIA - CELULAR" },
+      { display: "Operação Segurança Viária - Ultrapassagem", value: "Op. SEGURANÇA VIÁRIA - ULTRAPASSAGEM" },
+      { display: "Operação Segurança Viária - Excesso de Velocidade", value: "Op. SEGURANÇA VIÁRIA - EXCESSO DE VELOCIDADE" },
+      { display: "Operação Cavalo de Aço", value: "Op. CAVALO DE AÇO" },
+      { display: "Operação Interior Mais Seguro", value: "Op. INTERIOR MAIS SEGURO" }
+    ];
+    
+    // Função para criar um custom select
+    function criarCustomSelect(selectId, items, selectedValue, onChangeCallback) {
+      const select = document.getElementById(selectId);
+      const selectedDiv = select.querySelector('.select-selected');
+      const itemsDiv = select.querySelector('.select-items');
       
-      // Criar botões para os horários mais comuns (6h00 até 22h00)
-      const horariosComuns = horarios.filter(h => {
-        const hora = parseInt(h.split(':')[0]);
-        return hora >= 6 && hora <= 22;
+      // Limpar itens existentes
+      itemsDiv.innerHTML = '';
+      
+      // Adicionar itens
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.textContent = item.display || item;
+        div.dataset.value = item.value || item;
+        
+        if ((item.value || item) === selectedValue) {
+          div.classList.add('same-as-selected');
+        }
+        
+        div.addEventListener('click', function() {
+          const value = this.dataset.value;
+          selectedDiv.textContent = item.display || item;
+          
+          // Atualizar classe "same-as-selected"
+          const allItems = itemsDiv.querySelectorAll('div');
+          allItems.forEach(item => item.classList.remove('same-as-selected'));
+          this.classList.add('same-as-selected');
+          
+          // Fechar dropdown
+          itemsDiv.classList.add('select-hide');
+          selectedDiv.classList.remove('select-arrow-active');
+          
+          // Chamar callback
+          if (onChangeCallback) {
+            onChangeCallback(value);
+          }
+        });
+        
+        itemsDiv.appendChild(div);
       });
       
-      // Agrupar em blocos de 4 para melhor visualização
-      for (let i = 0; i < horariosComuns.length; i += 4) {
-        const grupo = horariosComuns.slice(i, i + 4);
-        const grupoDiv = document.createElement('div');
-        grupoDiv.style.display = 'flex';
-        grupoDiv.style.gap = '8px';
-        grupoDiv.style.marginBottom = '5px';
-        
-        grupo.forEach(horario => {
-          const button = document.createElement('button');
-          button.className = 'time-btn';
-          button.textContent = horario;
-          button.dataset.horario = horario;
-          button.addEventListener('click', () => onClickCallback(horario));
-          grupoDiv.appendChild(button);
-        });
-        
-        container.appendChild(grupoDiv);
-      }
-    }
-    
-    // Função para criar botões de número da equipe
-    function criarBotoesEquipo(containerId, numeros, onClickCallback) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = '';
+      // Evento para abrir/fechar dropdown
+      selectedDiv.addEventListener('click', function(e) {
+        e.stopPropagation();
+        itemsDiv.classList.toggle('select-hide');
+        this.classList.toggle('select-arrow-active');
+      });
       
-      // Agrupar em blocos de 10 para melhor visualização
-      for (let i = 0; i < numeros.length; i += 10) {
-        const grupo = numeros.slice(i, i + 10);
-        const grupoDiv = document.createElement('div');
-        grupoDiv.style.display = 'flex';
-        grupoDiv.style.gap = '5px';
-        grupoDiv.style.marginBottom = '5px';
-        
-        grupo.forEach(numero => {
-          const button = document.createElement('button');
-          button.className = 'time-btn';
-          button.textContent = numero;
-          button.dataset.numero = numero;
-          button.addEventListener('click', () => onClickCallback(numero));
-          grupoDiv.appendChild(button);
-        });
-        
-        container.appendChild(grupoDiv);
-      }
+      // Fechar dropdown ao clicar fora
+      document.addEventListener('click', function() {
+        itemsDiv.classList.add('select-hide');
+        selectedDiv.classList.remove('select-arrow-active');
+      });
     }
     
     // Inicializar
     document.addEventListener('DOMContentLoaded', function() {
       const horarios = gerarHorarios();
       const numerosEquipe = gerarNumerosEquipe();
-      const horaInicioSlider = document.getElementById('horaInicioSlider');
-      const horaFimSlider = document.getElementById('horaFimSlider');
-      const equipoSlider = document.getElementById('equipoSlider');
-      const operacaoSelect = document.getElementById('operacaoSelect');
-      const horaInicioDisplay = document.getElementById('horaInicioDisplay');
-      const horaFimDisplay = document.getElementById('horaFimDisplay');
-      const equipoDisplay = document.getElementById('equipoDisplay');
       const horaInicioText = document.getElementById('horaInicioText');
       const horaFimText = document.getElementById('horaFimText');
       const equipoText = document.getElementById('equipoText');
@@ -604,90 +593,43 @@ Obs:
       const whatsappButton = document.getElementById('whatsappButton');
       const notification = document.getElementById('notification');
       
-      // Atualizar botão ativo
-      function atualizarBotaoAtivo(containerId, valorAtivo) {
-        const container = document.getElementById(containerId);
-        const botoes = container.querySelectorAll('.time-btn');
-        botoes.forEach(btn => {
-          if (btn.dataset.horario === valorAtivo || btn.dataset.numero === valorAtivo) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
-      }
+      // Converter horários para formato de select
+      const horariosSelect = horarios.map(h => ({ display: h, value: h }));
+      
+      // Converter números da equipe para formato de select
+      const numerosSelect = numerosEquipe.map(n => ({ display: n, value: n }));
       
       // Atualizar hora início
-      function atualizarHoraInicio(indice) {
-        const horario = horarios[indice];
-        horaInicioDisplay.textContent = horario;
-        horaInicioText.textContent = horario;
-        atualizarBotaoAtivo('horaInicioButtons', horario);
+      function atualizarHoraInicio(valor) {
+        horaInicioText.textContent = valor;
       }
       
       // Atualizar hora fim
-      function atualizarHoraFim(indice) {
-        const horario = horarios[indice];
-        horaFimDisplay.textContent = horario;
-        horaFimText.textContent = horario.replace(':', 'h');
-        atualizarBotaoAtivo('horaFimButtons', horario);
+      function atualizarHoraFim(valor) {
+        horaFimText.textContent = valor.replace(':', 'h');
       }
       
       // Atualizar número da equipe
-      function atualizarEquipo(indice) {
-        const numero = numerosEquipe[indice];
-        equipoDisplay.textContent = numero;
-        equipoText.textContent = '044' + numero;
-        atualizarBotaoAtivo('equipoButtons', numero);
+      function atualizarEquipo(valor) {
+        equipoText.textContent = '044' + valor;
       }
       
       // Atualizar operação
-      function atualizarOperacao() {
-        const operacao = operacaoSelect.value;
-        operacaoText.textContent = operacao;
+      function atualizarOperacao(valor) {
+        operacaoText.textContent = valor;
       }
       
-      // Configurar sliders
-      horaInicioSlider.addEventListener('input', function() {
-        atualizarHoraInicio(parseInt(this.value));
-      });
+      // Criar selects
+      criarCustomSelect('horaInicioSelect', horariosSelect, '10:00', atualizarHoraInicio);
+      criarCustomSelect('horaFimSelect', horariosSelect, '11:30', atualizarHoraFim);
+      criarCustomSelect('equipoSelect', numerosSelect, '00', atualizarEquipo);
+      criarCustomSelect('operacaoSelect', operacoes, 'Op. CINTO DE SEGURANÇA', atualizarOperacao);
       
-      horaFimSlider.addEventListener('input', function() {
-        atualizarHoraFim(parseInt(this.value));
-      });
-      
-      equipoSlider.addEventListener('input', function() {
-        atualizarEquipo(parseInt(this.value));
-      });
-      
-      // Configurar seletor de operação
-      operacaoSelect.addEventListener('change', atualizarOperacao);
-      
-      // Criar botões para horas
-      criarBotoesHorario('horaInicioButtons', horarios, function(horario) {
-        const indice = horarios.indexOf(horario);
-        horaInicioSlider.value = indice;
-        atualizarHoraInicio(indice);
-      });
-      
-      criarBotoesHorario('horaFimButtons', horarios, function(horario) {
-        const indice = horarios.indexOf(horario);
-        horaFimSlider.value = indice;
-        atualizarHoraFim(indice);
-      });
-      
-      // Criar botões para números da equipe
-      criarBotoesEquipo('equipoButtons', numerosEquipe, function(numero) {
-        const indice = numerosEquipe.indexOf(numero);
-        equipoSlider.value = indice;
-        atualizarEquipo(indice);
-      });
-      
-      // Inicializar com valores padrão
-      atualizarHoraInicio(20); // 10:00
-      atualizarHoraFim(23);    // 11:30
-      atualizarEquipo(0);      // 00
-      atualizarOperacao();     // Operação padrão
+      // Inicializar valores
+      atualizarHoraInicio('10:00');
+      atualizarHoraFim('11:30');
+      atualizarEquipo('00');
+      atualizarOperacao('Op. CINTO DE SEGURANÇA');
       
       // Função para obter o texto completo
       function obterTextoCompleto() {
@@ -705,7 +647,7 @@ Obs:
           
           // Mostrar notificação
           notification.style.display = 'block';
-          notification.textContent = '✅ Texto copiado para a área de transferência!';
+          notification.textContent = '✅ Texto copiado!';
           notification.style.background = '#4CAF50';
           
           // Mudar texto do botão temporariamente
@@ -768,6 +710,18 @@ Obs:
           whatsappButton.innerHTML = originalText;
           notification.style.display = 'none';
         }, 3000);
+      });
+      
+      // Prevenir zoom e scroll horizontal em dispositivos móveis
+      document.addEventListener('touchmove', function(e) {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
+      // Prevenir zoom com gestos
+      document.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
       });
     });
   </script>
