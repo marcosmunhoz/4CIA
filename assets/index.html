@@ -331,7 +331,7 @@ body {
 .itens-container {
     flex: 1;
     overflow-y: auto;
-    padding: 0 15px 15px;
+    padding: 15px;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -582,52 +582,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Contador fixo no topo (como na imagem) */
-.contador-superior {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-    background: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
-    margin: 0 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.contador-superior-titulo {
-    font-weight: bold;
-    color: #2c3e50;
-    font-size: 14px;
-}
-
-.contador-superior-valor {
-    font-size: 24px;
-    font-weight: bold;
-    color: #3498db;
-    min-width: 40px;
-    text-align: center;
-}
-
-.contador-superior-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.contador-superior-btn:active {
-    transform: scale(0.95);
-}
-
 /* Sistema de fiscalização - REMOVIDO */
 .sistema-fiscalizacao {
     display: none;
@@ -702,20 +656,6 @@ body {
             <button class="mode-btn auxiliar" onclick="setAccessMode('auxiliar')">
                 <span style="font-size: 20px;">👥</span>
                 Auxiliar
-            </button>
-        </div>
-
-        <!-- Contador Superior (como na imagem) -->
-        <div class="contador-superior" id="contadorSuperior" style="display: none;">
-            <button class="contador-superior-btn btn-menos" onclick="alterarContadorSuperior(-1)">
-                -
-            </button>
-            <div>
-                <div class="contador-superior-titulo" id="contadorSuperiorTitulo">AP Fiscalizado</div>
-                <div class="contador-superior-valor" id="contadorSuperiorValor">0</div>
-            </div>
-            <button class="contador-superior-btn btn-add" onclick="alterarContadorSuperior(1)">
-                +
             </button>
         </div>
 
@@ -802,14 +742,13 @@ let currentViatura = null;
 let currentUser = { mode: '', name: '' };
 let todasViaturas = [];
 let usuarioSalvo = null;
-let contadorSuperiorIndex = 0; // Índice do item para o contador superior
 
 // ===== SENHA ADMIN (SOMENTE VOCÊ SABE) =====
 const SENHA_ADMIN = "admin123";
 
-// ===== ITENS FIXOS (AP Fiscalizado REMOVIDO da lista) =====
+// ===== ITENS FIXOS =====
 const ITENS_FIXOS = [
-    "CA Fiscalizado","OA Fiscalizado","MO Fiscalizado",
+    "AP Fiscalizado","CA Fiscalizado","OA Fiscalizado","MO Fiscalizado",
     "AI AP","AI CA","AI OA","AI MO","AI Abordagem","AI Revelia",
     "ART. 167","ART. 168","ART. 252, VI / § ún.","ART. 203, V",
     "ART. 165","ART. 165-A","ART. 306","Teste Ativo","Teste Passivo",
@@ -997,17 +936,6 @@ function criarNovaViatura() {
 function criarItensPadrao() {
     const itens = [];
     
-    // Adiciona "AP Fiscalizado" como primeiro item (para o contador superior)
-    itens.push({
-        id: 'ap_fiscalizado',
-        tipo: 'fixo',
-        nome: 'AP Fiscalizado',
-        encarregado: 0,
-        motorista: 0,
-        auxiliar: 0
-    });
-    
-    // Adiciona os outros itens fixos
     ITENS_FIXOS.forEach((nome, i) => {
         itens.push({
             id: `f${i}`,
@@ -1019,7 +947,6 @@ function criarItensPadrao() {
         });
     });
     
-    // Adiciona itens livres
     for (let i = 1; i <= 8; i++) {
         itens.push({
             id: `l${i}`,
@@ -1070,7 +997,6 @@ function conectarViatura(viaturaId) {
             if (currentUser.mode) {
                 atualizarInterfaceUsuarioCompact();
                 atualizarInterfaceViatura();
-                atualizarContadorSuperior();
             }
         }
     });
@@ -1094,7 +1020,6 @@ function verificarEConectarUsuario(mode, nomePredefinido = null) {
         // Resetar interface
         document.getElementById('viaturaUserLine').style.display = 'none';
         document.getElementById('itensContainer').style.display = 'none';
-        document.getElementById('contadorSuperior').style.display = 'none';
         
         // Atualizar botões
         atualizarBotoesFuncao();
@@ -1168,12 +1093,10 @@ function setAccessMode(mode, nomePredefinido = null) {
     
     document.getElementById('viaturaUserLine').style.display = 'flex';
     document.getElementById('itensContainer').style.display = 'block';
-    document.getElementById('contadorSuperior').style.display = 'flex';
     
     atualizarBotoesFuncao();
     if (currentViatura?.data) {
         atualizarInterfaceViatura();
-        atualizarContadorSuperior();
     }
 }
 
@@ -1201,34 +1124,6 @@ function atualizarInterfaceUsuarioCompact() {
     if (btnAtivo) btnAtivo.classList.add('ativo');
 }
 
-function atualizarContadorSuperior() {
-    if (!currentViatura?.data?.itens || !currentUser.mode) return;
-    
-    const item = currentViatura.data.itens[contadorSuperiorIndex];
-    if (item) {
-        document.getElementById('contadorSuperiorTitulo').textContent = item.nome || 'Artigo Livre';
-        const valor = item[currentUser.mode] || 0;
-        document.getElementById('contadorSuperiorValor').textContent = valor;
-    }
-}
-
-function alterarContadorSuperior(valor) {
-    if (!viaturaAtualRef || !currentUser.mode) return;
-    
-    const itemRef = viaturaAtualRef.child(`itens/${contadorSuperiorIndex}/${currentUser.mode}`);
-    const valorAtual = parseInt(document.getElementById('contadorSuperiorValor').textContent) || 0;
-    const novoValor = Math.max(0, valorAtual + valor);
-    
-    itemRef.set(novoValor);
-    document.getElementById('contadorSuperiorValor').textContent = novoValor;
-    
-    // Atualizar também no item da lista
-    const contadorItem = document.getElementById(`contador-${currentUser.mode.charAt(0)}-${contadorSuperiorIndex}`);
-    if (contadorItem) {
-        contadorItem.textContent = novoValor;
-    }
-}
-
 function sairDaFuncao() {
     if (viaturaAtualRef && currentUser.mode) {
         viaturaAtualRef.child(currentUser.mode).update({ online: false });
@@ -1239,7 +1134,6 @@ function sairDaFuncao() {
     
     document.getElementById('viaturaUserLine').style.display = 'none';
     document.getElementById('itensContainer').style.display = 'none';
-    document.getElementById('contadorSuperior').style.display = 'none';
     
     document.querySelectorAll('.mode-btn').forEach(btn => {
         btn.classList.remove('ativo');
@@ -1268,7 +1162,7 @@ function renderizarItens(itens) {
         
         const itemHTML = `
             <div class="item">
-                <div class="item-header" onclick="selecionarParaContadorSuperior(${index})">
+                <div class="item-header">
                     <span>${titulo}</span>
                     <span class="item-total">${total}</span>
                 </div>
@@ -1329,22 +1223,6 @@ function renderizarItens(itens) {
     });
 }
 
-function selecionarParaContadorSuperior(index) {
-    contadorSuperiorIndex = index;
-    atualizarContadorSuperior();
-    
-    // Destacar visualmente o item selecionado
-    document.querySelectorAll('.item').forEach((item, i) => {
-        if (i === index) {
-            item.style.borderColor = '#3498db';
-            item.style.boxShadow = '0 0 0 2px rgba(52, 152, 219, 0.2)';
-        } else {
-            item.style.borderColor = '#dee2e6';
-            item.style.boxShadow = 'none';
-        }
-    });
-}
-
 function alterarContador(itemIndex, campo, valor, event) {
     if (event) event.stopPropagation();
     
@@ -1373,11 +1251,6 @@ function alterarContador(itemIndex, campo, valor, event) {
                 totalElement.textContent = e + m + a;
             }
         }
-        
-        // Atualizar contador superior se for o mesmo item
-        if (itemIndex === contadorSuperiorIndex && campo === currentUser.mode) {
-            document.getElementById('contadorSuperiorValor').textContent = novoValor;
-        }
     });
 }
 
@@ -1385,11 +1258,6 @@ function atualizarNomeItem(itemIndex, nome) {
     if (!viaturaAtualRef) return;
     
     viaturaAtualRef.child(`itens/${itemIndex}/nome`).set(nome);
-    
-    // Se for o item selecionado no contador superior, atualizar
-    if (itemIndex === contadorSuperiorIndex) {
-        document.getElementById('contadorSuperiorTitulo').textContent = nome || 'Artigo Livre';
-    }
 }
 
 function voltarParaSelecao() {
