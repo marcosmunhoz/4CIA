@@ -10,7 +10,7 @@ body {
     font-family: Arial, sans-serif;
     background: #f2f2f2;
     padding: 10px;
-    padding-top: 80px;
+    padding-top: 100px;
 }
 
 h2 { text-align: center; }
@@ -33,10 +33,31 @@ h2 { text-align: center; }
     font-size: 22px;
     color: #fff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
 }
 
 .btn-topo.whats { background: #25d366; }
 .btn-topo.encerrar { background: #c82333; }
+.btn-topo.somar { background: #17a2b8; }
+
+/* menu operações */
+.menu-operacoes {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 999;
+}
+
+.menu-operacoes select {
+    width: 120px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
 
 /* caixas */
 .box, .item {
@@ -76,6 +97,7 @@ button {
     padding: 6px 10px;
     color: #fff;
     font-size: 15px;
+    cursor: pointer;
 }
 
 .add { background: #007bff; }
@@ -94,28 +116,50 @@ input {
     border-radius: 6px;
     border: 1px solid #ccc;
 }
+
+.operacao-nome {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- MENU DE OPERAÇÕES -->
+<div class="menu-operacoes">
+    <select id="selecionarOperacao" onchange="trocarOperacao()">
+        <option value="op1">Operação 1</option>
+        <option value="op2">Operação 2</option>
+        <option value="op3">Operação 3</option>
+    </select>
+</div>
+
 <!-- BOTÕES DO TOPO -->
 <div class="topo-botoes">
-    <button class="btn-topo whats" onclick="enviarWhats()" title="Enviar WhatsApp">📤</button>
+    <button class="btn-topo somar" onclick="enviarTudoWhats()" title="Enviar Tudo">📊</button>
+    <button class="btn-topo whats" onclick="enviarWhats()" title="Enviar Esta Operação">📤</button>
     <button class="btn-topo encerrar" onclick="encerrarTurno()" title="Encerrar Turno">⛔</button>
 </div>
 
 <h2>Controle de Fiscalização</h2>
+<div id="operacaoNome" class="operacao-nome">Operação 1</div>
 
 <div class="box">
     <input id="encarregado" placeholder="Nome do Encarregado">
     <input id="motorista" placeholder="Nome do Motorista">
-    <input id="auxiliar" placeholder="Nome do Auxiliar">
+    <input id="auxiliar" placeholder="Nome do Auxiliar (opcional)">
 </div>
 
 <div id="lista"></div>
 
 <script>
+// ===== CONFIGURAÇÃO =====
+const NUM_OPERACOES = 3;
+const OPERACOES_PREFIX = "controleFiscalizacao_";
+
 // ===== LISTA FIXA =====
 const itensFixos = [
  "AP Fiscalizado","CA Fiscalizado","OA Fiscalizado","MO Fiscalizado",
@@ -134,28 +178,38 @@ const itensFixos = [
 
 const lista = document.getElementById("lista");
 let itens = [];
+let operacaoAtual = "op1";
 
-// fixos
-itensFixos.forEach((n,i)=>itens.push({id:"f"+i,nome:n,edit:false}));
+// Inicializar itens
+function inicializarItens() {
+    itens = [];
+    
+    // fixos
+    itensFixos.forEach((n,i)=>itens.push({id:"f"+i,nome:n,edit:false}));
+    
+    // 8 livres
+    for(let i=1;i<=8;i++) itens.push({id:"l"+i,nome:"",edit:true});
+}
 
-// 8 livres
-for(let i=1;i<=8;i++) itens.push({id:"l"+i,nome:"",edit:true});
-
-// render
-itens.forEach(it=>{
-    lista.innerHTML += `
-    <div class="item">
-        <div class="header" onclick="toggle('${it.id}')">
-            ${it.edit ? "✏️ Artigo livre" : it.nome}
-        </div>
-        <div class="conteudo" id="c_${it.id}">
-            ${it.edit ? `<input id="nome_${it.id}" placeholder="Digite o artigo">` : ""}
-            ${linha("Encarregado","e",it.id)}
-            ${linha("Motorista","m",it.id)}
-            ${linha("Auxiliar","a",it.id)}
-        </div>
-    </div>`;
-});
+// Renderizar interface
+function renderizar() {
+    lista.innerHTML = "";
+    
+    itens.forEach(it=>{
+        lista.innerHTML += `
+        <div class="item">
+            <div class="header" onclick="toggle('${it.id}')">
+                ${it.edit ? "✏️ Artigo livre" : it.nome}
+            </div>
+            <div class="conteudo" id="c_${it.id}">
+                ${it.edit ? `<input id="nome_${it.id}" placeholder="Digite o artigo">` : ""}
+                ${linha("Encarregado","e",it.id)}
+                ${linha("Motorista","m",it.id)}
+                ${linha("Auxiliar","a",it.id)}
+            </div>
+        </div>`;
+    });
+}
 
 function linha(t,p,id){
     return `
@@ -174,87 +228,251 @@ function toggle(id){
     el.style.display = el.style.display==="block" ? "none" : "block";
 }
 
-// salvar / carregar
-function salvar(){
-    const d={enc:encarregado.value,mot:motorista.value,aux:auxiliar.value,n:{},c:{}};
-    itens.forEach(it=>{
-        if(it.edit){
-            let n=document.getElementById("nome_"+it.id);
-            if(n) d.n[it.id]=n.value;
-        }
-        ["e","m","a"].forEach(p=>{
-            d.c[p+it.id]=document.getElementById(p+it.id).innerText;
-        });
-    });
-    localStorage.setItem("controleFiscalizacao",JSON.stringify(d));
+// ===== GERENCIAMENTO DE OPERAÇÕES =====
+function trocarOperacao() {
+    salvarOperacaoAtual();
+    operacaoAtual = document.getElementById("selecionarOperacao").value;
+    document.getElementById("operacaoNome").textContent = 
+        operacaoAtual === "op1" ? "Operação 1" : 
+        operacaoAtual === "op2" ? "Operação 2" : "Operação 3";
+    carregarOperacao();
 }
 
-function carregar(){
-    const d=JSON.parse(localStorage.getItem("controleFiscalizacao"));
-    if(!d) return;
-    encarregado.value=d.enc;
-    motorista.value=d.mot;
-    auxiliar.value=d.aux;
+function salvarOperacaoAtual() {
+    const d = {
+        enc: document.getElementById("encarregado").value,
+        mot: document.getElementById("motorista").value,
+        aux: document.getElementById("auxiliar").value,
+        n: {},
+        c: {}
+    };
+    
+    itens.forEach(it=>{
+        if(it.edit){
+            let n = document.getElementById("nome_"+it.id);
+            if(n) d.n[it.id] = n.value;
+        }
+        ["e","m","a"].forEach(p=>{
+            d.c[p+it.id] = document.getElementById(p+it.id).innerText;
+        });
+    });
+    
+    localStorage.setItem(OPERACOES_PREFIX + operacaoAtual, JSON.stringify(d));
+}
 
+function carregarOperacao() {
+    const d = JSON.parse(localStorage.getItem(OPERACOES_PREFIX + operacaoAtual));
+    
+    // Resetar valores
+    document.getElementById("encarregado").value = "";
+    document.getElementById("motorista").value = "";
+    document.getElementById("auxiliar").value = "";
+    
+    // Resetar contadores
+    itens.forEach(it=>{
+        ["e","m","a"].forEach(p=>{
+            document.getElementById(p+it.id).innerText = "0";
+        });
+        if(it.edit) {
+            let nomeEl = document.getElementById("nome_"+it.id);
+            if(nomeEl) nomeEl.value = "";
+        }
+    });
+    
+    // Carregar dados salvos
+    if(!d) return;
+    
+    document.getElementById("encarregado").value = d.enc || "";
+    document.getElementById("motorista").value = d.mot || "";
+    document.getElementById("auxiliar").value = d.aux || "";
+    
     for(let k in d.n){
-        let e=document.getElementById("nome_"+k);
-        if(e)e.value=d.n[k];
+        let e = document.getElementById("nome_"+k);
+        if(e) e.value = d.n[k];
     }
+    
     for(let k in d.c){
-        let e=document.getElementById(k);
-        if(e)e.innerText=d.c[k];
+        let e = document.getElementById(k);
+        if(e) e.innerText = d.c[k];
     }
 }
 
 function alterar(id,v){
-    const el=document.getElementById(id);
-    let n=parseInt(el.innerText)+v;
-    if(n<0)n=0;
-    el.innerText=n;
-    salvar();
+    const el = document.getElementById(id);
+    let n = parseInt(el.innerText) + v;
+    if(n<0) n=0;
+    el.innerText = n;
+    salvarOperacaoAtual();
 }
 
-["encarregado","motorista","auxiliar"].forEach(i=>{
-    document.getElementById(i).addEventListener("input",salvar);
-});
-
-window.onload=carregar;
-
-// WhatsApp
-function enviarWhats(){
-    let texto=`📋 *Fiscalização*\n\n`;
-    texto+=`👷 Encarregado: ${encarregado.value||"-"}\n`;
-    texto+=`🚚 Motorista: ${motorista.value||"-"}\n`;
-    texto+=`👥 Auxiliar: ${auxiliar.value||"-"}\n\n`;
-
-    let tem=false;
-    itens.forEach(it=>{
-        let nome=it.edit?document.getElementById("nome_"+it.id).value:it.nome;
+// ===== FUNÇÕES DO WHATSAPP =====
+function gerarTextoOperacao(opNum) {
+    const opKey = "op" + opNum;
+    const dados = JSON.parse(localStorage.getItem(OPERACOES_PREFIX + opKey));
+    if(!dados) return null;
+    
+    let texto = `Operação ${opNum}\n`;
+    
+    // Apenas mostra quem tem nome preenchido
+    const pessoas = [];
+    if(dados.enc) pessoas.push(`Encarregado: ${dados.enc}`);
+    if(dados.mot) pessoas.push(`Motorista: ${dados.mot}`);
+    if(dados.aux) pessoas.push(`Auxiliar: ${dados.aux}`);
+    
+    if(pessoas.length > 0) {
+        texto += pessoas.join(" | ") + "\n\n";
+    }
+    
+    // Recriar estrutura de itens para esta operação
+    let itensOp = [];
+    itensFixos.forEach((n,i)=>itensOp.push({id:"f"+i,nome:n,edit:false}));
+    for(let i=1;i<=8;i++) itensOp.push({id:"l"+i,nome:"",edit:true});
+    
+    // Aplicar nomes dos itens livres
+    for(let k in dados.n){
+        let item = itensOp.find(it => it.id === k);
+        if(item) item.nome = dados.n[k];
+    }
+    
+    let temDados = false;
+    
+    itensOp.forEach(it=>{
+        let nome = it.edit ? (it.nome || "") : it.nome;
         if(!nome) return;
-        let e=+document.getElementById("e"+it.id).innerText;
-        let m=+document.getElementById("m"+it.id).innerText;
-        let a=+document.getElementById("a"+it.id).innerText;
-        if(e+m+a===0) return;
-
-        tem=true;
-        texto+=`*${nome}*\n`;
-        if(e) texto+=`- Encarregado: ${e}\n`;
-        if(m) texto+=`- Motorista: ${m}\n`;
-        if(a) texto+=`- Auxiliar: ${a}\n`;
-        texto+="\n";
+        
+        let e = +(dados.c["e"+it.id] || 0);
+        let m = +(dados.c["m"+it.id] || 0);
+        let a = +(dados.c["a"+it.id] || 0);
+        
+        if(e+m+a === 0) return;
+        
+        temDados = true;
+        texto += `${nome}:\n`;
+        if(e) texto += `- Encarregado: ${e}\n`;
+        if(m) texto += `- Motorista: ${m}\n`;
+        if(a) texto += `- Auxiliar: ${a}\n`;
+        texto += "\n";
     });
+    
+    if(!temDados) return null;
+    return texto;
+}
 
-    if(!tem){ alert("Nada para enviar"); return; }
+function enviarWhats(){
+    const texto = gerarTextoOperacao(operacaoAtual.charAt(2));
+    
+    if(!texto){
+        alert("Nada para enviar nesta operação");
+        return;
+    }
+    
     window.open("https://wa.me/?text="+encodeURIComponent(texto),"_blank");
 }
 
-// Encerrar turno
+function enviarTudoWhats(){
+    let textoFinal = "RELATÓRIO COMPLETO DE OPERAÇÕES\n\n";
+    let temDados = false;
+    
+    for(let i = 1; i <= NUM_OPERACOES; i++) {
+        const opTexto = gerarTextoOperacao(i);
+        if(opTexto) {
+            temDados = true;
+            textoFinal += "=".repeat(30) + "\n";
+            textoFinal += opTexto + "\n";
+        }
+    }
+    
+    if(!temDados){
+        alert("Nenhuma operação tem dados para enviar");
+        return;
+    }
+    
+    // Adicionar totais gerais
+    textoFinal += "=".repeat(30) + "\n";
+    textoFinal += "TOTAIS GERAIS\n\n";
+    
+    // Calcular totais
+    const totais = {};
+    
+    for(let i = 1; i <= NUM_OPERACOES; i++) {
+        const opKey = "op" + i;
+        const dados = JSON.parse(localStorage.getItem(OPERACOES_PREFIX + opKey));
+        if(!dados) continue;
+        
+        // Recriar estrutura de itens
+        let itensOp = [];
+        itensFixos.forEach((n,i)=>itensOp.push({id:"f"+i,nome:n,edit:false}));
+        for(let j=1;j<=8;j++) itensOp.push({id:"l"+j,nome:"",edit:true}));
+        
+        // Aplicar nomes dos itens livres
+        for(let k in dados.n){
+            let item = itensOp.find(it => it.id === k);
+            if(item) item.nome = dados.n[k];
+        }
+        
+        itensOp.forEach(it=>{
+            let nome = it.edit ? (it.nome || "") : it.nome;
+            if(!nome) return;
+            
+            let e = +(dados.c["e"+it.id] || 0);
+            let m = +(dados.c["m"+it.id] || 0);
+            let a = +(dados.c["a"+it.id] || 0);
+            let total = e + m + a;
+            
+            if(total > 0) {
+                if(!totais[nome]) totais[nome] = {e:0, m:0, a:0};
+                totais[nome].e += e;
+                totais[nome].m += m;
+                totais[nome].a += a;
+            }
+        });
+    }
+    
+    // Adicionar totais ao texto
+    for(let nome in totais){
+        textoFinal += `${nome}:\n`;
+        if(totais[nome].e) textoFinal += `- Encarregado: ${totais[nome].e}\n`;
+        if(totais[nome].m) textoFinal += `- Motorista: ${totais[nome].m}\n`;
+        if(totais[nome].a) textoFinal += `- Auxiliar: ${totais[nome].a}\n`;
+        textoFinal += "\n";
+    }
+    
+    window.open("https://wa.me/?text="+encodeURIComponent(textoFinal),"_blank");
+}
+
+// ===== ENCERRAR TURNO =====
 function encerrarTurno(){
-    if(confirm("Encerrar turno e apagar todos os dados?")){
-        localStorage.removeItem("controleFiscalizacao");
+    if(confirm("Encerrar turno e apagar todos os dados de todas as operações?")){
+        for(let i = 1; i <= NUM_OPERACOES; i++) {
+            localStorage.removeItem(OPERACOES_PREFIX + "op" + i);
+        }
         location.reload();
     }
 }
+
+// ===== INICIALIZAÇÃO =====
+window.onload = function() {
+    inicializarItens();
+    renderizar();
+    carregarOperacao();
+    
+    // Adicionar listeners para salvar automaticamente
+    ["encarregado","motorista","auxiliar"].forEach(id=>{
+        document.getElementById(id).addEventListener("input", salvarOperacaoAtual);
+    });
+    
+    // Adicionar listeners para os inputs de artigos livres
+    setTimeout(() => {
+        itens.forEach(it=>{
+            if(it.edit){
+                let nomeEl = document.getElementById("nome_"+it.id);
+                if(nomeEl){
+                    nomeEl.addEventListener("input", salvarOperacaoAtual);
+                }
+            }
+        });
+    }, 100);
+};
 </script>
 
 </body>
