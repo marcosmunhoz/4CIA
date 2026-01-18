@@ -9,8 +9,583 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <style>
-/* ... (todo o CSS anterior permanece igual) ... */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent;
+}
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+    min-height: 100vh;
+    padding: 15px;
+    overflow-x: hidden;
+}
 
+.container { 
+    max-width: 100%;
+    margin: 0 auto; 
+    background: white; 
+    border-radius: 15px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+    overflow: hidden;
+    height: calc(100vh - 30px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tela de seleção de viatura */
+.viatura-selection { 
+    padding: 25px 20px; 
+    text-align: center; 
+    flex: 1;
+    overflow-y: auto;
+}
+.viatura-selection h1 { 
+    color: #2c3e50; 
+    margin-bottom: 20px; 
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.viaturas-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+    gap: 12px; 
+    margin: 20px 0;
+}
+
+.viatura-card { 
+    background: #f8f9fa; 
+    border-radius: 10px; 
+    padding: 18px 12px; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    border: 2px solid transparent; 
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 140px;
+}
+.viatura-card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+    border-color: #3498db; 
+}
+.viatura-card.ativa { 
+    border-color: #2ecc71; 
+    background: linear-gradient(135deg, #f8f9fa 0%, #e8f4fc 100%); 
+}
+
+.viatura-icon { 
+    font-size: 32px; 
+    margin-bottom: 10px; 
+}
+.viatura-nome { 
+    font-size: 16px; 
+    font-weight: bold; 
+    color: #2c3e50; 
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+.viatura-info { 
+    color: #7f8c8d; 
+    font-size: 12px; 
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+.viatura-status { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+.status-online { background: rgba(46, 204, 113, 0.2); color: #27ae60; }
+.status-offline { background: rgba(231, 76, 60, 0.2); color: #c0392b; }
+
+.btn-nova-viatura { 
+    background: #3498db; 
+    color: white; 
+    border: none; 
+    padding: 14px 24px; 
+    border-radius: 8px; 
+    font-size: 15px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    margin-top: 15px; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px;
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+}
+
+/* Botão de remover viatura */
+.btn-remover-viatura { 
+    background: #e74c3c; 
+    color: white; 
+    border: none; 
+    padding: 8px 12px; 
+    border-radius: 6px; 
+    font-size: 12px; 
+    cursor: pointer; 
+    margin-top: 8px; 
+    width: 100%;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+.btn-remover-viatura:hover { background: #c0392b; }
+
+/* Interface da viatura */
+.viatura-interface { 
+    display: none; 
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Header com botões de ação no topo */
+.viatura-header { 
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); 
+    color: white; 
+    padding: 15px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* Linha superior - Nome da viatura, ID e botão voltar */
+.viatura-top-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.viatura-titulo { 
+    font-size: 18px; 
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.viatura-id { 
+    background: rgba(255,255,255,0.2); 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    font-size: 12px;
+    margin: 0 10px;
+}
+
+.btn-voltar { 
+    background: rgba(255,255,255,0.2); 
+    border: 1px solid rgba(255,255,255,0.3); 
+    color: white; 
+    padding: 6px 12px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 13px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Linha inferior - Informações do usuário e botão trocar função */
+.viatura-user-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: rgba(255,255,255,0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.usuario-info-compact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.usuario-nome-compact {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.usuario-funcao-compact {
+    font-size: 12px;
+    opacity: 0.9;
+    background: rgba(255,255,255,0.15);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.btn-trocar-funcao {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-trocar-funcao:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Botões de ação no topo */
+.top-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    margin-top: 10px;
+}
+
+.top-action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.top-action-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.05);
+}
+
+/* Seletor de função */
+.funcao-seletor {
+    display: flex;
+    gap: 8px;
+    margin: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.mode-btn {
+    padding: 12px 16px;
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    flex: 1;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+.mode-btn.ativo {
+    background: #3498db;
+    color: white;
+    transform: scale(1.02);
+}
+.mode-btn.encarregado.ativo { background: #3498db; }
+.mode-btn.motorista.ativo { background: #2ecc71; }
+.mode-btn.auxiliar.ativo { background: #f39c12; }
+
+.mode-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #bdc3c7;
+}
+
+/* Informações do usuário (versão expandida - removemos depois) */
+.usuario-info {
+    display: none;
+}
+
+/* Itens - SEMPRE ABERTOS para edição fácil */
+.itens-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.item {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.item-header {
+    padding: 15px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: #2c3e50;
+    cursor: pointer;
+    user-select: none;
+}
+
+.item-total {
+    background: #3498db;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Conteúdo SEMPRE VISÍVEL para edição fácil */
+.item-conteudo {
+    padding: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Input para artigos livres */
+.input-artigo-container {
+    padding: 0 0 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.input-artigo {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Contador específico para cada função */
+.contador-funcao {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 12px;
+    display: none; /* Escondido por padrão */
+}
+
+.contador-funcao.ativo {
+    display: block; /* Mostra apenas para a função ativa */
+}
+
+.contador-titulo {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.contador-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.contador-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.contador-btn:active {
+    transform: scale(0.95);
+}
+
+.btn-menos { background: #e74c3c; }
+.btn-add { background: #2ecc71; }
+
+.contador-valor {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* REMOVIDO: Botões de ação em baixo - agora estão no topo */
+
+/* Botão admin escondido */
+.btn-admin { 
+    display: none !important; 
+}
+
+/* Responsivo adicional */
+@media (max-width: 480px) {
+    .container {
+        height: calc(100vh - 20px);
+        border-radius: 12px;
+    }
+    
+    .viatura-selection {
+        padding: 20px 15px;
+    }
+    
+    .viaturas-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+    }
+    
+    .viatura-card {
+        padding: 15px 10px;
+        min-height: 120px;
+    }
+    
+    .viatura-header {
+        padding: 12px;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .viatura-top-line {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .viatura-user-line {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .viatura-id {
+        margin: 0;
+    }
+    
+    .funcao-seletor {
+        margin: 12px;
+    }
+    
+    .mode-btn {
+        padding: 10px 12px;
+        font-size: 13px;
+        min-width: 85px;
+    }
+    
+    .contador-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .top-actions {
+        gap: 8px;
+    }
+    
+    .top-action-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+    
+    .btn-voltar {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    .btn-trocar-funcao {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+}
+
+/* Ajustes para iOS */
+@supports (-webkit-touch-callout: none) {
+    .container {
+        height: -webkit-fill-available;
+    }
+}
+
+/* Status de função ocupada */
+.funcao-ocupada {
+    position: relative;
+}
+
+.funcao-ocupada::after {
+    content: '👤';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 12px;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    animation: modalAppear 0.3s ease;
+}
+
+@keyframes modalAppear {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sistema de fiscalização - REMOVIDO */
+.sistema-fiscalizacao {
+    display: none;
+}
 </style>
 </head>
 
@@ -298,32 +873,23 @@ function verificarCodigoAcesso() {
         
         if (window.viaturaParaRemover) {
             const viaturaId = window.viaturaParaRemover;
-            
-            // Usar SweetAlert ou confirm padrão
-            if (confirm(`Tem certeza que deseja remover a viatura "${viaturaId}"? Esta ação não pode ser desfeita.`)) {
+            if (confirm(`Remover viatura ${viaturaId}?`)) {
                 db.ref(`viaturas/${viaturaId}`).remove()
                     .then(() => {
-                        alert(`✅ Viatura "${viaturaId}" removida com sucesso!`);
-                        
-                        // Atualizar a lista de viaturas
-                        carregarListaViaturas();
-                        
-                        // Se a viatura removida é a que está sendo usada, voltar para seleção
+                        alert(`✅ Viatura removida!`);
                         if (currentViatura && currentViatura.id === viaturaId) {
                             voltarParaSelecao();
                         }
                     })
                     .catch((error) => {
-                        console.error('Erro ao remover viatura:', error);
-                        alert('❌ Erro ao remover viatura: ' + error.message);
+                        alert('❌ Erro: ' + error.message);
                     });
             }
             window.viaturaParaRemover = null;
         }
     } else {
-        alert('❌ Código incorreto! Tente novamente.');
+        alert('❌ Código incorreto!');
         document.getElementById('codigoAcesso').value = '';
-        document.getElementById('codigoAcesso').focus();
     }
 }
 
@@ -354,30 +920,17 @@ function criarNovaViatura() {
     
     if (!db) return;
     
-    // Verificar se a viatura já existe
-    db.ref(`viaturas/${id}`).once('value')
-        .then((snapshot) => {
-            if (snapshot.exists()) {
-                alert('❌ Já existe uma viatura com este ID! Use outro ID.');
-                return;
-            }
-            
-            // Criar nova viatura
-            db.ref(`viaturas/${id}`).set({
-                nome: nome,
-                criadaEm: new Date().toISOString(),
-                itens: criarItensPadrao(),
-                encarregado: { nome: '', online: false },
-                motorista: { nome: '', online: false },
-                auxiliar: { nome: '', online: false }
-            }).then(() => {
-                fecharModalNovaViatura();
-                acessarViatura(id);
-            });
-        })
-        .catch((error) => {
-            alert('❌ Erro ao verificar viatura: ' + error.message);
-        });
+    db.ref(`viaturas/${id}`).set({
+        nome: nome,
+        criadaEm: new Date().toISOString(),
+        itens: criarItensPadrao(),
+        encarregado: { nome: '', online: false },
+        motorista: { nome: '', online: false },
+        auxiliar: { nome: '', online: false }
+    }).then(() => {
+        fecharModalNovaViatura();
+        acessarViatura(id);
+    });
 }
 
 function criarItensPadrao() {
