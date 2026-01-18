@@ -80,7 +80,7 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
 }
 .btn-remover-membro:hover { background: #c0392b; }
 
-/* Botão admin */
+/* Botão admin (escondido por padrão) */
 .btn-admin { 
     background: #9b59b6; 
     color: white; 
@@ -90,7 +90,22 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
     font-size: 13px; 
     cursor: pointer; 
     margin-top: 15px;
+    display: none; /* Escondido por padrão */
 }
+
+/* Botão de sair da função */
+.btn-sair-funcao {
+    background: #95a5a6;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
+}
+.btn-sair-funcao:hover { background: #7f8c8d; }
 
 /* Itens */
 .itens-container { max-height: 500px; overflow-y: auto; padding-right: 10px; }
@@ -146,7 +161,8 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
         </button>
         
         <br>
-        <button class="btn-admin" onclick="removerViaturasAdmin()">
+        <!-- Botão admin SOMENTE para o criador (você pode habilitar quando quiser) -->
+        <button class="btn-admin" id="btnAdmin" onclick="removerViaturasAdmin()">
             ⚙️ Modo Administrador
         </button>
     </div>
@@ -166,7 +182,7 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
         </div>
 
         <!-- Seletor de função -->
-        <div style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap;">
             <button class="mode-btn encarregado" onclick="setAccessMode('encarregado')" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 6px; cursor: pointer;">
                 👮‍♂️ Encarregado
             </button>
@@ -176,6 +192,9 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
             <button class="mode-btn auxiliar" onclick="setAccessMode('auxiliar')" style="padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 6px; cursor: pointer;">
                 👥 Auxiliar
             </button>
+            <button class="btn-sair-funcao" onclick="sairDaFuncao()" id="btnSairFuncao" style="display: none;">
+                🔄 Trocar Função
+            </button>
         </div>
 
         <!-- Mensagem para escolher função -->
@@ -183,6 +202,15 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
             <div style="font-size: 48px; margin-bottom: 20px;">👤</div>
             <h3 style="color: #2c3e50; margin-bottom: 15px;">Escolha sua função</h3>
             <p style="color: #666;">Clique em Encarregado, Motorista ou Auxiliar acima para começar</p>
+        </div>
+
+        <!-- Informações do usuário atual (quando já escolheu função) -->
+        <div id="infoUsuario" style="text-align: center; padding: 20px; background: #e8f4fc; border-radius: 10px; margin-bottom: 30px; display: none;">
+            <div style="font-size: 24px; margin-bottom: 10px;">👋 Olá, <span id="nomeUsuario">Usuário</span>!</div>
+            <p style="color: #2c3e50; margin-bottom: 10px;">Você está como: <strong id="funcaoUsuario">Função</strong></p>
+            <button class="btn-sair-funcao" onclick="sairDaFuncao()">
+                🔄 Trocar de Função/Nome
+            </button>
         </div>
 
         <!-- Equipe (inicialmente escondida) -->
@@ -268,6 +296,33 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
     </div>
 </div>
 
+<!-- Modal Login Admin (SOMENTE para você) -->
+<div class="modal" id="modalLoginAdmin">
+    <div class="modal-content">
+        <h2 style="color: #2c3e50; margin-bottom: 20px; text-align: center;">🔐 Acesso Restrito</h2>
+        
+        <div style="margin-bottom: 25px; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 20px;">🔒</div>
+            <p style="color: #666; margin-bottom: 20px;">Esta área é restrita ao administrador do sistema</p>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; color: #666;">Código de Acesso:</label>
+            <input type="password" id="codigoAcesso" placeholder="Digite o código de acesso" 
+                   style="width: 100%; padding: 12px; border: 2px solid #3498db; border-radius: 6px; font-size: 16px;">
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button onclick="fecharModalLoginAdmin()" style="flex: 1; padding: 12px; background: #95a5a6; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                Cancelar
+            </button>
+            <button onclick="verificarCodigoAcesso()" style="flex: 1; padding: 12px; background: #9b59b6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                Acessar
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
 // ===== CONFIGURAÇÃO FIREBASE =====
 const firebaseConfig = {
@@ -287,7 +342,14 @@ let viaturaAtualRef;
 let currentViatura = null;
 let currentUser = { mode: '', name: '' };
 let todasViaturas = [];
+let usuarioSalvo = null; // Para lembrar o usuário entre sessões
 
+// ===== SENHA ADMIN (SOMENTE VOCÊ SABE) =====
+// ⚠️ NÃO COMPARTILHE ESTA SENHA!
+const SENHA_ADMIN = "admin123"; // Senha para ações administrativas
+const CODIGO_ACESSO = "RL2024FISC"; // Código para habilitar botão admin
+
+// ===== ITENS FIXOS =====
 const ITENS_FIXOS = [
     "AP Fiscalizado","CA Fiscalizado","OA Fiscalizado","MO Fiscalizado",
     "AI AP","AI CA","AI OA","AI MO","AI Abordagem","AI Revelia",
@@ -307,8 +369,12 @@ function initApp() {
         
         console.log('Firebase conectado com sucesso!');
         
+        // Carregar usuário salvo do localStorage
+        carregarUsuarioSalvo();
+        
         carregarListaViaturas();
         
+        // Verificar se tem viatura na URL
         const urlParams = new URLSearchParams(window.location.search);
         const viaturaId = urlParams.get('viatura');
         if (viaturaId) {
@@ -317,6 +383,31 @@ function initApp() {
     } catch (error) {
         console.error('Erro ao conectar com Firebase:', error);
     }
+}
+
+// ===== GERENCIAMENTO DE USUÁRIO SALVO =====
+function carregarUsuarioSalvo() {
+    const usuarioSalvoStr = localStorage.getItem('fiscalizacao_usuario');
+    if (usuarioSalvoStr) {
+        usuarioSalvo = JSON.parse(usuarioSalvoStr);
+        console.log('Usuário carregado:', usuarioSalvo);
+    }
+}
+
+function salvarUsuario() {
+    if (currentUser.mode && currentUser.name) {
+        localStorage.setItem('fiscalizacao_usuario', JSON.stringify({
+            mode: currentUser.mode,
+            name: currentUser.name,
+            timestamp: new Date().getTime()
+        }));
+    }
+}
+
+function limparUsuarioSalvo() {
+    localStorage.removeItem('fiscalizacao_usuario');
+    usuarioSalvo = null;
+    currentUser = { mode: '', name: '' };
 }
 
 // ===== GERENCIAMENTO DE VIATURAS =====
@@ -364,7 +455,6 @@ function carregarListaViaturas() {
                 </button>
             `;
             viaturaCard.onclick = (e) => {
-                // Não acessar se clicou no botão de remover
                 if (!e.target.classList.contains('btn-remover-viatura')) {
                     acessarViatura(viatura.id);
                 }
@@ -380,23 +470,10 @@ function carregarListaViaturas() {
 function removerViatura(viaturaId, event) {
     if (event) event.stopPropagation();
     
-    if (!confirm(`Tem certeza que deseja remover a viatura ${viaturaId}?`)) {
-        return;
-    }
+    document.getElementById('modalLoginAdmin').style.display = 'flex';
     
-    if (!db) return;
-    
-    db.ref(`viaturas/${viaturaId}`).remove()
-        .then(() => {
-            alert(`✅ Viatura ${viaturaId} removida com sucesso!`);
-            // Se está atualmente nesta viatura, voltar para seleção
-            if (currentViatura && currentViatura.id === viaturaId) {
-                voltarParaSelecao();
-            }
-        })
-        .catch((error) => {
-            alert('❌ Erro ao remover viatura: ' + error.message);
-        });
+    // Armazenar a viatura que queremos remover após login
+    window.viaturaParaRemover = viaturaId;
 }
 
 // Remover viatura atual (da tela de dentro da viatura)
@@ -406,56 +483,82 @@ function removerViaturaAtual() {
         return;
     }
     
-    if (!confirm(`ATENÇÃO: Esta ação removerá permanentemente a viatura ${currentViatura.id} e todos os seus dados. Deseja continuar?`)) {
-        return;
-    }
+    document.getElementById('modalLoginAdmin').style.display = 'flex';
     
-    viaturaAtualRef.remove()
-        .then(() => {
-            alert(`✅ Viatura ${currentViatura.id} removida com sucesso!`);
-            fecharModalAdministrar();
-            voltarParaSelecao();
-        })
-        .catch((error) => {
-            alert('❌ Erro ao remover viatura: ' + error.message);
-        });
+    // Armazenar que queremos remover a viatura atual
+    window.removerViaturaAtualFlag = true;
 }
 
-// Remover um membro específico da equipe
-function removerMembro(funcao) {
-    if (!currentViatura || !viaturaAtualRef) return;
+// Verificar código de acesso (SOMENTE você sabe)
+function verificarCodigoAcesso() {
+    const codigo = document.getElementById('codigoAcesso').value;
     
-    const membroAtual = currentViatura.data[funcao];
-    if (!membroAtual || !membroAtual.nome) {
-        alert(`Nenhum ${funcao} definido para remover!`);
-        return;
+    if (codigo === SENHA_ADMIN) {
+        // Código correto
+        fecharModalLoginAdmin();
+        
+        // Se veio da função de remover viatura específica
+        if (window.viaturaParaRemover) {
+            const viaturaId = window.viaturaParaRemover;
+            if (confirm(`Tem certeza que deseja remover a viatura ${viaturaId}?`)) {
+                db.ref(`viaturas/${viaturaId}`).remove()
+                    .then(() => {
+                        alert(`✅ Viatura ${viaturaId} removida com sucesso!`);
+                        if (currentViatura && currentViatura.id === viaturaId) {
+                            voltarParaSelecao();
+                        }
+                    })
+                    .catch((error) => {
+                        alert('❌ Erro ao remover viatura: ' + error.message);
+                    });
+            }
+            window.viaturaParaRemover = null;
+        }
+        // Se veio da função de remover viatura atual
+        else if (window.removerViaturaAtualFlag) {
+            if (confirm(`ATENÇÃO: Esta ação removerá permanentemente a viatura ${currentViatura.id} e todos os seus dados. Deseja continuar?`)) {
+                viaturaAtualRef.remove()
+                    .then(() => {
+                        alert(`✅ Viatura ${currentViatura.id} removida com sucesso!`);
+                        fecharModalAdministrar();
+                        voltarParaSelecao();
+                    })
+                    .catch((error) => {
+                        alert('❌ Erro ao remover viatura: ' + error.message);
+                    });
+            }
+            window.removerViaturaAtualFlag = false;
+        }
+        // Se veio do botão admin geral
+        else {
+            habilitarModoAdmin();
+        }
+        
+    } else {
+        alert('❌ Código de acesso incorreto!');
+        document.getElementById('codigoAcesso').value = '';
+        document.getElementById('codigoAcesso').focus();
     }
+}
+
+function fecharModalLoginAdmin() {
+    document.getElementById('modalLoginAdmin').style.display = 'none';
+    document.getElementById('codigoAcesso').value = '';
+    window.viaturaParaRemover = null;
+    window.removerViaturaAtualFlag = false;
+}
+
+// Habilitar modo admin (SOMENTE após código correto)
+function habilitarModoAdmin() {
+    // Mostrar botão admin
+    document.getElementById('btnAdmin').style.display = 'inline-block';
     
-    if (!confirm(`Remover ${funcao} ${membroAtual.nome}?`)) {
-        return;
-    }
-    
-    viaturaAtualRef.child(funcao).update({
-        nome: '',
-        online: false
-    })
-    .then(() => {
-        alert(`✅ ${funcao} removido com sucesso!`);
-        fecharModalAdministrar();
-    })
-    .catch((error) => {
-        alert('❌ Erro ao remover membro: ' + error.message);
-    });
+    // Agora sim pode usar a função de admin
+    removerViaturasAdmin();
 }
 
 // Modo administrador (para remover várias viaturas)
 function removerViaturasAdmin() {
-    const senha = prompt('Digite a senha de administrador:');
-    if (senha !== 'admin123') {
-        alert('Senha incorreta!');
-        return;
-    }
-    
     if (!db) {
         alert('Erro de conexão!');
         return;
@@ -481,7 +584,8 @@ function removerViaturasAdmin() {
         
         mensagem += `\nDigite:\n`;
         mensagem += `• "TODAS" para apagar todas as ${viaturas.length} viaturas\n`;
-        mensagem += `• Ou o ID específico para apagar apenas uma`;
+        mensagem += `• Ou o ID específico para apagar apenas uma\n`;
+        mensagem += `• "CANCELAR" para não fazer nada`;
         
         const resposta = prompt(mensagem);
         
@@ -507,72 +611,230 @@ function removerViaturasAdmin() {
                         alert('❌ Erro: ' + error.message);
                     });
             }
-        } else if (resposta) {
+        } else if (resposta && resposta !== 'CANCELAR') {
             alert('ID não encontrado!');
         }
     });
 }
 
+// Remover um membro específico da equipe
+function removerMembro(funcao) {
+    document.getElementById('modalLoginAdmin').style.display = 'flex';
+    
+    // Armazenar qual membro queremos remover
+    window.membroParaRemover = funcao;
+    
+    // Sobrescrever a função de verificação para este caso específico
+    window.verificarRemoverMembro = function(codigo) {
+        if (codigo === SENHA_ADMIN) {
+            fecharModalLoginAdmin();
+            
+            const membroAtual = currentViatura.data[funcao];
+            if (!membroAtual || !membroAtual.nome) {
+                alert(`Nenhum ${funcao} definido para remover!`);
+                return;
+            }
+            
+            if (confirm(`Remover ${funcao} ${membroAtual.nome}?`)) {
+                viaturaAtualRef.child(funcao).update({
+                    nome: '',
+                    online: false
+                })
+                .then(() => {
+                    alert(`✅ ${funcao} removido com sucesso!`);
+                    fecharModalAdministrar();
+                })
+                .catch((error) => {
+                    alert('❌ Erro ao remover membro: ' + error.message);
+                });
+            }
+        } else {
+            alert('❌ Código de acesso incorreto!');
+        }
+    };
+}
+
 // Administrar viatura atual
 function administrarViatura() {
-    if (!currentViatura || !currentViatura.data) {
-        alert('Nenhuma viatura selecionada!');
-        return;
-    }
+    document.getElementById('modalLoginAdmin').style.display = 'flex';
     
-    const senha = prompt('Digite a senha de administrador (padrão: admin123):');
-    if (senha !== 'admin123') {
-        alert('Senha incorreta!');
-        return;
-    }
-    
-    // Preencher lista de membros
-    const membrosList = document.getElementById('adminMembrosList');
-    membrosList.innerHTML = '';
-    
-    const membros = [
-        { funcao: 'encarregado', nome: 'Encarregado' },
-        { funcao: 'motorista', nome: 'Motorista' },
-        { funcao: 'auxiliar', nome: 'Auxiliar' }
-    ];
-    
-    membros.forEach(membro => {
-        const dados = currentViatura.data[membro.funcao] || {};
-        if (dados.nome) {
-            const div = document.createElement('div');
-            div.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px; margin-bottom: 10px;';
-            div.innerHTML = `
-                <div>
-                    <strong>${membro.nome}:</strong> ${dados.nome}
-                    ${dados.online ? '<span style="color: #2ecc71; margin-left: 10px;">● Online</span>' : ''}
-                </div>
-                <button onclick="removerMembro('${membro.funcao}')" 
-                        style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                    Remover
-                </button>
-            `;
-            membrosList.appendChild(div);
+    // Sobrescrever a função de verificação para este caso
+    window.verificarAdministrarViatura = function(codigo) {
+        if (codigo === SENHA_ADMIN) {
+            fecharModalLoginAdmin();
+            
+            if (!currentViatura || !currentViatura.data) {
+                alert('Nenhuma viatura selecionada!');
+                return;
+            }
+            
+            // Preencher lista de membros
+            const membrosList = document.getElementById('adminMembrosList');
+            membrosList.innerHTML = '';
+            
+            const membros = [
+                { funcao: 'encarregado', nome: 'Encarregado' },
+                { funcao: 'motorista', nome: 'Motorista' },
+                { funcao: 'auxiliar', nome: 'Auxiliar' }
+            ];
+            
+            membros.forEach(membro => {
+                const dados = currentViatura.data[membro.funcao] || {};
+                if (dados.nome) {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px; margin-bottom: 10px;';
+                    div.innerHTML = `
+                        <div>
+                            <strong>${membro.nome}:</strong> ${dados.nome}
+                            ${dados.online ? '<span style="color: #2ecc71; margin-left: 10px;">● Online</span>' : ''}
+                        </div>
+                        <button onclick="removerMembro('${membro.funcao}')" 
+                                style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                            Remover
+                        </button>
+                    `;
+                    membrosList.appendChild(div);
+                } else {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px; margin-bottom: 10px;';
+                    div.innerHTML = `
+                        <div><strong>${membro.nome}:</strong> <em style="color: #999;">Não definido</em></div>
+                        <button disabled style="background: #ccc; color: #666; border: none; padding: 5px 10px; border-radius: 4px;">
+                            N/A
+                        </button>
+                    `;
+                    membrosList.appendChild(div);
+                }
+            });
+            
+            document.getElementById('modalAdministrar').style.display = 'flex';
         } else {
-            const div = document.createElement('div');
-            div.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px; margin-bottom: 10px;';
-            div.innerHTML = `
-                <div><strong>${membro.nome}:</strong> <em style="color: #999;">Não definido</em></div>
-                <button disabled style="background: #ccc; color: #666; border: none; padding: 5px 10px; border-radius: 4px;">
-                    N/A
-                </button>
-            `;
-            membrosList.appendChild(div);
+            alert('❌ Código de acesso incorreto!');
         }
-    });
-    
-    document.getElementById('modalAdministrar').style.display = 'flex';
+    };
 }
 
 function fecharModalAdministrar() {
     document.getElementById('modalAdministrar').style.display = 'none';
 }
 
-// ===== FUNÇÕES EXISTENTES (mantidas do código anterior) =====
+// ===== FUNÇÕES DO USUÁRIO =====
+
+function setAccessMode(mode, nomePredefinido = null) {
+    if (!viaturaAtualRef) return;
+    
+    let userName = nomePredefinido;
+    
+    // Se não tem nome predefinido, perguntar
+    if (!userName) {
+        userName = prompt(`Digite seu nome (${mode}):`) || mode;
+        if (!userName || userName.trim() === '') {
+            alert('Digite um nome para continuar!');
+            return;
+        }
+    }
+    
+    currentUser.name = userName.trim();
+    currentUser.mode = mode;
+    
+    // Salvar usuário no localStorage
+    salvarUsuario();
+    
+    // Atualizar interface
+    atualizarInterfaceUsuario();
+    
+    // Atualizar status online no Firebase
+    viaturaAtualRef.child(mode).update({
+        nome: currentUser.name,
+        online: true,
+        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
+    });
+    
+    // Configurar desconexão automática
+    const userRef = viaturaAtualRef.child(mode);
+    userRef.onDisconnect().update({
+        online: false,
+        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
+    });
+    
+    // Mostrar conteúdo principal
+    document.getElementById('escolhaFuncao').style.display = 'none';
+    document.getElementById('infoUsuario').style.display = 'block';
+    document.getElementById('btnSairFuncao').style.display = 'inline-block';
+    document.getElementById('equipeContainer').style.display = 'grid';
+    document.getElementById('itensContainer').style.display = 'block';
+    document.getElementById('actionsBar').style.display = 'flex';
+    
+    // Atualizar interface completa
+    if (currentViatura?.data) {
+        atualizarInterfaceViatura();
+    }
+}
+
+function atualizarInterfaceUsuario() {
+    const statusText = document.getElementById('statusText');
+    const statusIndicator = document.getElementById('statusIndicator');
+    const nomeUsuario = document.getElementById('nomeUsuario');
+    const funcaoUsuario = document.getElementById('funcaoUsuario');
+    
+    if (statusText) {
+        statusText.textContent = `Conectado como ${currentUser.name}`;
+    }
+    
+    if (statusIndicator) {
+        statusIndicator.style.background = '#2ecc71';
+    }
+    
+    if (nomeUsuario) {
+        nomeUsuario.textContent = currentUser.name;
+    }
+    
+    if (funcaoUsuario) {
+        const funcoes = {
+            'encarregado': '👮‍♂️ Encarregado',
+            'motorista': '🚚 Motorista', 
+            'auxiliar': '👥 Auxiliar'
+        };
+        funcaoUsuario.textContent = funcoes[currentUser.mode] || currentUser.mode;
+    }
+    
+    // Atualizar botões de função
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('ativo');
+    });
+    const btnAtivo = document.querySelector(`.mode-btn.${currentUser.mode}`);
+    if (btnAtivo) btnAtivo.classList.add('ativo');
+}
+
+function sairDaFuncao() {
+    if (viaturaAtualRef && currentUser.mode) {
+        // Desconectar do Firebase
+        viaturaAtualRef.child(currentUser.mode).update({ online: false });
+    }
+    
+    // Limpar usuário salvo
+    limparUsuarioSalvo();
+    
+    // Resetar interface
+    currentUser = { mode: '', name: '' };
+    
+    document.getElementById('escolhaFuncao').style.display = 'block';
+    document.getElementById('infoUsuario').style.display = 'none';
+    document.getElementById('btnSairFuncao').style.display = 'none';
+    document.getElementById('equipeContainer').style.display = 'none';
+    document.getElementById('itensContainer').style.display = 'none';
+    document.getElementById('actionsBar').style.display = 'none';
+    
+    document.getElementById('statusText').textContent = 'Selecione sua função';
+    document.getElementById('statusIndicator').style.background = '#ccc';
+    
+    // Limpar botões ativos
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('ativo');
+    });
+}
+
+// ===== FUNÇÕES EXISTENTES (modificadas para suportar usuário salvo) =====
 
 function mostrarModalNovaViatura() {
     document.getElementById('modalNovaViatura').style.display = 'flex';
@@ -651,6 +913,14 @@ function acessarViatura(viaturaId) {
         document.getElementById('viaturaTitulo').textContent = viaturaInfo.nome || 'Viatura';
     }
     document.getElementById('viaturaId').textContent = `ID: ${viaturaId}`;
+    
+    // Verificar se tem usuário salvo para esta viatura
+    if (usuarioSalvo) {
+        // Usar usuário salvo automaticamente
+        setTimeout(() => {
+            setAccessMode(usuarioSalvo.mode, usuarioSalvo.name);
+        }, 500);
+    }
 }
 
 function conectarViatura(viaturaId) {
@@ -673,63 +943,14 @@ function voltarParaSelecao() {
         viaturaAtualRef.child(currentUser.mode).update({ online: false });
     }
     
-    currentUser = { mode: '', name: '' };
+    // NÃO limpar o usuário salvo ao voltar
+    // currentUser = { mode: '', name: '' };
     
     document.getElementById('viaturaSelection').style.display = 'block';
     document.getElementById('viaturaInterface').style.display = 'none';
     
     currentViatura = null;
     viaturaAtualRef = null;
-}
-
-function setAccessMode(mode) {
-    if (!viaturaAtualRef) return;
-    
-    const userName = prompt(`Digite seu nome (${mode}):`) || mode;
-    if (!userName || userName.trim() === '') {
-        alert('Digite um nome para continuar!');
-        return;
-    }
-    
-    currentUser.name = userName.trim();
-    currentUser.mode = mode;
-    
-    const statusText = document.getElementById('statusText');
-    if (statusText) {
-        statusText.textContent = `Conectado como ${currentUser.name}`;
-    }
-    
-    const statusIndicator = document.getElementById('statusIndicator');
-    if (statusIndicator) {
-        statusIndicator.style.background = '#2ecc71';
-    }
-    
-    viaturaAtualRef.child(mode).update({
-        nome: currentUser.name,
-        online: true,
-        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
-    });
-    
-    const userRef = viaturaAtualRef.child(mode);
-    userRef.onDisconnect().update({
-        online: false,
-        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
-    });
-    
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.classList.remove('ativo');
-    });
-    const btnAtivo = document.querySelector(`.mode-btn.${mode}`);
-    if (btnAtivo) btnAtivo.classList.add('ativo');
-    
-    document.getElementById('escolhaFuncao').style.display = 'none';
-    document.getElementById('equipeContainer').style.display = 'grid';
-    document.getElementById('itensContainer').style.display = 'block';
-    document.getElementById('actionsBar').style.display = 'flex';
-    
-    if (currentViatura?.data) {
-        atualizarInterfaceViatura();
-    }
 }
 
 function atualizarInterfaceViatura() {
@@ -926,6 +1147,19 @@ window.addEventListener('beforeunload', function() {
         viaturaAtualRef.child(currentUser.mode).update({ online: false });
     }
 });
+
+// ===== PARA VOCÊ HABILITAR O MODO ADMIN (SOMENTE UMA VEZ) =====
+// Execute esta função no console do navegador quando quiser habilitar o botão admin:
+// habilitarBotaoAdmin()
+function habilitarBotaoAdmin() {
+    const codigo = prompt("Digite o código especial para habilitar modo admin:");
+    if (codigo === CODIGO_ACESSO) {
+        document.getElementById('btnAdmin').style.display = 'inline-block';
+        alert('✅ Botão admin habilitado!');
+    } else {
+        alert('❌ Código incorreto!');
+    }
+}
 </script>
 </body>
 </html>
