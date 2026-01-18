@@ -156,31 +156,98 @@ body {
 .viatura-header { 
     background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); 
     color: white; 
-    padding: 18px 15px 15px; 
-    border-radius: 0 0 15px 15px; 
-    display: flex; 
-    flex-direction: column;
-    gap: 12px;
-    flex-shrink: 0;
-}
-
-.viatura-info-bar { 
-    display: flex; 
+    padding: 15px; 
+    display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0;
 }
+
+/* Linha superior - Nome da viatura, ID e botão voltar */
+.viatura-top-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 .viatura-titulo { 
     font-size: 18px; 
     font-weight: bold;
     line-height: 1.2;
-    flex: 1;
 }
+
 .viatura-id { 
     background: rgba(255,255,255,0.2); 
     padding: 4px 10px; 
     border-radius: 20px; 
     font-size: 12px;
+    margin: 0 10px;
+}
+
+.btn-voltar { 
+    background: rgba(255,255,255,0.2); 
+    border: 1px solid rgba(255,255,255,0.3); 
+    color: white; 
+    padding: 6px 12px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 13px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Linha inferior - Informações do usuário e botão trocar função */
+.viatura-user-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: rgba(255,255,255,0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.usuario-info-compact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.usuario-nome-compact {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.usuario-funcao-compact {
+    font-size: 12px;
+    opacity: 0.9;
+    background: rgba(255,255,255,0.15);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.btn-trocar-funcao {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-trocar-funcao:hover {
+    background: rgba(255,255,255,0.3);
 }
 
 /* Botões de ação no topo */
@@ -188,20 +255,19 @@ body {
     display: flex;
     gap: 10px;
     justify-content: center;
-    padding: 8px 0 0;
+    padding-top: 10px;
     border-top: 1px solid rgba(255,255,255,0.2);
-    margin-top: 8px;
-    padding-top: 12px;
+    margin-top: 10px;
 }
 
 .top-action-btn {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: none;
     background: rgba(255,255,255,0.2);
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -212,17 +278,6 @@ body {
 .top-action-btn:hover {
     background: rgba(255,255,255,0.3);
     transform: scale(1.05);
-}
-
-.btn-voltar { 
-    background: rgba(255,255,255,0.2); 
-    border: 1px solid rgba(255,255,255,0.3); 
-    color: white; 
-    padding: 8px 15px; 
-    border-radius: 6px; 
-    cursor: pointer; 
-    font-size: 14px;
-    flex-shrink: 0;
 }
 
 /* Seletor de função */
@@ -267,36 +322,9 @@ body {
     background: #bdc3c7;
 }
 
-/* Informações do usuário */
+/* Informações do usuário (versão expandida - removemos depois) */
 .usuario-info {
-    text-align: center;
-    padding: 15px;
-    background: #e8f4fc;
-    border-radius: 10px;
-    margin: 0 15px 15px;
-    flex-shrink: 0;
-}
-.usuario-nome {
-    font-size: 18px;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 5px;
-}
-.usuario-funcao {
-    font-size: 14px;
-    color: #7f8c8d;
-    margin-bottom: 10px;
-}
-
-.btn-sair-funcao {
-    background: #95a5a6;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: 600;
+    display: none;
 }
 
 /* Itens - SEMPRE ABERTOS para edição fácil */
@@ -448,17 +476,23 @@ body {
     }
     
     .viatura-header {
-        padding: 15px 15px 12px;
-    }
-    
-    .viatura-info-bar {
+        padding: 12px;
         flex-direction: column;
         gap: 8px;
-        text-align: center;
+    }
+    
+    .viatura-top-line {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .viatura-user-line {
+        flex-wrap: wrap;
+        gap: 8px;
     }
     
     .viatura-id {
-        align-self: center;
+        margin: 0;
     }
     
     .funcao-seletor {
@@ -482,9 +516,19 @@ body {
     }
     
     .top-action-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+    
+    .btn-voltar {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    .btn-trocar-funcao {
+        padding: 5px 10px;
+        font-size: 11px;
     }
 }
 
@@ -583,6 +627,11 @@ body {
 .contador-superior-btn:active {
     transform: scale(0.95);
 }
+
+/* Sistema de fiscalização - REMOVIDO */
+.sistema-fiscalizacao {
+    display: none;
+}
 </style>
 </head>
 
@@ -602,27 +651,41 @@ body {
         <button class="btn-nova-viatura" onclick="mostrarModalNovaViatura()">
             <span style="font-size: 18px;">+</span> Nova Viatura
         </button>
-        
-        <!-- REMOVIDO: Botão Acesso Restrito -->
     </div>
 
     <!-- TELA 2: Interface da Viatura Selecionada -->
     <div class="viatura-interface" id="viaturaInterface">
         <div class="viatura-header">
-            <div class="viatura-info-bar">
-                <div class="viatura-titulo" id="viaturaTitulo">Viatura X</div>
-                <div class="viatura-id" id="viaturaId">ID: VIATURA_X_001</div>
-                <button class="btn-voltar" onclick="voltarParaSelecao()">← Voltar</button>
-            </div>
-            
-            <!-- BOTÕES DE AÇÃO NO TOPO -->
-            <div class="top-actions">
-                <button class="top-action-btn" onclick="enviarWhatsApp()" title="Enviar WhatsApp">
-                    📤
-                </button>
-                <button class="top-action-btn" onclick="limparDados()" title="Limpar Dados">
-                    🗑️
-                </button>
+            <div style="width: 100%;">
+                <!-- Linha superior: Nome da viatura, ID e botão voltar -->
+                <div class="viatura-top-line">
+                    <div class="viatura-titulo" id="viaturaTitulo">Viatura X</div>
+                    <div class="viatura-id" id="viaturaId">ID: VIATURA_X_001</div>
+                    <button class="btn-voltar" onclick="voltarParaSelecao()">
+                        ← Voltar
+                    </button>
+                </div>
+                
+                <!-- Linha inferior: Informações do usuário e botão trocar função -->
+                <div class="viatura-user-line" id="viaturaUserLine" style="display: none;">
+                    <div class="usuario-info-compact">
+                        <span class="usuario-nome-compact" id="usuarioNomeCompact">GUIDINI</span>
+                        <span class="usuario-funcao-compact" id="usuarioFuncaoCompact">Encarregado</span>
+                    </div>
+                    <button class="btn-trocar-funcao" onclick="sairDaFuncao()">
+                        🔄 Trocar Função
+                    </button>
+                </div>
+                
+                <!-- Botões de ação -->
+                <div class="top-actions">
+                    <button class="top-action-btn" onclick="enviarWhatsApp()" title="Enviar WhatsApp">
+                        📤
+                    </button>
+                    <button class="top-action-btn" onclick="limparDados()" title="Limpar Dados">
+                        🗑️
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -656,13 +719,9 @@ body {
             </button>
         </div>
 
-        <!-- Informações do usuário atual -->
+        <!-- Informações do usuário atual (versão expandida - não usamos mais) -->
         <div class="usuario-info" id="infoUsuario" style="display: none;">
-            <div class="usuario-nome" id="nomeUsuario">Usuário</div>
-            <div class="usuario-funcao" id="funcaoUsuario">Função</div>
-            <button class="btn-sair-funcao" onclick="sairDaFuncao()">
-                🔄 Trocar Função
-            </button>
+            <!-- Conteúdo removido -->
         </div>
 
         <!-- Itens (SEMPRE ABERTOS para edição fácil) -->
@@ -748,9 +807,9 @@ let contadorSuperiorIndex = 0; // Índice do item para o contador superior
 // ===== SENHA ADMIN (SOMENTE VOCÊ SABE) =====
 const SENHA_ADMIN = "admin123";
 
-// ===== ITENS FIXOS =====
+// ===== ITENS FIXOS (AP Fiscalizado REMOVIDO da lista) =====
 const ITENS_FIXOS = [
-    "AP Fiscalizado","CA Fiscalizado","OA Fiscalizado","MO Fiscalizado",
+    "CA Fiscalizado","OA Fiscalizado","MO Fiscalizado",
     "AI AP","AI CA","AI OA","AI MO","AI Abordagem","AI Revelia",
     "ART. 167","ART. 168","ART. 252, VI / § ún.","ART. 203, V",
     "ART. 165","ART. 165-A","ART. 306","Teste Ativo","Teste Passivo",
@@ -938,6 +997,17 @@ function criarNovaViatura() {
 function criarItensPadrao() {
     const itens = [];
     
+    // Adiciona "AP Fiscalizado" como primeiro item (para o contador superior)
+    itens.push({
+        id: 'ap_fiscalizado',
+        tipo: 'fixo',
+        nome: 'AP Fiscalizado',
+        encarregado: 0,
+        motorista: 0,
+        auxiliar: 0
+    });
+    
+    // Adiciona os outros itens fixos
     ITENS_FIXOS.forEach((nome, i) => {
         itens.push({
             id: `f${i}`,
@@ -949,6 +1019,7 @@ function criarItensPadrao() {
         });
     });
     
+    // Adiciona itens livres
     for (let i = 1; i <= 8; i++) {
         itens.push({
             id: `l${i}`,
@@ -997,6 +1068,7 @@ function conectarViatura(viaturaId) {
             currentViatura.data = snapshot.val();
             atualizarBotoesFuncao();
             if (currentUser.mode) {
+                atualizarInterfaceUsuarioCompact();
                 atualizarInterfaceViatura();
                 atualizarContadorSuperior();
             }
@@ -1020,7 +1092,7 @@ function verificarEConectarUsuario(mode, nomePredefinido = null) {
         }
         
         // Resetar interface
-        document.getElementById('infoUsuario').style.display = 'none';
+        document.getElementById('viaturaUserLine').style.display = 'none';
         document.getElementById('itensContainer').style.display = 'none';
         document.getElementById('contadorSuperior').style.display = 'none';
         
@@ -1080,7 +1152,7 @@ function setAccessMode(mode, nomePredefinido = null) {
     currentUser.mode = mode;
     
     salvarUsuario();
-    atualizarInterfaceUsuario();
+    atualizarInterfaceUsuarioCompact();
     
     viaturaAtualRef.child(mode).update({
         nome: currentUser.name,
@@ -1094,7 +1166,7 @@ function setAccessMode(mode, nomePredefinido = null) {
         ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
     });
     
-    document.getElementById('infoUsuario').style.display = 'block';
+    document.getElementById('viaturaUserLine').style.display = 'flex';
     document.getElementById('itensContainer').style.display = 'block';
     document.getElementById('contadorSuperior').style.display = 'flex';
     
@@ -1105,21 +1177,21 @@ function setAccessMode(mode, nomePredefinido = null) {
     }
 }
 
-function atualizarInterfaceUsuario() {
-    const nomeUsuario = document.getElementById('nomeUsuario');
-    const funcaoUsuario = document.getElementById('funcaoUsuario');
+function atualizarInterfaceUsuarioCompact() {
+    const usuarioNome = document.getElementById('usuarioNomeCompact');
+    const usuarioFuncao = document.getElementById('usuarioFuncaoCompact');
     
-    if (nomeUsuario) {
-        nomeUsuario.textContent = currentUser.name;
+    if (usuarioNome) {
+        usuarioNome.textContent = currentUser.name;
     }
     
-    if (funcaoUsuario) {
+    if (usuarioFuncao) {
         const funcoes = {
-            'encarregado': '👮‍♂️ Encarregado',
-            'motorista': '🚚 Motorista', 
-            'auxiliar': '👥 Auxiliar'
+            'encarregado': 'Encarregado',
+            'motorista': 'Motorista', 
+            'auxiliar': 'Auxiliar'
         };
-        funcaoUsuario.textContent = funcoes[currentUser.mode] || currentUser.mode;
+        usuarioFuncao.textContent = funcoes[currentUser.mode] || currentUser.mode;
     }
     
     document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -1165,7 +1237,7 @@ function sairDaFuncao() {
     limparUsuarioSalvo();
     currentUser = { mode: '', name: '' };
     
-    document.getElementById('infoUsuario').style.display = 'none';
+    document.getElementById('viaturaUserLine').style.display = 'none';
     document.getElementById('itensContainer').style.display = 'none';
     document.getElementById('contadorSuperior').style.display = 'none';
     
@@ -1318,1265 +1390,6 @@ function atualizarNomeItem(itemIndex, nome) {
     if (itemIndex === contadorSuperiorIndex) {
         document.getElementById('contadorSuperiorTitulo').textContent = nome || 'Artigo Livre';
     }
-}
-
-function voltarParaSelecao() {
-    if (viaturaAtualRef && currentUser.mode) {
-        viaturaAtualRef.child(currentUser.mode).update({ online: false });
-    }
-    
-    document.getElementById('viaturaSelection').style.display = 'block';
-    document.getElementById('viaturaInterface').style.display = 'none';
-    
-    currentViatura = null;
-    viaturaAtualRef = null;
-}
-
-// ===== FUNÇÕES UTILITÁRIAS =====
-function enviarWhatsApp() {
-    if (!currentViatura?.data || !currentUser.mode) {
-        alert('Escolha sua função primeiro!');
-        return;
-    }
-    
-    const data = currentViatura.data;
-    let texto = `*FISCALIZAÇÃO - ${data.nome || currentViatura.id}*\n\n`;
-    
-    const equipe = [];
-    if (data.encarregado?.nome) equipe.push(`Encarregado: ${data.encarregado.nome}`);
-    if (data.motorista?.nome) equipe.push(`Motorista: ${data.motorista.nome}`);
-    if (data.auxiliar?.nome) equipe.push(`Auxiliar: ${data.auxiliar.nome}`);
-    
-    if (equipe.length > 0) {
-        texto += `👥 ${equipe.join(' | ')}\n\n`;
-    }
-    
-    let temDados = false;
-    (data.itens || []).forEach(item => {
-        const nome = item.tipo === 'livre' ? item.nome : item.nome;
-        if (!nome && item.tipo === 'livre') return;
-        
-        const total = item.encarregado + item.motorista + item.auxiliar;
-        if (total > 0) {
-            temDados = true;
-            texto += `*${nome}*\n`;
-            if (item.encarregado > 0) texto += `- Encarregado: ${item.encarregado}\n`;
-            if (item.motorista > 0) texto += `- Motorista: ${item.motorista}\n`;
-            if (item.auxiliar > 0) texto += `- Auxiliar: ${item.auxiliar}\n`;
-            texto += '\n';
-        }
-    });
-    
-    if (!temDados) {
-        alert('Nada para enviar!');
-        return;
-    }
-    
-    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
-}
-
-function limparDados() {
-    if (!currentUser.mode) {
-        alert('Escolha sua função primeiro!');
-        return;
-    }
-    
-    if (confirm('Limpar todos os dados desta viatura?')) {
-        const itensIniciais = criarItensPadrao();
-        viaturaAtualRef.child('itens').set(itensIniciais);
-    }
-}
-
-// ===== INICIALIZAR =====
-window.onload = initApp;
-window.addEventListener('beforeunload', function() {
-    if (viaturaAtualRef && currentUser.mode) {
-        viaturaAtualRef.child(currentUser.mode).update({ online: false });
-    }
-});
-
-// ===== TOUCH SUPPORT =====
-document.addEventListener('touchstart', function() {}, {passive: true});
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sistema de Fiscalização por Viatura</title>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-<style>
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    -webkit-tap-highlight-color: transparent;
-}
-body { 
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
-    min-height: 100vh;
-    padding: 15px;
-    overflow-x: hidden;
-}
-
-.container { 
-    max-width: 100%;
-    margin: 0 auto; 
-    background: white; 
-    border-radius: 15px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
-    overflow: hidden;
-    height: calc(100vh - 30px);
-    display: flex;
-    flex-direction: column;
-}
-
-/* Tela de seleção de viatura */
-.viatura-selection { 
-    padding: 25px 20px; 
-    text-align: center; 
-    flex: 1;
-    overflow-y: auto;
-}
-.viatura-selection h1 { 
-    color: #2c3e50; 
-    margin-bottom: 20px; 
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.viaturas-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-    gap: 12px; 
-    margin: 20px 0;
-}
-
-.viatura-card { 
-    background: #f8f9fa; 
-    border-radius: 10px; 
-    padding: 18px 12px; 
-    cursor: pointer; 
-    transition: all 0.3s ease; 
-    border: 2px solid transparent; 
-    text-align: center;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 140px;
-}
-.viatura-card:hover { 
-    transform: translateY(-3px); 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
-    border-color: #3498db; 
-}
-.viatura-card.ativa { 
-    border-color: #2ecc71; 
-    background: linear-gradient(135deg, #f8f9fa 0%, #e8f4fc 100%); 
-}
-
-.viatura-icon { 
-    font-size: 32px; 
-    margin-bottom: 10px; 
-}
-.viatura-nome { 
-    font-size: 16px; 
-    font-weight: bold; 
-    color: #2c3e50; 
-    margin-bottom: 8px;
-    line-height: 1.2;
-}
-.viatura-info { 
-    color: #7f8c8d; 
-    font-size: 12px; 
-    margin-bottom: 10px;
-    word-break: break-all;
-}
-.viatura-status { 
-    display: inline-flex; 
-    align-items: center; 
-    gap: 6px; 
-    padding: 4px 10px; 
-    border-radius: 20px; 
-    font-size: 11px;
-    margin-bottom: 8px;
-}
-.status-online { background: rgba(46, 204, 113, 0.2); color: #27ae60; }
-.status-offline { background: rgba(231, 76, 60, 0.2); color: #c0392b; }
-
-.btn-nova-viatura { 
-    background: #3498db; 
-    color: white; 
-    border: none; 
-    padding: 14px 24px; 
-    border-radius: 8px; 
-    font-size: 15px; 
-    font-weight: 600; 
-    cursor: pointer; 
-    margin-top: 15px; 
-    display: inline-flex; 
-    align-items: center; 
-    gap: 8px;
-    width: 100%;
-    max-width: 300px;
-    justify-content: center;
-}
-
-/* Botão de remover viatura */
-.btn-remover-viatura { 
-    background: #e74c3c; 
-    color: white; 
-    border: none; 
-    padding: 8px 12px; 
-    border-radius: 6px; 
-    font-size: 12px; 
-    cursor: pointer; 
-    margin-top: 8px; 
-    width: 100%;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-.btn-remover-viatura:hover { background: #c0392b; }
-
-/* Interface da viatura */
-.viatura-interface { 
-    display: none; 
-    flex: 1;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-/* Header com botões de ação no topo */
-.viatura-header { 
-    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); 
-    color: white; 
-    padding: 18px 15px 15px; 
-    border-radius: 0 0 15px 15px; 
-    display: flex; 
-    flex-direction: column;
-    gap: 12px;
-    flex-shrink: 0;
-}
-
-.viatura-info-bar { 
-    display: flex; 
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-.viatura-titulo { 
-    font-size: 18px; 
-    font-weight: bold;
-    line-height: 1.2;
-    flex: 1;
-}
-.viatura-id { 
-    background: rgba(255,255,255,0.2); 
-    padding: 4px 10px; 
-    border-radius: 20px; 
-    font-size: 12px;
-}
-
-/* Botões de ação no topo */
-.top-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    padding: 8px 0 0;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    margin-top: 8px;
-    padding-top: 12px;
-}
-
-.top-action-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,0.2);
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.top-action-btn:hover {
-    background: rgba(255,255,255,0.3);
-    transform: scale(1.05);
-}
-
-.btn-voltar { 
-    background: rgba(255,255,255,0.2); 
-    border: 1px solid rgba(255,255,255,0.3); 
-    color: white; 
-    padding: 8px 15px; 
-    border-radius: 6px; 
-    cursor: pointer; 
-    font-size: 14px;
-    flex-shrink: 0;
-}
-
-/* Seletor de função */
-.funcao-seletor {
-    display: flex;
-    gap: 8px;
-    margin: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-}
-
-.mode-btn {
-    padding: 12px 16px;
-    background: #ecf0f1;
-    color: #2c3e50;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    flex: 1;
-    min-width: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    transition: all 0.3s ease;
-}
-.mode-btn.ativo {
-    background: #3498db;
-    color: white;
-    transform: scale(1.02);
-}
-.mode-btn.encarregado.ativo { background: #3498db; }
-.mode-btn.motorista.ativo { background: #2ecc71; }
-.mode-btn.auxiliar.ativo { background: #f39c12; }
-
-.mode-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background: #bdc3c7;
-}
-
-/* Informações do usuário */
-.usuario-info {
-    text-align: center;
-    padding: 15px;
-    background: #e8f4fc;
-    border-radius: 10px;
-    margin: 0 15px 15px;
-    flex-shrink: 0;
-}
-.usuario-nome {
-    font-size: 18px;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 5px;
-}
-.usuario-funcao {
-    font-size: 14px;
-    color: #7f8c8d;
-    margin-bottom: 10px;
-}
-
-.btn-sair-funcao {
-    background: #95a5a6;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-/* Itens - SEMPRE ABERTOS para edição fácil */
-.itens-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0 15px 15px;
-    -webkit-overflow-scrolling: touch;
-}
-
-.item {
-    background: white;
-    border: 2px solid #dee2e6;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.item-header {
-    padding: 15px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    color: #2c3e50;
-    cursor: pointer;
-    user-select: none;
-}
-
-.item-total {
-    background: #3498db;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: bold;
-    margin-left: 10px;
-}
-
-/* Conteúdo SEMPRE VISÍVEL para edição fácil */
-.item-conteudo {
-    padding: 20px;
-    border-top: 1px solid #dee2e6;
-}
-
-/* Input para artigos livres */
-.input-artigo-container {
-    padding: 0 0 15px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.input-artigo {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #3498db;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-}
-
-/* Contador específico para cada função */
-.contador-funcao {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    margin-bottom: 12px;
-    display: none; /* Escondido por padrão */
-}
-
-.contador-funcao.ativo {
-    display: block; /* Mostra apenas para a função ativa */
-}
-
-.contador-titulo {
-    color: #2c3e50;
-    margin-bottom: 10px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.contador-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin: 10px 0;
-}
-
-.contador-btn {
-    width: 44px;
-    height: 44px;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.contador-btn:active {
-    transform: scale(0.95);
-}
-
-.btn-menos { background: #e74c3c; }
-.btn-add { background: #2ecc71; }
-
-.contador-valor {
-    font-size: 28px;
-    font-weight: bold;
-    color: #2c3e50;
-    min-width: 50px;
-    text-align: center;
-}
-
-/* REMOVIDO: Botões de ação em baixo - agora estão no topo */
-
-/* Botão admin escondido */
-.btn-admin { 
-    display: none !important; 
-}
-
-/* Responsivo adicional */
-@media (max-width: 480px) {
-    .container {
-        height: calc(100vh - 20px);
-        border-radius: 12px;
-    }
-    
-    .viatura-selection {
-        padding: 20px 15px;
-    }
-    
-    .viaturas-grid {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 10px;
-    }
-    
-    .viatura-card {
-        padding: 15px 10px;
-        min-height: 120px;
-    }
-    
-    .viatura-header {
-        padding: 15px 15px 12px;
-    }
-    
-    .viatura-info-bar {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-    }
-    
-    .viatura-id {
-        align-self: center;
-    }
-    
-    .funcao-seletor {
-        margin: 12px;
-    }
-    
-    .mode-btn {
-        padding: 10px 12px;
-        font-size: 13px;
-        min-width: 85px;
-    }
-    
-    .contador-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-    }
-    
-    .top-actions {
-        gap: 8px;
-    }
-    
-    .top-action-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-    }
-}
-
-/* Ajustes para iOS */
-@supports (-webkit-touch-callout: none) {
-    .container {
-        height: -webkit-fill-available;
-    }
-}
-
-/* Status de função ocupada */
-.funcao-ocupada {
-    position: relative;
-}
-
-.funcao-ocupada::after {
-    content: '👤';
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: 12px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-    <!-- TELA 1: Seleção de Viatura -->
-    <div class="viatura-selection" id="viaturaSelection">
-        <h1>🚔 SISTEMA DE FISCALIZAÇÃO</h1>
-        <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Selecione sua viatura para começar</p>
-        
-        <div class="viaturas-grid" id="viaturasList">
-            <!-- Viaturas serão carregadas aqui -->
-        </div>
-        
-        <button class="btn-nova-viatura" onclick="mostrarModalNovaViatura()">
-            <span style="font-size: 18px;">+</span> Nova Viatura
-        </button>
-        
-        <br>
-        <!-- Botão admin SOMENTE para o criador (escondido) -->
-        <button class="btn-admin" id="btnAdmin" onclick="removerViaturasAdmin()">
-            ⚙️ Modo Administrador
-        </button>
-    </div>
-
-    <!-- TELA 2: Interface da Viatura Selecionada -->
-    <div class="viatura-interface" id="viaturaInterface">
-        <div class="viatura-header">
-            <div class="viatura-info-bar">
-                <div class="viatura-titulo" id="viaturaTitulo">Viatura X</div>
-                <div class="viatura-id" id="viaturaId">ID: VIATURA_X_001</div>
-                <button class="btn-voltar" onclick="voltarParaSelecao()">← Voltar</button>
-            </div>
-            
-            <!-- BOTÕES DE AÇÃO NO TOPO -->
-            <div class="top-actions">
-                <button class="top-action-btn" onclick="enviarWhatsApp()" title="Enviar WhatsApp">
-                    📤
-                </button>
-                <button class="top-action-btn" onclick="limparDados()" title="Limpar Dados">
-                    🗑️
-                </button>
-            </div>
-        </div>
-
-        <!-- Seletor de função -->
-        <div class="funcao-seletor" id="funcaoSeletor">
-            <button class="mode-btn encarregado" onclick="setAccessMode('encarregado')">
-                <span style="font-size: 20px;">👮‍♂️</span>
-                Encarregado
-            </button>
-            <button class="mode-btn motorista" onclick="setAccessMode('motorista')">
-                <span style="font-size: 20px;">🚚</span>
-                Motorista
-            </button>
-            <button class="mode-btn auxiliar" onclick="setAccessMode('auxiliar')">
-                <span style="font-size: 20px;">👥</span>
-                Auxiliar
-            </button>
-        </div>
-
-        <!-- Informações do usuário atual -->
-        <div class="usuario-info" id="infoUsuario" style="display: none;">
-            <div class="usuario-nome" id="nomeUsuario">Usuário</div>
-            <div class="usuario-funcao" id="funcaoUsuario">Função</div>
-            <button class="btn-sair-funcao" onclick="sairDaFuncao()">
-                🔄 Trocar Função
-            </button>
-        </div>
-
-        <!-- Itens (SEMPRE ABERTOS para edição fácil) -->
-        <div class="itens-container" id="itensContainer" style="display: none;">
-            <div id="itensList"></div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Nova Viatura -->
-<div class="modal" id="modalNovaViatura">
-    <div class="modal-content">
-        <h2>Nova Viatura</h2>
-        
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; color: #666; font-size: 14px;">Nome da Viatura:</label>
-            <input type="text" id="novaViaturaNome" placeholder="Ex: Viatura X, RP-01, etc" 
-                   style="width: 100%; padding: 12px; border: 2px solid #3498db; border-radius: 6px; font-size: 16px;">
-        </div>
-        
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; color: #666; font-size: 14px;">ID Único:</label>
-            <input type="text" id="novaViaturaId" placeholder="Ex: VIATURA_X_001" 
-                   style="width: 100%; padding: 12px; border: 2px solid #3498db; border-radius: 6px; font-size: 16px;">
-            <small style="color: #999; font-size: 12px; display: block; margin-top: 5px;">Use o mesmo ID em todos os dispositivos</small>
-        </div>
-        
-        <div style="display: flex; gap: 10px; margin-top: 25px;">
-            <button onclick="fecharModalNovaViatura()" style="flex: 1; padding: 12px; background: #95a5a6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                Cancelar
-            </button>
-            <button onclick="criarNovaViatura()" style="flex: 1; padding: 12px; background: #2ecc71; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                Criar
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Login Admin -->
-<div class="modal" id="modalLoginAdmin">
-    <div class="modal-content">
-        <h2>🔐 Acesso Restrito</h2>
-        
-        <div style="margin-bottom: 25px; text-align: center;">
-            <div style="font-size: 48px; margin-bottom: 20px;">🔒</div>
-            <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Área restrita ao administrador</p>
-        </div>
-        
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; color: #666; font-size: 14px;">Código de Acesso:</label>
-            <input type="password" id="codigoAcesso" placeholder="Digite o código" 
-                   style="width: 100%; padding: 12px; border: 2px solid #3498db; border-radius: 6px; font-size: 16px;">
-        </div>
-        
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button onclick="fecharModalLoginAdmin()" style="flex: 1; padding: 12px; background: #95a5a6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                Cancelar
-            </button>
-            <button onclick="verificarCodigoAcesso()" style="flex: 1; padding: 12px; background: #9b59b6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                Acessar
-            </button>
-        </div>
-    </div>
-</div>
-
-<script>
-// ===== CONFIGURAÇÃO FIREBASE =====
-const firebaseConfig = {
-    apiKey: "AIzaSyC7u9yPMqkswESx3jJh4I4fCUS8tiu-MjM",
-    authDomain: "rodoviariolimeira.firebaseapp.com",
-    databaseURL: "https://rodoviariolimeira-default-rtdb.firebaseio.com",
-    projectId: "rodoviariolimeira",
-    storageBucket: "rodoviariolimeira.firebasestorage.app",
-    messagingSenderId: "131653476917",
-    appId: "1:131653476917:web:3758f0247b5be006c9077c",
-    measurementId: "G-0CJ7FD2MN2"
-};
-
-// ===== VARIÁVEIS GLOBAIS =====
-let db;
-let viaturaAtualRef;
-let currentViatura = null;
-let currentUser = { mode: '', name: '' };
-let todasViaturas = [];
-let usuarioSalvo = null;
-
-// ===== SENHA ADMIN (SOMENTE VOCÊ SABE) =====
-const SENHA_ADMIN = "admin123";
-
-// ===== ITENS FIXOS =====
-const ITENS_FIXOS = [
-    "AP Fiscalizado","CA Fiscalizado","OA Fiscalizado","MO Fiscalizado",
-    "AI AP","AI CA","AI OA","AI MO","AI Abordagem","AI Revelia",
-    "ART. 167","ART. 168","ART. 252, VI / § ún.","ART. 203, V",
-    "ART. 165","ART. 165-A","ART. 306","Teste Ativo","Teste Passivo",
-    "Pessoas abordadas","Pedestres abordados","Pedestres lançados no Google Forms",
-    "Total ARV","Total ARD","Imagem Radar","BO-e Com Vítima","BO-e Sem Vítima",
-    "Vítimas Leves","Vítimas Graves","Vítimas Fatais","Procurado Capturado",
-    "Flagrante","Presos","BOPM ( exceto ART. 306 )"
-];
-
-// ===== INICIALIZAÇÃO =====
-function initApp() {
-    try {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-        
-        console.log('Firebase conectado com sucesso!');
-        
-        carregarUsuarioSalvo();
-        carregarListaViaturas();
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const viaturaId = urlParams.get('viatura');
-        if (viaturaId) {
-            acessarViatura(viaturaId);
-        }
-    } catch (error) {
-        console.error('Erro ao conectar com Firebase:', error);
-    }
-}
-
-// ===== GERENCIAMENTO DE USUÁRIO =====
-function carregarUsuarioSalvo() {
-    const usuarioSalvoStr = localStorage.getItem('fiscalizacao_usuario');
-    if (usuarioSalvoStr) {
-        usuarioSalvo = JSON.parse(usuarioSalvoStr);
-    }
-}
-
-function salvarUsuario() {
-    if (currentUser.mode && currentUser.name) {
-        localStorage.setItem('fiscalizacao_usuario', JSON.stringify({
-            mode: currentUser.mode,
-            name: currentUser.name,
-            timestamp: new Date().getTime()
-        }));
-    }
-}
-
-function limparUsuarioSalvo() {
-    localStorage.removeItem('fiscalizacao_usuario');
-    usuarioSalvo = null;
-    currentUser = { mode: '', name: '' };
-}
-
-// ===== GERENCIAMENTO DE VIATURAS =====
-function carregarListaViaturas() {
-    if (!db) return;
-    
-    db.ref('viaturas').on('value', (snapshot) => {
-        todasViaturas = [];
-        const viaturasList = document.getElementById('viaturasList');
-        viaturasList.innerHTML = '';
-        
-        if (!snapshot.exists()) {
-            viaturasList.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 30px 15px;">
-                    <div style="font-size: 48px; margin-bottom: 15px;">🚔</div>
-                    <h3 style="color: #2c3e50; margin-bottom: 10px; font-size: 16px;">Nenhuma viatura</h3>
-                    <p style="color: #666; margin-bottom: 15px; font-size: 14px;">Clique em "Nova Viatura"</p>
-                </div>
-            `;
-            return;
-        }
-        
-        snapshot.forEach((childSnapshot) => {
-            const viatura = childSnapshot.val();
-            viatura.id = childSnapshot.key;
-            todasViaturas.push(viatura);
-            
-            let status = 'offline';
-            if (viatura.encarregado && viatura.encarregado.online) status = 'online';
-            if (viatura.motorista && viatura.motorista.online) status = 'online';
-            if (viatura.auxiliar && viatura.auxiliar.online) status = 'online';
-            
-            const viaturaCard = document.createElement('div');
-            viaturaCard.className = `viatura-card ${currentViatura?.id === viatura.id ? 'ativa' : ''}`;
-            viaturaCard.innerHTML = `
-                <div class="viatura-icon">🚔</div>
-                <div class="viatura-nome">${viatura.nome || 'Nova Viatura'}</div>
-                <div class="viatura-info">${viatura.id}</div>
-                <div class="viatura-status ${status === 'online' ? 'status-online' : 'status-offline'}">
-                    <div style="width: 6px; height: 6px; border-radius: 50%; background: ${status === 'online' ? '#2ecc71' : '#e74c3c'};"></div>
-                    ${status === 'online' ? 'Online' : 'Offline'}
-                </div>
-                <button class="btn-remover-viatura" onclick="removerViatura('${childSnapshot.key}', event)">
-                    🗑️ Remover
-                </button>
-            `;
-            viaturaCard.onclick = (e) => {
-                if (!e.target.classList.contains('btn-remover-viatura')) {
-                    acessarViatura(viatura.id);
-                }
-            };
-            viaturasList.appendChild(viaturaCard);
-        });
-    });
-}
-
-// ===== FUNÇÕES DE ADMINISTRAÇÃO =====
-function removerViatura(viaturaId, event) {
-    if (event) event.stopPropagation();
-    
-    document.getElementById('modalLoginAdmin').style.display = 'flex';
-    window.viaturaParaRemover = viaturaId;
-}
-
-function verificarCodigoAcesso() {
-    const codigo = document.getElementById('codigoAcesso').value;
-    
-    if (codigo === SENHA_ADMIN) {
-        fecharModalLoginAdmin();
-        
-        if (window.viaturaParaRemover) {
-            const viaturaId = window.viaturaParaRemover;
-            if (confirm(`Remover viatura ${viaturaId}?`)) {
-                db.ref(`viaturas/${viaturaId}`).remove()
-                    .then(() => {
-                        alert(`✅ Viatura removida!`);
-                        if (currentViatura && currentViatura.id === viaturaId) {
-                            voltarParaSelecao();
-                        }
-                    })
-                    .catch((error) => {
-                        alert('❌ Erro: ' + error.message);
-                    });
-            }
-            window.viaturaParaRemover = null;
-        }
-    } else {
-        alert('❌ Código incorreto!');
-        document.getElementById('codigoAcesso').value = '';
-    }
-}
-
-function fecharModalLoginAdmin() {
-    document.getElementById('modalLoginAdmin').style.display = 'none';
-    document.getElementById('codigoAcesso').value = '';
-    window.viaturaParaRemover = null;
-}
-
-// ===== FUNÇÕES DA VIATURA =====
-function mostrarModalNovaViatura() {
-    document.getElementById('modalNovaViatura').style.display = 'flex';
-    document.getElementById('novaViaturaId').value = `VIATURA_${Math.floor(Math.random() * 9000) + 1000}`;
-}
-
-function fecharModalNovaViatura() {
-    document.getElementById('modalNovaViatura').style.display = 'none';
-}
-
-function criarNovaViatura() {
-    const nome = document.getElementById('novaViaturaNome').value || 'Nova Viatura';
-    const id = document.getElementById('novaViaturaId').value;
-    
-    if (!id) {
-        alert('Digite um ID para a viatura!');
-        return;
-    }
-    
-    if (!db) return;
-    
-    db.ref(`viaturas/${id}`).set({
-        nome: nome,
-        criadaEm: new Date().toISOString(),
-        itens: criarItensPadrao(),
-        encarregado: { nome: '', online: false },
-        motorista: { nome: '', online: false },
-        auxiliar: { nome: '', online: false }
-    }).then(() => {
-        fecharModalNovaViatura();
-        acessarViatura(id);
-    });
-}
-
-function criarItensPadrao() {
-    const itens = [];
-    
-    ITENS_FIXOS.forEach((nome, i) => {
-        itens.push({
-            id: `f${i}`,
-            tipo: 'fixo',
-            nome: nome,
-            encarregado: 0,
-            motorista: 0,
-            auxiliar: 0
-        });
-    });
-    
-    for (let i = 1; i <= 8; i++) {
-        itens.push({
-            id: `l${i}`,
-            tipo: 'livre',
-            nome: '',
-            encarregado: 0,
-            motorista: 0,
-            auxiliar: 0
-        });
-    }
-    
-    return itens;
-}
-
-function acessarViatura(viaturaId) {
-    currentViatura = { id: viaturaId };
-    
-    const novaUrl = `${window.location.pathname}?viatura=${viaturaId}`;
-    window.history.pushState({}, '', novaUrl);
-    
-    conectarViatura(viaturaId);
-    
-    document.getElementById('viaturaSelection').style.display = 'none';
-    document.getElementById('viaturaInterface').style.display = 'flex';
-    
-    const viaturaInfo = todasViaturas.find(v => v.id === viaturaId);
-    if (viaturaInfo) {
-        document.getElementById('viaturaTitulo').textContent = viaturaInfo.nome || 'Viatura';
-    }
-    document.getElementById('viaturaId').textContent = `ID: ${viaturaId}`;
-    
-    if (usuarioSalvo) {
-        setTimeout(() => {
-            verificarEConectarUsuario(usuarioSalvo.mode, usuarioSalvo.name);
-        }, 500);
-    }
-}
-
-function conectarViatura(viaturaId) {
-    if (!db) return;
-    
-    viaturaAtualRef = db.ref(`viaturas/${viaturaId}`);
-    
-    viaturaAtualRef.on('value', (snapshot) => {
-        if (snapshot.exists()) {
-            currentViatura.data = snapshot.val();
-            atualizarBotoesFuncao();
-            if (currentUser.mode) {
-                atualizarInterfaceViatura();
-            }
-        }
-    });
-}
-
-// ===== VERIFICAÇÃO DE FUNÇÃO OCUPADA =====
-function verificarEConectarUsuario(mode, nomePredefinido = null) {
-    if (!viaturaAtualRef || !currentViatura?.data) return;
-    
-    // Verificar se a função já está ocupada
-    const membro = currentViatura.data[mode];
-    if (membro && membro.nome && membro.online) {
-        // Função já ocupada - mostrar aviso
-        alert(`⚠️ A função de ${mode} já está sendo usada por ${membro.nome}!\n\nEscolha outra função.`);
-        
-        // Limpar usuário salvo já que não pode mais usar essa função
-        if (usuarioSalvo && usuarioSalvo.mode === mode) {
-            limparUsuarioSalvo();
-        }
-        
-        // Resetar interface
-        document.getElementById('infoUsuario').style.display = 'none';
-        document.getElementById('itensContainer').style.display = 'none';
-        
-        // Atualizar botões
-        atualizarBotoesFuncao();
-        
-        return;
-    }
-    
-    // Função disponível - proceder com conexão
-    setAccessMode(mode, nomePredefinido);
-}
-
-function atualizarBotoesFuncao() {
-    if (!currentViatura?.data) return;
-    
-    const data = currentViatura.data;
-    const botoes = document.querySelectorAll('.mode-btn');
-    
-    botoes.forEach(botao => {
-        const funcao = botao.classList.contains('encarregado') ? 'encarregado' :
-                      botao.classList.contains('motorista') ? 'motorista' : 'auxiliar';
-        
-        const membro = data[funcao];
-        
-        if (membro && membro.nome && membro.online) {
-            // Função ocupada
-            botao.disabled = true;
-            botao.title = `Ocupado por: ${membro.nome}`;
-            botao.innerHTML = `<span style="font-size: 20px;">👤</span> ${funcao.charAt(0).toUpperCase() + funcao.slice(1)}<br><small style="font-size: 10px; opacity: 0.7;">Ocupado</small>`;
-        } else {
-            // Função disponível
-            botao.disabled = false;
-            botao.title = '';
-            botao.innerHTML = `<span style="font-size: 20px;">${
-                funcao === 'encarregado' ? '👮‍♂️' : 
-                funcao === 'motorista' ? '🚚' : '👥'
-            }</span> ${funcao.charAt(0).toUpperCase() + funcao.slice(1)}`;
-        }
-    });
-}
-
-function setAccessMode(mode, nomePredefinido = null) {
-    if (!viaturaAtualRef) return;
-    
-    let userName = nomePredefinido;
-    
-    if (!userName) {
-        userName = prompt(`Digite seu nome (${mode}):`) || mode;
-        if (!userName || userName.trim() === '') {
-            alert('Digite um nome para continuar!');
-            return;
-        }
-    }
-    
-    currentUser.name = userName.trim();
-    currentUser.mode = mode;
-    
-    salvarUsuario();
-    atualizarInterfaceUsuario();
-    
-    viaturaAtualRef.child(mode).update({
-        nome: currentUser.name,
-        online: true,
-        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
-    });
-    
-    const userRef = viaturaAtualRef.child(mode);
-    userRef.onDisconnect().update({
-        online: false,
-        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
-    });
-    
-    document.getElementById('infoUsuario').style.display = 'block';
-    document.getElementById('itensContainer').style.display = 'block';
-    
-    atualizarBotoesFuncao();
-    if (currentViatura?.data) {
-        atualizarInterfaceViatura();
-    }
-}
-
-function atualizarInterfaceUsuario() {
-    const nomeUsuario = document.getElementById('nomeUsuario');
-    const funcaoUsuario = document.getElementById('funcaoUsuario');
-    
-    if (nomeUsuario) {
-        nomeUsuario.textContent = currentUser.name;
-    }
-    
-    if (funcaoUsuario) {
-        const funcoes = {
-            'encarregado': '👮‍♂️ Encarregado',
-            'motorista': '🚚 Motorista', 
-            'auxiliar': '👥 Auxiliar'
-        };
-        funcaoUsuario.textContent = funcoes[currentUser.mode] || currentUser.mode;
-    }
-    
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.classList.remove('ativo');
-    });
-    const btnAtivo = document.querySelector(`.mode-btn.${currentUser.mode}`);
-    if (btnAtivo) btnAtivo.classList.add('ativo');
-}
-
-function sairDaFuncao() {
-    if (viaturaAtualRef && currentUser.mode) {
-        viaturaAtualRef.child(currentUser.mode).update({ online: false });
-    }
-    
-    limparUsuarioSalvo();
-    currentUser = { mode: '', name: '' };
-    
-    document.getElementById('infoUsuario').style.display = 'none';
-    document.getElementById('itensContainer').style.display = 'none';
-    
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.classList.remove('ativo');
-    });
-    
-    atualizarBotoesFuncao();
-}
-
-// ===== INTERFACE DOS ITENS (SEMPRE ABERTOS) =====
-function atualizarInterfaceViatura() {
-    if (!currentViatura?.data || !currentUser.mode) return;
-    
-    const data = currentViatura.data;
-    renderizarItens(data.itens || []);
-}
-
-function renderizarItens(itens) {
-    const container = document.getElementById('itensList');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    
-    itens.forEach((item, index) => {
-        const total = item.encarregado + item.motorista + item.auxiliar;
-        const titulo = item.tipo === 'livre' ? (item.nome || '✏️ Artigo livre') : item.nome;
-        
-        const itemHTML = `
-            <div class="item">
-                <div class="item-header">
-                    <span>${titulo}</span>
-                    <span class="item-total">${total}</span>
-                </div>
-                <div class="item-conteudo">
-                    ${item.tipo === 'livre' ? `
-                        <div class="input-artigo-container">
-                            <input type="text" class="input-artigo" 
-                                   placeholder="Digite o nome do artigo"
-                                   value="${item.nome || ''}"
-                                   oninput="atualizarNomeItem(${index}, this.value)">
-                        </div>
-                    ` : ''}
-                    
-                    <!-- Contador específico para cada função -->
-                    <div class="contador-funcao ${currentUser.mode === 'encarregado' ? 'ativo' : ''}" id="contador-encarregado-${index}">
-                        <div class="contador-titulo">👮‍♂️ Encarregado</div>
-                        <div class="contador-box">
-                            <button class="contador-btn btn-menos" onclick="alterarContador(${index}, 'encarregado', -1, event)">
-                                -
-                            </button>
-                            <span class="contador-valor" id="contador-e-${index}">${item.encarregado}</span>
-                            <button class="contador-btn btn-add" onclick="alterarContador(${index}, 'encarregado', 1, event)">
-                                +
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="contador-funcao ${currentUser.mode === 'motorista' ? 'ativo' : ''}" id="contador-motorista-${index}">
-                        <div class="contador-titulo">🚚 Motorista</div>
-                        <div class="contador-box">
-                            <button class="contador-btn btn-menos" onclick="alterarContador(${index}, 'motorista', -1, event)">
-                                -
-                            </button>
-                            <span class="contador-valor" id="contador-m-${index}">${item.motorista}</span>
-                            <button class="contador-btn btn-add" onclick="alterarContador(${index}, 'motorista', 1, event)">
-                                +
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="contador-funcao ${currentUser.mode === 'auxiliar' ? 'ativo' : ''}" id="contador-auxiliar-${index}">
-                        <div class="contador-titulo">👥 Auxiliar</div>
-                        <div class="contador-box">
-                            <button class="contador-btn btn-menos" onclick="alterarContador(${index}, 'auxiliar', -1, event)">
-                                -
-                            </button>
-                            <span class="contador-valor" id="contador-a-${index}">${item.auxiliar}</span>
-                            <button class="contador-btn btn-add" onclick="alterarContador(${index}, 'auxiliar', 1, event)">
-                                +
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        container.innerHTML += itemHTML;
-    });
-}
-
-function alterarContador(itemIndex, campo, valor, event) {
-    if (event) event.stopPropagation();
-    
-    if (!viaturaAtualRef || currentUser.mode !== campo) return;
-    
-    if (!currentViatura?.data?.itens?.[itemIndex]) return;
-    
-    const itemRef = viaturaAtualRef.child(`itens/${itemIndex}/${campo}`);
-    const novoValor = Math.max(0, (currentViatura.data.itens[itemIndex][campo] || 0) + valor);
-    
-    itemRef.set(novoValor).then(() => {
-        // Atualizar contador localmente
-        const contador = document.getElementById(`contador-${campo.charAt(0)}-${itemIndex}`);
-        if (contador) {
-            contador.textContent = novoValor;
-        }
-        
-        // Atualizar total
-        const itemElement = document.querySelectorAll('.item')[itemIndex];
-        if (itemElement) {
-            const totalElement = itemElement.querySelector('.item-total');
-            if (totalElement) {
-                const e = parseInt(document.getElementById(`contador-e-${itemIndex}`)?.textContent || 0);
-                const m = parseInt(document.getElementById(`contador-m-${itemIndex}`)?.textContent || 0);
-                const a = parseInt(document.getElementById(`contador-a-${itemIndex}`)?.textContent || 0);
-                totalElement.textContent = e + m + a;
-            }
-        }
-    });
-}
-
-function atualizarNomeItem(itemIndex, nome) {
-    if (!viaturaAtualRef) return;
-    
-    viaturaAtualRef.child(`itens/${itemIndex}/nome`).set(nome);
 }
 
 function voltarParaSelecao() {
