@@ -112,7 +112,7 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
                 <div class="viatura-id" id="viaturaId">ID: VIATURA_X_001</div>
                 <div class="connection-status">
                     <div class="status-indicator" id="statusIndicator"></div>
-                    <span id="statusText">Conectado</span>
+                    <span id="statusText">Selecione sua função</span>
                 </div>
             </div>
             <button class="btn-voltar" onclick="voltarParaSelecao()">← Voltar</button>
@@ -120,7 +120,7 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
 
         <!-- Seletor de função -->
         <div style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
-            <button class="mode-btn encarregado ativo" onclick="setAccessMode('encarregado')" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 6px; cursor: pointer;">
+            <button class="mode-btn encarregado" onclick="setAccessMode('encarregado')" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 6px; cursor: pointer;">
                 👮‍♂️ Encarregado
             </button>
             <button class="mode-btn motorista" onclick="setAccessMode('motorista')" style="padding: 10px 20px; background: #2ecc71; color: white; border: none; border-radius: 6px; cursor: pointer;">
@@ -131,19 +131,26 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
             </button>
         </div>
 
-        <!-- Equipe -->
-        <div class="equipe-container" id="equipeContainer">
+        <!-- Mensagem para escolher função -->
+        <div id="escolhaFuncao" style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px; margin-bottom: 30px; display: block;">
+            <div style="font-size: 48px; margin-bottom: 20px;">👤</div>
+            <h3 style="color: #2c3e50; margin-bottom: 15px;">Escolha sua função</h3>
+            <p style="color: #666;">Clique em Encarregado, Motorista ou Auxiliar acima para começar</p>
+        </div>
+
+        <!-- Equipe (inicialmente escondida) -->
+        <div class="equipe-container" id="equipeContainer" style="display: none;">
             <!-- Dados da equipe serão carregados aqui -->
         </div>
 
-        <!-- Itens -->
-        <div class="itens-container" id="itensContainer">
+        <!-- Itens (inicialmente escondido) -->
+        <div class="itens-container" id="itensContainer" style="display: none;">
             <h2 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">📊 Controle de Produtividade</h2>
             <div id="itensList"></div>
         </div>
 
-        <!-- Botões de ação -->
-        <div class="actions">
+        <!-- Botões de ação (inicialmente escondidos) -->
+        <div class="actions" id="actionsBar" style="display: none;">
             <button class="action-btn btn-whatsapp" onclick="enviarWhatsApp()">
                 📤 Enviar WhatsApp
             </button>
@@ -185,7 +192,6 @@ body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c
 
 <script>
 // ===== CONFIGURAÇÃO FIREBASE =====
-// ⚠️ COLE SUAS CREDENCIAIS AQUI! ⚠️
 const firebaseConfig = {
     apiKey: "AIzaSyC7u9yPMqkswESx3jJh4I4fCUS8tiu-MjM",
     authDomain: "rodoviariolimeira.firebaseapp.com",
@@ -201,7 +207,7 @@ const firebaseConfig = {
 let db;
 let viaturaAtualRef;
 let currentViatura = null;
-let currentUser = { mode: 'encarregado', name: '' };
+let currentUser = { mode: '', name: '' }; // Inicialmente vazio
 let todasViaturas = [];
 
 const ITENS_FIXOS = [
@@ -223,7 +229,6 @@ function initApp() {
         db = firebase.database();
         
         console.log('Firebase conectado com sucesso!');
-        console.log('Projeto:', firebaseConfig.projectId);
         
         carregarListaViaturas();
         
@@ -235,16 +240,12 @@ function initApp() {
         }
     } catch (error) {
         console.error('Erro ao conectar com Firebase:', error);
-        alert('Erro na conexão. Verifique o console (F12) para detalhes.');
     }
 }
 
 // ===== GERENCIAMENTO DE VIATURAS =====
 function carregarListaViaturas() {
-    if (!db) {
-        console.error('Banco de dados não inicializado');
-        return;
-    }
+    if (!db) return;
     
     db.ref('viaturas').on('value', (snapshot) => {
         todasViaturas = [];
@@ -252,8 +253,14 @@ function carregarListaViaturas() {
         viaturasList.innerHTML = '';
         
         if (!snapshot.exists()) {
-            console.log('Nenhuma viatura encontrada. Criando uma padrão...');
-            criarViaturaPadrao();
+            // Mostrar mensagem em vez de criar automaticamente
+            viaturasList.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🚔</div>
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">Nenhuma viatura encontrada</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Clique em "Nova Viatura" para criar a primeira</p>
+                </div>
+            `;
             return;
         }
         
@@ -282,24 +289,6 @@ function carregarListaViaturas() {
             viaturaCard.onclick = () => acessarViatura(viatura.id);
             viaturasList.appendChild(viaturaCard);
         });
-    }, (error) => {
-        console.error('Erro ao carregar viaturas:', error);
-    });
-}
-
-function criarViaturaPadrao() {
-    const viaturaId = `VIATURA_${Math.floor(Math.random() * 9000) + 1000}`;
-    db.ref(`viaturas/${viaturaId}`).set({
-        nome: 'Viatura Principal',
-        criadaEm: new Date().toISOString(),
-        itens: criarItensPadrao(),
-        encarregado: { nome: '', online: false },
-        motorista: { nome: '', online: false },
-        auxiliar: { nome: '', online: false }
-    }).then(() => {
-        console.log('Viatura padrão criada:', viaturaId);
-    }).catch((error) => {
-        console.error('Erro ao criar viatura padrão:', error);
     });
 }
 
@@ -321,10 +310,7 @@ function criarNovaViatura() {
         return;
     }
     
-    if (!db) {
-        alert('Erro de conexão. Recarregue a página.');
-        return;
-    }
+    if (!db) return;
     
     db.ref(`viaturas/${id}`).set({
         nome: nome,
@@ -334,12 +320,8 @@ function criarNovaViatura() {
         motorista: { nome: '', online: false },
         auxiliar: { nome: '', online: false }
     }).then(() => {
-        console.log('Viatura criada:', id);
         fecharModalNovaViatura();
         acessarViatura(id);
-    }).catch((error) => {
-        console.error('Erro ao criar viatura:', error);
-        alert('Erro ao criar viatura: ' + error.message);
     });
 }
 
@@ -378,7 +360,7 @@ function acessarViatura(viaturaId) {
     const novaUrl = `${window.location.pathname}?viatura=${viaturaId}`;
     window.history.pushState({}, '', novaUrl);
     
-    // Conectar à viatura
+    // Conectar à viatura (SEM pedir nome ainda)
     conectarViatura(viaturaId);
     
     // Mudar para interface da viatura
@@ -394,52 +376,21 @@ function acessarViatura(viaturaId) {
 }
 
 function conectarViatura(viaturaId) {
-    if (!db) {
-        alert('Erro de conexão. Recarregue a página.');
-        return;
-    }
+    if (!db) return;
     
     viaturaAtualRef = db.ref(`viaturas/${viaturaId}`);
     
-    // Pedir nome do usuário
-    const userName = prompt(`Digite seu nome (${currentUser.mode}):`) || currentUser.mode;
-    currentUser.name = userName;
+    // NÃO pedir nome aqui - vai pedir quando escolher função
     
     // Escutar alterações na viatura
     viaturaAtualRef.on('value', (snapshot) => {
         if (snapshot.exists()) {
             currentViatura.data = snapshot.val();
-            atualizarInterfaceViatura();
-        } else {
-            console.log('Viatura não encontrada, criando...');
-            // Se a viatura não existe, cria
-            db.ref(`viaturas/${viaturaId}`).set({
-                nome: 'Viatura ' + viaturaId,
-                criadaEm: new Date().toISOString(),
-                itens: criarItensPadrao(),
-                encarregado: { nome: '', online: false },
-                motorista: { nome: '', online: false },
-                auxiliar: { nome: '', online: false }
-            });
+            // Não atualizar interface completa ainda - só depois de escolher função
+            if (currentUser.mode) {
+                atualizarInterfaceViatura();
+            }
         }
-    }, (error) => {
-        console.error('Erro ao conectar à viatura:', error);
-    });
-    
-    // Atualizar status online
-    const userRef = viaturaAtualRef.child(currentUser.mode);
-    userRef.update({
-        nome: currentUser.name,
-        online: true,
-        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
-    }).catch((error) => {
-        console.error('Erro ao atualizar status:', error);
-    });
-    
-    // Configurar desconexão
-    userRef.onDisconnect().update({
-        online: false,
-        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
     });
 }
 
@@ -449,6 +400,9 @@ function voltarParaSelecao() {
         viaturaAtualRef.child(currentUser.mode).update({ online: false });
     }
     
+    // Resetar usuário
+    currentUser = { mode: '', name: '' };
+    
     // Voltar para tela de seleção
     document.getElementById('viaturaSelection').style.display = 'block';
     document.getElementById('viaturaInterface').style.display = 'none';
@@ -457,19 +411,69 @@ function voltarParaSelecao() {
     viaturaAtualRef = null;
 }
 
-// ===== INTERFACE DA VIATURA =====
-function atualizarInterfaceViatura() {
-    if (!currentViatura?.data) return;
+// ===== ESCOLHA DE FUNÇÃO =====
+function setAccessMode(mode) {
+    if (!viaturaAtualRef) return;
     
-    const data = currentViatura.data;
+    // Pedir nome do usuário AGORA, quando escolhe a função
+    const userName = prompt(`Digite seu nome (${mode}):`) || mode;
+    if (!userName || userName.trim() === '') {
+        alert('Digite um nome para continuar!');
+        return;
+    }
+    
+    currentUser.name = userName.trim();
+    currentUser.mode = mode;
     
     // Atualizar status de conexão
-    const statusIndicator = document.getElementById('statusIndicator');
     const statusText = document.getElementById('statusText');
-    if (statusIndicator && statusText) {
-        statusIndicator.style.background = '#2ecc71';
+    if (statusText) {
         statusText.textContent = `Conectado como ${currentUser.name}`;
     }
+    
+    const statusIndicator = document.getElementById('statusIndicator');
+    if (statusIndicator) {
+        statusIndicator.style.background = '#2ecc71';
+    }
+    
+    // Atualizar status online no Firebase
+    viaturaAtualRef.child(mode).update({
+        nome: currentUser.name,
+        online: true,
+        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
+    });
+    
+    // Configurar desconexão automática
+    const userRef = viaturaAtualRef.child(mode);
+    userRef.onDisconnect().update({
+        online: false,
+        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
+    });
+    
+    // Atualizar botões
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('ativo');
+    });
+    const btnAtivo = document.querySelector(`.mode-btn.${mode}`);
+    if (btnAtivo) btnAtivo.classList.add('ativo');
+    
+    // Esconder mensagem de escolha e mostrar conteúdo
+    document.getElementById('escolhaFuncao').style.display = 'none';
+    document.getElementById('equipeContainer').style.display = 'grid';
+    document.getElementById('itensContainer').style.display = 'block';
+    document.getElementById('actionsBar').style.display = 'flex';
+    
+    // Atualizar interface completa
+    if (currentViatura?.data) {
+        atualizarInterfaceViatura();
+    }
+}
+
+// ===== INTERFACE DA VIATURA =====
+function atualizarInterfaceViatura() {
+    if (!currentViatura?.data || !currentUser.mode) return;
+    
+    const data = currentViatura.data;
     
     // Atualizar equipe
     const equipeContainer = document.getElementById('equipeContainer');
@@ -585,63 +589,28 @@ function renderizarItens(itens) {
 }
 
 // ===== FUNÇÕES DE CONTROLE =====
-function setAccessMode(mode) {
-    if (!viaturaAtualRef) return;
-    
-    // Atualizar status anterior para offline
-    if (currentUser.mode) {
-        viaturaAtualRef.child(currentUser.mode).update({ online: false });
-    }
-    
-    // Mudar modo
-    currentUser.mode = mode;
-    
-    // Atualizar novo status
-    viaturaAtualRef.child(mode).update({
-        nome: currentUser.name,
-        online: true,
-        ultimaAtividade: firebase.database.ServerValue.TIMESTAMP
-    });
-    
-    // Atualizar botões
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.classList.remove('ativo');
-    });
-    const btnAtivo = document.querySelector(`.mode-btn.${mode}`);
-    if (btnAtivo) btnAtivo.classList.add('ativo');
-    
-    // Recarregar interface
-    if (currentViatura?.data) {
-        atualizarInterfaceViatura();
-    }
-}
-
 function alterarContador(itemIndex, campo, valor) {
     if (!viaturaAtualRef || currentUser.mode !== campo) return;
     
-    if (!currentViatura?.data?.itens?.[itemIndex]) {
-        console.error('Item não encontrado:', itemIndex);
-        return;
-    }
+    if (!currentViatura?.data?.itens?.[itemIndex]) return;
     
     const itemRef = viaturaAtualRef.child(`itens/${itemIndex}/${campo}`);
     const novoValor = Math.max(0, (currentViatura.data.itens[itemIndex][campo] || 0) + valor);
     
-    itemRef.set(novoValor).catch((error) => {
-        console.error('Erro ao atualizar contador:', error);
-    });
+    itemRef.set(novoValor);
 }
 
 function atualizarNomeItem(itemIndex, nome) {
     if (!viaturaAtualRef) return;
     
-    viaturaAtualRef.child(`itens/${itemIndex}/nome`).set(nome).catch((error) => {
-        console.error('Erro ao atualizar nome:', error);
-    });
+    viaturaAtualRef.child(`itens/${itemIndex}/nome`).set(nome);
 }
 
 function enviarWhatsApp() {
-    if (!currentViatura?.data) return;
+    if (!currentViatura?.data || !currentUser.mode) {
+        alert('Escolha sua função primeiro!');
+        return;
+    }
     
     const data = currentViatura.data;
     let texto = `*FISCALIZAÇÃO - ${data.nome || currentViatura.id}*\n\n`;
@@ -682,12 +651,14 @@ function enviarWhatsApp() {
 }
 
 function limparDados() {
+    if (!currentUser.mode) {
+        alert('Escolha sua função primeiro!');
+        return;
+    }
+    
     if (confirm('Limpar todos os dados desta viatura?')) {
         const itensIniciais = criarItensPadrao();
-        viaturaAtualRef.child('itens').set(itensIniciais).catch((error) => {
-            console.error('Erro ao limpar dados:', error);
-            alert('Erro ao limpar dados: ' + error.message);
-        });
+        viaturaAtualRef.child('itens').set(itensIniciais);
     }
 }
 
@@ -698,21 +669,6 @@ window.addEventListener('beforeunload', function() {
         viaturaAtualRef.child(currentUser.mode).update({ online: false });
     }
 });
-
-// Configurar regras de segurança (apenas uma vez)
-function configurarRegrasSeguranca() {
-    // Depois que tudo estiver funcionando, você deve ajustar as regras de segurança
-    // no Firebase Console > Realtime Database > Regras
-    // Para desenvolvimento, use:
-    /*
-    {
-      "rules": {
-        ".read": true,
-        ".write": true
-      }
-    }
-    */
-}
 </script>
 </body>
 </html>
