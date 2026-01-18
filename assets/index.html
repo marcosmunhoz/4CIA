@@ -700,28 +700,6 @@ body {
     </div>
 </div>
 
-<!-- Modal Login Admin (PARA REMOVER VIATURA) -->
-<div class="modal" id="modalLoginAdmin">
-    <div class="modal-content">
-        <h2>🔐 Remover Viatura</h2>
-        
-        <div style="margin-bottom: 20px;">
-            <p style="color: #666; margin-bottom: 10px; font-size: 14px;">Digite a senha para remover a viatura:</p>
-            <input type="password" id="codigoAcesso" placeholder="Senha de administrador" 
-                   style="width: 100%; padding: 12px; border: 2px solid #3498db; border-radius: 6px; font-size: 16px;">
-        </div>
-        
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button onclick="fecharModalLoginAdmin()" style="flex: 1; padding: 12px; background: #95a5a6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                Cancelar
-            </button>
-            <button onclick="verificarCodigoAcesso()" style="flex: 1; padding: 12px; background: #9b59b6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                Remover
-            </button>
-        </div>
-    </div>
-</div>
-
 <script>
 // ===== CONFIGURAÇÃO FIREBASE =====
 const firebaseConfig = {
@@ -742,9 +720,6 @@ let currentViatura = null;
 let currentUser = { mode: '', name: '' };
 let todasViaturas = [];
 let usuarioSalvo = null;
-
-// ===== SENHA ADMIN (SOMENTE VOCÊ SABE) =====
-const SENHA_ADMIN = "admin123";
 
 // ===== ITENS FIXOS =====
 const ITENS_FIXOS = [
@@ -861,42 +836,22 @@ function carregarListaViaturas() {
 function removerViatura(viaturaId, event) {
     if (event) event.stopPropagation();
     
-    document.getElementById('modalLoginAdmin').style.display = 'flex';
-    window.viaturaParaRemover = viaturaId;
-}
-
-function verificarCodigoAcesso() {
-    const codigo = document.getElementById('codigoAcesso').value;
-    
-    if (codigo === SENHA_ADMIN) {
-        fecharModalLoginAdmin();
-        
-        if (window.viaturaParaRemover) {
-            const viaturaId = window.viaturaParaRemover;
-            if (confirm(`Remover viatura ${viaturaId}?`)) {
-                db.ref(`viaturas/${viaturaId}`).remove()
-                    .then(() => {
-                        alert(`✅ Viatura removida!`);
-                        if (currentViatura && currentViatura.id === viaturaId) {
-                            voltarParaSelecao();
-                        }
-                    })
-                    .catch((error) => {
-                        alert('❌ Erro: ' + error.message);
-                    });
-            }
-            window.viaturaParaRemover = null;
-        }
-    } else {
-        alert('❌ Código incorreto!');
-        document.getElementById('codigoAcesso').value = '';
+    // Confirmar antes de remover
+    if (confirm(`Tem certeza que deseja remover esta viatura? Esta ação não pode ser desfeita.`)) {
+        db.ref(`viaturas/${viaturaId}`).remove()
+            .then(() => {
+                alert(`✅ Viatura removida com sucesso!`);
+                
+                // Se a viatura removida é a que está sendo usada, voltar para seleção
+                if (currentViatura && currentViatura.id === viaturaId) {
+                    voltarParaSelecao();
+                }
+            })
+            .catch((error) => {
+                console.error('Erro ao remover viatura:', error);
+                alert('❌ Erro ao remover viatura: ' + error.message);
+            });
     }
-}
-
-function fecharModalLoginAdmin() {
-    document.getElementById('modalLoginAdmin').style.display = 'none';
-    document.getElementById('codigoAcesso').value = '';
-    window.viaturaParaRemover = null;
 }
 
 // ===== FUNÇÕES DA VIATURA =====
@@ -920,17 +875,30 @@ function criarNovaViatura() {
     
     if (!db) return;
     
-    db.ref(`viaturas/${id}`).set({
-        nome: nome,
-        criadaEm: new Date().toISOString(),
-        itens: criarItensPadrao(),
-        encarregado: { nome: '', online: false },
-        motorista: { nome: '', online: false },
-        auxiliar: { nome: '', online: false }
-    }).then(() => {
-        fecharModalNovaViatura();
-        acessarViatura(id);
-    });
+    // Verificar se a viatura já existe
+    db.ref(`viaturas/${id}`).once('value')
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                alert('❌ Já existe uma viatura com este ID! Use outro ID.');
+                return;
+            }
+            
+            // Criar nova viatura
+            db.ref(`viaturas/${id}`).set({
+                nome: nome,
+                criadaEm: new Date().toISOString(),
+                itens: criarItensPadrao(),
+                encarregado: { nome: '', online: false },
+                motorista: { nome: '', online: false },
+                auxiliar: { nome: '', online: false }
+            }).then(() => {
+                fecharModalNovaViatura();
+                acessarViatura(id);
+            });
+        })
+        .catch((error) => {
+            alert('❌ Erro ao verificar viatura: ' + error.message);
+        });
 }
 
 function criarItensPadrao() {
