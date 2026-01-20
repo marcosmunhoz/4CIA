@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Nota de Empenho</title>
+  
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  
   <style>
     * {
       margin: 0;
@@ -27,7 +32,7 @@
       border-radius: 15px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       padding: 30px;
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
       margin: 0 auto;
     }
@@ -113,7 +118,7 @@
       flex: 1;
     }
     
-    /* Grupo para local (SP e KM) */
+    /* Grupo para local (SP, KM e Sentido) */
     .local-group {
       display: flex;
       align-items: center;
@@ -121,16 +126,233 @@
       margin-bottom: 20px;
     }
     
-    .local-sp-container, .local-km-container {
+    .local-sp-container, .local-km-container, .local-sentido-container {
       flex: 1;
     }
     
-    .local-sp-label, .local-km-label {
+    .local-sp-label, .local-km-label, .local-sentido-label {
       font-family: 'Courier New', monospace;
       font-size: 16px;
       font-weight: bold;
       color: #1a2a6c;
       white-space: nowrap;
+    }
+    
+    /* Grupo para operação com botões de gerenciamento */
+    .operacao-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .operacao-select-container {
+      flex: 1;
+    }
+    
+    .gerenciar-operacoes-container {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .gerenciar-btn {
+      background: linear-gradient(135deg, #6c757d, #495057);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .gerenciar-btn:hover {
+      background: linear-gradient(135deg, #495057, #343a40);
+      transform: translateY(-2px);
+    }
+    
+    /* Modal para gerenciar operações */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #1a2a6c;
+      padding-bottom: 10px;
+    }
+    
+    .modal-header h3 {
+      color: #1a2a6c;
+      font-size: 18px;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #666;
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .close-modal:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      color: #1a2a6c;
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 2px solid #1a2a6c;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+      color: #333;
+      font-family: Arial, sans-serif;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #2c3e50;
+      box-shadow: 0 0 10px rgba(26, 42, 108, 0.3);
+    }
+    
+    .form-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .form-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .form-btn.primary {
+      background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+      color: white;
+    }
+    
+    .form-btn.secondary {
+      background: linear-gradient(135deg, #6c757d, #495057);
+      color: white;
+    }
+    
+    .form-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Lista de operações */
+    .operacoes-lista {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      background: #f8f9fa;
+    }
+    
+    .operacao-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      background: white;
+      border-radius: 5px;
+      margin-bottom: 8px;
+    }
+    
+    .operacao-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    
+    .operacao-texto {
+      flex: 1;
+      font-family: Arial, sans-serif;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .operacao-acoes {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .acao-btn {
+      background: none;
+      border: 1px solid #ddd;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+    
+    .acao-btn:hover {
+      background: #f0f0f0;
+    }
+    
+    .acao-btn.excluir {
+      color: #dc3545;
+      border-color: #dc3545;
+    }
+    
+    .acao-btn.excluir:hover {
+      background: #dc3545;
+      color: white;
     }
     
     /* Estilos para os selects nativos */
@@ -143,7 +365,7 @@
       background-color: #f8f9fa;
       color: #333;
       cursor: pointer;
-      font-family: 'Courier New', monospace;
+      font-family: Arial, sans-serif;
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -166,9 +388,9 @@
       font-size: 16px;
       border: 2px solid #1a2a6c;
       border-radius: 8px;
-      background-color: #f8f9fa;
+      background-color: #f89fa;
       color: #333;
-      font-family: 'Courier New', monospace;
+      font-family: Arial, sans-serif;
       transition: all 0.3s;
     }
     
@@ -296,6 +518,30 @@
       line-height: 1.4;
     }
     
+    /* Status de sincronização */
+    .sync-status {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 100;
+    }
+    
+    .sync-status.online {
+      background: rgba(46, 204, 113, 0.9);
+    }
+    
+    .sync-status.offline {
+      background: rgba(231, 76, 60, 0.9);
+    }
+    
     @media (max-width: 768px) {
       body {
         padding: 10px;
@@ -305,6 +551,7 @@
       .container {
         padding: 20px 15px;
         border-radius: 10px;
+        max-width: 95%;
       }
       
       .header h1 {
@@ -325,18 +572,18 @@
         padding: 15px;
       }
       
-      .data-group, .time-group, .local-group {
+      .data-group, .time-group, .local-group, .operacao-group {
         flex-direction: column;
         gap: 15px;
       }
       
-      .equipo-group {
+      .equipo-group, .gerenciar-operacoes-container {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
       }
       
-      .equipo-prefix, .local-sp-label, .local-km-label {
+      .equipo-prefix, .local-sp-label, .local-km-label, .local-sentido-label {
         text-align: center;
       }
       
@@ -359,6 +606,11 @@
       
       select {
         background-position: right 12px center;
+      }
+      
+      .gerenciar-btn {
+        width: 100%;
+        justify-content: center;
       }
     }
     
@@ -445,6 +697,12 @@
             <div class="local-km-label">KM</div>
             <input type="text" id="kmInput" placeholder="Ex: 208" maxlength="7">
           </div>
+          <div class="local-sentido-container">
+            <div class="local-sentido-label">SENTIDO</div>
+            <select id="sentidoSelect">
+              <!-- Sentidos serão gerados por JavaScript -->
+            </select>
+          </div>
         </div>
       </div>
       
@@ -461,10 +719,18 @@
       </div>
       
       <div class="control-group">
-        <label class="control-label">OPERAÇÃO:</label>
-        <select id="operacaoSelect">
-          <!-- Itens serão gerados por JavaScript -->
-        </select>
+        <div class="operacao-group">
+          <div class="operacao-select-container">
+            <label class="control-label">OPERAÇÃO:</label>
+            <select id="operacaoSelect">
+              <!-- Itens serão gerados por JavaScript -->
+            </select>
+          </div>
+          <div class="gerenciar-operacoes-container">
+            <button class="gerenciar-btn" id="addOperacaoBtn">➕</button>
+            <button class="gerenciar-btn" id="gerenciarOperacoesBtn">⚙️</button>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -476,7 +742,7 @@ Data: <span id="dataText">20DEZ25</span>
 Hora: <span id="horaInicioText">10:00</span> às <span id="horaFimText">11h30</span>
 Natureza: Z99
 Equipe: *R-<span id="equipoText">04400</span>*  
-Local: SP <span id="spText">   </span> km <span id="kmText"> </span>
+Local: SP <span id="spText">   </span> km <span id="kmText"> </span> <span id="sentidoText"></span>
 Resenha: <span id="operacaoText">Op. CINTO DE SEGURANÇA</span>
 *Talão:     *
 
@@ -520,12 +786,293 @@ Obs:
     </div>
   </div>
   
+  <!-- Modal para gerenciar operações -->
+  <div class="modal" id="operacoesModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Gerenciar Operações</h3>
+        <button class="close-modal" id="closeModalBtn">&times;</button>
+      </div>
+      
+      <div class="form-group">
+        <label>Adicionar Nova Operação:</label>
+        <input type="text" id="novaOperacaoInput" placeholder="Digite o nome da nova operação" class="form-input">
+        <div class="form-buttons">
+          <button class="form-btn primary" id="adicionarOperacaoBtn">Adicionar Operação</button>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Operações Cadastradas:</label>
+        <div class="operacoes-lista" id="operacoesLista">
+          <!-- Lista de operações será gerada aqui -->
+        </div>
+      </div>
+      
+      <div class="form-buttons">
+        <button class="form-btn secondary" id="fecharModalBtn">Fechar</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Status de sincronização -->
+  <div class="sync-status" id="syncStatus">
+    <span id="syncIcon">🔴</span>
+    <span id="syncText">Conectando...</span>
+  </div>
+  
   <div class="notification" id="notification">
     ✅ Texto copiado para a área de transferência!
   </div>
   
   <script>
-    // Gerar horas de 00:00 até 23:30 de 30 em 30 minutos
+    // ===== CONFIGURAÇÃO FIREBASE =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7u9yPMqkswESx3jJh4I4fCUS8tiu-MjM",
+      authDomain: "rodoviariolimeira.firebaseapp.com",
+      databaseURL: "https://rodoviariolimeira-default-rtdb.firebaseio.com",
+      projectId: "rodoviariolimeira",
+      storageBucket: "rodoviariolimeira.firebasestorage.app",
+      messagingSenderId: "131653476917",
+      appId: "1:131653476917:web:3758f0247b5be006c9077c",
+      measurementId: "G-0CJ7FD2MN2"
+    };
+    
+    // ===== VARIÁVEIS GLOBAIS =====
+    let db;
+    let operacoesRef;
+    
+    // ===== DADOS INICIAIS =====
+    const sentidos = [
+      { display: "NORTE", value: "(sentido NORTE)" },
+      { display: "SUL", value: "(sentido SUL)" },
+      { display: "NORTE/SUL", value: "(sentido NORTE/SUL)" },
+      { display: "LESTE", value: "(sentido LESTE)" },
+      { display: "OESTE", value: "(sentido OESTE)" },
+      { display: "LESTE/OESTE", value: "(sentido LESTE/OESTE)" }
+    ];
+    
+    const operacoesIniciais = [
+      { id: '1', display: "Operação Cinto de Segurança", value: "Op. CINTO DE SEGURANÇA", timestamp: Date.now() },
+      { id: '2', display: "Operação Hércules", value: "Op. HÉRCULES", timestamp: Date.now() },
+      { id: '3', display: "Operação Saneamento", value: "Op. SANEAMENTO", timestamp: Date.now() },
+      { id: '4', display: "Operação ODS", value: "Op. ODS", timestamp: Date.now() },
+      { id: '5', display: "Operação ODSI", value: "Op. ODSI", timestamp: Date.now() },
+      { id: '6', display: "Operação DEJEM", value: "Op. DEJEM", timestamp: Date.now() },
+      { id: '7', display: "Operação Eleições", value: "Op. ELEIÇÕES", timestamp: Date.now() },
+      { id: '8', display: "Operação Carnaval", value: "Op. CARNAVAL", timestamp: Date.now() },
+      { id: '9', display: "Operação Segurança Viária - Alcoolemia", value: "Op. SEGURANÇA VIÁRIA - ALCOOLEMIA", timestamp: Date.now() },
+      { id: '10', display: "Operação Segurança Viária - Celular", value: "Op. SEGURANÇA VIÁRIA - CELULAR", timestamp: Date.now() },
+      { id: '11', display: "Operação Segurança Viária - Ultrapassagem", value: "Op. SEGURANÇA VIÁRIA - ULTRAPASSAGEM", timestamp: Date.now() },
+      { id: '12', display: "Operação Segurança Viária - Excesso de Velocidade", value: "Op. SEGURANÇA VIÁRIA - EXCESSO DE VELOCIDADE", timestamp: Date.now() },
+      { id: '13', display: "Operação Cavalo de Aço", value: "Op. CAVALO DE AÇO", timestamp: Date.now() },
+      { id: '14', display: "Operação Interior Mais Seguro", value: "Op. INTERIOR MAIS SEGURO", timestamp: Date.now() }
+    ];
+    
+    // ===== INICIALIZAÇÃO DO FIREBASE =====
+    function initFirebase() {
+      try {
+        // Verificar se o Firebase já foi inicializado (pode estar já inicializado pela outra página)
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.database();
+        operacoesRef = db.ref('nota_empenho/operacoes');
+        
+        console.log('✅ Firebase conectado com sucesso!');
+        atualizarStatusConexao(true);
+        
+        // Inicializar ouvintes
+        inicializarOuvintesOperacoes();
+        inicializarInterface();
+        
+      } catch (error) {
+        console.error('❌ Erro ao conectar com Firebase:', error);
+        atualizarStatusConexao(false);
+        alert('Erro ao conectar com o banco de dados: ' + error.message);
+      }
+    }
+    
+    // ===== GERENCIAMENTO DE CONEXÃO =====
+    function atualizarStatusConexao(conectado) {
+      const statusElement = document.getElementById('syncStatus');
+      const iconElement = document.getElementById('syncIcon');
+      const textElement = document.getElementById('syncText');
+      
+      if (conectado) {
+        statusElement.className = 'sync-status online';
+        iconElement.textContent = '🟢';
+        textElement.textContent = 'Sincronizado';
+      } else {
+        statusElement.className = 'sync-status offline';
+        iconElement.textContent = '🔴';
+        textElement.textContent = 'Offline';
+      }
+    }
+    
+    // ===== GERENCIAMENTO DE OPERAÇÕES NO FIREBASE =====
+    function inicializarOuvintesOperacoes() {
+      if (!operacoesRef) return;
+      
+      // Carregar operações do Firebase
+      operacoesRef.on('value', (snapshot) => {
+        if (snapshot.exists()) {
+          const operacoesFirebase = [];
+          snapshot.forEach((childSnapshot) => {
+            operacoesFirebase.push({
+              id: childSnapshot.key,
+              ...childSnapshot.val()
+            });
+          });
+          
+          // Ordenar por timestamp (mais recentes primeiro)
+          operacoesFirebase.sort((a, b) => b.timestamp - a.timestamp);
+          atualizarSelectOperacoes(operacoesFirebase);
+          atualizarListaOperacoes(operacoesFirebase);
+          
+        } else {
+          // Se não houver operações no Firebase, criar as iniciais
+          criarOperacoesIniciais();
+        }
+      });
+    }
+    
+    function criarOperacoesIniciais() {
+      if (!operacoesRef) return;
+      
+      const updates = {};
+      operacoesIniciais.forEach(operacao => {
+        const id = operacao.id || Date.now().toString();
+        updates[id] = {
+          display: operacao.display,
+          value: operacao.value,
+          timestamp: operacao.timestamp,
+          criadoPor: 'sistema',
+          criadoEm: new Date().toISOString()
+        };
+      });
+      
+      operacoesRef.update(updates)
+        .then(() => console.log('✅ Operações iniciais criadas'))
+        .catch(error => console.error('❌ Erro ao criar operações iniciais:', error));
+    }
+    
+    // ===== FUNÇÕES DE OPERAÇÕES =====
+    function adicionarOperacaoFirebase(nomeOperacao) {
+      if (!operacoesRef) {
+        showNotification('❌ Banco de dados não disponível', '#f44336');
+        return;
+      }
+      
+      if (!nomeOperacao.trim()) {
+        showNotification('Digite o nome da operação!', '#ff9800');
+        return;
+      }
+      
+      const valor = nomeOperacao.toUpperCase().startsWith('OP. ') ? 
+                   nomeOperacao.toUpperCase() : 
+                   'OP. ' + nomeOperacao.toUpperCase();
+      
+      const novaOperacao = {
+        display: nomeOperacao,
+        value: valor,
+        timestamp: Date.now(),
+        criadoPor: localStorage.getItem('usuario_nota_empenho') || 'usuário',
+        criadoEm: new Date().toISOString()
+      };
+      
+      const novaRef = operacoesRef.push();
+      novaRef.set(novaOperacao)
+        .then(() => {
+          showNotification('✅ Operação adicionada!', '#4CAF50');
+          document.getElementById('novaOperacaoInput').value = '';
+          
+          // Selecionar automaticamente a nova operação
+          setTimeout(() => {
+            document.getElementById('operacaoSelect').value = valor;
+            atualizarOperacao(valor);
+          }, 500);
+        })
+        .catch(error => {
+          console.error('❌ Erro ao adicionar operação:', error);
+          showNotification('❌ Erro ao adicionar operação', '#f44336');
+        });
+    }
+    
+    function excluirOperacaoFirebase(operacaoId, operacaoNome) {
+      if (!operacoesRef || !operacaoId) return;
+      
+      if (confirm(`Tem certeza que deseja excluir a operação "${operacaoNome}"?`)) {
+        operacoesRef.child(operacaoId).remove()
+          .then(() => {
+            showNotification('✅ Operação excluída!', '#4CAF50');
+          })
+          .catch(error => {
+            console.error('❌ Erro ao excluir operação:', error);
+            showNotification('❌ Erro ao excluir operação', '#f44336');
+          });
+      }
+    }
+    
+    // ===== FUNÇÕES DA INTERFACE =====
+    function atualizarSelectOperacoes(operacoes) {
+      const select = document.getElementById('operacaoSelect');
+      const valorAtual = select.value;
+      
+      // Limpar opções antigas
+      select.innerHTML = '';
+      
+      // Adicionar nova opção padrão
+      const optionPadrao = document.createElement('option');
+      optionPadrao.value = '';
+      optionPadrao.textContent = 'Selecione uma operação';
+      optionPadrao.disabled = true;
+      optionPadrao.selected = !valorAtual;
+      select.appendChild(optionPadrao);
+      
+      // Adicionar operações
+      operacoes.forEach(operacao => {
+        const option = document.createElement('option');
+        option.value = operacao.value;
+        option.textContent = operacao.display;
+        if (operacao.value === valorAtual) {
+          option.selected = true;
+        }
+        select.appendChild(option);
+      });
+      
+      // Se não havia valor selecionado e há operações, selecionar a primeira
+      if (!valorAtual && operacoes.length > 0) {
+        select.value = operacoes[0].value;
+        atualizarOperacao(operacoes[0].value);
+      }
+    }
+    
+    function atualizarListaOperacoes(operacoes) {
+      const listaElement = document.getElementById('operacoesLista');
+      listaElement.innerHTML = '';
+      
+      if (operacoes.length === 0) {
+        listaElement.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Nenhuma operação cadastrada</div>';
+        return;
+      }
+      
+      operacoes.forEach(operacao => {
+        const item = document.createElement('div');
+        item.className = 'operacao-item';
+        item.innerHTML = `
+          <div class="operacao-texto">${operacao.display}</div>
+          <div class="operacao-acoes">
+            <button class="acao-btn excluir" onclick="excluirOperacaoFirebase('${operacao.id}', '${operacao.display.replace(/'/g, "\\'")}')">
+              Excluir
+            </button>
+          </div>
+        `;
+        listaElement.appendChild(item);
+      });
+    }
+    
+    // ===== FUNÇÕES DA NOTA DE EMPENHO =====
     function gerarHorarios() {
       const horarios = [];
       for (let hora = 0; hora < 24; hora++) {
@@ -538,7 +1085,6 @@ Obs:
       return horarios;
     }
     
-    // Gerar números de 00 a 50
     function gerarNumerosEquipe() {
       const numeros = [];
       for (let i = 0; i <= 50; i++) {
@@ -547,7 +1093,6 @@ Obs:
       return numeros;
     }
     
-    // Gerar dias de 1 a 31
     function gerarDias() {
       const dias = [];
       for (let i = 1; i <= 31; i++) {
@@ -556,7 +1101,6 @@ Obs:
       return dias;
     }
     
-    // Meses em formato DIAMESANO
     const meses = [
       { display: "JANEIRO", value: "JAN" },
       { display: "FEVEREIRO", value: "FEV" },
@@ -572,37 +1116,16 @@ Obs:
       { display: "DEZEMBRO", value: "DEZ" }
     ];
     
-    // Gerar anos (2024 a 2030)
     function gerarAnos() {
       const anos = [];
       const anoAtual = new Date().getFullYear();
       for (let i = anoAtual; i <= anoAtual + 5; i++) {
-        // Formato: 25 (para 2025)
         const anoCurto = i.toString().slice(2);
         anos.push({ display: i.toString(), value: anoCurto });
       }
       return anos;
     }
     
-    // Lista de operações
-    const operacoes = [
-      { display: "Operação Cinto de Segurança", value: "Op. CINTO DE SEGURANÇA" },
-      { display: "Operação Hércules", value: "Op. HÉRCULES" },
-      { display: "Operação Saneamento", value: "Op. SANEAMENTO" },
-      { display: "Operação ODS", value: "Op. ODS" },
-      { display: "Operação ODSI", value: "Op. ODSI" },
-      { display: "Operação DEJEM", value: "Op. DEJEM" },
-      { display: "Operação Eleições", value: "Op. ELEIÇÕES" },
-      { display: "Operação Carnaval", value: "Op. CARNAVAL" },
-      { display: "Operação Segurança Viária - Alcoolemia", value: "Op. SEGURANÇA VIÁRIA - ALCOOLEMIA" },
-      { display: "Operação Segurança Viária - Celular", value: "Op. SEGURANÇA VIÁRIA - CELULAR" },
-      { display: "Operação Segurança Viária - Ultrapassagem", value: "Op. SEGURANÇA VIÁRIA - ULTRAPASSAGEM" },
-      { display: "Operação Segurança Viária - Excesso de Velocidade", value: "Op. SEGURANÇA VIÁRIA - EXCESSO DE VELOCIDADE" },
-      { display: "Operação Cavalo de Aço", value: "Op. CAVALO DE AÇO" },
-      { display: "Operação Interior Mais Seguro", value: "Op. INTERIOR MAIS SEGURO" }
-    ];
-    
-    // Função para popular um select com opções
     function popularSelect(selectId, options, defaultValue) {
       const select = document.getElementById(selectId);
       select.innerHTML = '';
@@ -626,33 +1149,30 @@ Obs:
       });
     }
     
-    // Função para obter data atual no formato DIAMESANO
     function obterDataAtual() {
       const hoje = new Date();
       const dia = hoje.getDate().toString().padStart(2, '0');
-      const mesIndex = hoje.getMonth(); // 0-11
+      const mesIndex = hoje.getMonth();
       const mes = meses[mesIndex].value;
-      const ano = hoje.getFullYear().toString().slice(2); // Últimos 2 dígitos
+      const ano = hoje.getFullYear().toString().slice(2);
       
-      return {
-        dia: dia,
-        mes: mes,
-        ano: ano
-      };
+      return { dia, mes, ano };
     }
     
-    // Inicializar
-    document.addEventListener('DOMContentLoaded', function() {
+    // ===== INICIALIZAÇÃO DA INTERFACE =====
+    function inicializarInterface() {
       const horarios = gerarHorarios();
       const numerosEquipe = gerarNumerosEquipe();
       const dias = gerarDias();
       const anos = gerarAnos();
+      const dataAtual = obterDataAtual();
       
       const dataText = document.getElementById('dataText');
       const horaInicioText = document.getElementById('horaInicioText');
       const horaFimText = document.getElementById('horaFimText');
       const spText = document.getElementById('spText');
       const kmText = document.getElementById('kmText');
+      const sentidoText = document.getElementById('sentidoText');
       const equipoText = document.getElementById('equipoText');
       const operacaoText = document.getElementById('operacaoText');
       
@@ -663,15 +1183,9 @@ Obs:
       const horaFimSelect = document.getElementById('horaFimSelect');
       const spInput = document.getElementById('spInput');
       const kmInput = document.getElementById('kmInput');
+      const sentidoSelect = document.getElementById('sentidoSelect');
       const equipoSelect = document.getElementById('equipoSelect');
       const operacaoSelect = document.getElementById('operacaoSelect');
-      
-      const copyButton = document.getElementById('copyButton');
-      const whatsappButton = document.getElementById('whatsappButton');
-      const notification = document.getElementById('notification');
-      
-      // Obter data atual
-      const dataAtual = obterDataAtual();
       
       // Popular os selects
       popularSelect('diaSelect', dias, dataAtual.dia);
@@ -679,8 +1193,8 @@ Obs:
       popularSelect('anoSelect', anos, dataAtual.ano);
       popularSelect('horaInicioSelect', horarios, '10:00');
       popularSelect('horaFimSelect', horarios, '11:30');
+      popularSelect('sentidoSelect', sentidos, '(sentido NORTE)');
       popularSelect('equipoSelect', numerosEquipe, '00');
-      popularSelect('operacaoSelect', operacoes, 'Op. CINTO DE SEGURANÇA');
       
       // Preencher inputs com valores padrão
       spInput.value = '330';
@@ -706,14 +1220,17 @@ Obs:
       
       // Atualizar SP
       function atualizarSP(valor) {
-        // Se estiver vazio, mostra 3 espaços para manter o layout
         spText.textContent = valor.trim() ? valor.padEnd(3, ' ') : '   ';
       }
       
       // Atualizar KM
       function atualizarKM(valor) {
-        // Se estiver vazio, mostra 1 espaço
         kmText.textContent = valor.trim() ? valor : ' ';
+      }
+      
+      // Atualizar sentido
+      function atualizarSentido(valor) {
+        sentidoText.textContent = valor;
       }
       
       // Atualizar número da equipe
@@ -722,9 +1239,9 @@ Obs:
       }
       
       // Atualizar operação
-      function atualizarOperacao(valor) {
+      window.atualizarOperacao = function(valor) {
         operacaoText.textContent = valor;
-      }
+      };
       
       // Inicializar valores
       atualizarData();
@@ -732,15 +1249,17 @@ Obs:
       atualizarHoraFim('11:30');
       atualizarSP('330');
       atualizarKM('208');
+      atualizarSentido('(sentido NORTE)');
       atualizarEquipo('00');
-      atualizarOperacao('Op. CINTO DE SEGURANÇA');
+      if (operacaoSelect.value) {
+        atualizarOperacao(operacaoSelect.value);
+      }
       
-      // Adicionar event listeners para data
+      // Adicionar event listeners
       diaSelect.addEventListener('change', atualizarData);
       mesSelect.addEventListener('change', atualizarData);
       anoSelect.addEventListener('change', atualizarData);
       
-      // Adicionar event listeners para horários
       horaInicioSelect.addEventListener('change', function() {
         atualizarHoraInicio(this.value);
       });
@@ -749,45 +1268,16 @@ Obs:
         atualizarHoraFim(this.value);
       });
       
-      // Adicionar event listeners para SP e KM
       spInput.addEventListener('input', function() {
         atualizarSP(this.value);
-      });
-      
-      spInput.addEventListener('blur', function() {
-        // Se estiver vazio, restaura o valor padrão
-        if (!this.value.trim()) {
-          this.value = '330';
-          atualizarSP('330');
-        }
       });
       
       kmInput.addEventListener('input', function() {
         atualizarKM(this.value);
       });
       
-      kmInput.addEventListener('blur', function() {
-        // Se estiver vazio, restaura o valor padrão
-        if (!this.value.trim()) {
-          this.value = '208';
-          atualizarKM('208');
-        }
-      });
-      
-      // Permitir apenas números no KM
-      kmInput.addEventListener('keypress', function(e) {
-        // Permite números, ponto, vírgula e backspace
-        if (!/[0-9\.,]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
-          e.preventDefault();
-        }
-      });
-      
-      // Permitir apenas números e hífen no SP (ex: SP-330)
-      spInput.addEventListener('keypress', function(e) {
-        // Permite números, hífen e backspace
-        if (!/[0-9\-]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
-          e.preventDefault();
-        }
+      sentidoSelect.addEventListener('change', function() {
+        atualizarSentido(this.value);
       });
       
       equipoSelect.addEventListener('change', function() {
@@ -798,86 +1288,92 @@ Obs:
         atualizarOperacao(this.value);
       });
       
-      // Função para obter o texto completo
-      function obterTextoCompleto() {
-        return document.getElementById('textToCopy').textContent;
-      }
+      // Event listeners para os botões
+      document.getElementById('copyButton').addEventListener('click', copiarTexto);
+      document.getElementById('whatsappButton').addEventListener('click', enviarWhatsApp);
+      document.getElementById('addOperacaoBtn').addEventListener('click', mostrarModalOperacoes);
+      document.getElementById('gerenciarOperacoesBtn').addEventListener('click', mostrarModalOperacoes);
+      document.getElementById('closeModalBtn').addEventListener('click', fecharModalOperacoes);
+      document.getElementById('fecharModalBtn').addEventListener('click', fecharModalOperacoes);
+      document.getElementById('adicionarOperacaoBtn').addEventListener('click', adicionarOperacaoInterface);
       
-      // Função para copiar texto
-      copyButton.addEventListener('click', async () => {
-        try {
-          // Obter o texto completo
-          const texto = obterTextoCompleto();
-          
-          // Usando a API moderna Clipboard
-          await navigator.clipboard.writeText(texto);
-          
-          // Mostrar notificação
-          notification.style.display = 'block';
-          notification.textContent = '✅ Texto copiado!';
-          notification.style.background = '#4CAF50';
-          
-          // Mudar texto do botão temporariamente
-          const originalText = copyButton.innerHTML;
-          copyButton.innerHTML = '✅ COPIADO!';
-          copyButton.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
-          
-          // Restaurar botão após 2 segundos
-          setTimeout(() => {
-            copyButton.innerHTML = originalText;
-            copyButton.style.background = 'linear-gradient(135deg, #1a2a6c, #2c3e50)';
-            notification.style.display = 'none';
-          }, 2000);
-          
-        } catch (err) {
-          // Fallback para navegadores mais antigos
-          const textArea = document.createElement('textarea');
-          textArea.value = obterTextoCompleto();
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-          
-          // Mostrar notificação
-          notification.style.display = 'block';
-          notification.textContent = '✅ Texto copiado!';
-          notification.style.background = '#4CAF50';
-          
-          setTimeout(() => {
-            notification.style.display = 'none';
-          }, 2000);
+      // Fechar modal ao clicar fora
+      document.getElementById('operacoesModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          fecharModalOperacoes();
         }
       });
       
-      // Função para enviar para WhatsApp
-      whatsappButton.addEventListener('click', function() {
-        // Obter o texto completo
-        const texto = obterTextoCompleto();
-        
-        // Codificar o texto para URL
-        const textoCodificado = encodeURIComponent(texto);
-        
-        // Criar URL do WhatsApp
-        const whatsappURL = `https://wa.me/?text=${textoCodificado}`;
-        
-        // Abrir em nova aba
-        window.open(whatsappURL, '_blank');
-        
-        // Mostrar notificação
-        notification.style.display = 'block';
-        notification.textContent = '📱 Abrindo WhatsApp...';
-        notification.style.background = '#25D366';
-        
-        // Mudar texto do botão temporariamente
-        const originalText = whatsappButton.innerHTML;
-        whatsappButton.innerHTML = '📱 ENVIANDO...';
-        
-        // Restaurar botão após 3 segundos
-        setTimeout(() => {
-          whatsappButton.innerHTML = originalText;
-          notification.style.display = 'none';
-        }, 3000);
+      // Adicionar com Enter
+      document.getElementById('novaOperacaoInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          adicionarOperacaoInterface();
+        }
       });
+    }
+    
+    // ===== FUNÇÕES DO MODAL =====
+    function mostrarModalOperacoes() {
+      document.getElementById('operacoesModal').style.display = 'flex';
+      document.getElementById('novaOperacaoInput').focus();
+    }
+    
+    function fecharModalOperacoes() {
+      document.getElementById('operacoesModal').style.display = 'none';
+      document.getElementById('novaOperacaoInput').value = '';
+    }
+    
+    function adicionarOperacaoInterface() {
+      const novaOperacao = document.getElementById('novaOperacaoInput').value.trim();
+      adicionarOperacaoFirebase(novaOperacao);
+    }
+    
+    // ===== FUNÇÕES UTILITÁRIAS =====
+    function showNotification(mensagem, cor) {
+      const notification = document.getElementById('notification');
+      notification.textContent = mensagem;
+      notification.style.background = cor;
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+    
+    function obterTextoCompleto() {
+      return document.getElementById('textToCopy').textContent;
+    }
+    
+    async function copiarTexto() {
+      try {
+        const texto = obterTextoCompleto();
+        await navigator.clipboard.writeText(texto);
+        showNotification('✅ Texto copiado!', '#4CAF50');
+      } catch (err) {
+        // Fallback
+        const textArea = document.createElement('textarea');
+        textArea.value = obterTextoCompleto();
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showNotification('✅ Texto copiado!', '#4CAF50');
+      }
+    }
+    
+    function enviarWhatsApp() {
+      const texto = obterTextoCompleto();
+      const textoCodificado = encodeURIComponent(texto);
+      window.open(`https://wa.me/?text=${textoCodificado}`, '_blank');
+      showNotification('📱 Abrindo WhatsApp...', '#25D366');
+    }
+    
+    // ===== INICIALIZAR APLICAÇÃO =====
+    document.addEventListener('DOMContentLoaded', initFirebase);
+    
+    // Monitorar conexão
+    firebase.database().ref('.info/connected').on('value', (snapshot) => {
+      atualizarStatusConexao(!!snapshot.val());
     });
   </script>
 </body>
