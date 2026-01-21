@@ -1680,11 +1680,8 @@ function enviarWhatsAppTodasAbas() {
     const somas = {};
     let temDados = false;
     
-    // Processar cada aba
-    abas.forEach((aba, abaIndex) => {
-        let temDadosNaAba = false;
-        const itensAba = {};
-        
+    // Processar cada aba e somar todos os valores
+    abas.forEach((aba) => {
         aba.itens.forEach(item => {
             const nome = item.tipo === 'livre' ? item.nome : item.nome;
             if (!nome && item.tipo === 'livre') return;
@@ -1692,7 +1689,6 @@ function enviarWhatsAppTodasAbas() {
             const total = item.encarregado + item.motorista + item.auxiliar;
             if (total > 0) {
                 temDados = true;
-                temDadosNaAba = true;
                 
                 if (!somas[nome]) {
                     somas[nome] = {
@@ -1707,24 +1703,8 @@ function enviarWhatsAppTodasAbas() {
                 somas[nome].motorista += item.motorista;
                 somas[nome].auxiliar += item.auxiliar;
                 somas[nome].total += total;
-                
-                itensAba[nome] = {
-                    encarregado: item.encarregado,
-                    motorista: item.motorista,
-                    auxiliar: item.auxiliar,
-                    total: total
-                };
             }
         });
-        
-        // Adicionar resumo da aba se tiver dados
-        if (temDadosNaAba) {
-            texto += `📋 *${aba.nome}*\n`;
-            for (const [nome, valores] of Object.entries(itensAba)) {
-                texto += `- ${nome}: ${valores.total} (E:${valores.encarregado} M:${valores.motorista} A:${valores.auxiliar})\n`;
-            }
-            texto += '\n';
-        }
     });
     
     if (!temDados) {
@@ -1732,19 +1712,35 @@ function enviarWhatsAppTodasAbas() {
         return;
     }
     
-    // Adicionar totais gerais
-    texto += `📊 *TOTAIS GERAIS*\n`;
+    // Adicionar totais gerais (apenas itens com total > 0)
+    texto += `📊 *TOTAIS GERAIS (Consolidado)*\n`;
     let totalGeral = 0;
     let encarregadoTotal = 0;
     let motoristaTotal = 0;
     let auxiliarTotal = 0;
     
-    for (const [nome, valores] of Object.entries(somas)) {
-        texto += `*${nome}*\n`;
-        if (valores.encarregado > 0) texto += `- Encarregado: ${valores.encarregado}\n`;
-        if (valores.motorista > 0) texto += `- Motorista: ${valores.motorista}\n`;
-        if (valores.auxiliar > 0) texto += `- Auxiliar: ${valores.auxiliar}\n`;
-        texto += `TOTAL: ${valores.total}\n\n`;
+    // Ordenar itens por total (maior primeiro)
+    const itensOrdenados = Object.entries(somas)
+        .filter(([nome, valores]) => valores.total > 0) // Filtrar apenas itens com total > 0
+        .sort((a, b) => b[1].total - a[1].total); // Ordenar por total decrescente
+    
+    for (const [nome, valores] of itensOrdenados) {
+        // Mostrar apenas o total geral do item (soma de todas as operações)
+        texto += `*${nome}: ${valores.total}*\n`;
+        
+        // Adicionar detalhes por função apenas se houver valores
+        if (valores.encarregado > 0 || valores.motorista > 0 || valores.auxiliar > 0) {
+            const detalhes = [];
+            if (valores.encarregado > 0) detalhes.push(`E:${valores.encarregado}`);
+            if (valores.motorista > 0) detalhes.push(`M:${valores.motorista}`);
+            if (valores.auxiliar > 0) detalhes.push(`A:${valores.auxiliar}`);
+            
+            if (detalhes.length > 0) {
+                texto += `(${detalhes.join(' ')})`;
+            }
+        }
+        
+        texto += '\n\n';
         
         totalGeral += valores.total;
         encarregadoTotal += valores.encarregado;
@@ -1752,13 +1748,24 @@ function enviarWhatsAppTodasAbas() {
         auxiliarTotal += valores.auxiliar;
     }
     
-    texto += `\n📈 *RESUMO FINAL*\n`;
-    texto += `Encarregado: ${encarregadoTotal}\n`;
-    texto += `Motorista: ${motoristaTotal}\n`;
-    texto += `Auxiliar: ${auxiliarTotal}\n`;
+    // Adicionar resumo final
+    texto += `📈 *RESUMO FINAL*\n`;
+    
+    // Mostrar apenas funções que têm valores > 0
+    const resumoFuncoes = [];
+    if (encarregadoTotal > 0) resumoFuncoes.push(`Encarregado: ${encarregadoTotal}`);
+    if (motoristaTotal > 0) resumoFuncoes.push(`Motorista: ${motoristaTotal}`);
+    if (auxiliarTotal > 0) resumoFuncoes.push(`Auxiliar: ${auxiliarTotal}`);
+    
+    if (resumoFuncoes.length > 0) {
+        texto += `${resumoFuncoes.join(' | ')}\n`;
+    }
+    
     texto += `*TOTAL GERAL: ${totalGeral}*\n\n`;
     
+    // Adicionar data e quantidade de operações
     texto += `📅 ${new Date().toLocaleDateString('pt-BR')}`;
+    texto += ` | ${abas.length} ${abas.length === 1 ? 'operação' : 'operações'}`;
     
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
 }
