@@ -1463,11 +1463,11 @@ function renderizarItensAba(abaIndex, itens) {
         
         const itemHTML = `
             <div class="item">
-                <div class="item-header">
+                <div class="item-header" onclick="toggleItemConteudo(this)">
                     <span>${titulo}</span>
                     <span class="item-total">${total}</span>
                 </div>
-                <div class="item-conteudo">
+                <div class="item-conteudo" style="display: none;">
                     ${item.tipo === 'livre' ? `
                         <div class="input-artigo-container">
                             <input type="text" class="input-artigo" 
@@ -1522,6 +1522,15 @@ function renderizarItensAba(abaIndex, itens) {
         
         container.innerHTML += itemHTML;
     });
+}
+
+function toggleItemConteudo(headerElement) {
+    const conteudo = headerElement.nextElementSibling;
+    if (conteudo.style.display === 'none' || !conteudo.style.display) {
+        conteudo.style.display = 'block';
+    } else {
+        conteudo.style.display = 'none';
+    }
 }
 
 function alterarContadorAba(abaIndex, itemIndex, campo, valor, event) {
@@ -1713,7 +1722,6 @@ function enviarWhatsAppTodasAbas() {
     }
     
     // Adicionar totais gerais (apenas itens com total > 0)
-    texto += `📊 *TOTAIS GERAIS (Consolidado)*\n`;
     let totalGeral = 0;
     let encarregadoTotal = 0;
     let motoristaTotal = 0;
@@ -1726,21 +1734,20 @@ function enviarWhatsAppTodasAbas() {
     
     for (const [nome, valores] of itensOrdenados) {
         // Mostrar apenas o total geral do item (soma de todas as operações)
-        texto += `*${nome}: ${valores.total}*\n`;
+        texto += `${nome}:\n`;
         
         // Adicionar detalhes por função apenas se houver valores
-        if (valores.encarregado > 0 || valores.motorista > 0 || valores.auxiliar > 0) {
-            const detalhes = [];
-            if (valores.encarregado > 0) detalhes.push(`E:${valores.encarregado}`);
-            if (valores.motorista > 0) detalhes.push(`M:${valores.motorista}`);
-            if (valores.auxiliar > 0) detalhes.push(`A:${valores.auxiliar}`);
-            
-            if (detalhes.length > 0) {
-                texto += `(${detalhes.join(' ')})`;
-            }
+        if (valores.encarregado > 0) {
+            texto += `Encarregado: ${valores.encarregado}\n`;
+        }
+        if (valores.motorista > 0) {
+            texto += `Motorista: ${valores.motorista}\n`;
+        }
+        if (valores.auxiliar > 0) {
+            texto += `Auxiliar: ${valores.auxiliar}\n`;
         }
         
-        texto += '\n\n';
+        texto += '\n';
         
         totalGeral += valores.total;
         encarregadoTotal += valores.encarregado;
@@ -1748,20 +1755,8 @@ function enviarWhatsAppTodasAbas() {
         auxiliarTotal += valores.auxiliar;
     }
     
-    // Adicionar resumo final
-    texto += `📈 *RESUMO FINAL*\n`;
-    
-    // Mostrar apenas funções que têm valores > 0
-    const resumoFuncoes = [];
-    if (encarregadoTotal > 0) resumoFuncoes.push(`Encarregado: ${encarregadoTotal}`);
-    if (motoristaTotal > 0) resumoFuncoes.push(`Motorista: ${motoristaTotal}`);
-    if (auxiliarTotal > 0) resumoFuncoes.push(`Auxiliar: ${auxiliarTotal}`);
-    
-    if (resumoFuncoes.length > 0) {
-        texto += `${resumoFuncoes.join(' | ')}\n`;
-    }
-    
-    texto += `*TOTAL GERAL: ${totalGeral}*\n\n`;
+    // Adicionar totais finais
+    texto += `Total: ${totalGeral}\n\n`;
     
     // Adicionar data e quantidade de operações
     texto += `📅 ${new Date().toLocaleDateString('pt-BR')}`;
