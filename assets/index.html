@@ -422,21 +422,20 @@ body {
     flex: 1;
     overflow-y: auto;
     display: none;
-    padding: 15px;
+    padding: 0;
     -webkit-overflow-scrolling: touch;
 }
 
 .aba-conteudo.ativa {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Itens dentro de cada aba */
 .itens-container {
-    display: none;
-}
-
-.aba-conteudo.ativa .itens-container {
-    display: block;
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
 }
 
 .item {
@@ -812,8 +811,10 @@ body {
             <!-- Abas serão criadas dinamicamente aqui -->
         </div>
 
-        <!-- Conteúdo das abas será criado dinamicamente aqui -->
-        <div id="abasConteudoContainer"></div>
+        <!-- Container para conteúdo das abas -->
+        <div id="abasConteudoContainer" style="flex: 1; display: none; overflow: hidden;">
+            <!-- Conteúdo das abas será criado dinamicamente aqui -->
+        </div>
 
         <!-- Botões de envio -->
         <div class="envio-actions" id="envioActions" style="display: none;">
@@ -1128,11 +1129,12 @@ function conectarViatura(viaturaId) {
             atualizarBotoesFuncao();
             
             // Inicializar abas se existirem dados
-            if (currentViatura.data.abas) {
+            if (currentViatura.data.abas && Array.isArray(currentViatura.data.abas)) {
                 abas = currentViatura.data.abas;
+                console.log('Abas carregadas:', abas);
                 renderizarAbas();
                 if (abas.length > 0) {
-                    selecionarAba(0);
+                    selecionarAba(abaAtualIndex);
                 }
             } else {
                 // Criar primeira aba se não existir
@@ -1141,9 +1143,6 @@ function conectarViatura(viaturaId) {
             
             if (currentUser.mode) {
                 atualizarInterfaceUsuarioCompact();
-                if (abas.length > 0) {
-                    atualizarInterfaceAba(abaAtualIndex);
-                }
             }
         }
     });
@@ -1162,6 +1161,7 @@ function renderizarAbas() {
     
     // Mostrar container de abas
     abasContainer.style.display = 'flex';
+    conteudoContainer.style.display = 'flex';
     
     // Adicionar botão de nova aba
     const btnNovaAba = document.createElement('button');
@@ -1207,10 +1207,15 @@ function renderizarAbas() {
     if (currentUser.mode) {
         document.getElementById('envioActions').style.display = 'flex';
     }
+    
+    // Atualizar conteúdo da aba atual
+    if (abas.length > 0 && currentUser.mode) {
+        atualizarInterfaceAba(abaAtualIndex);
+    }
 }
 
 function criarNovaAba(nome) {
-    if (!viaturaAtualRef || !currentViatura?.data) return;
+    if (!viaturaAtualRef) return;
     
     const novaAba = {
         id: `operacao_${Date.now()}`,
@@ -1235,13 +1240,17 @@ function criarNovaAba(nome) {
 function selecionarAba(index) {
     if (index < 0 || index >= abas.length) return;
     
+    console.log('Selecionando aba:', index, 'Título:', abas[index]?.nome);
+    
+    // Salvar o índice da aba atual
     abaAtualIndex = index;
     
-    // Atualizar classes ativas
+    // Atualizar classes ativas nas abas
     document.querySelectorAll('.aba-item').forEach((item, i) => {
         item.classList.toggle('ativa', i === index);
     });
     
+    // Atualizar classes ativas no conteúdo
     document.querySelectorAll('.aba-conteudo').forEach((conteudo, i) => {
         conteudo.classList.toggle('ativa', i === index);
     });
@@ -1375,6 +1384,7 @@ function setAccessMode(mode, nomePredefinido = null) {
     // Mostrar abas se existirem
     if (abas.length > 0) {
         document.getElementById('abasContainer').style.display = 'flex';
+        document.getElementById('abasConteudoContainer').style.display = 'flex';
         atualizarInterfaceAba(abaAtualIndex);
     }
     
@@ -1425,7 +1435,12 @@ function sairDaFuncao() {
 
 // ===== INTERFACE DOS ITENS EM CADA ABA =====
 function atualizarInterfaceAba(abaIndex) {
-    if (!abas[abaIndex] || !currentUser.mode) return;
+    if (!abas[abaIndex] || !currentUser.mode) {
+        console.log('Não foi possível atualizar interface:', {abaIndex, temAba: !!abas[abaIndex], modoUsuario: currentUser.mode});
+        return;
+    }
+    
+    console.log('Atualizando interface da aba:', abaIndex, 'Título:', abas[abaIndex].nome);
     
     const itens = abas[abaIndex].itens || [];
     renderizarItensAba(abaIndex, itens);
@@ -1433,9 +1448,14 @@ function atualizarInterfaceAba(abaIndex) {
 
 function renderizarItensAba(abaIndex, itens) {
     const container = document.getElementById(`itensList-${abaIndex}`);
-    if (!container) return;
+    if (!container) {
+        console.log('Container não encontrado para aba:', abaIndex);
+        return;
+    }
     
     container.innerHTML = '';
+    
+    console.log('Renderizando', itens.length, 'itens na aba', abaIndex);
     
     itens.forEach((item, index) => {
         const total = item.encarregado + item.motorista + item.auxiliar;
@@ -1507,41 +1527,73 @@ function renderizarItensAba(abaIndex, itens) {
 function alterarContadorAba(abaIndex, itemIndex, campo, valor, event) {
     if (event) event.stopPropagation();
     
-    if (!viaturaAtualRef || currentUser.mode !== campo) return;
+    if (!viaturaAtualRef || currentUser.mode !== campo) {
+        console.log('Não pode alterar:', {temRef: !!viaturaAtualRef, modoUsuario: currentUser.mode, campo});
+        return;
+    }
     
-    if (!abas[abaIndex]?.itens?.[itemIndex]) return;
+    if (!abas[abaIndex]?.itens?.[itemIndex]) {
+        console.log('Item não encontrado:', {abaIndex, itemIndex, temAba: !!abas[abaIndex]});
+        return;
+    }
     
     const novoValor = Math.max(0, (abas[abaIndex].itens[itemIndex][campo] || 0) + valor);
+    
+    console.log('Alterando contador:', {
+        abaIndex,
+        itemIndex,
+        campo,
+        valorAtual: abas[abaIndex].itens[itemIndex][campo],
+        novoValor,
+        modoUsuario: currentUser.mode
+    });
+    
+    // Atualizar localmente primeiro
     abas[abaIndex].itens[itemIndex][campo] = novoValor;
+    
+    // Atualizar contador na interface
+    const contador = document.getElementById(`contador-${campo.charAt(0)}-${abaIndex}-${itemIndex}`);
+    if (contador) {
+        contador.textContent = novoValor;
+    }
+    
+    // Atualizar total
+    const itemElement = document.querySelectorAll(`#aba-conteudo-${abaIndex} .item`)[itemIndex];
+    if (itemElement) {
+        const totalElement = itemElement.querySelector('.item-total');
+        if (totalElement) {
+            const e = parseInt(document.getElementById(`contador-e-${abaIndex}-${itemIndex}`)?.textContent || 0);
+            const m = parseInt(document.getElementById(`contador-m-${abaIndex}-${itemIndex}`)?.textContent || 0);
+            const a = parseInt(document.getElementById(`contador-a-${abaIndex}-${itemIndex}`)?.textContent || 0);
+            const novoTotal = e + m + a;
+            totalElement.textContent = novoTotal;
+        }
+    }
     
     // Atualizar no Firebase
     viaturaAtualRef.child(`abas/${abaIndex}/itens/${itemIndex}/${campo}`).set(novoValor)
-        .then(() => {
-            // Atualizar contador localmente
-            const contador = document.getElementById(`contador-${campo.charAt(0)}-${abaIndex}-${itemIndex}`);
-            if (contador) {
-                contador.textContent = novoValor;
-            }
-            
-            // Atualizar total
-            const itemElement = document.querySelectorAll(`#aba-conteudo-${abaIndex} .item`)[itemIndex];
-            if (itemElement) {
-                const totalElement = itemElement.querySelector('.item-total');
-                if (totalElement) {
-                    const e = parseInt(document.getElementById(`contador-e-${abaIndex}-${itemIndex}`)?.textContent || 0);
-                    const m = parseInt(document.getElementById(`contador-m-${abaIndex}-${itemIndex}`)?.textContent || 0);
-                    const a = parseInt(document.getElementById(`contador-a-${abaIndex}-${itemIndex}`)?.textContent || 0);
-                    totalElement.textContent = e + m + a;
-                }
-            }
+        .catch(error => {
+            console.error('Erro ao atualizar Firebase:', error);
         });
 }
 
 function atualizarNomeItemAba(abaIndex, itemIndex, nome) {
     if (!viaturaAtualRef) return;
     
+    // Atualizar localmente
     abas[abaIndex].itens[itemIndex].nome = nome;
+    
+    // Atualizar no Firebase
     viaturaAtualRef.child(`abas/${abaIndex}/itens/${itemIndex}/nome`).set(nome);
+    
+    // Atualizar título do item na interface
+    const itemElement = document.querySelectorAll(`#aba-conteudo-${abaIndex} .item`)[itemIndex];
+    if (itemElement) {
+        const tituloElement = itemElement.querySelector('.item-header span:first-child');
+        if (tituloElement) {
+            tituloElement.textContent = nome || '✏️ Artigo livre';
+        }
+    }
 }
 
 function voltarParaSelecao() {
