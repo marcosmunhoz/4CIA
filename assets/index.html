@@ -322,17 +322,121 @@ body {
     background: #bdc3c7;
 }
 
-/* Informações do usuário (versão expandida - removemos depois) */
-.usuario-info {
+/* Sistema de Abas (Operações) */
+.abas-container {
+    display: flex;
+    padding: 10px 15px 0;
+    background: #f1f5f9;
+    border-bottom: 2px solid #e2e8f0;
+    overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.abas-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.abas-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.abas-container::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 3px;
+}
+
+.aba-item {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px 15px;
+    margin-right: 8px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    border-bottom: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    min-width: 120px;
+    position: relative;
+}
+
+.aba-item.ativa {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+    font-weight: 600;
+}
+
+.aba-titulo {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+}
+
+.btn-fechar-aba {
+    margin-left: 8px;
+    background: rgba(0,0,0,0.1);
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+.aba-item.ativa .btn-fechar-aba:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.btn-nova-aba {
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-left: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.btn-nova-aba:hover {
+    background: #0da271;
+}
+
+/* Conteúdo das abas */
+.aba-conteudo {
+    flex: 1;
+    overflow-y: auto;
+    display: none;
+    padding: 15px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.aba-conteudo.ativa {
+    display: block;
+}
+
+/* Itens dentro de cada aba */
+.itens-container {
     display: none;
 }
 
-/* Itens - SEMPRE ABERTOS para edição fácil */
-.itens-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 15px;
-    -webkit-overflow-scrolling: touch;
+.aba-conteudo.ativa .itens-container {
+    display: block;
 }
 
 .item {
@@ -366,7 +470,6 @@ body {
     margin-left: 10px;
 }
 
-/* Conteúdo SEMPRE VISÍVEL para edição fácil */
 .item-conteudo {
     padding: 20px;
     border-top: 1px solid #dee2e6;
@@ -395,11 +498,11 @@ body {
     border-radius: 8px;
     text-align: center;
     margin-bottom: 12px;
-    display: none; /* Escondido por padrão */
+    display: none;
 }
 
 .contador-funcao.ativo {
-    display: block; /* Mostra apenas para a função ativa */
+    display: block;
 }
 
 .contador-titulo {
@@ -447,7 +550,39 @@ body {
     text-align: center;
 }
 
-/* REMOVIDO: Botões de ação em baixo - agora estão no topo */
+/* Botões de envio específicos */
+.envio-actions {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-top: 1px solid #e2e8f0;
+    flex-shrink: 0;
+}
+
+.envio-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.envio-btn.aba {
+    background: #3b82f6;
+    color: white;
+}
+
+.envio-btn.todas {
+    background: #10b981;
+    color: white;
+}
 
 /* Botão admin escondido */
 .btn-admin { 
@@ -529,6 +664,19 @@ body {
     .btn-trocar-funcao {
         padding: 5px 10px;
         font-size: 11px;
+    }
+    
+    .aba-item {
+        min-width: 100px;
+        padding: 6px 12px;
+    }
+    
+    .envio-actions {
+        flex-direction: column;
+    }
+    
+    .envio-btn {
+        width: 100%;
     }
 }
 
@@ -633,7 +781,7 @@ body {
                 
                 <!-- Botões de ação -->
                 <div class="top-actions">
-                    <button class="top-action-btn" onclick="enviarWhatsApp()" title="Enviar WhatsApp">
+                    <button class="top-action-btn" onclick="enviarWhatsAppTodasAbas()" title="Enviar Todas as Operações">
                         📤
                     </button>
                     <button class="top-action-btn" onclick="limparDados()" title="Limpar Dados">
@@ -659,14 +807,22 @@ body {
             </button>
         </div>
 
-        <!-- Informações do usuário atual (versão expandida - não usamos mais) -->
-        <div class="usuario-info" id="infoUsuario" style="display: none;">
-            <!-- Conteúdo removido -->
+        <!-- Sistema de Abas (Operações) -->
+        <div class="abas-container" id="abasContainer" style="display: none;">
+            <!-- Abas serão criadas dinamicamente aqui -->
         </div>
 
-        <!-- Itens (SEMPRE ABERTOS para edição fácil) -->
-        <div class="itens-container" id="itensContainer" style="display: none;">
-            <div id="itensList"></div>
+        <!-- Conteúdo das abas será criado dinamicamente aqui -->
+        <div id="abasConteudoContainer"></div>
+
+        <!-- Botões de envio -->
+        <div class="envio-actions" id="envioActions" style="display: none;">
+            <button class="envio-btn aba" onclick="enviarWhatsAppAbaAtual()">
+                📤 Enviar Esta Operação
+            </button>
+            <button class="envio-btn todas" onclick="enviarWhatsAppTodasAbas()">
+                📊 Enviar Resultado Final (Todas)
+            </button>
         </div>
     </div>
 </div>
@@ -720,6 +876,8 @@ let currentViatura = null;
 let currentUser = { mode: '', name: '' };
 let todasViaturas = [];
 let usuarioSalvo = null;
+let abas = []; // Array para armazenar as abas
+let abaAtualIndex = 0; // Índice da aba atual
 
 // ===== ITENS FIXOS =====
 const ITENS_FIXOS = [
@@ -883,11 +1041,17 @@ function criarNovaViatura() {
                 return;
             }
             
-            // Criar nova viatura
+            // Criar nova viatura com uma aba padrão
             db.ref(`viaturas/${id}`).set({
                 nome: nome,
                 criadaEm: new Date().toISOString(),
-                itens: criarItensPadrao(),
+                abas: [
+                    {
+                        id: 'operacao_1',
+                        nome: 'Operação 1',
+                        itens: criarItensPadrao()
+                    }
+                ],
                 encarregado: { nome: '', online: false },
                 motorista: { nome: '', online: false },
                 auxiliar: { nome: '', online: false }
@@ -962,12 +1126,158 @@ function conectarViatura(viaturaId) {
         if (snapshot.exists()) {
             currentViatura.data = snapshot.val();
             atualizarBotoesFuncao();
+            
+            // Inicializar abas se existirem dados
+            if (currentViatura.data.abas) {
+                abas = currentViatura.data.abas;
+                renderizarAbas();
+                if (abas.length > 0) {
+                    selecionarAba(0);
+                }
+            } else {
+                // Criar primeira aba se não existir
+                criarNovaAba('Operação 1');
+            }
+            
             if (currentUser.mode) {
                 atualizarInterfaceUsuarioCompact();
-                atualizarInterfaceViatura();
+                if (abas.length > 0) {
+                    atualizarInterfaceAba(abaAtualIndex);
+                }
             }
         }
     });
+}
+
+// ===== SISTEMA DE ABAS (OPERAÇÕES) =====
+function renderizarAbas() {
+    const abasContainer = document.getElementById('abasContainer');
+    const conteudoContainer = document.getElementById('abasConteudoContainer');
+    
+    if (!abasContainer || !conteudoContainer) return;
+    
+    // Limpar containers
+    abasContainer.innerHTML = '';
+    conteudoContainer.innerHTML = '';
+    
+    // Mostrar container de abas
+    abasContainer.style.display = 'flex';
+    
+    // Adicionar botão de nova aba
+    const btnNovaAba = document.createElement('button');
+    btnNovaAba.className = 'btn-nova-aba';
+    btnNovaAba.innerHTML = '+';
+    btnNovaAba.onclick = () => {
+        const nome = prompt('Nome da nova operação:', `Operação ${abas.length + 1}`);
+        if (nome) {
+            criarNovaAba(nome);
+        }
+    };
+    abasContainer.appendChild(btnNovaAba);
+    
+    // Renderizar cada aba
+    abas.forEach((aba, index) => {
+        // Criar elemento da aba
+        const abaElement = document.createElement('div');
+        abaElement.className = `aba-item ${index === abaAtualIndex ? 'ativa' : ''}`;
+        abaElement.innerHTML = `
+            <span class="aba-titulo">${aba.nome}</span>
+            <button class="btn-fechar-aba" onclick="removerAba(${index}, event)">×</button>
+        `;
+        abaElement.onclick = (e) => {
+            if (!e.target.classList.contains('btn-fechar-aba')) {
+                selecionarAba(index);
+            }
+        };
+        abasContainer.appendChild(abaElement);
+        
+        // Criar conteúdo da aba
+        const conteudoElement = document.createElement('div');
+        conteudoElement.className = `aba-conteudo ${index === abaAtualIndex ? 'ativa' : ''}`;
+        conteudoElement.id = `aba-conteudo-${index}`;
+        conteudoElement.innerHTML = `
+            <div class="itens-container">
+                <div id="itensList-${index}"></div>
+            </div>
+        `;
+        conteudoContainer.appendChild(conteudoElement);
+    });
+    
+    // Mostrar botões de envio se houver usuário logado
+    if (currentUser.mode) {
+        document.getElementById('envioActions').style.display = 'flex';
+    }
+}
+
+function criarNovaAba(nome) {
+    if (!viaturaAtualRef || !currentViatura?.data) return;
+    
+    const novaAba = {
+        id: `operacao_${Date.now()}`,
+        nome: nome || `Operação ${abas.length + 1}`,
+        itens: criarItensPadrao()
+    };
+    
+    const novoIndex = abas.length;
+    abas.push(novaAba);
+    
+    viaturaAtualRef.child('abas').set(abas)
+        .then(() => {
+            renderizarAbas();
+            selecionarAba(novoIndex);
+        })
+        .catch(error => {
+            console.error('Erro ao criar aba:', error);
+            alert('Erro ao criar nova operação!');
+        });
+}
+
+function selecionarAba(index) {
+    if (index < 0 || index >= abas.length) return;
+    
+    abaAtualIndex = index;
+    
+    // Atualizar classes ativas
+    document.querySelectorAll('.aba-item').forEach((item, i) => {
+        item.classList.toggle('ativa', i === index);
+    });
+    
+    document.querySelectorAll('.aba-conteudo').forEach((conteudo, i) => {
+        conteudo.classList.toggle('ativa', i === index);
+    });
+    
+    // Atualizar interface da aba selecionada
+    if (currentUser.mode) {
+        atualizarInterfaceAba(index);
+    }
+}
+
+function removerAba(index, event) {
+    if (event) event.stopPropagation();
+    
+    if (abas.length <= 1) {
+        alert('Não é possível remover a última operação!');
+        return;
+    }
+    
+    if (!confirm(`Remover a operação "${abas[index].nome}"?`)) return;
+    
+    abas.splice(index, 1);
+    
+    // Se removermos a aba atual, selecionar a anterior
+    if (index === abaAtualIndex) {
+        abaAtualIndex = Math.max(0, index - 1);
+    }
+    
+    viaturaAtualRef.child('abas').set(abas)
+        .then(() => {
+            renderizarAbas();
+            selecionarAba(abaAtualIndex);
+        })
+        .catch(error => {
+            console.error('Erro ao remover aba:', error);
+            alert('Erro ao remover operação!');
+        });
 }
 
 // ===== VERIFICAÇÃO DE FUNÇÃO OCUPADA =====
@@ -987,7 +1297,7 @@ function verificarEConectarUsuario(mode, nomePredefinido = null) {
         
         // Resetar interface
         document.getElementById('viaturaUserLine').style.display = 'none';
-        document.getElementById('itensContainer').style.display = 'none';
+        document.getElementById('envioActions').style.display = 'none';
         
         // Atualizar botões
         atualizarBotoesFuncao();
@@ -1060,12 +1370,15 @@ function setAccessMode(mode, nomePredefinido = null) {
     });
     
     document.getElementById('viaturaUserLine').style.display = 'flex';
-    document.getElementById('itensContainer').style.display = 'block';
+    document.getElementById('envioActions').style.display = 'flex';
+    
+    // Mostrar abas se existirem
+    if (abas.length > 0) {
+        document.getElementById('abasContainer').style.display = 'flex';
+        atualizarInterfaceAba(abaAtualIndex);
+    }
     
     atualizarBotoesFuncao();
-    if (currentViatura?.data) {
-        atualizarInterfaceViatura();
-    }
 }
 
 function atualizarInterfaceUsuarioCompact() {
@@ -1101,7 +1414,7 @@ function sairDaFuncao() {
     currentUser = { mode: '', name: '' };
     
     document.getElementById('viaturaUserLine').style.display = 'none';
-    document.getElementById('itensContainer').style.display = 'none';
+    document.getElementById('envioActions').style.display = 'none';
     
     document.querySelectorAll('.mode-btn').forEach(btn => {
         btn.classList.remove('ativo');
@@ -1110,16 +1423,16 @@ function sairDaFuncao() {
     atualizarBotoesFuncao();
 }
 
-// ===== INTERFACE DOS ITENS (SEMPRE ABERTOS) =====
-function atualizarInterfaceViatura() {
-    if (!currentViatura?.data || !currentUser.mode) return;
+// ===== INTERFACE DOS ITENS EM CADA ABA =====
+function atualizarInterfaceAba(abaIndex) {
+    if (!abas[abaIndex] || !currentUser.mode) return;
     
-    const data = currentViatura.data;
-    renderizarItens(data.itens || []);
+    const itens = abas[abaIndex].itens || [];
+    renderizarItensAba(abaIndex, itens);
 }
 
-function renderizarItens(itens) {
-    const container = document.getElementById('itensList');
+function renderizarItensAba(abaIndex, itens) {
+    const container = document.getElementById(`itensList-${abaIndex}`);
     if (!container) return;
     
     container.innerHTML = '';
@@ -1140,45 +1453,45 @@ function renderizarItens(itens) {
                             <input type="text" class="input-artigo" 
                                    placeholder="Digite o nome do artigo"
                                    value="${item.nome || ''}"
-                                   oninput="atualizarNomeItem(${index}, this.value)">
+                                   oninput="atualizarNomeItemAba(${abaIndex}, ${index}, this.value)">
                         </div>
                     ` : ''}
                     
                     <!-- Contador específico para cada função -->
-                    <div class="contador-funcao ${currentUser.mode === 'encarregado' ? 'ativo' : ''}" id="contador-encarregado-${index}">
+                    <div class="contador-funcao ${currentUser.mode === 'encarregado' ? 'ativo' : ''}" id="contador-encarregado-${abaIndex}-${index}">
                         <div class="contador-titulo">👮‍♂️ Encarregado</div>
                         <div class="contador-box">
-                            <button class="contador-btn btn-menos" onclick="alterarContador(${index}, 'encarregado', -1, event)">
+                            <button class="contador-btn btn-menos" onclick="alterarContadorAba(${abaIndex}, ${index}, 'encarregado', -1, event)">
                                 -
                             </button>
-                            <span class="contador-valor" id="contador-e-${index}">${item.encarregado}</span>
-                            <button class="contador-btn btn-add" onclick="alterarContador(${index}, 'encarregado', 1, event)">
+                            <span class="contador-valor" id="contador-e-${abaIndex}-${index}">${item.encarregado}</span>
+                            <button class="contador-btn btn-add" onclick="alterarContadorAba(${abaIndex}, ${index}, 'encarregado', 1, event)">
                                 +
                             </button>
                         </div>
                     </div>
                     
-                    <div class="contador-funcao ${currentUser.mode === 'motorista' ? 'ativo' : ''}" id="contador-motorista-${index}">
+                    <div class="contador-funcao ${currentUser.mode === 'motorista' ? 'ativo' : ''}" id="contador-motorista-${abaIndex}-${index}">
                         <div class="contador-titulo">🚚 Motorista</div>
                         <div class="contador-box">
-                            <button class="contador-btn btn-menos" onclick="alterarContador(${index}, 'motorista', -1, event)">
+                            <button class="contador-btn btn-menos" onclick="alterarContadorAba(${abaIndex}, ${index}, 'motorista', -1, event)">
                                 -
                             </button>
-                            <span class="contador-valor" id="contador-m-${index}">${item.motorista}</span>
-                            <button class="contador-btn btn-add" onclick="alterarContador(${index}, 'motorista', 1, event)">
+                            <span class="contador-valor" id="contador-m-${abaIndex}-${index}">${item.motorista}</span>
+                            <button class="contador-btn btn-add" onclick="alterarContadorAba(${abaIndex}, ${index}, 'motorista', 1, event)">
                                 +
                             </button>
                         </div>
                     </div>
                     
-                    <div class="contador-funcao ${currentUser.mode === 'auxiliar' ? 'ativo' : ''}" id="contador-auxiliar-${index}">
+                    <div class="contador-funcao ${currentUser.mode === 'auxiliar' ? 'ativo' : ''}" id="contador-auxiliar-${abaIndex}-${index}">
                         <div class="contador-titulo">👥 Auxiliar</div>
                         <div class="contador-box">
-                            <button class="contador-btn btn-menos" onclick="alterarContador(${index}, 'auxiliar', -1, event)">
+                            <button class="contador-btn btn-menos" onclick="alterarContadorAba(${abaIndex}, ${index}, 'auxiliar', -1, event)">
                                 -
                             </button>
-                            <span class="contador-valor" id="contador-a-${index}">${item.auxiliar}</span>
-                            <button class="contador-btn btn-add" onclick="alterarContador(${index}, 'auxiliar', 1, event)">
+                            <span class="contador-valor" id="contador-a-${abaIndex}-${index}">${item.auxiliar}</span>
+                            <button class="contador-btn btn-add" onclick="alterarContadorAba(${abaIndex}, ${index}, 'auxiliar', 1, event)">
                                 +
                             </button>
                         </div>
@@ -1191,41 +1504,44 @@ function renderizarItens(itens) {
     });
 }
 
-function alterarContador(itemIndex, campo, valor, event) {
+function alterarContadorAba(abaIndex, itemIndex, campo, valor, event) {
     if (event) event.stopPropagation();
     
     if (!viaturaAtualRef || currentUser.mode !== campo) return;
     
-    if (!currentViatura?.data?.itens?.[itemIndex]) return;
+    if (!abas[abaIndex]?.itens?.[itemIndex]) return;
     
-    const itemRef = viaturaAtualRef.child(`itens/${itemIndex}/${campo}`);
-    const novoValor = Math.max(0, (currentViatura.data.itens[itemIndex][campo] || 0) + valor);
+    const novoValor = Math.max(0, (abas[abaIndex].itens[itemIndex][campo] || 0) + valor);
+    abas[abaIndex].itens[itemIndex][campo] = novoValor;
     
-    itemRef.set(novoValor).then(() => {
-        // Atualizar contador localmente
-        const contador = document.getElementById(`contador-${campo.charAt(0)}-${itemIndex}`);
-        if (contador) {
-            contador.textContent = novoValor;
-        }
-        
-        // Atualizar total
-        const itemElement = document.querySelectorAll('.item')[itemIndex];
-        if (itemElement) {
-            const totalElement = itemElement.querySelector('.item-total');
-            if (totalElement) {
-                const e = parseInt(document.getElementById(`contador-e-${itemIndex}`)?.textContent || 0);
-                const m = parseInt(document.getElementById(`contador-m-${itemIndex}`)?.textContent || 0);
-                const a = parseInt(document.getElementById(`contador-a-${itemIndex}`)?.textContent || 0);
-                totalElement.textContent = e + m + a;
+    // Atualizar no Firebase
+    viaturaAtualRef.child(`abas/${abaIndex}/itens/${itemIndex}/${campo}`).set(novoValor)
+        .then(() => {
+            // Atualizar contador localmente
+            const contador = document.getElementById(`contador-${campo.charAt(0)}-${abaIndex}-${itemIndex}`);
+            if (contador) {
+                contador.textContent = novoValor;
             }
-        }
-    });
+            
+            // Atualizar total
+            const itemElement = document.querySelectorAll(`#aba-conteudo-${abaIndex} .item`)[itemIndex];
+            if (itemElement) {
+                const totalElement = itemElement.querySelector('.item-total');
+                if (totalElement) {
+                    const e = parseInt(document.getElementById(`contador-e-${abaIndex}-${itemIndex}`)?.textContent || 0);
+                    const m = parseInt(document.getElementById(`contador-m-${abaIndex}-${itemIndex}`)?.textContent || 0);
+                    const a = parseInt(document.getElementById(`contador-a-${abaIndex}-${itemIndex}`)?.textContent || 0);
+                    totalElement.textContent = e + m + a;
+                }
+            }
+        });
 }
 
-function atualizarNomeItem(itemIndex, nome) {
+function atualizarNomeItemAba(abaIndex, itemIndex, nome) {
     if (!viaturaAtualRef) return;
     
-    viaturaAtualRef.child(`itens/${itemIndex}/nome`).set(nome);
+    abas[abaIndex].itens[itemIndex].nome = nome;
+    viaturaAtualRef.child(`abas/${abaIndex}/itens/${itemIndex}/nome`).set(nome);
 }
 
 function voltarParaSelecao() {
@@ -1238,17 +1554,21 @@ function voltarParaSelecao() {
     
     currentViatura = null;
     viaturaAtualRef = null;
+    abas = [];
+    abaAtualIndex = 0;
 }
 
-// ===== FUNÇÕES UTILITÁRIAS =====
-function enviarWhatsApp() {
-    if (!currentViatura?.data || !currentUser.mode) {
+// ===== FUNÇÕES DE ENVIO =====
+function enviarWhatsAppAbaAtual() {
+    if (!abas[abaAtualIndex] || !currentUser.mode) {
         alert('Escolha sua função primeiro!');
         return;
     }
     
+    const aba = abas[abaAtualIndex];
     const data = currentViatura.data;
-    let texto = `*FISCALIZAÇÃO - ${data.nome || currentViatura.id}*\n\n`;
+    let texto = `*FISCALIZAÇÃO - ${data.nome || currentViatura.id}*\n`;
+    texto += `*OPERAÇÃO: ${aba.nome}*\n\n`;
     
     const equipe = [];
     if (data.encarregado?.nome) equipe.push(`Encarregado: ${data.encarregado.nome}`);
@@ -1260,7 +1580,7 @@ function enviarWhatsApp() {
     }
     
     let temDados = false;
-    (data.itens || []).forEach(item => {
+    (aba.itens || []).forEach(item => {
         const nome = item.tipo === 'livre' ? item.nome : item.nome;
         if (!nome && item.tipo === 'livre') return;
         
@@ -1276,9 +1596,117 @@ function enviarWhatsApp() {
     });
     
     if (!temDados) {
+        alert('Nada para enviar nesta operação!');
+        return;
+    }
+    
+    texto += `\n📅 ${new Date().toLocaleDateString('pt-BR')}`;
+    
+    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
+}
+
+function enviarWhatsAppTodasAbas() {
+    if (!abas.length || !currentUser.mode) {
+        alert('Escolha sua função primeiro!');
+        return;
+    }
+    
+    const data = currentViatura.data;
+    let texto = `*FISCALIZAÇÃO - ${data.nome || currentViatura.id}*\n`;
+    texto += `*RESULTADO FINAL DO DIA*\n\n`;
+    
+    const equipe = [];
+    if (data.encarregado?.nome) equipe.push(`Encarregado: ${data.encarregado.nome}`);
+    if (data.motorista?.nome) equipe.push(`Motorista: ${data.motorista.nome}`);
+    if (data.auxiliar?.nome) equipe.push(`Auxiliar: ${data.auxiliar.nome}`);
+    
+    if (equipe.length > 0) {
+        texto += `👥 ${equipe.join(' | ')}\n\n`;
+    }
+    
+    // Criar objeto para somar todos os itens de todas as abas
+    const somas = {};
+    let temDados = false;
+    
+    // Processar cada aba
+    abas.forEach((aba, abaIndex) => {
+        let temDadosNaAba = false;
+        const itensAba = {};
+        
+        aba.itens.forEach(item => {
+            const nome = item.tipo === 'livre' ? item.nome : item.nome;
+            if (!nome && item.tipo === 'livre') return;
+            
+            const total = item.encarregado + item.motorista + item.auxiliar;
+            if (total > 0) {
+                temDados = true;
+                temDadosNaAba = true;
+                
+                if (!somas[nome]) {
+                    somas[nome] = {
+                        encarregado: 0,
+                        motorista: 0,
+                        auxiliar: 0,
+                        total: 0
+                    };
+                }
+                
+                somas[nome].encarregado += item.encarregado;
+                somas[nome].motorista += item.motorista;
+                somas[nome].auxiliar += item.auxiliar;
+                somas[nome].total += total;
+                
+                itensAba[nome] = {
+                    encarregado: item.encarregado,
+                    motorista: item.motorista,
+                    auxiliar: item.auxiliar,
+                    total: total
+                };
+            }
+        });
+        
+        // Adicionar resumo da aba se tiver dados
+        if (temDadosNaAba) {
+            texto += `📋 *${aba.nome}*\n`;
+            for (const [nome, valores] of Object.entries(itensAba)) {
+                texto += `- ${nome}: ${valores.total} (E:${valores.encarregado} M:${valores.motorista} A:${valores.auxiliar})\n`;
+            }
+            texto += '\n';
+        }
+    });
+    
+    if (!temDados) {
         alert('Nada para enviar!');
         return;
     }
+    
+    // Adicionar totais gerais
+    texto += `📊 *TOTAIS GERAIS*\n`;
+    let totalGeral = 0;
+    let encarregadoTotal = 0;
+    let motoristaTotal = 0;
+    let auxiliarTotal = 0;
+    
+    for (const [nome, valores] of Object.entries(somas)) {
+        texto += `*${nome}*\n`;
+        if (valores.encarregado > 0) texto += `- Encarregado: ${valores.encarregado}\n`;
+        if (valores.motorista > 0) texto += `- Motorista: ${valores.motorista}\n`;
+        if (valores.auxiliar > 0) texto += `- Auxiliar: ${valores.auxiliar}\n`;
+        texto += `TOTAL: ${valores.total}\n\n`;
+        
+        totalGeral += valores.total;
+        encarregadoTotal += valores.encarregado;
+        motoristaTotal += valores.motorista;
+        auxiliarTotal += valores.auxiliar;
+    }
+    
+    texto += `\n📈 *RESUMO FINAL*\n`;
+    texto += `Encarregado: ${encarregadoTotal}\n`;
+    texto += `Motorista: ${motoristaTotal}\n`;
+    texto += `Auxiliar: ${auxiliarTotal}\n`;
+    texto += `*TOTAL GERAL: ${totalGeral}*\n\n`;
+    
+    texto += `📅 ${new Date().toLocaleDateString('pt-BR')}`;
     
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
 }
@@ -1289,9 +1717,9 @@ function limparDados() {
         return;
     }
     
-    if (confirm('Limpar todos os dados desta viatura?')) {
+    if (confirm('Limpar todos os dados desta operação?')) {
         const itensIniciais = criarItensPadrao();
-        viaturaAtualRef.child('itens').set(itensIniciais);
+        viaturaAtualRef.child(`abas/${abaAtualIndex}/itens`).set(itensIniciais);
     }
 }
 
