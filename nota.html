@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talão de Pedido · Denis Auto Center</title>
+    <!-- html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        body {
+            background: #ddd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            padding: 25px 20px;
+            border-radius: 4px;
+        }
+        /* ESTILO DO TALÃO IGUAL À IMAGEM (rústico, datilografado) */
+        #pedido {
+            background: #fffaf0;
+            border: 2px solid #222;
+            padding: 20px 18px;
+            box-shadow: inset 0 0 0 1px #8b7d6b;
+            font-size: 15px;
+        }
+        .header-loja {
+            text-align: center;
+            border-bottom: 2px dashed #333;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .header-loja h1 {
+            font-size: 2.2rem;
+            margin: 0;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+        }
+        .slogan {
+            font-size: 0.9rem;
+            font-style: italic;
+            background: #e6dbc9;
+            padding: 4px 0;
+            margin-top: 5px;
+        }
+        .talao-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            border: 3px double #222;
+            display: inline-block;
+            padding: 6px 30px;
+            margin: 10px 0 15px;
+            letter-spacing: 2px;
+            background: #eee3d0;
+        }
+        .campos-cliente {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 20px;
+            border: 1px solid #333;
+            padding: 15px;
+            background: #f5ede1;
+            margin-bottom: 20px;
+        }
+        .campo-linha {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .campo-linha label {
+            font-weight: bold;
+            min-width: 70px;
+            font-size: 0.9rem;
+        }
+        .campo-linha input {
+            border: none;
+            border-bottom: 1.5px solid #333;
+            background: transparent;
+            padding: 4px 6px;
+            font-size: 0.95rem;
+            flex: 1;
+            min-width: 120px;
+            font-family: inherit;
+        }
+        .campo-linha input:focus {
+            outline: none;
+            background: #fff9e6;
+        }
+        .tabela-pedido {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 2px solid #222;
+        }
+        .tabela-pedido th {
+            background: #c5b59b;
+            border: 1px solid #000;
+            padding: 8px 4px;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        .tabela-pedido td {
+            border: 1px solid #222;
+            padding: 5px 3px;
+            background: #fcf8f0;
+            vertical-align: middle;
+        }
+        .tabela-pedido input {
+            width: 100%;
+            border: 1px solid #aaa;
+            padding: 6px 5px;
+            background: white;
+            font-size: 0.95rem;
+            border-radius: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        .tabela-pedido input:focus {
+            background: #fdf5cf;
+            border-color: #222;
+        }
+        .total-item {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 12px;
+            background: #e6dbc9;
+        }
+        .rodape-total {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 15px 0 25px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            border-top: 2px dashed #222;
+            padding-top: 15px;
+        }
+        .total-geral {
+            background: #222;
+            color: white;
+            padding: 10px 25px;
+            margin-left: 20px;
+            border-radius: 30px;
+            font-family: 'Arial Black', sans-serif;
+        }
+        .assinatura {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            margin-top: 10px;
+        }
+        .linha-ass {
+            border-bottom: 2px solid #333;
+            width: 300px;
+            height: 25px;
+        }
+        .botoes-acao {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: #2c3e50;
+            border: none;
+            color: white;
+            padding: 12px 28px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 40px;
+            box-shadow: 0 4px 0 #0f1720;
+            transition: 0.1s ease;
+            border: 1px solid #405b73;
+        }
+        .btn:hover {
+            background: #1d2b38;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #0f1720;
+        }
+        .btn-pdf {
+            background: #7d3c1b;
+            box-shadow: 0 4px 0 #4f2812;
+        }
+        .obs-zeros {
+            font-size: 0.85rem;
+            color: #444;
+            text-align: right;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        /* fix para impressão/pdf */
+        @media print {
+            body { background: white; }
+            .btn, .botoes-acao { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- TALÃO FIEL À IMAGEM + CAMPOS INTERATIVOS -->
+    <div id="pedido">
+        <!-- cabeçalho igual foto -->
+        <div class="header-loja">
+            <h1>Denis auto center</h1>
+            <div class="slogan">Suspensão Originais e Preparadas · Limpeza de Bicos Injetores · Suspensão · Troca de óleo · Freio · Mecânico em Geral</div>
+        </div>
+
+        <!-- título e número (aberto para edição) -->
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="talao-title">TALÃO DE PEDIDO</span>
+            <span style="font-size: 1.5rem; font-weight: bold;">Nº <input type="text" style="width: 80px; border:none; border-bottom:2px solid #333; background: transparent; font-size: 1.5rem;" placeholder="___"></span>
+        </div>
+
+        <!-- data do pedido (já preenchida com 02/02/26 como no modelo, mas editável) -->
+        <div style="text-align: right; font-size: 1.2rem; margin: 5px 0 10px;">
+            DATA: <input type="text" value="02, 02, 26" style="width: 120px; border:none; border-bottom: 2px solid #222; background: transparent; font-weight: bold;">
+        </div>
+
+        <!-- campos cliente completos (endereço, bairro, cep, cidade, fone, fax, cel, cpf, rg, cond pgto) -->
+        <div class="campos-cliente">
+            <div class="campo-linha"><label>CLIENTE:</label> <input type="text" placeholder="__________________"></div>
+            <div class="campo-linha"><label>ENDEREÇO:</label> <input type="text" placeholder="__________________"></div>
+            <div class="campo-linha"><label>BAIRRO:</label> <input type="text" placeholder="________"></div>
+            <div class="campo-linha"><label>CEP:</label> <input type="text" placeholder="_____-___"></div>
+            <div class="campo-linha"><label>CIDADE:</label> <input type="text" placeholder="______________"></div>
+            <div class="campo-linha"><label>FONE:</label> <input type="text" placeholder="(  )   "></div>
+            <div class="campo-linha"><label>FAX:</label> <input type="text" placeholder="______"></div>
+            <div class="campo-linha"><label>CEL:</label> <input type="text" placeholder="(  )  "></div>
+            <div class="campo-linha"><label>CNPJ/CPF:</label> <input type="text" placeholder="___/___"></div>
+            <div class="campo-linha"><label>INCR./RG:</label> <input type="text" placeholder="________"></div>
+            <div class="campo-linha" style="grid-column: span 2;"><label>COND. PAGAMENTO:</label> <input type="text" placeholder="__________________________________" style="width: 80%;"></div>
+        </div>
+
+        <!-- TABELA DE ITENS (similar à imagem: quantidade, descrição, preço unit, total) -->
+        <table class="tabela-pedido" id="tabelaItens">
+            <thead>
+                <tr>
+                    <th>QUANTIDADE</th>
+                    <th>DESCRIÇÃO</th>
+                    <th>PREÇO UNIT</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody id="corpoTabela">
+                <!-- Linhas iniciais espelhando a imagem (opcional, mas deixamos algumas preenchidas como exemplo) -->
+                <tr>
+                    <td><input type="number" class="qtd" value="1" step="0.01" min="0"></td>
+                    <td><input type="text" class="desc" value="Filho de Alvo"></td>
+                    <td><input type="number" class="preco" value="18.00" step="0.01" min="0"></td>
+                    <td class="totalItem">R$ 18.00</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="4" step="0.01"></td>
+                    <td><input type="text" class="desc" value="Litro de Alvo 540"></td>
+                    <td><input type="number" class="preco" value="33.50" step="0.01"></td>
+                    <td class="totalItem">R$ 134.00</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Kit Lavoro demedado"></td>
+                    <td><input type="number" class="preco" value="17.50"></td>
+                    <td class="totalItem">R$ 17.50</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Retuvo de Comando"></td>
+                    <td><input type="number" class="preco" value="25.50"></td>
+                    <td class="totalItem">R$ 25.50</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Fogo de Partilho Quart"></td>
+                    <td><input type="number" class="preco" value="60.00"></td>
+                    <td class="totalItem">R$ 60.00</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Abertura Radiador"></td>
+                    <td><input type="number" class="preco" value="31.50"></td>
+                    <td class="totalItem">R$ 31.50</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Galão de Água desminer"></td>
+                    <td><input type="number" class="preco" value="25.50"></td>
+                    <td class="totalItem">R$ 25.50</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Disco dióntreiro Múcio"></td>
+                    <td><input type="number" class="preco" value="167.00"></td>
+                    <td class="totalItem">R$ 167.00</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Qat 4"></td>
+                    <td><input type="number" class="preco" value="32.50"></td>
+                    <td class="totalItem">R$ 32.50</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Servo Fluo"></td>
+                    <td><input type="number" class="preco" value="49.50"></td>
+                    <td class="totalItem">R$ 49.50</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Compra Remédio"></td>
+                    <td><input type="number" class="preco" value="33.00"></td>
+                    <td class="totalItem">R$ 33.00</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Maravilha Arqueimento"></td>
+                    <td><input type="number" class="preco" value="56.50"></td>
+                    <td class="totalItem">R$ 56.50</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Abracadabra"></td>
+                    <td><input type="number" class="preco" value="0.00"></td>
+                    <td class="totalItem">R$ 0.00</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="qtd" value="1"></td>
+                    <td><input type="text" class="desc" value="Selicone"></td>
+                    <td><input type="number" class="preco" value="0.00"></td>
+                    <td class="totalItem">R$ 0.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- área de total geral e assinatura -->
+        <div class="rodape-total">
+            <span style="font-size: 1.6rem;">TOTAL R$ <span id="totalGeral">656.50</span></span>
+        </div>
+
+        <div class="assinatura">
+            <span style="font-weight: bold;">Assinatura: <span class="linha-ass" style="display: inline-block; width: 250px;"></span></span>
+            <span style="font-size: 1.2rem;">TOTAL R$ <span id="totalGeral2">656.50</span></span>
+        </div>
+        <div class="obs-zeros">* Itens com valor zero conforme imagem (Abracadabra, Selicone)</div>
+    </div>
+
+    <!-- Botões de ação -->
+    <div class="botoes-acao">
+        <button class="btn" onclick="adicionarLinha()">+ Adicionar Item</button>
+        <button class="btn" onclick="calcularTotal()">📊 Calcular</button>
+        <button class="btn btn-pdf" onclick="gerarPDF()">📄 Gerar PDF</button>
+    </div>
+</div>
+
+<script>
+    // Função para adicionar uma nova linha em branco na tabela
+    function adicionarLinha() {
+        const tbody = document.getElementById('corpoTabela');
+        const novaLinha = document.createElement('tr');
+
+        novaLinha.innerHTML = `
+            <td><input type="number" class="qtd" value="1" step="0.01" min="0"></td>
+            <td><input type="text" class="desc" placeholder=""></td>
+            <td><input type="number" class="preco" value="0.00" step="0.01" min="0"></td>
+            <td class="totalItem">R$ 0.00</td>
+        `;
+        tbody.appendChild(novaLinha);
+        // após adicionar, recalcular para manter totais consistentes
+        calcularTotal();
+    }
+
+    // Função que percorre todas as linhas, calcula item e total geral
+    function calcularTotal() {
+        const linhas = document.querySelectorAll('#corpoTabela tr');
+        let totalAcumulado = 0;
+
+        linhas.forEach(linha => {
+            const qtdInput = linha.querySelector('.qtd');
+            const precoInput = linha.querySelector('.preco');
+            const celulaTotal = linha.querySelector('.totalItem');
+
+            if (qtdInput && precoInput && celulaTotal) {
+                let qtd = parseFloat(qtdInput.value) || 0;
+                let preco = parseFloat(precoInput.value) || 0;
+                let totalItem = qtd * preco;
+
+                // Formata como moeda brasileira na célula
+                celulaTotal.innerText = 'R$ ' + totalItem.toFixed(2);
+
+                totalAcumulado += totalItem;
+            }
+        });
+
+        // Atualiza os dois locais que exibem o total (rodapé e assinatura)
+        document.getElementById('totalGeral').innerText = totalAcumulado.toFixed(2);
+        document.getElementById('totalGeral2').innerText = totalAcumulado.toFixed(2);
+    }
+
+    // Dispara cálculo sempre que alterar valores (opcional: adicionar listeners)
+    function aplicarListeners() {
+        const inputsQuantidade = document.querySelectorAll('.qtd');
+        const inputsPreco = document.querySelectorAll('.preco');
+
+        function recalcular() {
+            calcularTotal();
+        }
+
+        inputsQuantidade.forEach(inp => inp.addEventListener('input', recalcular));
+        inputsPreco.forEach(inp => inp.addEventListener('input', recalcular));
+    }
+
+    // Gerar PDF usando html2pdf
+    function gerarPDF() {
+        const elemento = document.getElementById('pedido');
+        // Garantir cálculo atualizado antes de exportar
+        calcularTotal();
+
+        // Configuração para melhorar a qualidade e estilo no PDF
+        const opt = {
+            margin:        [0.5, 0.5, 0.5, 0.5], // superior, esquerdo, inferior, direito (em cm)
+            filename:     'talao_denis_auto_center.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, letterRendering: true, useCORS: true, logging: false },
+            jsPDF:        { unit: 'cm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(elemento).save();
+    }
+
+    // Inicializar: calcular total ao carregar a página e ativar listeners
+    window.onload = function() {
+        calcularTotal();
+        aplicarListeners();
+
+        // Sempre que adicionar nova linha, precisamos re-aplicar os listeners.
+        // Vamos sobrescrever a função adicionarLinha para também anexar listeners nos novos campos.
+        const originalAdicionar = adicionarLinha;
+        window.adicionarLinha = function() {
+            originalAdicionar();
+            aplicarListeners();  // atualiza eventos nos inputs novos
+            calcularTotal();
+        };
+    };
+</script>
+
+<!-- Pequena correção: ao editar qualquer campo, recalcular. Já ciente -->
+</body>
+</html>
