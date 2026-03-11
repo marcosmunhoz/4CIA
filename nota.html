@@ -2,463 +2,484 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Talão de Pedido · Denis Auto Center</title>
     <!-- html2pdf library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
-            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
         }
         body {
-            background: #ddd;
+            font-family: 'Courier New', Courier, monospace;
+            background: #c0b9a8;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 20px 10px;
+            min-height: 100vh;
+            padding: 8px;
             margin: 0;
         }
         .container {
-            max-width: 900px;
+            max-width: 500px;
             width: 100%;
-            background: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            padding: 25px 20px;
-            border-radius: 4px;
+            background-color: #fcf7e9;
+            border: 3px solid #2c2c2c;
+            box-shadow: 8px 8px 0 #3a3a3a;
+            padding: 16px 12px;
+            border-radius: 0;
         }
-        /* ESTILO DO TALÃO IGUAL À IMAGEM (rústico, datilografado) */
-        #pedido {
-            background: #fffaf0;
-            border: 2px solid #222;
-            padding: 20px 18px;
-            box-shadow: inset 0 0 0 1px #8b7d6b;
-            font-size: 15px;
-        }
-        .header-loja {
+        /* cabeçalho */
+        .header {
             text-align: center;
-            border-bottom: 2px dashed #333;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
+            border-bottom: 2px dashed #444;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
         }
-        .header-loja h1 {
-            font-size: 2.2rem;
-            margin: 0;
-            letter-spacing: 2px;
-            font-weight: 800;
+        .header h1 {
+            font-size: clamp(1.6rem, 7vw, 2.4rem);
+            font-weight: 900;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            color: #1f2a36;
+            line-height: 1.2;
         }
         .slogan {
-            font-size: 0.9rem;
-            font-style: italic;
-            background: #e6dbc9;
-            padding: 4px 0;
-            margin-top: 5px;
+            font-size: clamp(0.65rem, 3vw, 0.8rem);
+            background: #d8cfbc;
+            padding: 6px 4px;
+            margin-top: 6px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #121212;
         }
-        .talao-title {
-            font-size: 2rem;
-            font-weight: bold;
-            text-align: center;
-            border: 3px double #222;
-            display: inline-block;
-            padding: 6px 30px;
-            margin: 10px 0 15px;
-            letter-spacing: 2px;
-            background: #eee3d0;
-        }
-        .campos-cliente {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px 20px;
-            border: 1px solid #333;
-            padding: 15px;
-            background: #f5ede1;
-            margin-bottom: 20px;
-        }
-        .campo-linha {
+        /* linha do título talão + número */
+        .talao-row {
             display: flex;
-            align-items: center;
-            gap: 5px;
             flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            margin: 15px 0 12px;
         }
-        .campo-linha label {
+        .talao-titulo {
+            font-size: clamp(1.4rem, 6vw, 2.2rem);
             font-weight: bold;
-            min-width: 70px;
-            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            background: #222;
+            color: #f0e5d2;
+            padding: 4px 15px 4px 10px;
+            clip-path: polygon(0% 0%, 90% 0%, 100% 100%, 0% 100%);
         }
-        .campo-linha input {
-            border: none;
-            border-bottom: 1.5px solid #333;
+        .numero-talao {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: #ece1cf;
+            padding: 5px 15px;
+            border: 2px solid #222;
+            display: inline-block;
+        }
+        /* data automática */
+        .data-row {
+            text-align: right;
+            font-size: 1.2rem;
+            margin: 10px 0 20px;
+            background: #e6dccb;
+            padding: 8px 15px;
+            border-radius: 30px;
+            border: 1px solid #5a4f42;
+        }
+        .data-row strong {
+            background: #2d2d2d;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            margin-left: 8px;
+        }
+        /* grid campos cliente */
+        .cliente-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 8px;
+            background: #eadfcb;
+            border: 2px solid #3b352c;
+            padding: 18px 12px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+        }
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+        .campo label {
+            font-weight: 800;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #1f2a2f;
+        }
+        .campo input {
             background: transparent;
-            padding: 4px 6px;
+            border: none;
+            border-bottom: 2px solid #4a3f33;
+            padding: 8px 4px 4px;
             font-size: 0.95rem;
-            flex: 1;
-            min-width: 120px;
-            font-family: inherit;
-        }
-        .campo-linha input:focus {
+            font-family: 'Courier New', monospace;
+            width: 100%;
             outline: none;
-            background: #fff9e6;
         }
-        .tabela-pedido {
+        .campo input:focus {
+            background: #fff6df;
+            border-bottom-color: #ad7e4b;
+        }
+        .full-width {
+            grid-column: span 2;
+        }
+        /* tabela itens */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0 15px;
+            border: 2px solid #222;
+            background: #f3ecdb;
+            border-radius: 8px;
+        }
+        table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            border: 2px solid #222;
+            min-width: 400px;
         }
-        .tabela-pedido th {
-            background: #c5b59b;
-            border: 1px solid #000;
-            padding: 8px 4px;
-            font-size: 1rem;
+        th {
+            background: #988f7a;
+            color: #fff;
+            padding: 10px 4px;
+            font-size: 0.75rem;
             text-transform: uppercase;
+            border: 1px solid #111;
         }
-        .tabela-pedido td {
-            border: 1px solid #222;
-            padding: 5px 3px;
-            background: #fcf8f0;
-            vertical-align: middle;
+        td {
+            border: 1px solid #333;
+            padding: 5px 2px;
+            background: #fffef8;
         }
-        .tabela-pedido input {
+        td input {
             width: 100%;
-            border: 1px solid #aaa;
-            padding: 6px 5px;
-            background: white;
-            font-size: 0.95rem;
-            border-radius: 0;
-            box-sizing: border-box;
+            border: 1px solid #b0a58f;
+            padding: 10px 5px;
+            font-size: 0.9rem;
+            background: #fffdf3;
+            border-radius: 6px;
             font-family: 'Courier New', monospace;
-        }
-        .tabela-pedido input:focus {
-            background: #fdf5cf;
-            border-color: #222;
         }
         .total-item {
             font-weight: bold;
             text-align: right;
             padding-right: 12px;
-            background: #e6dbc9;
+            background: #ddcfb5;
+            white-space: nowrap;
         }
-        .rodape-total {
+        /* rodapé totais */
+        .total-geral-box {
             display: flex;
-            justify-content: flex-end;
+            flex-wrap: wrap;
+            justify-content: space-between;
             align-items: center;
-            margin: 15px 0 25px;
-            font-size: 1.6rem;
-            font-weight: bold;
-            border-top: 2px dashed #222;
-            padding-top: 15px;
-        }
-        .total-geral {
+            margin: 20px 0;
             background: #222;
             color: white;
-            padding: 10px 25px;
-            margin-left: 20px;
-            border-radius: 30px;
-            font-family: 'Arial Black', sans-serif;
+            padding: 15px 20px;
+            border-radius: 40px;
         }
-        .assinatura {
+        .total-geral-box span {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: #f7e9cf;
+            color: #222;
+            padding: 5px 25px;
+            border-radius: 40px;
+        }
+        .assinatura-area {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #333;
+            border-top: 2px dashed #3a3a3a;
             padding-top: 20px;
-            margin-top: 10px;
+            margin: 20px 0 10px;
         }
-        .linha-ass {
-            border-bottom: 2px solid #333;
-            width: 300px;
+        .ass-col {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .linha-assinatura {
+            display: inline-block;
+            width: 180px;
+            border-bottom: 3px solid #2c2c2c;
             height: 25px;
         }
-        .botoes-acao {
+        .total-assinatura {
+            background: #cec09f;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        /* botões */
+        .botoes {
             display: flex;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
             justify-content: center;
             margin: 30px 0 10px;
-            flex-wrap: wrap;
         }
         .btn {
-            background: #2c3e50;
+            flex: 1 1 140px;
+            background: #33404d;
             border: none;
             color: white;
-            padding: 12px 28px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            cursor: pointer;
+            padding: 15px 8px;
             border-radius: 40px;
-            box-shadow: 0 4px 0 #0f1720;
-            transition: 0.1s ease;
-            border: 1px solid #405b73;
+            box-shadow: 0 5px 0 #1b232c;
+            transition: 0.08s linear;
+            cursor: pointer;
+            border: 1px solid #7d8ca0;
+            min-width: 120px;
         }
-        .btn:hover {
-            background: #1d2b38;
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #0f1720;
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #1b232c;
         }
         .btn-pdf {
-            background: #7d3c1b;
-            box-shadow: 0 4px 0 #4f2812;
+            background: #6a3f1f;
+            box-shadow: 0 5px 0 #422c18;
         }
-        .obs-zeros {
-            font-size: 0.85rem;
-            color: #444;
+        .obs {
+            font-size: 0.7rem;
             text-align: right;
-            margin-top: 5px;
-            font-style: italic;
+            color: #3f3f3f;
+            margin-top: 12px;
         }
-        /* fix para impressão/pdf */
-        @media print {
-            body { background: white; }
-            .btn, .botoes-acao { display: none; }
+        /* tira setas input number (opcional) */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            opacity: 0.5;
+            height: 20px;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- TALÃO FIEL À IMAGEM + CAMPOS INTERATIVOS -->
-    <div id="pedido">
-        <!-- cabeçalho igual foto -->
-        <div class="header-loja">
-            <h1>Denis auto center</h1>
-            <div class="slogan">Suspensão Originais e Preparadas · Limpeza de Bicos Injetores · Suspensão · Troca de óleo · Freio · Mecânico em Geral</div>
-        </div>
+<div class="container" id="pedidoContainer">
+    <!-- cabeçalho DENIS AUTO CENTER -->
+    <div class="header">
+        <h1>DENIS AUTO CENTER</h1>
+        <div class="slogan">Suspensão Originais e Preparadas · Limpeza de Bicos Injetores · Suspensão · Troca de óleo · Freio · Mecânico em Geral</div>
+    </div>
 
-        <!-- título e número (aberto para edição) -->
-        <div style="display: flex; justify-content: space-between; align-items: baseline;">
-            <span class="talao-title">TALÃO DE PEDIDO</span>
-            <span style="font-size: 1.5rem; font-weight: bold;">Nº <input type="text" style="width: 80px; border:none; border-bottom:2px solid #333; background: transparent; font-size: 1.5rem;" placeholder="___"></span>
-        </div>
+    <!-- TALÃO DE PEDIDO + Nº dinâmico -->
+    <div class="talao-row">
+        <span class="talao-titulo">TALÃO DE PEDIDO</span>
+        <span class="numero-talao" id="numeroTalao">0001</span>
+    </div>
 
-        <!-- data do pedido (já preenchida com 02/02/26 como no modelo, mas editável) -->
-        <div style="text-align: right; font-size: 1.2rem; margin: 5px 0 10px;">
-            DATA: <input type="text" value="02, 02, 26" style="width: 120px; border:none; border-bottom: 2px solid #222; background: transparent; font-weight: bold;">
-        </div>
+    <!-- DATA automática do dia (preenchida via js) -->
+    <div class="data-row">
+        📅 DATA: <strong id="dataAtual"></strong>
+    </div>
 
-        <!-- campos cliente completos (endereço, bairro, cep, cidade, fone, fax, cel, cpf, rg, cond pgto) -->
-        <div class="campos-cliente">
-            <div class="campo-linha"><label>CLIENTE:</label> <input type="text" placeholder="__________________"></div>
-            <div class="campo-linha"><label>ENDEREÇO:</label> <input type="text" placeholder="__________________"></div>
-            <div class="campo-linha"><label>BAIRRO:</label> <input type="text" placeholder="________"></div>
-            <div class="campo-linha"><label>CEP:</label> <input type="text" placeholder="_____-___"></div>
-            <div class="campo-linha"><label>CIDADE:</label> <input type="text" placeholder="______________"></div>
-            <div class="campo-linha"><label>FONE:</label> <input type="text" placeholder="(  )   "></div>
-            <div class="campo-linha"><label>FAX:</label> <input type="text" placeholder="______"></div>
-            <div class="campo-linha"><label>CEL:</label> <input type="text" placeholder="(  )  "></div>
-            <div class="campo-linha"><label>CNPJ/CPF:</label> <input type="text" placeholder="___/___"></div>
-            <div class="campo-linha"><label>INCR./RG:</label> <input type="text" placeholder="________"></div>
-            <div class="campo-linha" style="grid-column: span 2;"><label>COND. PAGAMENTO:</label> <input type="text" placeholder="__________________________________" style="width: 80%;"></div>
-        </div>
+    <!-- CLIENTE: todos os campos vazios, prontos para preencher -->
+    <div class="cliente-grid">
+        <div class="campo full-width"><label>CLIENTE</label> <input type="text" placeholder="" value=""></div>
+        <div class="campo full-width"><label>ENDEREÇO</label> <input type="text" placeholder="" value=""></div>
+        <div class="campo"><label>BAIRRO</label> <input type="text" value=""></div>
+        <div class="campo"><label>CEP</label> <input type="text" value=""></div>
+        <div class="campo"><label>CIDADE</label> <input type="text" value=""></div>
+        <div class="campo"><label>FONE</label> <input type="text" value=""></div>
+        <div class="campo"><label>FAX</label> <input type="text" value=""></div>
+        <div class="campo"><label>CEL</label> <input type="text" value=""></div>
+        <div class="campo"><label>CNPJ/CPF</label> <input type="text" value=""></div>
+        <div class="campo"><label>INCR./RG</label> <input type="text" value=""></div>
+        <div class="campo full-width"><label>COND. PAGAMENTO</label> <input type="text" value=""></div>
+    </div>
 
-        <!-- TABELA DE ITENS (similar à imagem: quantidade, descrição, preço unit, total) -->
-        <table class="tabela-pedido" id="tabelaItens">
+    <!-- TABELA DE ITENS (totalmente limpa, sem valores pré-preenchidos) -->
+    <div class="table-container">
+        <table id="tabelaItens">
             <thead>
-                <tr>
-                    <th>QUANTIDADE</th>
-                    <th>DESCRIÇÃO</th>
-                    <th>PREÇO UNIT</th>
-                    <th>TOTAL</th>
-                </tr>
+                <tr><th>QUANT</th><th>DESCRIÇÃO</th><th>PREÇO UNIT</th><th>TOTAL</th></tr>
             </thead>
             <tbody id="corpoTabela">
-                <!-- Linhas iniciais espelhando a imagem (opcional, mas deixamos algumas preenchidas como exemplo) -->
+                <!-- serão inseridas linhas vazias via js, mas deixamos uma linha vazia modelo -->
                 <tr>
-                    <td><input type="number" class="qtd" value="1" step="0.01" min="0"></td>
-                    <td><input type="text" class="desc" value="Filho de Alvo"></td>
-                    <td><input type="number" class="preco" value="18.00" step="0.01" min="0"></td>
-                    <td class="totalItem">R$ 18.00</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="4" step="0.01"></td>
-                    <td><input type="text" class="desc" value="Litro de Alvo 540"></td>
-                    <td><input type="number" class="preco" value="33.50" step="0.01"></td>
-                    <td class="totalItem">R$ 134.00</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Kit Lavoro demedado"></td>
-                    <td><input type="number" class="preco" value="17.50"></td>
-                    <td class="totalItem">R$ 17.50</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Retuvo de Comando"></td>
-                    <td><input type="number" class="preco" value="25.50"></td>
-                    <td class="totalItem">R$ 25.50</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Fogo de Partilho Quart"></td>
-                    <td><input type="number" class="preco" value="60.00"></td>
-                    <td class="totalItem">R$ 60.00</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Abertura Radiador"></td>
-                    <td><input type="number" class="preco" value="31.50"></td>
-                    <td class="totalItem">R$ 31.50</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Galão de Água desminer"></td>
-                    <td><input type="number" class="preco" value="25.50"></td>
-                    <td class="totalItem">R$ 25.50</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Disco dióntreiro Múcio"></td>
-                    <td><input type="number" class="preco" value="167.00"></td>
-                    <td class="totalItem">R$ 167.00</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Qat 4"></td>
-                    <td><input type="number" class="preco" value="32.50"></td>
-                    <td class="totalItem">R$ 32.50</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Servo Fluo"></td>
-                    <td><input type="number" class="preco" value="49.50"></td>
-                    <td class="totalItem">R$ 49.50</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Compra Remédio"></td>
-                    <td><input type="number" class="preco" value="33.00"></td>
-                    <td class="totalItem">R$ 33.00</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Maravilha Arqueimento"></td>
-                    <td><input type="number" class="preco" value="56.50"></td>
-                    <td class="totalItem">R$ 56.50</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Abracadabra"></td>
-                    <td><input type="number" class="preco" value="0.00"></td>
-                    <td class="totalItem">R$ 0.00</td>
-                </tr>
-                <tr>
-                    <td><input type="number" class="qtd" value="1"></td>
-                    <td><input type="text" class="desc" value="Selicone"></td>
-                    <td><input type="number" class="preco" value="0.00"></td>
+                    <td><input type="number" class="qtd" value="" step="0.01" min="0" placeholder="0"></td>
+                    <td><input type="text" class="desc" placeholder=""></td>
+                    <td><input type="number" class="preco" value="" step="0.01" min="0" placeholder="0.00"></td>
                     <td class="totalItem">R$ 0.00</td>
                 </tr>
             </tbody>
         </table>
-
-        <!-- área de total geral e assinatura -->
-        <div class="rodape-total">
-            <span style="font-size: 1.6rem;">TOTAL R$ <span id="totalGeral">656.50</span></span>
-        </div>
-
-        <div class="assinatura">
-            <span style="font-weight: bold;">Assinatura: <span class="linha-ass" style="display: inline-block; width: 250px;"></span></span>
-            <span style="font-size: 1.2rem;">TOTAL R$ <span id="totalGeral2">656.50</span></span>
-        </div>
-        <div class="obs-zeros">* Itens com valor zero conforme imagem (Abracadabra, Selicone)</div>
     </div>
 
-    <!-- Botões de ação -->
-    <div class="botoes-acao">
-        <button class="btn" onclick="adicionarLinha()">+ Adicionar Item</button>
-        <button class="btn" onclick="calcularTotal()">📊 Calcular</button>
-        <button class="btn btn-pdf" onclick="gerarPDF()">📄 Gerar PDF</button>
+    <!-- total geral -->
+    <div class="total-geral-box">
+        <span style="font-size: 1.2rem;">TOTAL GERAL</span>
+        <span id="totalGeral">0.00</span>
     </div>
+
+    <!-- assinatura e total repetido -->
+    <div class="assinatura-area">
+        <div class="ass-col">Assinatura: <span class="linha-assinatura"></span></div>
+        <div class="total-assinatura" id="totalAssinatura">R$ 0.00</div>
+    </div>
+    <div class="obs">* preencha os itens conforme necessidade</div>
+</div>
+
+<!-- botões -->
+<div class="botoes">
+    <button class="btn" id="addLinhaBtn">➕ Item</button>
+    <button class="btn" id="calcularBtn">🧮 Calcular</button>
+    <button class="btn btn-pdf" id="pdfBtn">📄 Gerar PDF</button>
 </div>
 
 <script>
-    // Função para adicionar uma nova linha em branco na tabela
-    function adicionarLinha() {
-        const tbody = document.getElementById('corpoTabela');
-        const novaLinha = document.createElement('tr');
+    (function() {
+        // ---------- CONTROLE DE NUMERAÇÃO (localStorage) ----------
+        let numeroAtual = localStorage.getItem('talaoNumero');
+        if (!numeroAtual) {
+            numeroAtual = 1;
+        } else {
+            numeroAtual = parseInt(numeroAtual, 10);
+        }
+        // Formata com 4 dígitos (0001)
+        function formatarNumero(n) {
+            return n.toString().padStart(4, '0');
+        }
+        document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
 
-        novaLinha.innerHTML = `
-            <td><input type="number" class="qtd" value="1" step="0.01" min="0"></td>
-            <td><input type="text" class="desc" placeholder=""></td>
-            <td><input type="number" class="preco" value="0.00" step="0.01" min="0"></td>
-            <td class="totalItem">R$ 0.00</td>
-        `;
-        tbody.appendChild(novaLinha);
-        // após adicionar, recalcular para manter totais consistentes
-        calcularTotal();
-    }
+        // Incrementa para a próxima vez (quando gerar PDF)
+        function incrementarNumero() {
+            numeroAtual++;
+            localStorage.setItem('talaoNumero', numeroAtual);
+            document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
+        }
 
-    // Função que percorre todas as linhas, calcula item e total geral
-    function calcularTotal() {
-        const linhas = document.querySelectorAll('#corpoTabela tr');
-        let totalAcumulado = 0;
+        // ---------- DATA AUTOMÁTICA DO DIA ----------
+        function atualizarData() {
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = String(hoje.getFullYear()).slice(-2);
+            document.getElementById('dataAtual').innerText = `${dia}, ${mes}, ${ano}`;
+        }
+        atualizarData();
 
-        linhas.forEach(linha => {
-            const qtdInput = linha.querySelector('.qtd');
-            const precoInput = linha.querySelector('.preco');
-            const celulaTotal = linha.querySelector('.totalItem');
+        // ---------- TABELA: garantir que comece com linhas VAZIAS (sem valores da imagem) ----------
+        const corpoTabela = document.getElementById('corpoTabela');
+        // Limpa qualquer conteúdo prévio (exceto a estrutura de modelo)
+        corpoTabela.innerHTML = ''; 
+        // Adiciona 4 linhas vazias para começar (pode ajustar, mas o botão adiciona mais)
+        for (let i = 0; i < 4; i++) {
+            const novaLinha = document.createElement('tr');
+            novaLinha.innerHTML = `
+                <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
+                <td><input type="text" class="desc" placeholder=""></td>
+                <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
+                <td class="totalItem">R$ 0.00</td>
+            `;
+            corpoTabela.appendChild(novaLinha);
+        }
 
-            if (qtdInput && precoInput && celulaTotal) {
-                let qtd = parseFloat(qtdInput.value) || 0;
-                let preco = parseFloat(precoInput.value) || 0;
-                let totalItem = qtd * preco;
+        // ---------- FUNÇÃO CALCULAR ----------
+        function calcularTotalGeral() {
+            const linhas = document.querySelectorAll('#corpoTabela tr');
+            let acumulado = 0;
+            linhas.forEach(linha => {
+                const qtdInput = linha.querySelector('.qtd');
+                const precoInput = linha.querySelector('.preco');
+                const celTotal = linha.querySelector('.totalItem');
+                if (qtdInput && precoInput && celTotal) {
+                    let qtd = parseFloat(qtdInput.value) || 0;
+                    let preco = parseFloat(precoInput.value) || 0;
+                    let totalItem = qtd * preco;
+                    celTotal.innerText = 'R$ ' + totalItem.toFixed(2);
+                    acumulado += totalItem;
+                }
+            });
+            document.getElementById('totalGeral').innerText = acumulado.toFixed(2);
+            document.getElementById('totalAssinatura').innerText = 'R$ ' + acumulado.toFixed(2);
+        }
 
-                // Formata como moeda brasileira na célula
-                celulaTotal.innerText = 'R$ ' + totalItem.toFixed(2);
+        // Adicionar linha (em branco)
+        function adicionarLinhaVazia() {
+            const novaLinha = document.createElement('tr');
+            novaLinha.innerHTML = `
+                <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
+                <td><input type="text" class="desc" placeholder=""></td>
+                <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
+                <td class="totalItem">R$ 0.00</td>
+            `;
+            corpoTabela.appendChild(novaLinha);
+            // não recalcula automaticamente para não atrapalhar, mas pode chamar calcular
+        }
 
-                totalAcumulado += totalItem;
+        // ---------- EVENT LISTENERS ----------
+        document.getElementById('addLinhaBtn').addEventListener('click', function() {
+            adicionarLinhaVazia();
+        });
+
+        document.getElementById('calcularBtn').addEventListener('click', function() {
+            calcularTotalGeral();
+        });
+
+        // Para gerar PDF com incremento automático do Nº
+        document.getElementById('pdfBtn').addEventListener('click', function() {
+            // primeiro calcular para garantir totais atualizados
+            calcularTotalGeral();
+
+            // elemento a ser convertido
+            const elemento = document.getElementById('pedidoContainer');
+
+            // configuração do pdf
+            const opt = {
+                margin:        [0.5, 0.5, 0.5, 0.5],
+                filename:     `talao_${formatarNumero(numeroAtual)}.pdf`,
+                image:        { type: 'jpeg', quality: 0.95 },
+                html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
+                jsPDF:        { unit: 'cm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // executa a geração
+            html2pdf().set(opt).from(elemento).save();
+
+            // Após salvar (com pequeno atraso para nao conflitar), incrementa número
+            setTimeout(() => {
+                incrementarNumero();
+            }, 300);
+        });
+
+        // Atalho: ao digitar em qualquer input, pode chamar calcular? 
+        // Fica a critério, mas melhor usar o botão para performance no celular.
+        // Opcional: atualizar ao sair do campo (blur)
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('qtd') || e.target.classList.contains('preco')) {
+                // se quiser cálculo em tempo real descomente linha abaixo:
+                // calcularTotalGeral(); 
+                // deixei só no botão pra evitar lentidão, mas pode ativar.
             }
         });
 
-        // Atualiza os dois locais que exibem o total (rodapé e assinatura)
-        document.getElementById('totalGeral').innerText = totalAcumulado.toFixed(2);
-        document.getElementById('totalGeral2').innerText = totalAcumulado.toFixed(2);
-    }
+        // Expor calcular para uso externo, mas já está ok
+        window.calcularTotalGeral = calcularTotalGeral;
 
-    // Dispara cálculo sempre que alterar valores (opcional: adicionar listeners)
-    function aplicarListeners() {
-        const inputsQuantidade = document.querySelectorAll('.qtd');
-        const inputsPreco = document.querySelectorAll('.preco');
+        // Inicializa total
+        calcularTotalGeral();
 
-        function recalcular() {
-            calcularTotal();
-        }
-
-        inputsQuantidade.forEach(inp => inp.addEventListener('input', recalcular));
-        inputsPreco.forEach(inp => inp.addEventListener('input', recalcular));
-    }
-
-    // Gerar PDF usando html2pdf
-    function gerarPDF() {
-        const elemento = document.getElementById('pedido');
-        // Garantir cálculo atualizado antes de exportar
-        calcularTotal();
-
-        // Configuração para melhorar a qualidade e estilo no PDF
-        const opt = {
-            margin:        [0.5, 0.5, 0.5, 0.5], // superior, esquerdo, inferior, direito (em cm)
-            filename:     'talao_denis_auto_center.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, letterRendering: true, useCORS: true, logging: false },
-            jsPDF:        { unit: 'cm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(elemento).save();
-    }
-
-    // Inicializar: calcular total ao carregar a página e ativar listeners
-    window.onload = function() {
-        calcularTotal();
-        aplicarListeners();
-
-        // Sempre que adicionar nova linha, precisamos re-aplicar os listeners.
-        // Vamos sobrescrever a função adicionarLinha para também anexar listeners nos novos campos.
-        const originalAdicionar = adicionarLinha;
-        window.adicionarLinha = function() {
-            originalAdicionar();
-            aplicarListeners();  // atualiza eventos nos inputs novos
-            calcularTotal();
-        };
-    };
+        // Responsividade: campos de data já estão
+    })();
 </script>
 
-<!-- Pequena correção: ao editar qualquer campo, recalcular. Já ciente -->
+<!-- rodapé opcional -->
 </body>
 </html>
