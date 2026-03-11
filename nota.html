@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Denis Auto Center · Talão responsivo</title>
-    <!-- html2pdf -->
+    <title>Denis Auto Center · Talão Oficial</title>
+    <!-- html2pdf library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* RESET e base mobile-first */
+        /* RESET COMPLETO - sem vazamentos */
         * {
             margin: 0;
             padding: 0;
@@ -15,106 +15,104 @@
         }
 
         body {
-            background: #948b7a;
+            background: #8b7f6b;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* importante para rolagem */
+            justify-content: flex-start;
             min-height: 100vh;
-            padding: 8px 4px 15px 4px;
+            padding: 10px 6px 20px 6px;
             width: 100%;
         }
 
-        /* container principal do talão - largura máxima controlada */
-        .talao-container {
+        /* CARD PRINCIPAL - TUDO DENTRO AQUI */
+        .talao-card {
             width: 100%;
-            max-width: 480px;  /* limite agradável para celular */
-            margin: 0 auto 16px auto;
-            background: #fcf3e1;
-            border: 4px solid #1f2a2f;
-            box-shadow: 6px 6px 0 #1b2329;
-            padding: 16px 12px;
-            border-radius: 0;
+            max-width: 480px;
+            margin: 0 auto 15px auto;
+            background: #fdf5e6;
+            border: 4px solid #1e2a30;
+            box-shadow: 8px 8px 0 #1f2a2e;
+            padding: 20px 15px;
         }
 
-        /* Tipografia fluida */
-        h1 {
-            font-size: clamp(1.6rem, 8vw, 2.4rem);
+        /* cabeçalho */
+        .header h1 {
+            font-size: clamp(1.8rem, 7.5vw, 2.5rem);
             font-family: 'Arial Black', 'Impact', sans-serif;
             text-align: center;
-            background: #1e2e3b;
-            color: #f3e3cb;
-            padding: 8px 4px;
+            background: #20313c;
+            color: #f5e5ce;
+            padding: 10px 5px;
             letter-spacing: 1px;
-            word-break: break-word;
-            line-height: 1.2;
+            margin-bottom: 8px;
         }
 
         .slogan {
-            background: #cfc1a8;
+            background: #d4c5ab;
             font-size: clamp(0.6rem, 2.8vw, 0.8rem);
             font-weight: bold;
             text-align: center;
-            padding: 8px 5px;
-            border-radius: 30px;
-            margin: 12px 0 16px;
-            border: 1px solid #4f4435;
+            padding: 10px 6px;
+            border-radius: 40px;
+            border: 1px solid #544b3a;
+            margin-bottom: 18px;
+            line-height: 1.4;
         }
 
-        /* Linha do título + número */
-        .linha-numero {
+        /* linha do número */
+        .row-num {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             gap: 8px;
-            margin: 10px 0 8px;
+            margin: 5px 0 8px;
         }
-        .talao-titulo {
+        .talao-tit {
             font-size: clamp(1.5rem, 6vw, 2rem);
             font-weight: 900;
-            background: #222;
-            color: #ecdbaa;
-            padding: 6px 14px 6px 12px;
+            background: #1d1d1d;
+            color: #eddbb6;
+            padding: 5px 14px 5px 12px;
             clip-path: polygon(0% 0%, 92% 0%, 100% 100%, 0% 100%);
             white-space: nowrap;
         }
-        .numero-display {
-            background: #ebdbbf;
+        .num-display {
+            background: #e7d7bc;
             border: 3px solid #222;
             font-size: clamp(1.8rem, 7vw, 2.4rem);
             font-weight: 900;
             padding: 5px 18px;
             font-family: monospace;
-            line-height: 1.2;
         }
 
         /* data */
-        .data-container {
+        .data-wrapper {
             text-align: right;
-            margin: 12px 0 20px;
+            margin: 15px 0 20px;
         }
         .data-box {
-            background: #ddd0b4;
-            font-size: clamp(1.1rem, 5vw, 1.5rem);
-            padding: 8px 20px;
+            background: #dfd2b9;
+            font-size: clamp(1.2rem, 5vw, 1.6rem);
+            padding: 8px 25px;
             border-radius: 40px;
             display: inline-block;
-            border: 1px solid #3e362b;
+            border: 1px solid #4e4436;
             font-weight: bold;
         }
 
-        /* Grid cliente – adaptável */
-        .grid-cliente {
+        /* cliente grid - sem códigos soltos */
+        .cliente-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px 8px;
-            background: #e7dac5;
-            border: 2px solid #413a2d;
-            padding: 18px 12px;
-            border-radius: 20px;
-            margin-bottom: 24px;
+            gap: 14px 10px;
+            background: #e5d8c0;
+            border: 2px solid #4a4031;
+            padding: 20px 14px;
+            border-radius: 24px;
+            margin-bottom: 25px;
         }
         .campo {
             display: flex;
@@ -124,104 +122,104 @@
             font-size: 0.7rem;
             font-weight: 900;
             text-transform: uppercase;
-            color: #2f2b22;
+            color: #232f38;
             margin-bottom: 2px;
         }
         .campo input {
             background: transparent;
             border: none;
-            border-bottom: 2.5px solid #5f523f;
+            border-bottom: 2.5px solid #5d503d;
             padding: 6px 2px 4px;
             font-size: 1rem;
             font-family: 'Courier New', monospace;
-            width: 100%;
             outline: none;
+            width: 100%;
         }
         .campo input:focus {
-            background: #fcf3db;
+            background: #fff2da;
         }
-        .full-width {
+        .full {
             grid-column: span 2;
         }
 
-        /* Tabela: rolagem horizontal apenas quando necessário, mas bem comportada */
-        .table-wrapper {
+        /* tabela com scroll suave */
+        .tabela-rolagem {
             overflow-x: auto;
-            border: 2px solid #222;
+            border: 2px solid #1d1d1d;
+            background: #eae2d2;
             border-radius: 16px;
-            background: #e5ddce;
-            margin: 20px 0;
+            margin: 20px 0 15px;
             -webkit-overflow-scrolling: touch;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 380px;  /* garante legibilidade, mas celular pode rolar */
+            min-width: 380px;
         }
         th {
-            background: #5a5343;
+            background: #554e3f;
             color: white;
-            padding: 12px 3px;
+            padding: 10px 3px;
             font-size: 0.7rem;
             text-transform: uppercase;
         }
         td {
-            border: 1px solid #353535;
-            padding: 5px 3px;
+            border: 1px solid #3a3a3a;
+            padding: 4px 3px;
             background: #fffcf0;
         }
         td input {
             width: 100%;
-            border: 1px solid #9b907b;
-            padding: 10px 5px;
+            border: 1px solid #9f947f;
+            padding: 10px 6px;
             font-size: 0.9rem;
-            border-radius: 8px;
             background: #ffffff;
+            border-radius: 8px;
             font-family: 'Courier New', monospace;
         }
         .total-item {
-            font-weight: bold;
+            font-weight: 800;
             text-align: right;
-            padding-right: 10px;
-            background: #dacfb5;
+            padding-right: 12px;
+            background: #d3c8b0;
             white-space: nowrap;
         }
 
         /* totais */
-        .total-block {
+        .total-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            background: #1e1e1e;
+            background: #1f1f1f;
             color: white;
-            padding: 14px 18px;
+            padding: 15px 20px;
             border-radius: 60px;
-            margin: 15px 0 20px;
+            margin: 20px 0;
         }
         .total-label {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
         .total-valor {
-            background: #ffe1aa;
-            color: #111;
+            background: #fad893;
+            color: #121212;
             font-size: clamp(1.6rem, 7vw, 2.2rem);
             font-weight: 900;
-            padding: 8px 22px;
+            padding: 8px 25px;
             border-radius: 60px;
         }
 
         /* assinatura */
-        .assinatura-flex {
+        .assinatura-row {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            border-top: 2px dashed #4f4538;
-            padding: 18px 0 5px;
+            border-top: 2px dashed #4d4234;
+            padding: 20px 0 5px;
             gap: 15px;
         }
-        .ass-text {
+        .ass-left {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -229,25 +227,33 @@
             font-size: 1.2rem;
             flex-wrap: wrap;
         }
-        .linha-ass {
+        .linha-assinatura {
             width: 150px;
             border-bottom: 3px solid #1e1e1e;
             height: 18px;
         }
-        .total-assinatura {
-            background: #cdbea2;
+        .ass-right {
+            background: #d2c2a6;
             font-size: 1.8rem;
             font-weight: 900;
-            padding: 8px 22px;
-            border-radius: 50px;
+            padding: 8px 25px;
+            border-radius: 60px;
             white-space: nowrap;
         }
 
-        /* BOTÕES – agrupamento fixo e acessível */
-        .botoes-wrapper {
+        /* mensagem pequena */
+        .obs-footer {
+            font-size: 0.65rem;
+            text-align: right;
+            color: #3e3e3e;
+            margin-top: 12px;
+        }
+
+        /* BOTÕES FIXOS E ACESSÍVEIS */
+        .botoes-fixos {
             max-width: 480px;
             width: 100%;
-            margin: 0 auto;
+            margin: 5px auto 0 auto;
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
@@ -255,66 +261,63 @@
             padding: 8px 0 10px;
             position: sticky;
             bottom: 5px;
-            background-color: transparent;
-            z-index: 10;
+            z-index: 20;
+            background: transparent;
         }
         .btn {
             flex: 1 1 100px;
             min-width: 100px;
-            background: #2b3b4b;
+            background: #2c4053;
             border: none;
             color: white;
             font-size: 1rem;
             font-weight: 800;
             padding: 14px 6px;
             border-radius: 50px;
-            box-shadow: 0 5px 0 #18222b;
-            transition: 0.05s linear;
+            box-shadow: 0 5px 0 #1c2a35;
             cursor: pointer;
-            border: 1px solid #869bb1;
-            letter-spacing: 0.3px;
+            border: 1px solid #8fa3bb;
             text-align: center;
+            transition: 0.05s linear;
         }
         .btn:active {
             transform: translateY(4px);
-            box-shadow: 0 1px 0 #18222b;
+            box-shadow: 0 1px 0 #1c2a35;
         }
         .btn-pdf {
-            background: #8b582b;
-            box-shadow: 0 5px 0 #54381d;
+            background: #8b5a2e;
+            box-shadow: 0 5px 0 #543e24;
         }
         .btn-reset {
-            background: #5e5542;
-            box-shadow: 0 5px 0 #383325;
+            background: #625945;
+            box-shadow: 0 5px 0 #3f382b;
         }
-        /* pequeno espaço */
-        .obs {
-            font-size: 0.6rem;
-            text-align: right;
-            color: #2e2e2e;
-            margin-top: 12px;
-        }
+
+        /* garantir que nenhum css vaze */
+        .full { grid-column: span 2; } /* redundante mas seguro */
     </style>
 </head>
 <body>
-    <!-- TALÃO PRINCIPAL -->
-    <div class="talao-container" id="talaoCard">
-        <h1>DENIS AUTO CENTER</h1>
-        <div class="slogan">Suspensão Originais e Preparadas · Limpeza de Injetores · Suspensão · Troca de óleo · Freio · Mecânico em Geral</div>
-
-        <!-- Número e data -->
-        <div class="linha-numero">
-            <span class="talao-titulo">TALÃO DE PEDIDO</span>
-            <span class="numero-display" id="numeroTalao">0001</span>
+    <!-- TALÃO DE PEDIDO - ESTRUTURA LIMPA -->
+    <div class="talao-card" id="talaoCard">
+        <div class="header">
+            <h1>DENIS AUTO CENTER</h1>
+            <div class="slogan">Suspensão Originais e Preparadas · Limpeza de Injetores · Suspensão · Troca de óleo · Freio · Mecânico em Geral</div>
         </div>
-        <div class="data-container">
+
+        <!-- Nº e data -->
+        <div class="row-num">
+            <span class="talao-tit">TALÃO DE PEDIDO</span>
+            <span class="num-display" id="numeroTalao">0001</span>
+        </div>
+        <div class="data-wrapper">
             <span class="data-box" id="dataAtual"></span>
         </div>
 
-        <!-- CLIENTE: todos campos VAZIOS -->
-        <div class="grid-cliente">
-            <div class="campo full-width"><label>CLIENTE</label> <input type="text" value=""></div>
-            <div class="campo full-width"><label>ENDEREÇO</label> <input type="text" value=""></div>
+        <!-- Cliente: todos os campos vazios -->
+        <div class="cliente-grid">
+            <div class="campo full"><label>CLIENTE</label> <input type="text" value=""></div>
+            <div class="campo full"><label>ENDEREÇO</label> <input type="text" value=""></div>
             <div class="campo"><label>BAIRRO</label> <input type="text" value=""></div>
             <div class="campo"><label>CEP</label> <input type="text" value=""></div>
             <div class="campo"><label>CIDADE</label> <input type="text" value=""></div>
@@ -323,387 +326,37 @@
             <div class="campo"><label>CEL</label> <input type="text" value=""></div>
             <div class="campo"><label>CNPJ/CPF</label> <input type="text" value=""></div>
             <div class="campo"><label>INCR./RG</label> <input type="text" value=""></div>
-            <div class="campo full-width"><label>COND. PAGAMENTO</label> <input type="text" value=""></div>
+            <div class="campo full"><label>COND. PAGAMENTO</label> <input type="text" value=""></div>
         </div>
 
-        <!-- TABELA DE ITENS (totalmente limpa) -->
-        <div class="table-wrapper">
+        <!-- Tabela de itens (linhas serão inseridas via JS) -->
+        <div class="tabela-rolagem">
             <table id="tabelaItens">
                 <thead>
                     <tr><th>QUANT</th><th>DESCRIÇÃO</th><th>PREÇO UNIT</th><th>TOTAL</th></tr>
                 </thead>
                 <tbody id="corpoTabela">
-                    <!-- linhas serão inseridas via JS (vazias) -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- TOTAL GERAL -->
-        <div class="total-block">
-            <span class="total-label">TOTAL R$</span>
-            <span class="total-valor" id="totalGeral">0.00</span>
-        </div>
-
-        <!-- ASSINATURA -->
-        <div class="assinatura-flex">
-            <div class="ass-text">Assinatura: <span class="linha-ass"></span></div>
-            <div class="total-assinatura" id="totalAssinatura">R$ 0.00</div>
-        </div>
-        <div class="obs">* preencha os itens manualmente</div>
-    </div>
-
-    <!-- BOTÕES FORA DO CARD, SEMPRE ACESSÍVEIS -->
-    <div class="botoes-wrapper">
-        <button class="btn" id="addLinhaBtn">➕ Item</button>
-        <button class="btn" id="calcularBtn">🧮 Calcular</button>
-        <button class="btn btn-pdf" id="pdfBtn">📄 Gerar PDF</button>
-        <button class="btn btn-reset" id="zerarBtn">⚙️ Zerar</button>
-    </div>
-
-    <script>
-        (function() {
-            // ---------- NUMERAÇÃO (localStorage) ----------
-            let numeroAtual = localStorage.getItem('talaoNumero');
-            if (!numeroAtual) {
-                numeroAtual = 1;
-            } else {
-                numeroAtual = parseInt(numeroAtual, 10);
-            }
-            function formatarNumero(n) {
-                return n.toString().padStart(4, '0');
-            }
-            document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
-
-            function incrementarNumero() {
-                numeroAtual++;
-                localStorage.setItem('talaoNumero', numeroAtual);
-                document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
-            }
-
-            // Zerar numeração
-            document.getElementById('zerarBtn').addEventListener('click', function() {
-                numeroAtual = 1;
-                localStorage.setItem('talaoNumero', numeroAtual);
-                document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
-            });
-
-            // ---------- DATA ATUAL ----------
-            function atualizarData() {
-                const hoje = new Date();
-                const dia = String(hoje.getDate()).padStart(2, '0');
-                const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-                const ano = String(hoje.getFullYear()).slice(-2);
-                document.getElementById('dataAtual').innerText = `${dia}, ${mes}, ${ano}`;
-            }
-            atualizarData();
-
-            // ---------- TABELA: 4 LINHAS INICIAIS VAZIAS (sem nada preenchido) ----------
-            const corpoTabela = document.getElementById('corpoTabela');
-            corpoTabela.innerHTML = ''; // limpeza total
-
-            for (let i = 0; i < 4; i++) {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
-                    <td><input type="text" class="desc" placeholder=""></td>
-                    <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
-                    <td class="totalItem">R$ 0.00</td>
-                `;
-                corpoTabela.appendChild(tr);
-            }
-
-            // ---------- CALCULAR ----------
-            function calcularTudo() {
-                const linhas = document.querySelectorAll('#corpoTabela tr');
-                let acumulado = 0;
-                linhas.forEach(linha => {
-                    const qtdInp = linha.querySelector('.qtd');
-                    const precoInp = linha.querySelector('.preco');
-                    const cellTotal = linha.querySelector('.totalItem');
-                    if (qtdInp && precoInp && cellTotal) {
-                        let q = parseFloat(qtdInp.value) || 0;
-                        let p = parseFloat(precoInp.value) || 0;
-                        let tot = q * p;
-                        cellTotal.innerText = 'R$ ' + tot.toFixed(2);
-                        acumulado += tot;
-                    }
-                });
-                document.getElementById('totalGeral').innerText = acumulado.toFixed(2);
-                document.getElementById('totalAssinatura').innerText = 'R$ ' + acumulado.toFixed(2);
-            }
-
-            // Adicionar linha (sempre vazia)
-            document.getElementById('addLinhaBtn').addEventListener('click', function() {
-                const novaLinha = document.createElement('tr');
-                novaLinha.innerHTML = `
-                    <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
-                    <td><input type="text" class="desc" placeholder=""></td>
-                    <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
-                    <td class="totalItem">R$ 0.00</td>
-                `;
-                corpoTabela.appendChild(novaLinha);
-                // não recalcula automático (opcional)
-            });
-
-            // Botão calcular
-            document.getElementById('calcularBtn').addEventListener('click', function() {
-                calcularTudo();
-            });
-
-            // Gerar PDF + incremento
-            document.getElementById('pdfBtn').addEventListener('click', function() {
-                calcularTudo(); // garantir atualização
-
-                const elemento = document.getElementById('talaoCard');
-                const opt = {
-                    margin:        [0.4, 0.4, 0.4, 0.4],
-                    filename:     `talao_${formatarNumero(numeroAtual)}.pdf`,
-                    image:        { type: 'jpeg', quality: 0.96 },
-                    html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
-                    jsPDF:        { unit: 'cm', format: 'a4', orientation: 'portrait' }
-                };
-                html2pdf().set(opt).from(elemento).save();
-
-                // Incrementa após salvar
-                setTimeout(() => {
-                    incrementarNumero();
-                }, 250);
-            });
-
-            // Cálculo inicial (tudo zero)
-            calcularTudo();
-
-            // Pequeno helper: se quiser calcular ao editar, descomente abaixo (opcional)
-            // document.addEventListener('input', function(e) {
-            //     if (e.target.classList.contains('qtd') || e.target.classList.contains('preco')) {
-            //         calcularTudo();
-            //     }
-            // });
-        })();
-    </script>
-</body>
-</html>            display: flex;
-            flex-direction: column;
-        }
-        .campo label {
-            font-size: 0.7rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            color: #1f2b31;
-        }
-        .campo input {
-            background: transparent;
-            border: none;
-            border-bottom: 2.5px solid #4f4335;
-            padding: 6px 2px 2px;
-            font-size: 0.95rem;
-            font-family: inherit;
-            outline: none;
-        }
-        .campo input:focus {
-            background: #fbf1d9;
-        }
-        .full {
-            grid-column: span 2;
-        }
-        /* tabela com rolagem suave */
-        .tabela-wrapper {
-            overflow-x: auto;
-            border: 2px solid #1a1a1a;
-            background: #efebdd;
-            border-radius: 16px;
-            margin: 20px 0 15px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 400px;
-        }
-        th {
-            background: #4d4a40;
-            color: white;
-            padding: 10px 3px;
-            font-size: 0.7rem;
-        }
-        td {
-            border: 1px solid #2b2b2b;
-            padding: 4px 2px;
-            background: #fefcf3;
-        }
-        td input {
-            width: 100%;
-            border: 1px solid #938a78;
-            padding: 10px 5px;
-            font-size: 0.9rem;
-            background: #fffff5;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-        }
-        .total-item {
-            font-weight: 800;
-            text-align: right;
-            padding-right: 12px;
-            background: #d4cbb3;
-            white-space: nowrap;
-        }
-        /* totais */
-        .total-geral-block {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            background: #1c1c1c;
-            color: white;
-            padding: 18px 20px;
-            border-radius: 60px;
-            margin: 20px 0;
-        }
-        .total-geral-block span:last-child {
-            background: #ffdd9e;
-            color: #111;
-            font-size: 2rem;
-            font-weight: 900;
-            padding: 8px 25px;
-            border-radius: 50px;
-        }
-        .assinatura-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 2px dashed #3d362b;
-            padding: 20px 0 8px;
-            margin-top: 15px;
-        }
-        .ass-line {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        .risco {
-            width: 170px;
-            border-bottom: 3px solid #1e1e1e;
-            height: 20px;
-        }
-        .total-ass {
-            background: #cabda2;
-            font-size: 1.8rem;
-            font-weight: 900;
-            padding: 10px 25px;
-            border-radius: 50px;
-        }
-        /* BOTÕES PARA FORA DO CARD – sempre visíveis e centralizados */
-        .painel-botoes {
-            max-width: 520px;
-            width: 100%;
-            margin: 10px auto 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            padding: 8px 0 15px;
-        }
-        .btn {
-            flex: 1 1 110px;
-            background: #2d4055;
-            border: none;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 800;
-            padding: 14px 8px;
-            border-radius: 50px;
-            box-shadow: 0 5px 0 #14212b;
-            transition: 0.05s linear;
-            cursor: pointer;
-            border: 1px solid #8399b0;
-            min-width: 110px;
-            letter-spacing: 0.5px;
-        }
-        .btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 1px 0 #14212b;
-        }
-        .btn-pdf {
-            background: #7d4e25;
-            box-shadow: 0 5px 0 #4f3117;
-        }
-        .btn-reset {
-            background: #4f4a3d;
-            box-shadow: 0 5px 0 #2d2a20;
-        }
-        .obs-small {
-            font-size: 0.7rem;
-            text-align: right;
-            color: #2a2a2a;
-            margin-top: 10px;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-    </style>
-</head>
-<body>
-    <!-- CARD PRINCIPAL (TALÃO) -->
-    <div class="card" id="talaoCard">
-        <div class="header">
-            <h1>DENIS AUTO CENTER</h1>
-            <div class="slogan">Suspensão Originais e Preparadas · Limpeza de Injetores · Suspensão · Troca de óleo · Freio · Mecânico em Geral</div>
-        </div>
-
-        <!-- Número do talão e data -->
-        <div class="linha-talao">
-            <span class="talao-titulo">TALÃO DE PEDIDO</span>
-            <span class="numero-box" id="numeroTalao">0001</span>
-        </div>
-        <div style="text-align: right; margin-bottom: 12px;">
-            <span class="data-dia" id="dataAtual">11, 03, 26</span>
-        </div>
-
-        <!-- CLIENTE: todos campos vazios -->
-        <div class="grid-cliente">
-            <div class="campo full"><label>CLIENTE</label> <input type="text" placeholder=""></div>
-            <div class="campo full"><label>ENDEREÇO</label> <input type="text" placeholder=""></div>
-            <div class="campo"><label>BAIRRO</label> <input type="text"></div>
-            <div class="campo"><label>CEP</label> <input type="text"></div>
-            <div class="campo"><label>CIDADE</label> <input type="text"></div>
-            <div class="campo"><label>FONE</label> <input type="text"></div>
-            <div class="campo"><label>FAX</label> <input type="text"></div>
-            <div class="campo"><label>CEL</label> <input type="text"></div>
-            <div class="campo"><label>CNPJ/CPF</label> <input type="text"></div>
-            <div class="campo"><label>INCR./RG</label> <input type="text"></div>
-            <div class="campo full"><label>COND. PAGAMENTO</label> <input type="text"></div>
-        </div>
-
-        <!-- TABELA ITENS (começa com 4 linhas vazias) -->
-        <div class="tabela-wrapper">
-            <table id="tabelaItens">
-                <thead>
-                    <tr><th>QUANT</th><th>DESCRIÇÃO</th><th>PREÇO UNIT</th><th>TOTAL</th></tr>
-                </thead>
-                <tbody id="corpoTabela">
-                    <!-- as linhas serão inseridas via JS, mas já deixamos 4 vazias -->
+                    <!-- linhas vazias via js -->
                 </tbody>
             </table>
         </div>
 
         <!-- Total geral -->
-        <div class="total-geral-block">
-            <span style="font-size:1.3rem;">TOTAL R$</span>
-            <span id="totalGeral">0.00</span>
+        <div class="total-container">
+            <span class="total-label">TOTAL R$</span>
+            <span class="total-valor" id="totalGeral">0.00</span>
         </div>
 
-        <!-- Assinatura e total repetido -->
+        <!-- Assinatura -->
         <div class="assinatura-row">
-            <div class="ass-line">Assinatura: <span class="risco"></span></div>
-            <div class="total-ass" id="totalAssinatura">R$ 0.00</div>
+            <div class="ass-left">Assinatura: <span class="linha-assinatura"></span></div>
+            <div class="ass-right" id="totalAssinatura">R$ 0.00</div>
         </div>
-        <div class="obs-small">* preencha os campos. Botões abaixo</div>
+        <div class="obs-footer">* preencha os campos. Botões abaixo.</div>
     </div>
 
-    <!-- PAINEL DE BOTÕES FORA DO CARD (garantindo visibilidade) -->
-    <div class="painel-botoes">
+    <!-- BOTÕES (fora do card) -->
+    <div class="botoes-fixos">
         <button class="btn" id="addLinhaBtn">➕ Item</button>
         <button class="btn" id="calcularBtn">🧮 Calcular</button>
         <button class="btn btn-pdf" id="pdfBtn">📄 Gerar PDF</button>
@@ -712,510 +365,112 @@
 
     <script>
         (function() {
-            // ---------- NUMERAÇÃO via localStorage ----------
+            // -------------------- NUMERAÇÃO --------------------
             let numeroAtual = localStorage.getItem('talaoNumero');
-            if (!numeroAtual) {
-                numeroAtual = 1;
-            } else {
-                numeroAtual = parseInt(numeroAtual, 10);
-            }
+            if (!numeroAtual) numeroAtual = 1;
+            else numeroAtual = parseInt(numeroAtual, 10);
 
-            function formatarNumero(n) {
+            function formatarNum(n) {
                 return n.toString().padStart(4, '0');
             }
-            document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
+            document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
 
             function incrementarNumero() {
                 numeroAtual++;
                 localStorage.setItem('talaoNumero', numeroAtual);
-                document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
+                document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
             }
 
-            // Botão ZERAR (reinicia numeração para 1)
+            // Zerar
             document.getElementById('zerarBtn').addEventListener('click', function() {
                 numeroAtual = 1;
                 localStorage.setItem('talaoNumero', numeroAtual);
-                document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
-                // (opcional) alerta rápido
+                document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
             });
 
-            // ---------- DATA AUTOMÁTICA ----------
-            function preencherData() {
-                const hoje = new Date();
-                const dia = String(hoje.getDate()).padStart(2, '0');
-                const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-                const ano = String(hoje.getFullYear()).slice(-2);
-                document.getElementById('dataAtual').innerText = `${dia}, ${mes}, ${ano}`;
-            }
-            preencherData();
+            // -------------------- DATA AUTOMÁTICA --------------------
+            const dataEl = document.getElementById('dataAtual');
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = String(hoje.getFullYear()).slice(-2);
+            dataEl.innerText = `${dia}, ${mes}, ${ano}`;
 
-            // ---------- CORPO DA TABELA (TUDO VAZIO) ----------
-            const corpoTabela = document.getElementById('corpoTabela');
-            corpoTabela.innerHTML = ''; // limpa qualquer resquício
+            // -------------------- TABELA: 4 LINHAS INICIAIS VAZIAS --------------------
+            const corpo = document.getElementById('corpoTabela');
+            corpo.innerHTML = ''; // limpa qualquer resíduo
 
-            // Cria 4 linhas iniciais vazias
             for (let i = 0; i < 4; i++) {
                 const novaLinha = document.createElement('tr');
                 novaLinha.innerHTML = `
                     <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
                     <td><input type="text" class="desc" placeholder=""></td>
                     <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
-                    <td class="totalItem">R$ 0.00</td>
+                    <td class="total-item">R$ 0.00</td>
                 `;
-                corpoTabela.appendChild(novaLinha);
+                corpo.appendChild(novaLinha);
             }
 
-            // ---------- CALCULAR TOTAL ----------
-            function calcularTotal() {
+            // -------------------- FUNÇÃO CALCULAR --------------------
+            function calcularTotais() {
                 const linhas = document.querySelectorAll('#corpoTabela tr');
-                let total = 0;
+                let totalGeral = 0;
                 linhas.forEach(linha => {
-                    const qtdInput = linha.querySelector('.qtd');
-                    const precoInput = linha.querySelector('.preco');
-                    const totalCell = linha.querySelector('.totalItem');
-                    if (qtdInput && precoInput && totalCell) {
-                        let qtd = parseFloat(qtdInput.value) || 0;
-                        let preco = parseFloat(precoInput.value) || 0;
-                        let itemTotal = qtd * preco;
-                        totalCell.innerText = 'R$ ' + itemTotal.toFixed(2);
-                        total += itemTotal;
+                    const qtdInp = linha.querySelector('.qtd');
+                    const precoInp = linha.querySelector('.preco');
+                    const totalCell = linha.querySelector('.total-item');
+                    if (qtdInp && precoInp && totalCell) {
+                        let q = parseFloat(qtdInp.value) || 0;
+                        let p = parseFloat(precoInp.value) || 0;
+                        let sub = q * p;
+                        totalCell.innerText = 'R$ ' + sub.toFixed(2);
+                        totalGeral += sub;
                     }
                 });
-                document.getElementById('totalGeral').innerText = total.toFixed(2);
-                document.getElementById('totalAssinatura').innerText = 'R$ ' + total.toFixed(2);
+                document.getElementById('totalGeral').innerText = totalGeral.toFixed(2);
+                document.getElementById('totalAssinatura').innerText = 'R$ ' + totalGeral.toFixed(2);
             }
 
-            // ---------- ADICIONAR LINHA (EM BRANCO) ----------
+            // Adicionar linha vazia
             document.getElementById('addLinhaBtn').addEventListener('click', function() {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
                     <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
                     <td><input type="text" class="desc" placeholder=""></td>
                     <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
-                    <td class="totalItem">R$ 0.00</td>
+                    <td class="total-item">R$ 0.00</td>
                 `;
-                corpoTabela.appendChild(linha);
-                // não recalcula automaticamente (opção do usuário clicar em calcular)
+                corpo.appendChild(linha);
+                // não recalcula automaticamente (o usuário clica em calcular)
             });
 
-            // Botão Calcular
+            // Calcular
             document.getElementById('calcularBtn').addEventListener('click', function() {
-                calcularTotal();
+                calcularTotais();
             });
 
-            // ---------- GERAR PDF (com incremento) ----------
+            // Gerar PDF + incremento
             document.getElementById('pdfBtn').addEventListener('click', function() {
-                calcularTotal(); // garantir atualização
+                calcularTotais(); // atualiza antes
 
                 const elemento = document.getElementById('talaoCard');
                 const opt = {
                     margin:        [0.4, 0.4, 0.4, 0.4],
-                    filename:     `talao_${formatarNumero(numeroAtual)}.pdf`,
+                    filename:     `talao_${formatarNum(numeroAtual)}.pdf`,
                     image:        { type: 'jpeg', quality: 0.96 },
                     html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
                     jsPDF:        { unit: 'cm', format: 'a4', orientation: 'portrait' }
                 };
                 html2pdf().set(opt).from(elemento).save();
 
-                // incrementa número após um breve atraso para nao interferir
                 setTimeout(() => {
                     incrementarNumero();
                 }, 250);
             });
 
             // Cálculo inicial (tudo zero)
-            calcularTotal();
-
-            // Opcional: recalcular ao digitar (com debounce manual) - fica a gosto
-            // Por simplicidade, manteremos só no botão, mas podemos adicionar um listener leve
-            document.addEventListener('input', function(e) {
-                if (e.target.classList.contains('qtd') || e.target.classList.contains('preco')) {
-                    // se quiser tempo real descomente a linha abaixo:
-                    // calcularTotal();
-                    // (deixei comentado para performance e evitar cálculos desnecessários, 
-                    // já que o botão calcular está visível)
-                }
-            });
+            calcularTotais();
         })();
     </script>
-</body>
-</html>            gap: 12px 8px;
-            background: #eadfcb;
-            border: 2px solid #3b352c;
-            padding: 18px 12px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-        }
-        .campo {
-            display: flex;
-            flex-direction: column;
-        }
-        .campo label {
-            font-weight: 800;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #1f2a2f;
-        }
-        .campo input {
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #4a3f33;
-            padding: 8px 4px 4px;
-            font-size: 0.95rem;
-            font-family: 'Courier New', monospace;
-            width: 100%;
-            outline: none;
-        }
-        .campo input:focus {
-            background: #fff6df;
-            border-bottom-color: #ad7e4b;
-        }
-        .full-width {
-            grid-column: span 2;
-        }
-        /* tabela itens */
-        .table-container {
-            overflow-x: auto;
-            margin: 20px 0 15px;
-            border: 2px solid #222;
-            background: #f3ecdb;
-            border-radius: 8px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 400px;
-        }
-        th {
-            background: #988f7a;
-            color: #fff;
-            padding: 10px 4px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            border: 1px solid #111;
-        }
-        td {
-            border: 1px solid #333;
-            padding: 5px 2px;
-            background: #fffef8;
-        }
-        td input {
-            width: 100%;
-            border: 1px solid #b0a58f;
-            padding: 10px 5px;
-            font-size: 0.9rem;
-            background: #fffdf3;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-        }
-        .total-item {
-            font-weight: bold;
-            text-align: right;
-            padding-right: 12px;
-            background: #ddcfb5;
-            white-space: nowrap;
-        }
-        /* rodapé totais */
-        .total-geral-box {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            background: #222;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 40px;
-        }
-        .total-geral-box span {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: #f7e9cf;
-            color: #222;
-            padding: 5px 25px;
-            border-radius: 40px;
-        }
-        .assinatura-area {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 2px dashed #3a3a3a;
-            padding-top: 20px;
-            margin: 20px 0 10px;
-        }
-        .ass-col {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        .linha-assinatura {
-            display: inline-block;
-            width: 180px;
-            border-bottom: 3px solid #2c2c2c;
-            height: 25px;
-        }
-        .total-assinatura {
-            background: #cec09f;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
-        /* botões */
-        .botoes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin: 30px 0 10px;
-        }
-        .btn {
-            flex: 1 1 140px;
-            background: #33404d;
-            border: none;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: bold;
-            padding: 15px 8px;
-            border-radius: 40px;
-            box-shadow: 0 5px 0 #1b232c;
-            transition: 0.08s linear;
-            cursor: pointer;
-            border: 1px solid #7d8ca0;
-            min-width: 120px;
-        }
-        .btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 1px 0 #1b232c;
-        }
-        .btn-pdf {
-            background: #6a3f1f;
-            box-shadow: 0 5px 0 #422c18;
-        }
-        .obs {
-            font-size: 0.7rem;
-            text-align: right;
-            color: #3f3f3f;
-            margin-top: 12px;
-        }
-        /* tira setas input number (opcional) */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            opacity: 0.5;
-            height: 20px;
-        }
-    </style>
-</head>
-<body>
-<div class="container" id="pedidoContainer">
-    <!-- cabeçalho DENIS AUTO CENTER -->
-    <div class="header">
-        <h1>DENIS AUTO CENTER</h1>
-        <div class="slogan">Suspensão Originais e Preparadas · Limpeza de Bicos Injetores · Suspensão · Troca de óleo · Freio · Mecânico em Geral</div>
-    </div>
-
-    <!-- TALÃO DE PEDIDO + Nº dinâmico -->
-    <div class="talao-row">
-        <span class="talao-titulo">TALÃO DE PEDIDO</span>
-        <span class="numero-talao" id="numeroTalao">0001</span>
-    </div>
-
-    <!-- DATA automática do dia (preenchida via js) -->
-    <div class="data-row">
-        📅 DATA: <strong id="dataAtual"></strong>
-    </div>
-
-    <!-- CLIENTE: todos os campos vazios, prontos para preencher -->
-    <div class="cliente-grid">
-        <div class="campo full-width"><label>CLIENTE</label> <input type="text" placeholder="" value=""></div>
-        <div class="campo full-width"><label>ENDEREÇO</label> <input type="text" placeholder="" value=""></div>
-        <div class="campo"><label>BAIRRO</label> <input type="text" value=""></div>
-        <div class="campo"><label>CEP</label> <input type="text" value=""></div>
-        <div class="campo"><label>CIDADE</label> <input type="text" value=""></div>
-        <div class="campo"><label>FONE</label> <input type="text" value=""></div>
-        <div class="campo"><label>FAX</label> <input type="text" value=""></div>
-        <div class="campo"><label>CEL</label> <input type="text" value=""></div>
-        <div class="campo"><label>CNPJ/CPF</label> <input type="text" value=""></div>
-        <div class="campo"><label>INCR./RG</label> <input type="text" value=""></div>
-        <div class="campo full-width"><label>COND. PAGAMENTO</label> <input type="text" value=""></div>
-    </div>
-
-    <!-- TABELA DE ITENS (totalmente limpa, sem valores pré-preenchidos) -->
-    <div class="table-container">
-        <table id="tabelaItens">
-            <thead>
-                <tr><th>QUANT</th><th>DESCRIÇÃO</th><th>PREÇO UNIT</th><th>TOTAL</th></tr>
-            </thead>
-            <tbody id="corpoTabela">
-                <!-- serão inseridas linhas vazias via js, mas deixamos uma linha vazia modelo -->
-                <tr>
-                    <td><input type="number" class="qtd" value="" step="0.01" min="0" placeholder="0"></td>
-                    <td><input type="text" class="desc" placeholder=""></td>
-                    <td><input type="number" class="preco" value="" step="0.01" min="0" placeholder="0.00"></td>
-                    <td class="totalItem">R$ 0.00</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- total geral -->
-    <div class="total-geral-box">
-        <span style="font-size: 1.2rem;">TOTAL GERAL</span>
-        <span id="totalGeral">0.00</span>
-    </div>
-
-    <!-- assinatura e total repetido -->
-    <div class="assinatura-area">
-        <div class="ass-col">Assinatura: <span class="linha-assinatura"></span></div>
-        <div class="total-assinatura" id="totalAssinatura">R$ 0.00</div>
-    </div>
-    <div class="obs">* preencha os itens conforme necessidade</div>
-</div>
-
-<!-- botões -->
-<div class="botoes">
-    <button class="btn" id="addLinhaBtn">➕ Item</button>
-    <button class="btn" id="calcularBtn">🧮 Calcular</button>
-    <button class="btn btn-pdf" id="pdfBtn">📄 Gerar PDF</button>
-</div>
-
-<script>
-    (function() {
-        // ---------- CONTROLE DE NUMERAÇÃO (localStorage) ----------
-        let numeroAtual = localStorage.getItem('talaoNumero');
-        if (!numeroAtual) {
-            numeroAtual = 1;
-        } else {
-            numeroAtual = parseInt(numeroAtual, 10);
-        }
-        // Formata com 4 dígitos (0001)
-        function formatarNumero(n) {
-            return n.toString().padStart(4, '0');
-        }
-        document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
-
-        // Incrementa para a próxima vez (quando gerar PDF)
-        function incrementarNumero() {
-            numeroAtual++;
-            localStorage.setItem('talaoNumero', numeroAtual);
-            document.getElementById('numeroTalao').innerText = formatarNumero(numeroAtual);
-        }
-
-        // ---------- DATA AUTOMÁTICA DO DIA ----------
-        function atualizarData() {
-            const hoje = new Date();
-            const dia = String(hoje.getDate()).padStart(2, '0');
-            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-            const ano = String(hoje.getFullYear()).slice(-2);
-            document.getElementById('dataAtual').innerText = `${dia}, ${mes}, ${ano}`;
-        }
-        atualizarData();
-
-        // ---------- TABELA: garantir que comece com linhas VAZIAS (sem valores da imagem) ----------
-        const corpoTabela = document.getElementById('corpoTabela');
-        // Limpa qualquer conteúdo prévio (exceto a estrutura de modelo)
-        corpoTabela.innerHTML = ''; 
-        // Adiciona 4 linhas vazias para começar (pode ajustar, mas o botão adiciona mais)
-        for (let i = 0; i < 4; i++) {
-            const novaLinha = document.createElement('tr');
-            novaLinha.innerHTML = `
-                <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
-                <td><input type="text" class="desc" placeholder=""></td>
-                <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
-                <td class="totalItem">R$ 0.00</td>
-            `;
-            corpoTabela.appendChild(novaLinha);
-        }
-
-        // ---------- FUNÇÃO CALCULAR ----------
-        function calcularTotalGeral() {
-            const linhas = document.querySelectorAll('#corpoTabela tr');
-            let acumulado = 0;
-            linhas.forEach(linha => {
-                const qtdInput = linha.querySelector('.qtd');
-                const precoInput = linha.querySelector('.preco');
-                const celTotal = linha.querySelector('.totalItem');
-                if (qtdInput && precoInput && celTotal) {
-                    let qtd = parseFloat(qtdInput.value) || 0;
-                    let preco = parseFloat(precoInput.value) || 0;
-                    let totalItem = qtd * preco;
-                    celTotal.innerText = 'R$ ' + totalItem.toFixed(2);
-                    acumulado += totalItem;
-                }
-            });
-            document.getElementById('totalGeral').innerText = acumulado.toFixed(2);
-            document.getElementById('totalAssinatura').innerText = 'R$ ' + acumulado.toFixed(2);
-        }
-
-        // Adicionar linha (em branco)
-        function adicionarLinhaVazia() {
-            const novaLinha = document.createElement('tr');
-            novaLinha.innerHTML = `
-                <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
-                <td><input type="text" class="desc" placeholder=""></td>
-                <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
-                <td class="totalItem">R$ 0.00</td>
-            `;
-            corpoTabela.appendChild(novaLinha);
-            // não recalcula automaticamente para não atrapalhar, mas pode chamar calcular
-        }
-
-        // ---------- EVENT LISTENERS ----------
-        document.getElementById('addLinhaBtn').addEventListener('click', function() {
-            adicionarLinhaVazia();
-        });
-
-        document.getElementById('calcularBtn').addEventListener('click', function() {
-            calcularTotalGeral();
-        });
-
-        // Para gerar PDF com incremento automático do Nº
-        document.getElementById('pdfBtn').addEventListener('click', function() {
-            // primeiro calcular para garantir totais atualizados
-            calcularTotalGeral();
-
-            // elemento a ser convertido
-            const elemento = document.getElementById('pedidoContainer');
-
-            // configuração do pdf
-            const opt = {
-                margin:        [0.5, 0.5, 0.5, 0.5],
-                filename:     `talao_${formatarNumero(numeroAtual)}.pdf`,
-                image:        { type: 'jpeg', quality: 0.95 },
-                html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
-                jsPDF:        { unit: 'cm', format: 'a4', orientation: 'portrait' }
-            };
-
-            // executa a geração
-            html2pdf().set(opt).from(elemento).save();
-
-            // Após salvar (com pequeno atraso para nao conflitar), incrementa número
-            setTimeout(() => {
-                incrementarNumero();
-            }, 300);
-        });
-
-        // Atalho: ao digitar em qualquer input, pode chamar calcular? 
-        // Fica a critério, mas melhor usar o botão para performance no celular.
-        // Opcional: atualizar ao sair do campo (blur)
-        document.addEventListener('input', function(e) {
-            if (e.target.classList.contains('qtd') || e.target.classList.contains('preco')) {
-                // se quiser cálculo em tempo real descomente linha abaixo:
-                // calcularTotalGeral(); 
-                // deixei só no botão pra evitar lentidão, mas pode ativar.
-            }
-        });
-
-        // Expor calcular para uso externo, mas já está ok
-        window.calcularTotalGeral = calcularTotalGeral;
-
-        // Inicializa total
-        calcularTotalGeral();
-
-        // Responsividade: campos de data já estão
-    })();
-</script>
-
-<!-- rodapé opcional -->
 </body>
 </html>
