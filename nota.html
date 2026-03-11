@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Denis Auto Center · Talão + Imagem WhatsApp</title>
-    <!-- html2canvas para gerar imagem -->
+    <title>Denis Auto Center · + Mão de Obra</title>
+    <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* RESET completo */
         * {
             margin: 0;
             padding: 0;
@@ -26,10 +25,9 @@
             width: 100%;
         }
 
-        /* CARD PRINCIPAL */
         .talao-card {
             width: 100%;
-            max-width: 440px;  /* um pouco mais estreito para caber bem */
+            max-width: 440px;
             margin: 0 auto 12px auto;
             background: #fdf5e6;
             border: 4px solid #1e2a30;
@@ -37,7 +35,6 @@
             padding: 18px 12px;
         }
 
-        /* cabeçalho */
         .header h1 {
             font-size: clamp(1.6rem, 7vw, 2.2rem);
             font-family: 'Arial Black', 'Impact', sans-serif;
@@ -61,7 +58,6 @@
             line-height: 1.3;
         }
 
-        /* linha do número */
         .row-num {
             display: flex;
             flex-wrap: wrap;
@@ -88,7 +84,6 @@
             font-family: monospace;
         }
 
-        /* data */
         .data-wrapper {
             text-align: right;
             margin: 10px 0 18px;
@@ -103,7 +98,7 @@
             font-weight: bold;
         }
 
-        /* cliente grid - mais compacto */
+        /* Cliente grid */
         .cliente-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -140,7 +135,40 @@
             grid-column: span 2;
         }
 
-        /* tabela com rolagem suave */
+        /* NOVO CAMPO MÃO DE OBRA (entre cliente e tabela) */
+        .mao-de-obra-container {
+            background: #d9cdb2;
+            border: 2px solid #4a4031;
+            border-radius: 20px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        .mao-de-obra-label {
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #1f2f38;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        .mao-de-obra-input {
+            width: 100%;
+            background: #fff8e7;
+            border: 2px solid #5d503d;
+            border-radius: 16px;
+            padding: 12px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 70px;
+            outline: none;
+        }
+        .mao-de-obra-input:focus {
+            background: #fffff0;
+            border-color: #7f6a4d;
+        }
+
+        /* Tabela */
         .tabela-rolagem {
             overflow-x: auto;
             border: 2px solid #1d1d1d;
@@ -184,7 +212,6 @@
             font-size: 0.85rem;
         }
 
-        /* totais */
         .total-container {
             display: flex;
             flex-wrap: wrap;
@@ -208,7 +235,6 @@
             border-radius: 50px;
         }
 
-        /* assinatura */
         .assinatura-row {
             display: flex;
             flex-wrap: wrap;
@@ -240,7 +266,6 @@
             white-space: nowrap;
         }
 
-        /* BOTÕES PEQUENOS */
         .botoes-fixos {
             max-width: 440px;
             width: 100%;
@@ -255,7 +280,7 @@
             z-index: 20;
         }
         .btn {
-            flex: 0 1 auto;      /* não força expansão */
+            flex: 0 1 auto;
             min-width: 70px;
             background: #2c4053;
             border: none;
@@ -275,17 +300,13 @@
             transform: translateY(3px);
             box-shadow: 0 1px 0 #1c2a35;
         }
-        .btn-pdf {
-            background: #8b5a2e;
-            box-shadow: 0 3px 0 #543e24;
+        .btn-wpp {
+            background: #25a05e;
+            box-shadow: 0 3px 0 #146b3a;
         }
         .btn-reset {
             background: #625945;
             box-shadow: 0 3px 0 #3f382b;
-        }
-        .btn-wpp {
-            background: #25a05e;
-            box-shadow: 0 3px 0 #146b3a;
         }
 
         .obs-footer {
@@ -297,11 +318,10 @@
     </style>
 </head>
 <body>
-    <!-- TALÃO -->
     <div class="talao-card" id="talaoCard">
         <div class="header">
             <h1>DENIS AUTO CENTER</h1>
-            <div class="slogan">Suspensão Originais e Preparadas · Limpeza de Injetores · Suspensão · Troca de óleo · Freio · Mecânico em Geral</div>
+            <div class="slogan">Suspensão Originais e Preparadas • Limpeza de Injetores • Suspensão • Troca de óleo • Freio • Mecânico em Geral • Câmbio Automático</div>
         </div>
 
         <!-- Nº e data -->
@@ -313,7 +333,7 @@
             <span class="data-box" id="dataAtual"></span>
         </div>
 
-        <!-- CLIENTE todos vazios -->
+        <!-- CLIENTE (todos vazios) -->
         <div class="cliente-grid">
             <div class="campo full"><label>CLIENTE</label> <input type="text" value=""></div>
             <div class="campo full"><label>ENDEREÇO</label> <input type="text" value=""></div>
@@ -328,7 +348,13 @@
             <div class="campo full"><label>COND. PAGAMENTO</label> <input type="text" value=""></div>
         </div>
 
-        <!-- Tabela (itens serão inseridos via js) -->
+        <!-- >>> NOVO CAMPO MÃO DE OBRA <<< -->
+        <div class="mao-de-obra-container">
+            <div class="mao-de-obra-label">✋ MÃO DE OBRA / SERVIÇO</div>
+            <textarea class="mao-de-obra-input" id="maoDeObra" placeholder="Descreva aqui os serviços realizados..."></textarea>
+        </div>
+
+        <!-- Tabela de itens -->
         <div class="tabela-rolagem">
             <table id="tabelaItens">
                 <thead>
@@ -352,7 +378,7 @@
         <div class="obs-footer">* preencha os campos</div>
     </div>
 
-    <!-- BOTÕES PEQUENOS -->
+    <!-- Botões pequenos -->
     <div class="botoes-fixos">
         <button class="btn" id="addLinhaBtn">➕ Item</button>
         <button class="btn" id="calcularBtn">🧮 Calcular</button>
@@ -362,7 +388,7 @@
 
     <script>
         (function() {
-            // ---------- NUMERAÇÃO ----------
+            // Numeração
             let numeroAtual = localStorage.getItem('talaoNumero');
             if (!numeroAtual) numeroAtual = 1;
             else numeroAtual = parseInt(numeroAtual, 10);
@@ -384,14 +410,14 @@
                 document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
             });
 
-            // ---------- DATA ----------
+            // Data
             const hoje = new Date();
             const dia = String(hoje.getDate()).padStart(2, '0');
             const mes = String(hoje.getMonth() + 1).padStart(2, '0');
             const ano = String(hoje.getFullYear()).slice(-2);
             document.getElementById('dataAtual').innerText = `${dia}, ${mes}, ${ano}`;
 
-            // ---------- TABELA: 4 LINHAS INICIAIS VAZIAS ----------
+            // Tabela: 4 linhas vazias
             const corpo = document.getElementById('corpoTabela');
             corpo.innerHTML = '';
             for (let i = 0; i < 4; i++) {
@@ -405,7 +431,7 @@
                 corpo.appendChild(tr);
             }
 
-            // ---------- CALCULAR ----------
+            // Calcular totais
             function calcularTotais() {
                 const linhas = document.querySelectorAll('#corpoTabela tr');
                 let total = 0;
@@ -440,15 +466,14 @@
                 calcularTotais();
             });
 
-            // ---------- GERAR IMAGEM E COMPARTILHAR VIA WHATSAPP ----------
+            // Gerar imagem e compartilhar WhatsApp
             document.getElementById('wppBtn').addEventListener('click', function() {
-                calcularTotais(); // atualiza antes
+                calcularTotais();
 
                 const elemento = document.getElementById('talaoCard');
                 
-                // Configuração para capturar imagem sem cortes
                 html2canvas(elemento, {
-                    scale: 1.8,          // boa resolução
+                    scale: 1.8,
                     backgroundColor: '#fdf5e6',
                     allowTaint: false,
                     useCORS: true,
@@ -456,50 +481,45 @@
                     windowWidth: elemento.scrollWidth,
                     windowHeight: elemento.scrollHeight
                 }).then(canvas => {
-                    // Converte canvas para blob (formato PNG)
                     canvas.toBlob(function(blob) {
-                        // Cria um link de download temporário (opcional)
-                        // Mas queremos enviar para o WhatsApp
-                        
-                        // Cria um arquivo para compartilhar
                         const file = new File([blob], `talao_${formatarNum(numeroAtual)}.png`, { type: 'image/png' });
                         
-                        // Verifica se o navegador suporta compartilhamento nativo (Web Share API)
-                        if (navigator.share && navigator.canShare({ files: [file] })) {
+                        // Tenta compartilhar via Web Share API
+                        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                             navigator.share({
                                 title: 'Talão de Pedido',
                                 text: 'Segue o talão',
                                 files: [file]
                             }).then(() => {
-                                // incrementa após compartilhar
                                 incrementarNumero();
-                            }).catch(err => {
-                                // fallback: abre WhatsApp Web com mensagem
-                                const url = `https://wa.me/?text=Olá, segue o talão em anexo (preciso enviar a imagem separadamente)`;
-                                window.open(url, '_blank');
-                                incrementarNumero();
+                            }).catch(() => {
+                                // fallback: download + WhatsApp
+                                const link = document.createElement('a');
+                                link.download = `talao_${formatarNum(numeroAtual)}.png`;
+                                link.href = URL.createObjectURL(blob);
+                                link.click();
+                                setTimeout(() => {
+                                    window.open(`https://wa.me/?text=${encodeURIComponent('Olá, segue o talão em anexo (imagem salva).')}`, '_blank');
+                                    incrementarNumero();
+                                }, 300);
                             });
                         } else {
-                            // fallback para navegadores sem suporte a share de arquivos
-                            // Tenta abrir WhatsApp com instrução, mas o ideal é baixar a imagem
+                            // fallback direto
                             const link = document.createElement('a');
                             link.download = `talao_${formatarNum(numeroAtual)}.png`;
                             link.href = URL.createObjectURL(blob);
                             link.click();
                             setTimeout(() => {
-                                const msg = `Olá, segue o talão nº ${formatarNum(numeroAtual)}. Envio a imagem em anexo (salva automaticamente).`;
-                                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+                                window.open(`https://wa.me/?text=${encodeURIComponent('Olá, segue o talão (imagem em anexo).')}`, '_blank');
                                 incrementarNumero();
                             }, 300);
                         }
                     }, 'image/png');
-                }).catch(error => {
+                }).catch(err => {
                     alert('Erro ao gerar imagem. Tente novamente.');
-                    console.error(error);
                 });
             });
 
-            // Cálculo inicial
             calcularTotais();
         })();
     </script>
