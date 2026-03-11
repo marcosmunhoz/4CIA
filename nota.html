@@ -127,6 +127,444 @@
             font-size: 0.85rem;
             font-family: 'Courier New', monospace;
             outline: none;
+            width: 100%;
+        }
+        .campo input:focus {
+            background: #fff2da;
+        }
+        .full {
+            grid-column: span 2;
+        }
+
+        /* CAMPO MÃO DE OBRA */
+        .mao-de-obra-container {
+            background: #d9cdb2;
+            border: 2px solid #4a4031;
+            border-radius: 20px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        .mao-de-obra-label {
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #1f2f38;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        .mao-de-obra-input {
+            width: 100%;
+            background: #fff8e7;
+            border: 2px solid #5d503d;
+            border-radius: 16px;
+            padding: 12px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 70px;
+            outline: none;
+        }
+        .mao-de-obra-input:focus {
+            background: #fffff0;
+            border-color: #7f6a4d;
+        }
+
+        /* ===== TABELA CORRIGIDA ===== */
+        .tabela-rolagem {
+            overflow-x: auto;
+            border: 2px solid #1d1d1d;
+            background: #eae2d2;
+            border-radius: 14px;
+            margin: 15px 0 12px;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* Força colunas com largura fixa proporcional */
+            min-width: 100%;
+        }
+
+        th {
+            background: #554e3f;
+            color: white;
+            padding: 8px 4px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        /* Distribuição proporcional das colunas */
+        th:nth-child(1) { width: 15%; }  /* QUANT */
+        th:nth-child(2) { width: 45%; }  /* DESCRIÇÃO */
+        th:nth-child(3) { width: 20%; }  /* PREÇO UNIT */
+        th:nth-child(4) { width: 20%; }  /* TOTAL */
+
+        td {
+            border: 1px solid #3a3a3a;
+            padding: 3px 4px;
+            background: #fffcf0;
+        }
+
+        td input {
+            width: 100%;
+            border: 1px solid #9f947f;
+            padding: 8px 4px;
+            font-size: 0.8rem;
+            background: #ffffff;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            box-sizing: border-box;
+        }
+
+        .total-item {
+            font-weight: 800;
+            text-align: right;
+            padding-right: 8px;
+            background: #d3c8b0;
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+        /* ===== FIM CORREÇÃO TABELA ===== */
+
+        .total-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background: #1f1f1f;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 50px;
+            margin: 15px 0;
+        }
+        .total-label {
+            font-size: 1.1rem;
+        }
+        .total-valor {
+            background: #fad893;
+            color: #121212;
+            font-size: clamp(1.4rem, 6vw, 1.9rem);
+            font-weight: 900;
+            padding: 5px 20px;
+            border-radius: 50px;
+        }
+
+        .assinatura-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px dashed #4d4234;
+            padding: 15px 0 0;
+            gap: 10px;
+        }
+        .ass-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            flex-wrap: wrap;
+        }
+        .linha-assinatura {
+            width: 120px;
+            border-bottom: 3px solid #1e1e1e;
+            height: 16px;
+        }
+        .ass-right {
+            background: #d2c2a6;
+            font-size: 1.4rem;
+            font-weight: 900;
+            padding: 5px 18px;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+
+        .botoes-fixos {
+            max-width: 440px;
+            width: 100%;
+            margin: 5px auto 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            padding: 5px 0 8px;
+            position: sticky;
+            bottom: 5px;
+            z-index: 20;
+        }
+        .btn {
+            flex: 0 1 auto;
+            min-width: 70px;
+            background: #2c4053;
+            border: none;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 40px;
+            box-shadow: 0 3px 0 #1c2a35;
+            cursor: pointer;
+            border: 1px solid #8fa3bb;
+            text-align: center;
+            transition: 0.05s linear;
+            white-space: nowrap;
+        }
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #1c2a35;
+        }
+        .btn-wpp {
+            background: #25a05e;
+            box-shadow: 0 3px 0 #146b3a;
+        }
+        .btn-reset {
+            background: #625945;
+            box-shadow: 0 3px 0 #3f382b;
+        }
+
+        .obs-footer {
+            font-size: 0.6rem;
+            text-align: right;
+            color: #3e3e3e;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="talao-card" id="talaoCard">
+        <div class="header">
+            <h1>DENIS AUTO CENTER</h1>
+            <div class="slogan">Suspensão Originais e Preparadas • Limpeza de Injetores • Suspensão • Troca de óleo • Freio • Mecânico em Geral • Câmbio Automático</div>
+        </div>
+
+        <!-- Nº e data -->
+        <div class="row-num">
+            <span class="talao-tit">TALÃO DE PEDIDO</span>
+            <span class="num-display" id="numeroTalao">0001</span>
+        </div>
+        <div class="data-wrapper">
+            <span class="data-box" id="dataAtual"></span>
+        </div>
+
+        <!-- CLIENTE (todos vazios) -->
+        <div class="cliente-grid">
+            <div class="campo full"><label>CLIENTE</label> <input type="text" value=""></div>
+            <div class="campo full"><label>ENDEREÇO</label> <input type="text" value=""></div>
+            <div class="campo"><label>BAIRRO</label> <input type="text" value=""></div>
+            <div class="campo"><label>CEP</label> <input type="text" value=""></div>
+            <div class="campo"><label>CIDADE</label> <input type="text" value=""></div>
+            <div class="campo"><label>FONE</label> <input type="text" value=""></div>
+            <div class="campo"><label>FAX</label> <input type="text" value=""></div>
+            <div class="campo"><label>CEL</label> <input type="text" value=""></div>
+            <div class="campo"><label>CNPJ/CPF</label> <input type="text" value=""></div>
+            <div class="campo"><label>INCR./RG</label> <input type="text" value=""></div>
+            <div class="campo full"><label>COND. PAGAMENTO</label> <input type="text" value=""></div>
+        </div>
+
+        <!-- CAMPO MÃO DE OBRA -->
+        <div class="mao-de-obra-container">
+            <div class="mao-de-obra-label">✋ MÃO DE OBRA / SERVIÇO</div>
+            <textarea class="mao-de-obra-input" id="maoDeObra" placeholder="Descreva aqui os serviços realizados..."></textarea>
+        </div>
+
+        <!-- Tabela de itens (CORRIGIDA) -->
+        <div class="tabela-rolagem">
+            <table id="tabelaItens">
+                <thead>
+                    <tr><th>QUANT</th><th>DESCRIÇÃO</th><th>PREÇO UNIT</th><th>TOTAL</th></tr>
+                </thead>
+                <tbody id="corpoTabela"></tbody>
+            </table>
+        </div>
+
+        <!-- Total geral -->
+        <div class="total-container">
+            <span class="total-label">TOTAL R$</span>
+            <span class="total-valor" id="totalGeral">0.00</span>
+        </div>
+
+        <!-- Assinatura -->
+        <div class="assinatura-row">
+            <div class="ass-left">Assinatura: <span class="linha-assinatura"></span></div>
+            <div class="ass-right" id="totalAssinatura">R$ 0.00</div>
+        </div>
+        <div class="obs-footer">* preencha os campos</div>
+    </div>
+
+    <!-- Botões pequenos -->
+    <div class="botoes-fixos">
+        <button class="btn" id="addLinhaBtn">➕ Item</button>
+        <button class="btn" id="calcularBtn">🧮 Calcular</button>
+        <button class="btn btn-wpp" id="wppBtn">📲 WhatsApp</button>
+        <button class="btn btn-reset" id="zerarBtn">⚙️ Zerar</button>
+    </div>
+
+    <script>
+        (function() {
+            // Numeração
+            let numeroAtual = localStorage.getItem('talaoNumero');
+            if (!numeroAtual) numeroAtual = 1;
+            else numeroAtual = parseInt(numeroAtual, 10);
+
+            function formatarNum(n) {
+                return n.toString().padStart(4, '0');
+            }
+            document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
+
+            function incrementarNumero() {
+                numeroAtual++;
+                localStorage.setItem('talaoNumero', numeroAtual);
+                document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
+            }
+
+            document.getElementById('zerarBtn').addEventListener('click', function() {
+                numeroAtual = 1;
+                localStorage.setItem('talaoNumero', numeroAtual);
+                document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
+            });
+
+            // Data
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = String(hoje.getFullYear()).slice(-2);
+            document.getElementById('dataAtual').innerText = `${dia}, ${mes}, ${ano}`;
+
+            // Tabela: 4 linhas vazias
+            const corpo = document.getElementById('corpoTabela');
+            corpo.innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
+                    <td><input type="text" class="desc" placeholder=""></td>
+                    <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
+                    <td class="total-item">R$ 0.00</td>
+                `;
+                corpo.appendChild(tr);
+            }
+
+            // Calcular totais
+            function calcularTotais() {
+                const linhas = document.querySelectorAll('#corpoTabela tr');
+                let total = 0;
+                linhas.forEach(linha => {
+                    const qtd = linha.querySelector('.qtd');
+                    const preco = linha.querySelector('.preco');
+                    const cell = linha.querySelector('.total-item');
+                    if (qtd && preco && cell) {
+                        let q = parseFloat(qtd.value) || 0;
+                        let p = parseFloat(preco.value) || 0;
+                        let sub = q * p;
+                        cell.innerText = 'R$ ' + sub.toFixed(2);
+                        total += sub;
+                    }
+                });
+                document.getElementById('totalGeral').innerText = total.toFixed(2);
+                document.getElementById('totalAssinatura').innerText = 'R$ ' + total.toFixed(2);
+            }
+
+            document.getElementById('addLinhaBtn').addEventListener('click', function() {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+                    <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
+                    <td><input type="text" class="desc" placeholder=""></td>
+                    <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
+                    <td class="total-item">R$ 0.00</td>
+                `;
+                corpo.appendChild(linha);
+            });
+
+            document.getElementById('calcularBtn').addEventListener('click', function() {
+                calcularTotais();
+            });
+
+            // Gerar imagem e compartilhar WhatsApp
+            document.getElementById('wppBtn').addEventListener('click', function() {
+                calcularTotais();
+
+                const elemento = document.getElementById('talaoCard');
+                
+                html2canvas(elemento, {
+                    scale: 1.8,
+                    backgroundColor: '#fdf5e6',
+                    allowTaint: false,
+                    useCORS: true,
+                    logging: false,
+                    windowWidth: elemento.scrollWidth,
+                    windowHeight: elemento.scrollHeight
+                }).then(canvas => {
+                    canvas.toBlob(function(blob) {
+                        const file = new File([blob], `talao_${formatarNum(numeroAtual)}.png`, { type: 'image/png' });
+                        
+                        // Tenta compartilhar via Web Share API
+                        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                            navigator.share({
+                                title: 'Talão de Pedido',
+                                text: 'Segue o talão',
+                                files: [file]
+                            }).then(() => {
+                                incrementarNumero();
+                            }).catch(() => {
+                                // fallback: download + WhatsApp
+                                const link = document.createElement('a');
+                                link.download = `talao_${formatarNum(numeroAtual)}.png`;
+                                link.href = URL.createObjectURL(blob);
+                                link.click();
+                                setTimeout(() => {
+                                    window.open(`https://wa.me/?text=${encodeURIComponent('Olá, segue o talão em anexo (imagem salva).')}`, '_blank');
+                                    incrementarNumero();
+                                }, 300);
+                            });
+                        } else {
+                            // fallback direto
+                            const link = document.createElement('a');
+                            link.download = `talao_${formatarNum(numeroAtual)}.png`;
+                            link.href = URL.createObjectURL(blob);
+                            link.click();
+                            setTimeout(() => {
+                                window.open(`https://wa.me/?text=${encodeURIComponent('Olá, segue o talão (imagem em anexo).')}`, '_blank');
+                                incrementarNumero();
+                            }, 300);
+                        }
+                    }, 'image/png');
+                }).catch(err => {
+                    alert('Erro ao gerar imagem. Tente novamente.');
+                });
+            });
+
+            calcularTotais();
+        })();
+    </script>
+</body>
+</html>            background: #e5d8c0;
+            border: 2px solid #4a4031;
+            padding: 15px 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+        .campo label {
+            font-size: 0.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #232f38;
+        }
+        .campo input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #5d503d;
+            padding: 4px 2px 2px;
+            font-size: 0.85rem;
+            font-family: 'Courier New', monospace;
+            outline: none;
         }
         .campo input:focus {
             background: #fff2da;
