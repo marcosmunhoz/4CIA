@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Denis Auto Center · Talão c/ Desconto</title>
+    <title>Denis Auto Center · Talão</title>
     <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -121,7 +121,7 @@
             grid-column: span 2;
         }
 
-        /* MÃO DE OBRA - CORRIGIDO PARA MOSTRAR TUDO */
+        /* MÃO DE OBRA */
         .mao-obra {
             background: #d9cdb2;
             border: 2px solid #4a4031;
@@ -143,9 +143,7 @@
             font-family: 'Courier New', monospace;
             font-size: 0.9rem;
             min-height: 80px;
-            max-height: 200px;
             resize: vertical;
-            overflow-y: auto;
             word-wrap: break-word;
             white-space: pre-wrap;
         }
@@ -154,7 +152,7 @@
         .tabela-produtos {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
+            margin: 15px 0 10px 0;
             border: 2px solid #222;
             background: white;
         }
@@ -186,45 +184,50 @@
             background: #d3c8b0;
         }
 
-        /* DESCONTO */
+        /* DESCONTO (AGORA ABAIXO DA TABELA) */
         .desconto-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
             align-items: center;
             background: #e5d8c0;
             border: 2px solid #4a4031;
             border-radius: 15px;
-            padding: 12px;
+            padding: 12px 15px;
             margin: 10px 0 15px;
         }
         .desconto-label {
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 1rem;
             text-transform: uppercase;
         }
-        .desconto-tipo {
+        .desconto-opcoes {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             align-items: center;
         }
-        .desconto-tipo label {
+        .desconto-opcoes label {
             display: flex;
             align-items: center;
-            gap: 3px;
-            font-size: 0.85rem;
+            gap: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
         }
         .desconto-input {
-            width: 100px;
-            padding: 6px;
+            width: 90px;
+            padding: 6px 8px;
             border: 2px solid #5d503d;
             border-radius: 8px;
-            font-family: 'Courier New', monospace;
             font-size: 0.9rem;
+            font-family: 'Courier New', monospace;
         }
-        .desconto-valor-exibido {
+        .desconto-valor {
             font-weight: bold;
             color: #c53a1f;
+            font-size: 1rem;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 20px;
         }
 
         /* Total */
@@ -333,7 +336,7 @@
             <div class="campo full"><label>COND. PAGAMENTO</label> <input type="text" id="condicao"></div>
         </div>
 
-        <!-- Mão de Obra - Corrigido -->
+        <!-- Mão de Obra -->
         <div class="mao-obra">
             <label>✋ MÃO DE OBRA / SERVIÇO</label>
             <textarea id="maoDeObra" placeholder="Descreva aqui os serviços realizados..."></textarea>
@@ -349,18 +352,20 @@
                     <th>TOTAL</th>
                 </tr>
             </thead>
-            <tbody id="corpoTabela"></tbody>
+            <tbody id="corpoTabela">
+                <!-- Linhas serão inseridas via JS -->
+            </tbody>
         </table>
 
-        <!-- DESCONTO -->
+        <!-- DESCONTO (AGORA ABAIXO DA TABELA) -->
         <div class="desconto-container">
             <span class="desconto-label">DESCONTO:</span>
-            <div class="desconto-tipo">
+            <div class="desconto-opcoes">
                 <label><input type="radio" name="tipoDesconto" value="R$" checked> R$</label>
                 <label><input type="radio" name="tipoDesconto" value="%"> %</label>
             </div>
             <input type="number" class="desconto-input" id="valorDesconto" value="0" min="0" step="0.01">
-            <span class="desconto-valor-exibido" id="descontoExibido">R$ 0,00</span>
+            <span class="desconto-valor" id="descontoExibido">R$ 0,00</span>
         </div>
 
         <!-- Total Geral -->
@@ -472,7 +477,7 @@
 
             document.getElementById('calcularBtn').addEventListener('click', calcular);
 
-            // Botão WhatsApp - Corrigido para capturar texto completo
+            // Botão WhatsApp
             document.getElementById('wppBtn').addEventListener('click', function() {
                 calcular(); // Atualiza totais
                 
@@ -481,11 +486,6 @@
                 btn.innerText = '⏳ Gerando...';
                 btn.disabled = true;
 
-                // Forçar o textarea a mostrar todo o conteúdo
-                const textarea = document.getElementById('maoDeObra');
-                textarea.style.height = 'auto';
-                textarea.style.height = (textarea.scrollHeight) + 'px';
-
                 html2canvas(elemento, {
                     scale: 2,
                     backgroundColor: '#fcf3e0',
@@ -493,16 +493,7 @@
                     useCORS: true,
                     logging: false,
                     windowWidth: elemento.scrollWidth,
-                    windowHeight: elemento.scrollHeight,
-                    onclone: function(clonedDoc) {
-                        // No clone, ajustar o textarea para mostrar tudo
-                        const clonedTextarea = clonedDoc.getElementById('maoDeObra');
-                        if (clonedTextarea) {
-                            clonedTextarea.style.height = 'auto';
-                            clonedTextarea.style.height = clonedTextarea.scrollHeight + 'px';
-                            clonedTextarea.style.overflow = 'visible';
-                        }
-                    }
+                    windowHeight: elemento.scrollHeight
                 }).then(canvas => {
                     canvas.toBlob(blob => {
                         const fileName = `talao_${numeroAtual.toString().padStart(4, '0')}.png`;
@@ -543,6 +534,13 @@
                                 incrementarNumero();
                                 btn.innerText = '📲 WhatsApp';
                                 btn.disabled = false;
+                            }, 500);
+                        }
+                    }, 'image/png', 0.95);
+                }).catch(err => {
+                    alert('Erro ao gerar imagem: ' + err.message);
+                    btn.innerText = '📲 WhatsApp';
+                    btn.disabled = false;
                 });
             });
 
