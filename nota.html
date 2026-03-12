@@ -32,6 +32,25 @@
             border: 4px solid #1e2a30;
             box-shadow: 6px 6px 0 #1f2a2e;
             padding: 18px 12px;
+            position: relative; /* para posicionar o botão apagar */
+        }
+
+        /* BOTÃO APAGAR - DISCRETO */
+        .btn-apagar {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            padding: 5px;
+            z-index: 10;
+        }
+        .btn-apagar:hover {
+            opacity: 1;
         }
 
         h1 {
@@ -78,7 +97,7 @@
             padding: 4px 16px;
         }
 
-        /* DATA - ajustada */
+        /* DATA */
         .data-container {
             display: flex;
             justify-content: flex-end;
@@ -93,7 +112,7 @@
             display: inline-block;
         }
 
-        /* CLIENTE - SEM QUADRADO, APENAS LINHAS */
+        /* CLIENTE - LINHAS SIMPLES */
         .cliente-linhas {
             width: 100%;
             margin: 15px 0;
@@ -141,7 +160,7 @@
             outline: none;
         }
 
-        /* MÃO DE OBRA - CORRIGIDO PARA MOSTRAR TUDO */
+        /* MÃO DE OBRA - CRESCE */
         .mao-obra {
             margin: 20px 0;
             border: 2px solid #4a4031;
@@ -165,10 +184,12 @@
             font-family: 'Courier New', monospace;
             font-size: 0.9rem;
             min-height: 80px;
+            height: auto;
             resize: vertical;
             word-wrap: break-word;
             white-space: pre-wrap;
             overflow-y: visible;
+            line-height: 1.4;
         }
 
         /* TABELA DE PRODUTOS */
@@ -334,6 +355,9 @@
 </head>
 <body>
     <div class="talao-card" id="talaoCard">
+        <!-- BOTÃO APAGAR (DISCRETO) -->
+        <button class="btn-apagar" id="btnApagar" title="Apagar tudo">🗑️</button>
+
         <h1>DENIS AUTO CENTER</h1>
         <div class="slogan">Suspensão Originais e Preparadas • Limpeza de Injetores • Suspensão • Troca de óleo • Freio • Mecânico em Geral • Câmbio Automático</div>
 
@@ -346,7 +370,7 @@
             <span class="data-box" id="dataAtual"></span>
         </div>
 
-        <!-- CLIENTE - SEM QUADRADO, APENAS LINHAS -->
+        <!-- CLIENTE -->
         <div class="cliente-linhas">
             <div class="campo-full">
                 <label>CLIENTE</label>
@@ -402,10 +426,10 @@
             </div>
         </div>
 
-        <!-- Mão de Obra -->
+        <!-- MÃO DE OBRA -->
         <div class="mao-obra">
             <label>✋ MÃO DE OBRA / SERVIÇO</label>
-            <textarea id="maoDeObra" placeholder="Descreva aqui os serviços realizados..."></textarea>
+            <textarea id="maoDeObra" placeholder="Descreva aqui os serviços realizados..." oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
         </div>
 
         <!-- TABELA DE PRODUTOS -->
@@ -543,7 +567,42 @@
 
             document.getElementById('calcularBtn').addEventListener('click', calcular);
 
-            // Botão WhatsApp - CORRIGIDO para mostrar TODO o texto da mão de obra
+            // BOTÃO APAGAR TUDO
+            document.getElementById('btnApagar').addEventListener('click', function() {
+                // Limpar campos do cliente
+                document.getElementById('cliente').value = '';
+                document.getElementById('endereco').value = '';
+                document.getElementById('bairro').value = '';
+                document.getElementById('cep').value = '';
+                document.getElementById('cidade').value = '';
+                document.getElementById('fone').value = '';
+                document.getElementById('fax').value = '';
+                document.getElementById('cel').value = '';
+                document.getElementById('cpf').value = '';
+                document.getElementById('rg').value = '';
+                document.getElementById('condicao').value = '';
+                
+                // Limpar mão de obra
+                const textarea = document.getElementById('maoDeObra');
+                textarea.value = '';
+                textarea.style.height = '80px';
+                
+                // Limpar tabela (manter 4 linhas vazias)
+                corpoTabela.innerHTML = '';
+                for (let i = 0; i < 4; i++) {
+                    corpoTabela.appendChild(criarLinha());
+                }
+                
+                // Limpar desconto
+                document.getElementById('valorDesconto').value = '0';
+                document.querySelector('input[name="tipoDesconto"][value="R$"]').checked = true;
+                document.getElementById('descontoExibido').innerText = 'R$ 0,00';
+                
+                // Recalcular
+                calcular();
+            });
+
+            // Botão WhatsApp
             document.getElementById('wppBtn').addEventListener('click', function() {
                 calcular(); // Atualiza totais
                 
@@ -552,10 +611,10 @@
                 btn.innerText = '⏳ Gerando...';
                 btn.disabled = true;
 
-                // Ajustar textarea para mostrar todo o conteúdo
+                // Ajustar textarea para altura correta
                 const textarea = document.getElementById('maoDeObra');
                 textarea.style.height = 'auto';
-                textarea.style.height = (textarea.scrollHeight) + 'px';
+                textarea.style.height = textarea.scrollHeight + 'px';
 
                 html2canvas(elemento, {
                     scale: 2,
@@ -566,12 +625,13 @@
                     windowWidth: elemento.scrollWidth,
                     windowHeight: elemento.scrollHeight,
                     onclone: function(clonedDoc) {
-                        // No clone, garantir que o textarea mostre todo o texto
                         const clonedTextarea = clonedDoc.getElementById('maoDeObra');
                         if (clonedTextarea) {
                             clonedTextarea.style.height = 'auto';
                             clonedTextarea.style.height = clonedTextarea.scrollHeight + 'px';
                             clonedTextarea.style.overflow = 'visible';
+                            clonedTextarea.style.whiteSpace = 'pre-wrap';
+                            clonedTextarea.style.wordWrap = 'break-word';
                         }
                     }
                 }).then(canvas => {
@@ -626,6 +686,11 @@
 
             // Calcular inicial
             calcular();
+
+            // Garantir que o textarea comece com altura correta
+            const textarea = document.getElementById('maoDeObra');
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
         })();
     </script>
 </body>
