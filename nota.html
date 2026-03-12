@@ -14,7 +14,7 @@
         }
 
         body {
-            background: #6b5f4b;
+            background: #7a6e5a;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
@@ -22,92 +22,82 @@
             justify-content: flex-start;
             min-height: 100vh;
             padding: 10px 5px 20px 5px;
-            width: 100%;
         }
 
         .talao-card {
             width: 100%;
-            max-width: 460px;
+            max-width: 480px;
             margin: 0 auto 15px auto;
             background: #fcf3e0;
             border: 4px solid #1e2a30;
             box-shadow: 6px 6px 0 #1f2a2e;
-            padding: 20px 12px;
+            padding: 18px 12px;
         }
 
-        .header h1 {
+        h1 {
             font-size: clamp(1.6rem, 7vw, 2.2rem);
-            font-family: 'Arial Black', 'Impact', sans-serif;
+            font-family: 'Arial Black', sans-serif;
             text-align: center;
             background: #20313c;
             color: #f5e5ce;
             padding: 8px 5px;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .slogan {
             background: #d4c5ab;
-            font-size: clamp(0.55rem, 2.5vw, 0.75rem);
+            font-size: 0.7rem;
             font-weight: bold;
             text-align: center;
             padding: 8px 5px;
             border-radius: 30px;
             border: 1px solid #544b3a;
             margin-bottom: 15px;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
-        .row-num {
+        .linha-talao {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            margin: 5px 0 8px;
+            align-items: center;
+            margin: 10px 0;
         }
-        .talao-tit {
-            font-size: clamp(1.3rem, 5.5vw, 1.8rem);
-            font-weight: 900;
-            background: #1d1d1d;
+        .talao-titulo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: #222;
             color: #eddbb6;
-            padding: 4px 12px 4px 10px;
+            padding: 4px 12px;
             clip-path: polygon(0% 0%, 92% 0%, 100% 100%, 0% 100%);
-            white-space: nowrap;
         }
-        .num-display {
+        .numero {
             background: #e7d7bc;
             border: 3px solid #222;
-            font-size: clamp(1.6rem, 6.5vw, 2.2rem);
-            font-weight: 900;
+            font-size: 2rem;
+            font-weight: bold;
             padding: 4px 16px;
-            font-family: monospace;
         }
-
-        .data-wrapper {
+        .data {
             text-align: right;
-            margin: 10px 0 18px;
-        }
-        .data-box {
             background: #dfd2b9;
-            font-size: clamp(1rem, 4.5vw, 1.4rem);
             padding: 6px 20px;
-            border-radius: 40px;
+            border-radius: 30px;
             display: inline-block;
-            border: 1px solid #4e4436;
+            float: right;
+            margin: 10px 0 15px;
             font-weight: bold;
         }
 
         /* CLIENTE */
         .cliente-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px 8px;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
             background: #e5d8c0;
             border: 2px solid #4a4031;
-            padding: 15px 12px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 15px;
+            margin: 15px 0;
         }
         .campo {
             display: flex;
@@ -115,299 +105,225 @@
         }
         .campo label {
             font-size: 0.6rem;
-            font-weight: 900;
+            font-weight: bold;
             text-transform: uppercase;
-            color: #232f38;
         }
         .campo input {
             background: transparent;
             border: none;
             border-bottom: 2px solid #5d503d;
-            padding: 4px 2px 2px;
+            padding: 4px 2px;
             font-size: 0.85rem;
             font-family: 'Courier New', monospace;
             outline: none;
-            width: 100%;
-        }
-        .campo input:focus {
-            background: #fff2da;
         }
         .full {
             grid-column: span 2;
         }
 
         /* MÃO DE OBRA */
-        .mao-de-obra-container {
+        .mao-obra {
             background: #d9cdb2;
             border: 2px solid #4a4031;
-            border-radius: 20px;
-            padding: 12px 15px;
-            margin-bottom: 20px;
+            border-radius: 15px;
+            padding: 12px;
+            margin: 15px 0;
         }
-        .mao-de-obra-label {
-            font-size: 0.8rem;
-            font-weight: 900;
+        .mao-obra label {
+            font-weight: bold;
             text-transform: uppercase;
-            color: #1f2f38;
-            margin-bottom: 5px;
+            font-size: 0.8rem;
         }
-        .mao-de-obra-input {
+        .mao-obra textarea {
             width: 100%;
             background: #fff8e7;
             border: 2px solid #5d503d;
-            border-radius: 16px;
-            padding: 12px 15px;
+            border-radius: 10px;
+            padding: 10px;
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            min-height: 60px;
+            margin-top: 5px;
             resize: vertical;
-            min-height: 70px;
-            outline: none;
         }
 
-        /* TABELA DE ITENS - VERSÃO SIMPLIFICADA E GARANTIDA */
-        .tabela-container {
+        /* TABELA DE PRODUTOS - AGORA EM TABELA HTML PURA */
+        .tabela-produtos {
             width: 100%;
-            margin: 15px 0 15px;
-            border: 2px solid #1d1d1d;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #fff;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #222;
+            background: white;
         }
-
-        .tabela-linha {
-            display: flex;
-            width: 100%;
-            border-bottom: 1px solid #888;
+        .tabela-produtos th {
+            background: #554e3f;
+            color: white;
+            padding: 8px 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border: 1px solid #222;
+        }
+        .tabela-produtos td {
+            border: 1px solid #444;
+            padding: 4px;
             background: #fffcf0;
         }
-
-        .tabela-linha:last-child {
-            border-bottom: none;
-        }
-
-        .tabela-cabecalho {
-            background: #554e3f;
-            color: white;
-            font-weight: bold;
-        }
-
-        .col-quant {
-            width: 15%;
-            min-width: 60px;
-            padding: 8px 4px;
-            text-align: center;
-            border-right: 1px solid #888;
-        }
-
-        .col-desc {
-            width: 45%;
-            padding: 8px 4px;
-            border-right: 1px solid #888;
-        }
-
-        .col-preco {
-            width: 20%;
-            padding: 8px 4px;
-            border-right: 1px solid #888;
-            text-align: center;
-        }
-
-        .col-total {
-            width: 20%;
-            padding: 8px 4px;
-            text-align: right;
-            padding-right: 10px;
-            background: #d3c8b0;
-            font-weight: bold;
-        }
-
-        .tabela-cabecalho .col-quant,
-        .tabela-cabecalho .col-desc,
-        .tabela-cabecalho .col-preco,
-        .tabela-cabecalho .col-total {
-            background: #554e3f;
-            color: white;
-            text-align: center;
-            font-size: 0.7rem;
-        }
-
-        .tabela-linha input {
+        .tabela-produtos input {
             width: 100%;
             border: 1px solid #9f947f;
             padding: 6px 4px;
             font-size: 0.85rem;
-            background: white;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
         }
-
-        .total-item-display {
-            font-weight: 800;
-            font-size: 0.9rem;
+        .total-item {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 8px;
+            background: #d3c8b0;
         }
 
-        /* Total geral */
+        /* Total */
         .total-container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             background: #1f1f1f;
             color: white;
             padding: 10px 16px;
-            border-radius: 50px;
+            border-radius: 40px;
             margin: 15px 0;
-        }
-        .total-label {
-            font-size: 1.1rem;
         }
         .total-valor {
             background: #fad893;
             color: #121212;
-            font-size: clamp(1.4rem, 6vw, 1.9rem);
-            font-weight: 900;
+            font-size: 1.8rem;
+            font-weight: bold;
             padding: 5px 20px;
-            border-radius: 50px;
+            border-radius: 40px;
         }
 
         /* Assinatura */
-        .assinatura-row {
+        .assinatura {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             border-top: 2px dashed #4d4234;
-            padding: 15px 0 0;
-            gap: 10px;
+            padding: 15px 0 5px;
         }
-        .ass-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-        .linha-assinatura {
-            width: 120px;
-            border-bottom: 3px solid #1e1e1e;
+        .linha-ass {
+            display: inline-block;
+            width: 150px;
+            border-bottom: 3px solid #000;
             height: 16px;
         }
-        .ass-right {
+        .total-ass {
             background: #d2c2a6;
-            font-size: 1.4rem;
-            font-weight: 900;
+            font-size: 1.5rem;
+            font-weight: bold;
             padding: 5px 18px;
-            border-radius: 50px;
+            border-radius: 30px;
         }
 
         /* Botões */
-        .botoes-fixos {
-            max-width: 460px;
+        .botoes {
+            max-width: 480px;
             width: 100%;
-            margin: 5px auto 0 auto;
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
             justify-content: center;
-            padding: 5px 0 8px;
+            margin-top: 5px;
             position: sticky;
             bottom: 5px;
-            z-index: 20;
         }
         .btn {
             flex: 0 1 auto;
-            min-width: 75px;
+            min-width: 70px;
             background: #2c4053;
-            border: none;
             color: white;
             font-size: 0.85rem;
-            font-weight: 700;
+            font-weight: bold;
             padding: 10px 12px;
+            border: none;
             border-radius: 40px;
             box-shadow: 0 3px 0 #1c2a35;
             cursor: pointer;
-            border: 1px solid #8fa3bb;
-            text-align: center;
         }
         .btn:active {
             transform: translateY(3px);
-            box-shadow: 0 1px 0 #1c2a35;
+            box-shadow: none;
         }
         .btn-wpp {
             background: #25a05e;
-            box-shadow: 0 3px 0 #146b3a;
         }
         .btn-reset {
             background: #625945;
-            box-shadow: 0 3px 0 #3f382b;
         }
     </style>
 </head>
 <body>
     <div class="talao-card" id="talaoCard">
-        <div class="header">
-            <h1>DENIS AUTO CENTER</h1>
-            <div class="slogan">Suspensão Originais e Preparadas • Limpeza de Injetores • Suspensão • Troca de óleo • Freio • Mecânico em Geral • Câmbio Automático</div>
-        </div>
+        <h1>DENIS AUTO CENTER</h1>
+        <div class="slogan">Suspensão Originais e Preparadas • Limpeza de Injetores • Suspensão • Troca de óleo • Freio • Mecânico em Geral • Câmbio Automático</div>
 
-        <!-- Nº e data -->
-        <div class="row-num">
-            <span class="talao-tit">TALÃO DE PEDIDO</span>
-            <span class="num-display" id="numeroTalao">0001</span>
+        <!-- Número e data -->
+        <div class="linha-talao">
+            <span class="talao-titulo">TALÃO DE PEDIDO</span>
+            <span class="numero" id="numeroTalao">0001</span>
         </div>
-        <div class="data-wrapper">
-            <span class="data-box" id="dataAtual"></span>
-        </div>
+        <div class="data" id="dataAtual"></div>
 
-        <!-- CLIENTE -->
+        <!-- Cliente -->
         <div class="cliente-grid">
-            <div class="campo full"><label>CLIENTE</label> <input type="text" value="" id="cliente"></div>
-            <div class="campo full"><label>ENDEREÇO</label> <input type="text" value="" id="endereco"></div>
-            <div class="campo"><label>BAIRRO</label> <input type="text" value="" id="bairro"></div>
-            <div class="campo"><label>CEP</label> <input type="text" value="" id="cep"></div>
-            <div class="campo"><label>CIDADE</label> <input type="text" value="" id="cidade"></div>
-            <div class="campo"><label>FONE</label> <input type="text" value="" id="fone"></div>
-            <div class="campo"><label>FAX</label> <input type="text" value="" id="fax"></div>
-            <div class="campo"><label>CEL</label> <input type="text" value="" id="cel"></div>
-            <div class="campo"><label>CNPJ/CPF</label> <input type="text" value="" id="cpf"></div>
-            <div class="campo"><label>INCR./RG</label> <input type="text" value="" id="rg"></div>
-            <div class="campo full"><label>COND. PAGAMENTO</label> <input type="text" value="" id="condicao"></div>
+            <div class="campo full"><label>CLIENTE</label> <input type="text"></div>
+            <div class="campo full"><label>ENDEREÇO</label> <input type="text"></div>
+            <div class="campo"><label>BAIRRO</label> <input type="text"></div>
+            <div class="campo"><label>CEP</label> <input type="text"></div>
+            <div class="campo"><label>CIDADE</label> <input type="text"></div>
+            <div class="campo"><label>FONE</label> <input type="text"></div>
+            <div class="campo"><label>FAX</label> <input type="text"></div>
+            <div class="campo"><label>CEL</label> <input type="text"></div>
+            <div class="campo"><label>CNPJ/CPF</label> <input type="text"></div>
+            <div class="campo"><label>INCR./RG</label> <input type="text"></div>
+            <div class="campo full"><label>COND. PAGAMENTO</label> <input type="text"></div>
         </div>
 
-        <!-- MÃO DE OBRA -->
-        <div class="mao-de-obra-container">
-            <div class="mao-de-obra-label">✋ MÃO DE OBRA / SERVIÇO</div>
-            <textarea class="mao-de-obra-input" id="maoDeObra" placeholder="Descreva aqui os serviços realizados..."></textarea>
+        <!-- Mão de Obra -->
+        <div class="mao-obra">
+            <label>✋ MÃO DE OBRA / SERVIÇO</label>
+            <textarea placeholder="Descreva aqui os serviços realizados..."></textarea>
         </div>
 
-        <!-- TABELA DE ITENS (VISÍVEL E FUNCIONAL) -->
-        <div class="tabela-container" id="tabelaItens">
-            <!-- Cabeçalho -->
-            <div class="tabela-linha tabela-cabecalho">
-                <div class="col-quant">QUANT</div>
-                <div class="col-desc">DESCRIÇÃO</div>
-                <div class="col-preco">PREÇO UNIT</div>
-                <div class="col-total">TOTAL</div>
-            </div>
-            <!-- Linhas de itens serão inseridas aqui -->
-            <div id="itens-container"></div>
-        </div>
+        <!-- TABELA DE PRODUTOS - AGORA FUNCIONAL -->
+        <table class="tabela-produtos" id="tabelaProdutos">
+            <thead>
+                <tr>
+                    <th>QUANT</th>
+                    <th>DESCRIÇÃO</th>
+                    <th>PREÇO UNIT</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody id="corpoTabela">
+                <!-- Linhas serão inseridas via JavaScript -->
+            </tbody>
+        </table>
 
-        <!-- Total geral -->
+        <!-- Total Geral -->
         <div class="total-container">
-            <span class="total-label">TOTAL R$</span>
+            <span>TOTAL R$</span>
             <span class="total-valor" id="totalGeral">0.00</span>
         </div>
 
         <!-- Assinatura -->
-        <div class="assinatura-row">
-            <div class="ass-left">Assinatura: <span class="linha-assinatura"></span></div>
-            <div class="ass-right" id="totalAssinatura">R$ 0.00</div>
+        <div class="assinatura">
+            <div>Assinatura: <span class="linha-ass"></span></div>
+            <div class="total-ass" id="totalAssinatura">R$ 0.00</div>
         </div>
     </div>
 
-    <!-- BOTÕES -->
-    <div class="botoes-fixos">
+    <!-- Botões -->
+    <div class="botoes">
         <button class="btn" id="addLinhaBtn">➕ Item</button>
         <button class="btn" id="calcularBtn">🧮 Calcular</button>
         <button class="btn btn-wpp" id="wppBtn">📲 WhatsApp</button>
@@ -416,133 +332,111 @@
 
     <script>
         (function() {
-            // ===== NUMERAÇÃO =====
+            // Numeração
             let numeroAtual = localStorage.getItem('talaoNumero') ? parseInt(localStorage.getItem('talaoNumero')) : 1;
-            
-            function formatarNum(n) {
-                return n.toString().padStart(4, '0');
-            }
-            document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
+            document.getElementById('numeroTalao').innerText = numeroAtual.toString().padStart(4, '0');
 
             function incrementarNumero() {
                 numeroAtual++;
                 localStorage.setItem('talaoNumero', numeroAtual);
-                document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
+                document.getElementById('numeroTalao').innerText = numeroAtual.toString().padStart(4, '0');
             }
 
             document.getElementById('zerarBtn').addEventListener('click', function() {
                 numeroAtual = 1;
                 localStorage.setItem('talaoNumero', numeroAtual);
-                document.getElementById('numeroTalao').innerText = formatarNum(numeroAtual);
+                document.getElementById('numeroTalao').innerText = '0001';
             });
 
-            // ===== DATA =====
+            // Data
             const hoje = new Date();
-            const dia = String(hoje.getDate()).padStart(2, '0');
-            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-            const ano = String(hoje.getFullYear()).slice(-2);
-            document.getElementById('dataAtual').innerText = `${dia}, ${mes}, ${ano}`;
+            document.getElementById('dataAtual').innerText = 
+                `${String(hoje.getDate()).padStart(2, '0')}, ${String(hoje.getMonth()+1).padStart(2, '0')}, ${String(hoje.getFullYear()).slice(-2)}`;
 
-            // ===== CONTAINER DE ITENS =====
-            const itensContainer = document.getElementById('itens-container');
+            // Corpo da tabela
+            const corpoTabela = document.getElementById('corpoTabela');
 
-            // Função para criar uma linha de item
-            function criarLinhaItem() {
-                const div = document.createElement('div');
-                div.className = 'tabela-linha';
-                div.innerHTML = `
-                    <div class="col-quant"><input type="number" class="item-qtd" step="0.01" min="0" placeholder="0" value=""></div>
-                    <div class="col-desc"><input type="text" class="item-desc" placeholder="Descrição do item" value=""></div>
-                    <div class="col-preco"><input type="number" class="item-preco" step="0.01" min="0" placeholder="0.00" value=""></div>
-                    <div class="col-total total-item">R$ 0.00</div>
+            // Função para criar uma linha
+            function criarLinha() {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="number" class="qtd" step="0.01" min="0" placeholder="0"></td>
+                    <td><input type="text" class="desc" placeholder="Descrição"></td>
+                    <td><input type="number" class="preco" step="0.01" min="0" placeholder="0.00"></td>
+                    <td class="total-item">R$ 0.00</td>
                 `;
-                return div;
+                return tr;
             }
 
             // Adicionar 4 linhas iniciais
             for (let i = 0; i < 4; i++) {
-                itensContainer.appendChild(criarLinhaItem());
+                corpoTabela.appendChild(criarLinha());
             }
 
-            // ===== BOTÃO ADICIONAR ITEM =====
+            // Botão Adicionar Item
             document.getElementById('addLinhaBtn').addEventListener('click', function() {
-                itensContainer.appendChild(criarLinhaItem());
+                corpoTabela.appendChild(criarLinha());
             });
 
-            // ===== FUNÇÃO CALCULAR =====
-            function calcularTotais() {
-                const linhas = document.querySelectorAll('#itens-container .tabela-linha');
-                let totalGeral = 0;
-
+            // Função Calcular
+            function calcular() {
+                const linhas = document.querySelectorAll('#corpoTabela tr');
+                let total = 0;
+                
                 linhas.forEach(linha => {
-                    const qtdInput = linha.querySelector('.item-qtd');
-                    const precoInput = linha.querySelector('.item-preco');
-                    const totalCell = linha.querySelector('.total-item');
+                    const qtd = linha.querySelector('.qtd')?.value;
+                    const preco = linha.querySelector('.preco')?.value;
+                    const cell = linha.querySelector('.total-item');
                     
-                    if (qtdInput && precoInput && totalCell) {
-                        const qtd = parseFloat(qtdInput.value) || 0;
-                        const preco = parseFloat(precoInput.value) || 0;
-                        const total = qtd * preco;
-                        
-                        totalCell.innerText = 'R$ ' + total.toFixed(2);
-                        totalGeral += total;
+                    if (qtd && preco && cell) {
+                        const val = (parseFloat(qtd) || 0) * (parseFloat(preco) || 0);
+                        cell.innerText = 'R$ ' + val.toFixed(2);
+                        total += val;
                     }
                 });
-
-                document.getElementById('totalGeral').innerText = totalGeral.toFixed(2);
-                document.getElementById('totalAssinatura').innerText = 'R$ ' + totalGeral.toFixed(2);
+                
+                document.getElementById('totalGeral').innerText = total.toFixed(2);
+                document.getElementById('totalAssinatura').innerText = 'R$ ' + total.toFixed(2);
             }
 
-            document.getElementById('calcularBtn').addEventListener('click', function() {
-                calcularTotais();
-            });
+            document.getElementById('calcularBtn').addEventListener('click', calcular);
 
-            // ===== BOTÃO WHATSAPP (GERAR IMAGEM E COMPARTILHAR) =====
+            // Botão WhatsApp
             document.getElementById('wppBtn').addEventListener('click', function() {
-                calcularTotais(); // Atualiza os valores antes de gerar imagem
+                calcular(); // Atualiza totais
                 
                 const elemento = document.getElementById('talaoCard');
                 const btn = this;
-                const textoOriginal = btn.innerText;
-                
                 btn.innerText = '⏳ Gerando...';
                 btn.disabled = true;
 
                 html2canvas(elemento, {
-                    scale: 2.0,
-                    backgroundColor: '#fcf3e0',
-                    allowTaint: false,
-                    useCORS: true,
-                    logging: false
+                    scale: 2,
+                    backgroundColor: '#fcf3e0'
                 }).then(canvas => {
-                    canvas.toBlob(function(blob) {
-                        const fileName = `talao_${formatarNum(numeroAtual)}.png`;
-                        const file = new File([blob], fileName, { type: 'image/png' });
+                    canvas.toBlob(blob => {
+                        const fileName = `talao_${numeroAtual.toString().padStart(4, '0')}.png`;
                         
-                        // Tenta compartilhar via Web Share API
-                        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                        // Tenta compartilhar
+                        if (navigator.share && navigator.canShare({ files: [new File([blob], fileName, {type: 'image/png'})] })) {
                             navigator.share({
-                                title: 'Talão de Pedido',
-                                text: 'Segue o talão em anexo',
-                                files: [file]
+                                title: 'Talão',
+                                files: [new File([blob], fileName, {type: 'image/png'})]
                             }).then(() => {
                                 incrementarNumero();
-                                btn.innerText = textoOriginal;
+                                btn.innerText = '📲 WhatsApp';
                                 btn.disabled = false;
                             }).catch(() => {
-                                // Fallback: baixar e abrir WhatsApp
+                                // Fallback
                                 const url = URL.createObjectURL(blob);
                                 const link = document.createElement('a');
                                 link.href = url;
                                 link.download = fileName;
                                 link.click();
-                                
-                                setTimeout(() => {
-                                    window.open(`https://wa.me/?text=${encodeURIComponent('Olá, segue o talão em anexo. A imagem foi baixada automaticamente.')}`, '_blank');
-                                    incrementarNumero();
-                                    btn.innerText = textoOriginal;
-                                    btn.disabled = false;
-                                }, 500);
+                                window.open('https://wa.me/?text=' + encodeURIComponent('Olá, segue o talão.'));
+                                incrementarNumero();
+                                btn.innerText = '📲 WhatsApp';
+                                btn.disabled = false;
                             });
                         } else {
                             // Fallback direto
@@ -551,18 +445,20 @@
                             link.href = url;
                             link.download = fileName;
                             link.click();
-                            
-                            setTimeout(() => {
-                                window.open(`https://wa.me/?text=${encodeURIComponent('Olá, segue o talão em anexo. A imagem foi baixada automaticamente.')}`, '_blank');
-                                incrementarNumero();
-                                btn.innerText = textoOriginal;
-                                btn.disabled = false;
-                   
-});
+                            window.open('https://wa.me/?text=' + encodeURIComponent('Olá, segue o talão.'));
+                            incrementarNumero();
+                            btn.innerText = '📲 WhatsApp';
+                            btn.disabled = false;
+                        }
+                    });
+                }).catch(err => {
+                    alert('Erro: ' + err.message);
+                    btn.innerText = '📲 WhatsApp';
+                    btn.disabled = false;
+                });
             });
 
-            // Calcular inicial
-            calcularTotais();
+            calcular(); // cálculo inicial
         })();
     </script>
 </body>
