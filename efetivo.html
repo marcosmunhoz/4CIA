@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, shrink-to-fit=no">
+  <title>Efetivo 4ª Cia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Barra superior */
+    .top-bar {
+      background: #1a1a1a;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #ffcc00;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 50px;
+      height: auto;
+      filter: drop-shadow(0 0 4px #000);
+      object-fit: contain;
+    }
+
+    .logo-text h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffcc00;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .logo-text span {
+      font-size: 0.8rem;
+      color: #cccccc;
+      font-weight: 400;
+      display: block;
+    }
+
+    .btn-voltar {
+      background: transparent;
+      border: 2px solid #ffcc00;
+      color: #ffcc00;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-voltar:hover {
+      background: #ffcc00;
+      color: #000;
+    }
+
+    /* Container principal */
+    .main-container {
+      flex: 1;
+      padding: 1.8rem;
+      background-color: #0f0f0f;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Área de pesquisa e filtros */
+    .search-section {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+    }
+
+    .search-section h2 {
+      color: #ffcc00;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #3a3a3a;
+      padding-bottom: 10px;
+    }
+
+    .search-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 250px;
+      background: #262626;
+      border: 2px solid #444;
+      color: #ffcc00;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .search-input::placeholder {
+      color: #888;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #ffcc00;
+      background: #1e1e1e;
+    }
+
+    .filter-select {
+      background: #262626;
+      border: 2px solid #444;
+      color: #ffcc00;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      min-width: 200px;
+      transition: all 0.2s;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #ffcc00;
+    }
+
+    .filter-select option {
+      background: #1a1a1a;
+      color: #ffcc00;
+    }
+
+    .btn-limpar {
+      background: #3a3a3a;
+      border: 2px solid #555;
+      color: #ffcc00;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-limpar:hover {
+      background: #4a4a4a;
+      border-color: #ffcc00;
+    }
+
+    .contador {
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .contador strong {
+      color: #ffcc00;
+    }
+
+    /* Tabela de resultados */
+    .table-container {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+    }
+
+    .table-header {
+      background: #0d0d0d;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #ffcc00;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .table-header h3 {
+      color: #ffcc00;
+      font-size: 1.2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      background: #1a1a1a;
+      color: #ffcc00;
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #333;
+      position: sticky;
+      top: 0;
+    }
+
+    tbody td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #2a2a2a;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+    }
+
+    tbody tr {
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #252525;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #141414;
+    }
+
+    tbody tr:nth-child(even):hover {
+      background: #252525;
+    }
+
+    .re-badge {
+      color: #ffcc00;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .nome-destaque {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .patente-badge {
+      background: #2a2a2a;
+      color: #ffcc00;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid #444;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .sem-resultados {
+      text-align: center;
+      padding: 3rem;
+      color: #888;
+    }
+
+    .sem-resultados span {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      background: #0d0d0d;
+      text-align: center;
+      padding: 12px;
+      color: #aaa;
+      font-size: 0.8rem;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 1rem;
+      }
+
+      .search-controls {
+        flex-direction: column;
+      }
+
+      .search-input,
+      .filter-select {
+        width: 100%;
+        min-width: auto;
+      }
+
+      .contador {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 600px;
+      }
+
+      thead th,
+      tbody td {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+      }
+
+      .top-bar {
+        padding: 10px 15px;
+      }
+
+      .logo-img {
+        width: 40px;
+      }
+
+      .btn-voltar {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+    }
+
+    /* Scroll personalizado */
+    .table-container::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+      background: #ffcc00;
+      border-radius: 4px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background: #ffe55c;
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="logo-area">
+      <img src="img/logo/icon-pmrv.png" alt="Logo PM Rodoviária" class="logo-img" onerror="this.style.display='none'">
+      <div class="logo-text">
+        <h1>PM Rodoviária</h1>
+        <span>Estado de São Paulo</span>
+      </div>
+    </div>
+    <a href="index.html" class="btn-voltar" target="_blank" rel="noopener noreferrer">
+      ← Voltar ao Início
+    </a>
+  </header>
+
+  <main class="main-container">
+    <!-- Seção de pesquisa -->
+    <section class="search-section">
+      <h2>🔍 Consulta de Efetivo</h2>
+      <div class="search-controls">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Pesquisar por nome, RE ou patente..."
+          autocomplete="off"
+        >
+        <select id="filterPatente" class="filter-select">
+          <option value="">Todas as patentes</option>
+          <option value="Cap PM">Cap PM</option>
+          <option value="1º Ten PM">1º Ten PM</option>
+          <option value="2º Ten PM">2º Ten PM</option>
+          <option value="Subten PM">Subten PM</option>
+          <option value="1º Sgt PM">1º Sgt PM</option>
+          <option value="2º Sgt PM">2º Sgt PM</option>
+          <option value="3º Sgt PM">3º Sgt PM</option>
+          <option value="Cb PM">Cb PM</option>
+          <option value="CB PM">CB PM</option>
+          <option value="Sd PM">Sd PM</option>
+          <option value="SD PM">SD PM</option>
+        </select>
+        <button id="btnLimpar" class="btn-limpar">🔄 Limpar Filtros</button>
+        <span class="contador" id="contador">
+          Total: <strong id="totalRegistros">0</strong>
+        </span>
+      </div>
+    </section>
+
+    <!-- Tabela de resultados -->
+    <div class="table-container">
+      <div class="table-header">
+        <h3>📋 Lista de Policiais</h3>
+      </div>
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>RE</th>
+              <th>Nome Completo</th>
+              <th>Patente</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaCorpo">
+            <!-- Dados inseridos via JavaScript -->
+          </tbody>
+        </table>
+        <div class="sem-resultados" id="semResultados" style="display: none;">
+          <span>🔎</span>
+          <p>Nenhum policial encontrado com os filtros aplicados.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Polícia Rodoviária · Limeira · Sd PM 194528-9 Guidini.
+  </footer>
+
+  <script>
+    // Banco de dados dos policiais
+    const efetivo = [
+      { re: "109961-2", nome: "RODRIGO GONÇALVES DE CAMPOS", patente: "1º TEN PM" },
+      { re: "128206-9", nome: "JULIO EDER BERCKE REGERT", patente: "1º Sgt PM" },
+      { re: "116779-A", nome: "FERNANDO CESAR CAMPOS PEDRO", patente: "Cb PM" },
+      { re: "127919-0", nome: "ANDRE JULIANO GURTLER", patente: "Cb PM" },
+      { re: "145808-6", nome: "ANDERSON RICARDO DOS SANTOS", patente: "Cb PM" },
+      { re: "191755-2", nome: "JORGE HENRIQUE MENDES", patente: "Cb PM" },
+      { re: "170351-0", nome: "HECTOR ANDREY DOS SANTOS", patente: "Cb PM" },
+      { re: "200964-1", nome: "EDUARDO HENRIQUE ALVES FIRMINO", patente: "Cb PM" },
+      { re: "157394-2", nome: "RAFAEL DOUGLAS DE SOUZA", patente: "Sd PM" },
+      { re: "193208-0", nome: "LEONARDO PEREIRA BARBOSA", patente: "SD PM" },
+      { re: "241884-3", nome: "CLAUDIO DONIZETI ALVES DE MELLO JUNIOR", patente: "Sd PM" },
+      { re: "240090-1", nome: "GABRIEL ROSSI", patente: "Sd PM" },
+      { re: "240553-9", nome: "GABRIEL SABATELAU RODRIGUES DOURADO", patente: "Sd PM" },
+      { re: "180304-2", nome: "CAROLINE DE GODOY FONRROZO", patente: "1º TEN PM" },
+      { re: "116136-9", nome: "RICARDO DE ARAÚJO DRUMMOND", patente: "1º Sgt PM" },
+      { re: "135037-4", nome: "CRISTIAN DAS CHAGAS NUNES", patente: "Cb PM" },
+      { re: "140328-1", nome: "MAXWELL RODRIGO MENDES", patente: "Cb PM" },
+      { re: "131414-9", nome: "JOSÉ CARLOS BARBOSA JUNIOR", patente: "Cb PM" },
+      { re: "141496-8", nome: "ERIC BARROS DO PRADO", patente: "CB PM" },
+      { re: "191257-7", nome: "JOHNNY JULIO MARTINS", patente: "Cb PM" },
+      { re: "102488-4", nome: "MARCOS ARILDO BRAMBILA DOS SANTOS", patente: "Cb PM" },
+      { re: "160508-9", nome: "ISAIAS ALVARES FERNANDES BOTURA", patente: "Cb PM" },
+      { re: "201135-2", nome: "LUAN CANDIDO DA SILVA", patente: "Cb PM" },
+      { re: "151242-A", nome: "JONES JOAQUIM DOS SANTOS", patente: "Sd PM" },
+      { re: "110962-6", nome: "ROGERIO MARCHETTI", patente: "1º Sgt PM" },
+      { re: "105369-8", nome: "LUIZ ANTONIO DOS SANTOS", patente: "1º Sgt PM" },
+      { re: "105586-A", nome: "MARCELO COSTA", patente: "2º Sgt PM" },
+      { re: "102499-0", nome: "MARCELO SIMONINI", patente: "Cb PM" },
+      { re: "128107-A", nome: "FLAVIO ROBERTO SANTOS", patente: "Cb PM" },
+      { re: "120403-3", nome: "FÁBIO HENRIQUE DOS REIS", patente: "Cb PM" },
+      { re: "150299-9", nome: "DIEGO LUIZ DE OLIVEIRA", patente: "Cb PM" },
+      { re: "152965-0", nome: "ADRIANO PESSI", patente: "Cb PM" },
+      { re: "161051-1", nome: "MATEUS ROSA VIEIRA", patente: "CB PM" },
+      { re: "190241-5", nome: "LEONARDO PEREIRA SANTOS", patente: "Cb PM" },
+      { re: "152005-9", nome: "JULIANO APARECIDO DE LIMA", patente: "Sd PM" },
+      { re: "242871-7", nome: "PHILIPPE FOLHETO RICCI", patente: "Sd PM" },
+      { re: "241838-0", nome: "KAIRON HEINRICK DE SOUZA RIBEIRO", patente: "Sd PM" },
+      { re: "104486-9", nome: "JOSE CLAUDIO REGERT", patente: "2º Sgt PM" },
+      { re: "105580-1", nome: "MARCOS HENRIQUE GONÇALVES CAMPOS", patente: "2º Sgt PM" },
+      { re: "201400-9", nome: "GEISA ROBERTA BONAN", patente: "Cb PM" },
+      { re: "143655-4", nome: "VITOR ROSO BUENO", patente: "Cb PM" },
+      { re: "180946-6", nome: "THAIS CAROLINI DE MOURA", patente: "Cb PM" },
+      { re: "160506-2", nome: "GUILHERME HENRIQUE PEREIRA", patente: "Cb PM" },
+      { re: "105472-4", nome: "ALEXANDRE HENRIQUE DA SILVA", patente: "Cb PM" },
+      { re: "116192-0", nome: "SERGIO RICARDO BERNARDO", patente: "Cb PM" },
+      { re: "116108-3", nome: "MARCOS ROBERTO BOSSU", patente: "Cb PM" },
+      { re: "105603-4", nome: "TIAGO BARIOTTI TONDATO", patente: "Cb PM" },
+      { re: "127133-4", nome: "UILIAN DA SILVA CICILIATO", patente: "Cb PM" },
+      { re: "140589-6", nome: "OSEIAS EDUARDO LEITE FERRARESI", patente: "Cb PM" },
+      { re: "142926-4", nome: "RICARDO GUSMAN JÚNIOR", patente: "Cb PM" },
+      { re: "144803-0", nome: "CAMILO ALVES DOS SANTOS", patente: "Cb PM" },
+      { re: "153129-8", nome: "RAFAEL BRUNO DA SILVA", patente: "Sd PM" },
+      { re: "195567-5", nome: "JOHN CLEBER SIQUEIRA AMANCIO", patente: "Sd PM" },
+      { re: "194528-9", nome: "MARCOS PAULO GUIDINI MUNHOZ", patente: "Sd PM" },
+      { re: "242391-0", nome: "VICTOR HUGO TOCCHINI MACHADO RODRIGUES", patente: "Sd PM" },
+      { re: "181432-0", nome: "ANDRÉ LUIZ PEREIRA", patente: "Sd PM" },
+      { re: "241196-2", nome: "LUIZ FELIPE DOS ANJOS", patente: "Sd PM" },
+      { re: "124098-6", nome: "DAVI MARTINS", patente: "1º Sgt PM" },
+      { re: "151887-9", nome: "RAFAEL APARECIDO SILVA DE ANDRADE", patente: "2º Sgt PM" },
+      { re: "116140-7", nome: "PAULO EDUARDO MENDES", patente: "Cb PM" },
+      { re: "131991-4", nome: "DAVID TARGINO DA SILVA", patente: "Cb PM" },
+      { re: "116116-4", nome: "MARCEL BRAGHIN", patente: "Cb PM" },
+      { re: "162725-2", nome: "FLAVIO EBER VERA DA SILVA", patente: "Cb PM" },
+      { re: "171028-1", nome: "VICTOR SCABIO GONÇALVES", patente: "Cb PM" },
+      { re: "170611-0", nome: "PABLO DE CARLI", patente: "CB PM" },
+      { re: "192117-7", nome: "GUILHERME DO NASCIMENTO BORGES", patente: "Cb PM" },
+      { re: "149004-4", nome: "LUCAS RIBEIRO PORTELA", patente: "Sd PM" },
+      { re: "162158-A", nome: "EZEQUIEL SIMAO DE SOUZA", patente: "SD PM" },
+      { re: "231165-8", nome: "GIUSEPPE GABRIEL SIMOES", patente: "Sd PM" },
+      { re: "116194-6", nome: "CARLOS AUGUSTO FRANCO DE SOUZA", patente: "1º Sgt PM" },
+      { re: "110119-6", nome: "VALENTIN ADALBERTO FRANZONI JUNIOR", patente: "Cb PM" },
+      { re: "128977-2", nome: "FABIANO OLEGÁRIO DE SOUZA", patente: "Cb PM" },
+      { re: "141536-A", nome: "ESTEVAN BIAZOTO DE ARAUJO", patente: "Cb PM" },
+      { re: "181615-2", nome: "FRANCIELLE PESSOA DE SOUZA", patente: "Cb PM" },
+      { re: "192596-2", nome: "ANDERSON BUZATTO BAIO", patente: "SD PM" },
+      { re: "210500-4", nome: "AMANDA CANDIDO PICCOLO", patente: "Sd PM" },
+      { re: "242695-1", nome: "TARCIO JOSE TEIXEIRA", patente: "Sd PM" },
+      { re: "128003-1", nome: "DAVID DOS SANTOS", patente: "Cb PM" },
+      { re: "161472-0", nome: "ELVIS ARAUJO DOS SANTOS", patente: "Cb PM" },
+      { re: "195519-5", nome: "ARNOLD FABRICIO DA COSTA", patente: "SD PM" },
+      { re: "231418-5", nome: "ALEX AUGUSTO ARTUR", patente: "Sd PM" },
+      { re: "242515-7", nome: "HIGOR VITORIO FALARARO", patente: "Sd PM" },
+      { re: "231026-A", nome: "LEONARDO HENRIQUE DE BESSA", patente: "Sd PM" },
+      { re: "105549-6", nome: "ODAIR NEILEN", patente: "Subten PM" },
+      { re: "110068-8", nome: "CLEBER CALLIGIONI FIGUEIREDO", patente: "2º Sgt PM" },
+      { re: "110837-9", nome: "DAVID DONIZETI DOS SANTOS ROVANI", patente: "Cb PM" },
+      { re: "116174-1", nome: "RONALDO MARCELO PAGOTTI", patente: "Cb PM" },
+      { re: "131445-9", nome: "ISAC SOARES SIQUEIRA", patente: "Cb PM" },
+      { re: "200640-5", nome: "JOSELAINE COSTA LIMA AMORIM", patente: "Cb PM" },
+      { re: "105591-7", nome: "MARIO JOSÉ BUENO DE OLIVEIRA", patente: "Cb PM" },
+      { re: "195536-5", nome: "WILSON ROGÉRIO DOS SANTOS", patente: "SD PM" },
+      { re: "200857-2", nome: "JHENIFFER ROSA DE OLIVEIRA", patente: "Sd PM" },
+      { re: "975712-A", nome: "ROBSON BRAZ", patente: "Subten PM" },
+      { re: "116066-4", nome: "LEANDRO LUIS FRASSE", patente: "1º Sgt PM" },
+      { re: "105428-7", nome: "ADRIANO RODRIGUES DE OLIVEIRA", patente: "2º Sgt PM" },
+      { re: "116076-1", nome: "LUCAS DE CAMARGO MENDES", patente: "Cb PM" },
+      { re: "123053-A", nome: "DANILO DO AMARAL PINTO", patente: "Cb PM" },
+      { re: "143007-6", nome: "LUIZ FERNANDO CAVALCANTE GONÇALVES", patente: "Cb PM" },
+      { re: "151919-A", nome: "ANTONIO CARLOS CORREA JUNIOR", patente: "Cb PM" },
+      { re: "146579-1", nome: "CAROLINE TAMAIRA SILVA BUENO", patente: "Cb PM" },
+      { re: "194288-3", nome: "GABRIEL ANTONIO VENDRAMEL AUGUSTO", patente: "Cb PM" },
+      { re: "105545-3", nome: "NIVALDO ROGERIO DONDERI", patente: "Cb PM" },
+      { re: "965201-9", nome: "MARCIO MARTINS FRITOLI", patente: "Cb PM" },
+      { re: "144861-7", nome: "ANDREIA CRUZ NORONHA SILVA", patente: "Sd PM" },
+      { re: "211372-4", nome: "RODRIGO ORTOLANI BELTRAME", patente: "Sd PM" },
+      { re: "190776-0", nome: "ALEKSANDER FERNANDO MAFRA", patente: "Sd PM" },
+      { re: "127718-9", nome: "DANIEL DWORAK NEVES", patente: "Cap PM" },
+      { re: "105463-5", nome: "ALEXANDRE DIAS DE OLIVEIRA", patente: "1º Sgt PM" },
+      { re: "135104-4", nome: "EDUARDO HERNANDEZ GRASEFFE", patente: "Cb PM" },
+      { re: "105468-6", nome: "FERNANDO VIEIRA GONÇALVES", patente: "Cb PM" },
+      { re: "116785-5", nome: "MAURO ANDRÉ TOFANIN", patente: "Cb PM" },
+      { re: "136177-5", nome: "LEANDRO ROSA DA SILVA", patente: "Cb PM" },
+      { re: "143043-2", nome: "FERNANDO ALVES JUNIOR", patente: "Cb PM" },
+      { re: "202182-0", nome: "LETÍCIA VICKI", patente: "Cb PM" },
+      { re: "110812-3", nome: "ALVIMAR DE ABREU LIMA", patente: "Cb PM" },
+      { re: "102738-7", nome: "AILTON DE FIGUEREDO JOIA", patente: "Cb PM" },
+      { re: "154619-8", nome: "EZEQUIEL FERNANDO PEREIRA NOGUEIRA", patente: "Sd PM" },
+      { re: "191871-A", nome: "ELIARDI ANTHONI ERNESTO", patente: "SD PM" },
+      { re: "220536-0", nome: "GUILHERME ZAMPRONI PEREIRA", patente: "Sd PM" },
+      { re: "231993-4", nome: "PEDRO HENRIQUE PEREZ", patente: "Sd PM" },
+      { re: "241618-2", nome: "ANDERSON DE JESUS CARVALHO", patente: "Sd PM" },
+      { re: "240811-2", nome: "NELSON COLETO SILVEIRA", patente: "Sd PM" },
+      { re: "110899-9", nome: "MARCIO JOSÉ BOSSU", patente: "Subten PM" },
+      { re: "105539-9", nome: "RODRIGO DOS SANTOS", patente: "Cb PM" },
+      { re: "105600-0", nome: "LUIS HENRIQUE SEBASTIÃO", patente: "Cb PM" },
+      { re: "128219-A", nome: "LEANDRO GAMA CORREA", patente: "Cb PM" },
+      { re: "110895-6", nome: "GUSTAVO DE SOUZA FRASSETO", patente: "Cb PM" },
+      { re: "140643-4", nome: "ALESSANDRO NASCIMENTO TEIXEIRA", patente: "Cb PM" },
+      { re: "141446-1", nome: "GLAUCO MARTINS PINTO", patente: "Cb PM" },
+      { re: "150802-4", nome: "VANEY DOS SANTOS MANENTE", patente: "Sd PM" },
+      { re: "195839-9", nome: "GUILHERME TESCH LOBO", patente: "SD PM" },
+      { re: "194366-9", nome: "FELIPE SILVA DE OLIVEIRA", patente: "Sd PM" },
+      { re: "241308-6", nome: "ANA FLAVIA MAYER MILITO", patente: "Sd PM" },
+      { re: "240797-3", nome: "EDUARDO GONCALVES DE OLIVEIRA", patente: "Sd PM" },
+      { re: "232034-7", nome: "LEANDRO HENRIQUE DURANTE DE ASSIS", patente: "Sd PM" },
+      { re: "231440-1", nome: "GHABRIEL OSORIO DIAS DE MELO", patente: "Sd PM" },
+      { re: "231800-8", nome: "MARCOS VINICIUS TOESCA SOARES", patente: "Sd PM" },
+      { re: "129411-3", nome: "WILLIAM MARTINS", patente: "3º Sgt PM" },
+      { re: "120400-9", nome: "EWERTON MUNIZ DIAS NASSER", patente: "Cb PM" },
+      { re: "137661-6", nome: "RONALDO ANTONIO QUEOQUETTI", patente: "Cb PM" },
+      { re: "143904-9", nome: "ENÉAS SILVA SOARES", patente: "Cb PM" },
+      { re: "141545-0", nome: "DIEGO APARECIDO PACAGNELA", patente: "Cb PM" },
+      { re: "144594-4", nome: "JÚLIO CESAR FERREIRA DE JESUS", patente: "Cb PM" },
+      { re: "150177-1", nome: "RAIMUNDO JURACI PINHEIRO JUNIOR", patente: "Sd PM" },
+      { re: "196058-0", nome: "IZAQUE SIMAO DE SOUZA", patente: "Sd PM" },
+      { re: "231574-2", nome: "RAYANE THAIS DE OLIVEIRA", patente: "Sd PM" },
+      { re: "242475-4", nome: "RAFAEL MARANGONI DE MATOS", patente: "Sd PM" },
+      { re: "231415-A", nome: "FELIPE FERREIRA DE MORAIS", patente: "Sd PM" }
+    ];
+
+    // Elementos DOM
+    const searchInput = document.getElementById('searchInput');
+    const filterPatente = document.getElementById('filterPatente');
+    const btnLimpar = document.getElementById('btnLimpar');
+    const tabelaCorpo = document.getElementById('tabelaCorpo');
+    const totalRegistros = document.getElementById('totalRegistros');
+    const semResultados = document.getElementById('semResultados');
+
+    // Função para normalizar texto (remove acentos e converte para minúsculas)
+    function normalizarTexto(texto) {
+      return texto
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+    }
+
+    // Função para normalizar patente (unifica variações)
+    function normalizarPatente(patente) {
+      return patente
+        .toUpperCase()
+        .replace(/^CB\s*PM$/, 'CB PM')
+        .replace(/^SD\s*PM$/, 'SD PM')
+        .trim();
+    }
+
+    // Função para filtrar e renderizar tabela
+    function filtrarEfetivo() {
+      const termoBusca = normalizarTexto(searchInput.value);
+      const patenteFiltro = filterPatente.value.trim();
+      
+      let resultados = efetivo.filter(policial => {
+        // Filtro por patente (comparação normalizada)
+        if (patenteFiltro !== '') {
+          const patenteNormalizada = normalizarPatente(policial.patente);
+          const filtroNormalizado = normalizarPatente(patenteFiltro);
+          if (patenteNormalizada !== filtroNormalizado) {
+            return false;
+          }
+        }
+        
+        // Filtro por termo de busca (nome, RE ou patente)
+        if (termoBusca !== '') {
+          const nomeNormalizado = normalizarTexto(policial.nome);
+          const reNormalizado = normalizarTexto(policial.re);
+          const patenteNormalizada = normalizarTexto(policial.patente);
+          
+          return nomeNormalizado.includes(termoBusca) || 
+                 reNormalizado.includes(termoBusca) || 
+                 patenteNormalizada.includes(termoBusca);
+        }
+        
+        return true;
+      });
+
+      // Atualizar tabela
+      tabelaCorpo.innerHTML = '';
+      
+      if (resultados.length === 0) {
+        semResultados.style.display = 'block';
+        tabelaCorpo.style.display = 'none';
+      } else {
+        semResultados.style.display = 'none';
+        tabelaCorpo.style.display = '';
+        
+        resultados.forEach(policial => {
+          const tr = document.createElement('tr');
+          
+          tr.innerHTML = `
+            <td><span class="re-badge">${policial.re}</span></td>
+            <td><span class="nome-destaque">${policial.nome}</span></td>
+            <td><span class="patente-badge">${policial.patente}</span></td>
+          `;
+          
+          tabelaCorpo.appendChild(tr);
+        });
+      }
+      
+      // Atualizar contador
+      totalRegistros.textContent = resultados.length;
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', filtrarEfetivo);
+    filterPatente.addEventListener('change', filtrarEfetivo);
+    
+    btnLimpar.addEventListener('click', function() {
+      searchInput.value = '';
+      filterPatente.value = '';
+      filtrarEfetivo();
+      searchInput.focus();
+    });
+
+    // Inicializar tabela com todos os registros
+    filtrarEfetivo();
+
+    // Atalho: tecla ESC limpa os filtros
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        filterPatente.value = '';
+        filtrarEfetivo();
+      }
+    });
+  </script>
+</body>
+</html>
