@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, shrink-to-fit=no">
+  <title>Polícia Rodoviária Militar · SP</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0a; /* preto quase puro */
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Barra superior - identidade visual */
+    .top-bar {
+      background: #1a1a1a;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #ffcc00; /* amarelo destacando */
+      flex-wrap: wrap;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-icon {
+      font-size: 2rem;
+      color: #ffcc00;
+      filter: drop-shadow(0 0 4px #000);
+    }
+
+    .logo-text h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffcc00;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .logo-text span {
+      font-size: 0.8rem;
+      color: #cccccc;
+      font-weight: 400;
+      display: block;
+    }
+
+    .mobile-menu-toggle {
+      background: transparent;
+      border: 2px solid #ffcc00;
+      color: #ffcc00;
+      font-size: 1.8rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none; /* visível apenas no mobile */
+      transition: 0.2s;
+    }
+
+    .mobile-menu-toggle:hover {
+      background: #ffcc00;
+      color: #000;
+    }
+
+    /* layout principal */
+    .main-container {
+      display: flex;
+      flex: 1;
+      background-color: #0f0f0f;
+    }
+
+    /* Sidebar (menu esquerdo) */
+    .sidebar {
+      width: 260px;
+      background: #0d0d0d;
+      border-right: 2px solid #2a2a2a;
+      padding: 1.2rem 0;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+      z-index: 10;
+    }
+
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0 10px;
+    }
+
+    .sidebar li {
+      margin-bottom: 5px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 15px;
+      color: #ffcc00;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    .menu-item i {
+      font-style: normal;
+      font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .menu-item:hover {
+      background: #2a2a2a;
+      color: #ffe55c;
+    }
+
+    /* submenu */
+    .submenu {
+      list-style: none;
+      margin-left: 20px;
+      margin-top: 4px;
+      margin-bottom: 6px;
+      display: none;
+      border-left: 2px solid #ffcc00;
+      padding-left: 12px;
+    }
+
+    .submenu.open {
+      display: block;
+    }
+
+    .submenu li a {
+      display: block;
+      padding: 8px 12px;
+      color: #dddddd;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      transition: 0.2s;
+      font-weight: 500;
+    }
+
+    .submenu li a:hover {
+      background: #1e1e1e;
+      color: #ffcc00;
+    }
+
+    .has-submenu {
+      position: relative;
+    }
+
+    .arrow-icon {
+      margin-left: auto;
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+      color: #ffcc00;
+    }
+
+    .menu-item.active .arrow-icon {
+      transform: rotate(90deg);
+    }
+
+    /* área central */
+    .content-area {
+      flex: 1;
+      padding: 1.8rem;
+      background-color: #0a0a0a;
+      overflow-y: auto;
+    }
+
+    .avisos-section {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+    }
+
+    .avisos-section h2 {
+      color: #ffcc00;
+      font-size: 1.6rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #3a3a3a;
+      padding-bottom: 10px;
+    }
+
+    .aviso-item {
+      background: #262626;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      border-left: 5px solid #ffcc00;
+      color: #e0e0e0;
+    }
+
+    .aviso-item strong {
+      color: #ffcc00;
+    }
+
+    .galeria-imagens {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid #333;
+    }
+
+    .galeria-imagens h2 {
+      color: #ffcc00;
+      font-size: 1.6rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #3a3a3a;
+      padding-bottom: 10px;
+    }
+
+    .imagens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .card-imagem {
+      background: #2c2c2c;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #444;
+      transition: 0.3s;
+    }
+
+    .card-imagem:hover {
+      border-color: #ffcc00;
+      transform: translateY(-3px);
+    }
+
+    .card-imagem img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+      background: #1e1e1e;
+    }
+
+    .card-imagem .legenda {
+      padding: 10px;
+      color: #ffcc00;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: center;
+      background: #1f1f1f;
+    }
+
+    /* placeholder para imagens (caso use links quebrados) */
+    .img-placeholder {
+      background: #3a3a3a;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffcc00;
+      font-size: 2rem;
+    }
+
+    footer {
+      background: #0d0d0d;
+      text-align: center;
+      padding: 12px;
+      color: #aaa;
+      font-size: 0.8rem;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    /* classes de controle mobile */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 260px;
+        transform: translateX(-100%);
+        background: #0d0d0d;
+        padding-top: 80px;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.8);
+        z-index: 999;
+        border-right: 2px solid #ffcc00;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-container {
+        flex-direction: column;
+      }
+
+      .content-area {
+        padding: 1.2rem;
+      }
+
+      .top-bar {
+        padding: 10px 15px;
+      }
+    }
+
+    /* transição suave no menu */
+    .sidebar, .overlay {
+      transition: all 0.3s ease;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 99;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="logo-area">
+      <span class="badge-icon">🛡️</span>
+      <div class="logo-text">
+        <h1>PM Rodoviária</h1>
+        <span>Estado de São Paulo</span>
+      </div>
+    </div>
+    <button class="mobile-menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+  </header>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="main-container">
+    <!-- Menu lateral esquerdo -->
+    <aside class="sidebar" id="sidebar">
+      <nav>
+        <ul>
+          <!-- Item com submenu -->
+          <li class="has-submenu">
+            <button class="menu-item" data-submenu="submenu1">
+              <i>🚔</i> Operações
+              <span class="arrow-icon">▶</span>
+            </button>
+            <ul class="submenu" id="submenu1">
+              <li><a href="#">Patrulhamento</a></li>
+              <li><a href="#">Fiscalização</a></li>
+              <li><a href="#">Escolta</a></li>
+            </ul>
+          </li>
+
+          <li class="has-submenu">
+            <button class="menu-item" data-submenu="submenu2">
+              <i>📋</i> Ocorrências
+              <span class="arrow-icon">▶</span>
+            </button>
+            <ul class="submenu" id="submenu2">
+              <li><a href="#">Registro diário</a></li>
+              <li><a href="#">Acidentes</a></li>
+              <li><a href="#">Infrações</a></li>
+            </ul>
+          </li>
+
+          <li class="has-submenu">
+            <button class="menu-item" data-submenu="submenu3">
+              <i>📊</i> Estatísticas
+              <span class="arrow-icon">▶</span>
+            </button>
+            <ul class="submenu" id="submenu3">
+              <li><a href="#">Rodovias</a></li>
+              <li><a href="#">Comparativo</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="#" class="menu-item">
+              <i>📞</i> Contato
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Área central com avisos e imagens -->
+    <main class="content-area">
+      <section class="avisos-section">
+        <h2><span>⚠️</span> Avisos e Comunicados</h2>
+        <div class="aviso-item">
+          <strong>🔹 Atenção:</strong> Operação "Saturação" na SP-280 (Castelo Branco) entre km 45 e 60. Intensificação de abordagens.
+        </div>
+        <div class="aviso-item">
+          <strong>🔹 14/04 - Treinamento:</strong> Instrução de tiro tático no 2º BPRv. Todos os pelotões devem comparecer conforme escala.
+        </div>
+        <div class="aviso-item">
+          <strong>🔹 Aviso Importante:</strong> Nova viatura blindada designada para a região de Campinas. Ativação em 22/04.
+        </div>
+      </section>
+
+      <section class="galeria-imagens">
+        <h2><span>📸</span> Galeria de Imagens</h2>
+        <div class="imagens-grid">
+          <div class="card-imagem">
+            <!-- Imagem ilustrativa (substitua pelos links desejados) -->
+            <img src="https://images.unsplash.com/photo-1617575520283-4c2a4b6b5c7e?w=400&h=250&fit=crop&auto=format" alt="Viatura policial" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>🚓</div><div class=\'legenda\'>Viatura PRv</div>';">
+            <div class="legenda">Viatura Tática</div>
+          </div>
+          <div class="card-imagem">
+            <img src="https://images.unsplash.com/photo-1590073242678-70ee3fc28e8b?w=400&h=250&fit=crop&auto=format" alt="Rodovia" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>🛣️</div><div class=\'legenda\'>Rodovia SP</div>';">
+            <div class="legenda">Monitoramento</div>
+          </div>
+          <div class="card-imagem">
+            <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=250&fit=crop&auto=format" alt="Policial" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>👮</div><div class=\'legenda\'>Policial PRv</div>';">
+            <div class="legenda">Equipe em Ação</div>
+          </div>
+          <div class="card-imagem">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=250&fit=crop&auto=format" alt="Base móvel" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>🏍️</div><div class=\'legenda\'>Motocicleta</div>';">
+            <div class="legenda">Patrulha Motos</div>
+          </div>
+        </div>
+        <p style="color:#aaa; margin-top:15px; font-size:0.8rem;">* Imagens ilustrativas – Polícia Militar Rodoviária do Estado de São Paulo.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    © 2025 Polícia Rodoviária Militar · São Paulo · Desenvolvimento interno
+  </footer>
+
+  <script>
+    (function() {
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menuToggle');
+      const overlay = document.getElementById('overlay');
+
+      // Abre/fecha sidebar mobile
+      function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+      }
+
+      menuToggle.addEventListener('click', toggleSidebar);
+      overlay.addEventListener('click', function() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      });
+
+      // Fecha menu ao clicar em link (mobile)
+      const sidebarLinks = sidebar.querySelectorAll('a');
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+          }
+        });
+      });
+
+      // Controle dos submenus (toggle com classe)
+      const menuButtons = document.querySelectorAll('.menu-item[data-submenu]');
+      
+      menuButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          const submenuId = this.getAttribute('data-submenu');
+          const submenu = document.getElementById(submenuId);
+          
+          if (submenu) {
+            // Fecha outros submenus? Opcional: manter apenas um aberto.
+            // Vamos permitir múltiplos abertos ou comportamento de acordeão simples:
+            const allSubmenus = document.querySelectorAll('.submenu');
+            allSubmenus.forEach(sm => {
+              if (sm.id !== submenuId) {
+                sm.classList.remove('open');
+                // também remove active dos botões correspondentes
+                const relatedBtn = document.querySelector(`.menu-item[data-submenu="${sm.id}"]`);
+                if (relatedBtn) relatedBtn.classList.remove('active');
+              }
+            });
+            
+            submenu.classList.toggle('open');
+            this.classList.toggle('active');
+          }
+        });
+      });
+
+      // Ajuste de redimensionamento
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      });
+
+      // Iniciar com submenus fechados
+      document.querySelectorAll('.submenu').forEach(sm => sm.classList.remove('open'));
+      document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
+    })();
+  </script>
+</body>
+</html>
