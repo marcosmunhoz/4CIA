@@ -6,12 +6,7 @@
   <title>Efetivo 4ª Cia</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background-color: #0a0a0a;
       font-family: 'Segoe UI', 'Arial', sans-serif;
@@ -20,7 +15,6 @@
       display: flex;
       flex-direction: column;
     }
-
     .top-bar {
       background: #1a1a1a;
       padding: 12px 20px;
@@ -31,496 +25,172 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .logo-area { display: flex; align-items: center; gap: 10px; }
+    .logo-img { width: 50px; height: auto; filter: drop-shadow(0 0 4px #000); object-fit: contain; }
+    .logo-text h1 { font-size: 1.3rem; font-weight: 700; color: #ffcc00; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.2; }
+    .logo-text span { font-size: 0.8rem; color: #cccccc; font-weight: 400; display: block; }
+    .btn-voltar, .btn-admin {
+      background: transparent; border: 2px solid #ffcc00; color: #ffcc00;
+      padding: 8px 16px; border-radius: 6px; text-decoration: none;
+      font-weight: 600; font-size: 0.9rem; transition: all 0.2s;
+      display: flex; align-items: center; gap: 6px; cursor: pointer;
     }
-
-    .logo-img {
-      width: 50px;
-      height: auto;
-      filter: drop-shadow(0 0 4px #000);
-      object-fit: contain;
-    }
-
-    .logo-text h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #ffcc00;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      line-height: 1.2;
-    }
-
-    .logo-text span {
-      font-size: 0.8rem;
-      color: #cccccc;
-      font-weight: 400;
-      display: block;
-    }
-
-    .btn-voltar {
-      background: transparent;
-      border: 2px solid #ffcc00;
-      color: #ffcc00;
-      padding: 8px 16px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-
-    .btn-voltar:hover {
-      background: #ffcc00;
-      color: #000;
-    }
-
+    .btn-voltar:hover, .btn-admin:hover { background: #ffcc00; color: #000; }
     .main-container {
-      flex: 1;
-      padding: 1.8rem;
-      background-color: #0f0f0f;
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
+      flex: 1; padding: 1.8rem; background-color: #0f0f0f;
+      max-width: 1400px; margin: 0 auto; width: 100%;
     }
-
     .search-section {
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 16px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      background: #1a1a1a; border: 1px solid #333; border-radius: 16px;
+      padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.7);
     }
-
     .search-section h2 {
-      color: #ffcc00;
-      font-size: 1.4rem;
-      margin-bottom: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid #3a3a3a;
-      padding-bottom: 10px;
+      color: #ffcc00; font-size: 1.4rem; margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid #3a3a3a; padding-bottom: 10px;
     }
-
-    .search-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-    }
-
+    .search-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
     .search-input {
-      flex: 1;
-      min-width: 250px;
-      background: #262626;
-      border: 2px solid #444;
-      color: #ffcc00;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 500;
-      transition: all 0.2s;
+      flex: 1; min-width: 250px; background: #262626; border: 2px solid #444;
+      color: #ffcc00; padding: 12px 16px; border-radius: 8px;
+      font-size: 1rem; font-weight: 500; transition: all 0.2s;
     }
-
     .search-input::placeholder { color: #888; }
-
-    .search-input:focus {
-      outline: none;
-      border-color: #ffcc00;
-      background: #1e1e1e;
-    }
-
+    .search-input:focus { outline: none; border-color: #ffcc00; background: #1e1e1e; }
     .filter-select {
-      background: #262626;
-      border: 2px solid #444;
-      color: #ffcc00;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      min-width: 200px;
-      transition: all 0.2s;
+      background: #262626; border: 2px solid #444; color: #ffcc00;
+      padding: 12px 16px; border-radius: 8px; font-size: 1rem;
+      font-weight: 500; cursor: pointer; min-width: 200px; transition: all 0.2s;
     }
-
-    .filter-select:focus {
-      outline: none;
-      border-color: #ffcc00;
+    .filter-select:focus { outline: none; border-color: #ffcc00; }
+    .filter-select option { background: #1a1a1a; color: #ffcc00; }
+    .btn-limpar {
+      background: #3a3a3a; border: 2px solid #555; color: #ffcc00;
+      padding: 12px 20px; border-radius: 8px; font-size: 0.95rem;
+      font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;
     }
-
-    .filter-select option {
-      background: #1a1a1a;
-      color: #ffcc00;
-    }
-
-    .btn-limpar, .btn-admin, .btn-add {
-      background: #3a3a3a;
-      border: 2px solid #555;
-      color: #ffcc00;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-
-    .btn-limpar:hover, .btn-admin:hover, .btn-add:hover {
-      background: #4a4a4a;
-      border-color: #ffcc00;
-    }
-
-    .btn-admin { background: #2a2a00; }
-    .btn-add { background: #1a3a1a; }
-
-    .contador {
-      color: #aaa;
-      font-size: 0.9rem;
-      margin-left: auto;
-      white-space: nowrap;
-    }
-
+    .btn-limpar:hover { background: #4a4a4a; border-color: #ffcc00; }
+    .contador { color: #aaa; font-size: 0.9rem; margin-left: auto; white-space: nowrap; }
     .contador strong { color: #ffcc00; }
-
     .table-container {
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      background: #1a1a1a; border: 1px solid #333; border-radius: 16px;
+      overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.7);
     }
-
     .table-header {
-      background: #0d0d0d;
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid #ffcc00;
-      flex-wrap: wrap;
-      gap: 10px;
+      background: #0d0d0d; padding: 1rem 1.5rem; display: flex;
+      align-items: center; justify-content: space-between;
+      border-bottom: 2px solid #ffcc00; flex-wrap: wrap; gap: 10px;
     }
-
     .table-header h3 { color: #ffcc00; font-size: 1.2rem; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
+    table { width: 100%; border-collapse: collapse; }
     thead th {
-      background: #1a1a1a;
-      color: #ffcc00;
-      padding: 14px 16px;
-      text-align: left;
-      font-weight: 700;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 2px solid #333;
-      position: sticky;
-      top: 0;
+      background: #1a1a1a; color: #ffcc00; padding: 14px 16px;
+      text-align: left; font-weight: 700; font-size: 0.9rem;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 2px solid #333; position: sticky; top: 0;
     }
-
-    tbody td {
-      padding: 12px 16px;
-      border-bottom: 1px solid #2a2a2a;
-      color: #e0e0e0;
-      font-size: 0.9rem;
-    }
-
+    tbody td { padding: 12px 16px; border-bottom: 1px solid #2a2a2a; color: #e0e0e0; font-size: 0.9rem; }
     tbody tr { transition: background 0.2s; }
-
     tbody tr:hover { background: #252525; }
-
     tbody tr:nth-child(even) { background: #141414; }
     tbody tr:nth-child(even):hover { background: #252525; }
-
-    .re-badge {
-      color: #ffcc00;
-      font-weight: 700;
-      font-family: 'Courier New', monospace;
-      letter-spacing: 0.5px;
-    }
-
-    .nome-destaque {
-      color: #ffffff;
-      font-weight: 600;
-    }
-
+    .re-badge { color: #ffcc00; font-weight: 700; font-family: 'Courier New', monospace; letter-spacing: 0.5px; }
+    .nome-destaque { color: #ffffff; font-weight: 600; }
     .patente-badge {
-      background: #2a2a2a;
-      color: #ffcc00;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border: 1px solid #444;
-      display: inline-block;
-      white-space: nowrap;
+      background: #2a2a2a; color: #ffcc00; padding: 4px 12px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600; border: 1px solid #444;
+      display: inline-block; white-space: nowrap;
     }
-
     .local-badge {
-      background: #1a3a1a;
-      color: #88ff88;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border: 1px solid #2a5a2a;
-      display: inline-block;
-      white-space: nowrap;
+      background: #1a3a1a; color: #88ff88; padding: 4px 12px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600; border: 1px solid #2a5a2a;
+      display: inline-block; white-space: nowrap;
     }
-
     .btn-copy {
-      background: #333;
-      border: 1px solid #ffcc00;
-      color: #ffcc00;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      margin-left: 8px;
-      transition: all 0.2s;
+      background: #333; border: 1px solid #ffcc00; color: #ffcc00;
+      padding: 4px 8px; border-radius: 4px; cursor: pointer;
+      font-size: 0.8rem; margin-left: 4px; transition: all 0.2s;
     }
-
-    .btn-copy:hover {
-      background: #ffcc00;
-      color: #000;
-    }
-
+    .btn-copy:hover { background: #ffcc00; color: #000; }
     .btn-delete {
-      background: #3a0000;
-      border: 1px solid #ff4444;
-      color: #ff4444;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      margin-left: 8px;
-      transition: all 0.2s;
+      background: #3a0000; border: 1px solid #ff4444; color: #ff4444;
+      padding: 4px 8px; border-radius: 4px; cursor: pointer;
+      font-size: 0.8rem; margin-left: 4px; transition: all 0.2s;
     }
-
-    .btn-delete:hover {
-      background: #ff4444;
-      color: #000;
-    }
-
+    .btn-delete:hover { background: #ff4444; color: #000; }
     .btn-update-local {
-      background: #1a1a00;
-      border: 1px solid #ffcc00;
-      color: #ffcc00;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.7rem;
-      margin-left: 4px;
-      transition: all 0.2s;
+      background: #1a1a00; border: 1px solid #ffcc00; color: #ffcc00;
+      padding: 4px 8px; border-radius: 4px; cursor: pointer;
+      font-size: 0.8rem; margin-left: 4px; transition: all 0.2s;
     }
-
-    .btn-update-local:hover {
-      background: #ffcc00;
-      color: #000;
-    }
-
+    .btn-update-local:hover { background: #ffcc00; color: #000; }
     .hidden { display: none !important; }
-
     .admin-panel {
-      background: #1a1a00;
-      border: 2px solid #ffcc00;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-top: 1rem;
+      background: #1a1a00; border: 2px solid #ffcc00; border-radius: 12px;
+      padding: 1.5rem; margin-top: 1rem;
     }
-
     .admin-panel h3 { color: #ffcc00; margin-bottom: 1rem; }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    .form-group label {
-      display: block;
-      color: #ffcc00;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; color: #ffcc00; margin-bottom: 0.5rem; font-weight: 600; }
     .form-group input, .form-group select {
-      width: 100%;
-      background: #262626;
-      border: 2px solid #444;
-      color: #ffcc00;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 1rem;
+      width: 100%; background: #262626; border: 2px solid #444;
+      color: #ffcc00; padding: 10px; border-radius: 8px; font-size: 1rem;
     }
-
-    .form-group input:focus, .form-group select:focus {
-      outline: none;
-      border-color: #ffcc00;
-    }
-
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #ffcc00; }
     .btn-submit {
-      background: #ffcc00;
-      color: #000;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-top: 1rem;
+      background: #ffcc00; color: #000; padding: 12px 24px;
+      border: none; border-radius: 8px; font-weight: 700;
+      font-size: 1rem; cursor: pointer; transition: all 0.2s; margin-top: 1rem;
     }
-
-    .btn-submit:hover {
-      background: #ffe55c;
-    }
-
+    .btn-submit:hover { background: #ffe55c; }
     .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); display: flex; align-items: center;
+      justify-content: center; z-index: 1000;
     }
-
     .modal {
-      background: #1a1a1a;
-      border: 2px solid #ffcc00;
-      border-radius: 16px;
-      padding: 2rem;
-      max-width: 400px;
-      width: 90%;
+      background: #1a1a1a; border: 2px solid #ffcc00; border-radius: 16px;
+      padding: 2rem; max-width: 400px; width: 90%;
     }
-
     .modal h3 { color: #ffcc00; margin-bottom: 1rem; }
-
     .modal input, .modal select {
-      width: 100%;
-      background: #262626;
-      border: 2px solid #444;
-      color: #ffcc00;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 1rem;
-      margin-bottom: 1rem;
+      width: 100%; background: #262626; border: 2px solid #444;
+      color: #ffcc00; padding: 12px; border-radius: 8px;
+      font-size: 1rem; margin-bottom: 1rem;
     }
-
-    .modal select option {
-      background: #1a1a1a;
-      color: #ffcc00;
-    }
-
-    .modal-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-
+    .modal select option { background: #1a1a1a; color: #ffcc00; }
+    .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; }
     .modal-buttons button {
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
+      padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none;
     }
-
-    .btn-confirm {
-      background: #ffcc00;
-      color: #000;
-    }
-
-    .btn-cancel {
-      background: #444;
-      color: #fff;
-    }
-
-    .sem-resultados {
-      text-align: center;
-      padding: 3rem;
-      color: #888;
-    }
-
-    .sem-resultados span {
-      font-size: 3rem;
-      display: block;
-      margin-bottom: 1rem;
-    }
-
+    .btn-confirm { background: #ffcc00; color: #000; }
+    .btn-cancel { background: #444; color: #fff; }
+    .sem-resultados { text-align: center; padding: 3rem; color: #888; }
+    .sem-resultados span { font-size: 3rem; display: block; margin-bottom: 1rem; }
     .toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #1a1a1a;
-      border: 2px solid #ffcc00;
-      color: #ffcc00;
-      padding: 12px 24px;
-      border-radius: 8px;
-      z-index: 2000;
-      animation: slideIn 0.3s ease;
+      position: fixed; bottom: 20px; right: 20px; background: #1a1a1a;
+      border: 2px solid #ffcc00; color: #ffcc00; padding: 12px 24px;
+      border-radius: 8px; z-index: 2000; animation: slideIn 0.3s ease;
     }
-
     @keyframes slideIn {
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
-
     footer {
-      background: #0d0d0d;
-      text-align: center;
-      padding: 12px;
-      color: #aaa;
-      font-size: 0.8rem;
-      border-top: 1px solid #2a2a2a;
+      background: #0d0d0d; text-align: center; padding: 12px;
+      color: #aaa; font-size: 0.8rem; border-top: 1px solid #2a2a2a;
     }
-
     @media (max-width: 768px) {
       .main-container { padding: 1rem; }
-
       .search-controls { flex-direction: column; }
-
-      .search-input, .filter-select {
-        width: 100%;
-        min-width: auto;
-      }
-
-      .contador {
-        margin-left: 0;
-        width: 100%;
-        text-align: center;
-      }
-
+      .search-input, .filter-select { width: 100%; min-width: auto; }
+      .contador { margin-left: 0; width: 100%; text-align: center; }
       .table-container { overflow-x: auto; }
-
       table { min-width: 700px; }
-
-      thead th, tbody td {
-        padding: 10px 8px;
-        font-size: 0.75rem;
-      }
-
+      thead th, tbody td { padding: 10px 8px; font-size: 0.75rem; }
       .top-bar { padding: 10px 15px; }
-
       .logo-img { width: 40px; }
-
-      .btn-voltar { font-size: 0.8rem; padding: 6px 12px; }
+      .btn-voltar, .btn-admin { font-size: 0.8rem; padding: 6px 12px; }
     }
   </style>
 </head>
@@ -534,12 +204,8 @@
       </div>
     </div>
     <div style="display: flex; gap: 10px;">
-      <button class="btn-admin" onclick="mostrarPainelAdmin()" title="Painel Admin (Senha)">
-        👤 Admin
-      </button>
-      <a href="index.html" class="btn-voltar" target="_blank" rel="noopener noreferrer">
-        ← Voltar
-      </a>
+      <button class="btn-admin" id="btnAdmin">👤 Admin</button>
+      <a href="index.html" class="btn-voltar" target="_blank" rel="noopener noreferrer">← Voltar</a>
     </div>
   </header>
 
@@ -547,8 +213,7 @@
     <section class="search-section">
       <h2>🔍 Consulta de Efetivo</h2>
       <div class="search-controls">
-        <input type="text" id="searchInput" class="search-input" 
-               placeholder="Pesquisar por nome, RE ou patente..." autocomplete="off">
+        <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar por nome, RE ou patente..." autocomplete="off">
         <select id="filterPatente" class="filter-select">
           <option value="">Todas as patentes</option>
           <option value="Cap PM">Cap PM</option>
@@ -571,16 +236,12 @@
           <option value="TOR">TOR</option>
         </select>
         <button id="btnLimpar" class="btn-limpar">🔄 Limpar</button>
-        <span class="contador" id="contador">
-          Total: <strong id="totalRegistros">0</strong>
-        </span>
+        <span class="contador" id="contador">Total: <strong id="totalRegistros">0</strong></span>
       </div>
     </section>
 
     <div class="table-container">
-      <div class="table-header">
-        <h3>📋 Lista de Policiais</h3>
-      </div>
+      <div class="table-header"><h3>📋 Lista de Policiais</h3></div>
       <div style="overflow-x: auto;">
         <table>
           <thead>
@@ -602,19 +263,17 @@
     </div>
   </main>
 
-  <!-- Modal de Senha -->
   <div class="modal-overlay hidden" id="modalSenha">
     <div class="modal">
       <h3>🔐 Autenticação Admin</h3>
       <input type="password" id="inputSenha" placeholder="Digite a senha..." maxlength="10">
       <div class="modal-buttons">
-        <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-        <button class="btn-confirm" onclick="verificarSenha()">Entrar</button>
+        <button class="btn-cancel" id="btnCancelarSenha">Cancelar</button>
+        <button class="btn-confirm" id="btnConfirmarSenha">Entrar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal de Editar Local -->
   <div class="modal-overlay hidden" id="modalLocal">
     <div class="modal">
       <h3>📍 Alterar Local de Trabalho</h3>
@@ -628,13 +287,12 @@
       </select>
       <input type="hidden" id="editPolicialId">
       <div class="modal-buttons">
-        <button class="btn-cancel" onclick="fecharModalLocal()">Cancelar</button>
-        <button class="btn-confirm" onclick="salvarLocal()">Salvar</button>
+        <button class="btn-cancel" id="btnCancelarLocal">Cancelar</button>
+        <button class="btn-confirm" id="btnSalvarLocal">Salvar</button>
       </div>
     </div>
   </div>
 
-  <!-- Painel Admin -->
   <div class="admin-panel hidden" id="painelAdmin" style="margin-top: 1rem;">
     <h3>➕ Adicionar Policial</h3>
     <div style="display: grid; grid-template-columns: 1fr 2fr 1fr 1fr; gap: 12px; align-items: end;">
@@ -674,265 +332,190 @@
         </select>
       </div>
     </div>
-    <button class="btn-submit" onclick="adicionarPolicial()">✅ Adicionar</button>
+    <button class="btn-submit" id="btnAdicionar">✅ Adicionar</button>
   </div>
 
-  <footer>
-    © 2026 Polícia Rodoviária · Limeira · Sd PM 194528-9 Guidini.
-  </footer>
-
+  <footer>© 2026 Polícia Rodoviária · Limeira · Sd PM 194528-9 Guidini.</footer>
   <div class="toast hidden" id="toast"></div>
 
   <script>
-    // ==================== CONFIGURAÇÃO DO SUPABASE ====================
-    // COLE AQUI SUAS CREDENCIAIS DO SUPABASE
-    const SUPABASE_URL = 'https://hgokcxjselfmwodbclvs.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhnb2tjeGpzZWxmbXdvZGJjbHZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxMjAzNzksImV4cCI6MjA5ODY5NjM3OX0.WdEw6u4pKkmTlXlcP2NO8Jix-Z2kLHMdop0xFqlU5F8';
-
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    
-    const SENHA_ADMIN = '3303';
-    let adminAutenticado = false;
-
-    // ==================== FUNÇÕES PRINCIPAIS ====================
-
-    async function carregarEfetivo() {
-      const { data, error } = await supabase
-        .from('efetivo')
-        .select('*')
-        .order('nome');
-
-      if (error) {
-        console.error('Erro ao carregar:', error);
-        mostrarToast('Erro ao conectar com banco de dados', true);
-        return [];
-      }
-      return data || [];
-    }
-
-    async function filtrarERenderizar() {
-      const efetivo = await carregarEfetivo();
-      const termoBusca = normalizarTexto(document.getElementById('searchInput').value);
-      const patenteFiltro = document.getElementById('filterPatente').value.trim();
-      const localFiltro = document.getElementById('filterLocal').value.trim();
-
-      let resultados = efetivo.filter(p => {
-        if (patenteFiltro && normalizarPatente(p.patente) !== normalizarPatente(patenteFiltro)) return false;
-        if (localFiltro && p.local_trabalho !== localFiltro) return false;
-        
-        if (termoBusca) {
-          const nome = normalizarTexto(p.nome);
-          const re = normalizarTexto(p.re);
-          const patente = normalizarTexto(p.patente);
-          return nome.includes(termoBusca) || re.includes(termoBusca) || patente.includes(termoBusca);
-        }
-        return true;
-      });
-
-      renderizarTabela(resultados);
-      document.getElementById('totalRegistros').textContent = resultados.length;
-    }
-
-    function renderizarTabela(registros) {
-      const tbody = document.getElementById('tabelaCorpo');
-      const semResultados = document.getElementById('semResultados');
+    (function() {
+      const SUPABASE_URL = 'https://hgokcxjselfmwodbclvs.supabase.co';
+      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhnb2tjeGpzZWxmbXdvZGJjbHZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxMjAzNzksImV4cCI6MjA5ODY5NjM3OX0.WdEw6u4pKkmTlXlcP2NO8Jix-Z2kLHMdop0xFqlU5F8';
+      const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       
-      tbody.innerHTML = '';
+      const SENHA_ADMIN = '3303';
+      let adminAutenticado = false;
 
-      if (registros.length === 0) {
-        semResultados.style.display = 'block';
-        return;
+      async function carregarEfetivo() {
+        const { data, error } = await supabaseClient.from('efetivo').select('*').order('nome');
+        if (error) { console.error('Erro:', error); return []; }
+        return data || [];
       }
 
-      semResultados.style.display = 'none';
+      async function filtrarERenderizar() {
+        const efetivo = await carregarEfetivo();
+        const termoBusca = normalizarTexto(document.getElementById('searchInput').value);
+        const patenteFiltro = document.getElementById('filterPatente').value.trim();
+        const localFiltro = document.getElementById('filterLocal').value.trim();
 
-      registros.forEach(p => {
-        const tr = document.createElement('tr');
-        
-        let acoesHTML = `<button class="btn-copy" onclick="copiarRE('${p.re}', event)" title="Copiar RE">📋</button>`;
-        
-        if (adminAutenticado) {
-          acoesHTML += `<button class="btn-update-local" onclick="abrirEditarLocal(${p.id}, '${p.nome}', '${p.local_trabalho || ''}')" title="Editar local">📍</button>`;
-          acoesHTML += `<button class="btn-delete" onclick="deletarPolicial(${p.id}, '${p.nome.replace(/'/g, "\\'")}')" title="Remover">🗑️</button>`;
-        }
+        let resultados = efetivo.filter(p => {
+          if (patenteFiltro && normalizarPatente(p.patente) !== normalizarPatente(patenteFiltro)) return false;
+          if (localFiltro && p.local_trabalho !== localFiltro) return false;
+          if (termoBusca) {
+            const nome = normalizarTexto(p.nome);
+            const re = normalizarTexto(p.re);
+            const patente = normalizarTexto(p.patente);
+            return nome.includes(termoBusca) || re.includes(termoBusca) || patente.includes(termoBusca);
+          }
+          return true;
+        });
 
-        tr.innerHTML = `
-          <td><span class="re-badge">${p.re}</span></td>
-          <td><span class="nome-destaque">${p.nome}</span></td>
-          <td><span class="patente-badge">${p.patente}</span></td>
-          <td><span class="local-badge">${p.local_trabalho || '---'}</span></td>
-          <td>${acoesHTML}</td>
-        `;
+        renderizarTabela(resultados);
+        document.getElementById('totalRegistros').textContent = resultados.length;
+      }
 
-        tbody.appendChild(tr);
+      function renderizarTabela(registros) {
+        const tbody = document.getElementById('tabelaCorpo');
+        const semResultados = document.getElementById('semResultados');
+        tbody.innerHTML = '';
+        if (registros.length === 0) { semResultados.style.display = 'block'; return; }
+        semResultados.style.display = 'none';
+
+        registros.forEach(p => {
+          const tr = document.createElement('tr');
+          let acoesHTML = `<button class="btn-copy" data-re="${p.re}" title="Copiar RE">📋</button>`;
+          if (adminAutenticado) {
+            acoesHTML += `<button class="btn-update-local" data-id="${p.id}" data-nome="${p.nome.replace(/'/g, "\\'")}" data-local="${p.local_trabalho || ''}" title="Editar local">📍</button>`;
+            acoesHTML += `<button class="btn-delete" data-id="${p.id}" data-nome="${p.nome.replace(/'/g, "\\'")}" title="Remover">🗑️</button>`;
+          }
+          tr.innerHTML = `
+            <td><span class="re-badge">${p.re}</span></td>
+            <td><span class="nome-destaque">${p.nome}</span></td>
+            <td><span class="patente-badge">${p.patente}</span></td>
+            <td><span class="local-badge">${p.local_trabalho || '---'}</span></td>
+            <td>${acoesHTML}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.querySelectorAll('.btn-copy').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const re = this.getAttribute('data-re');
+            navigator.clipboard.writeText(re).then(() => {
+              mostrarToast('✅ RE ' + re + ' copiado!');
+              this.textContent = '✅';
+              setTimeout(() => { this.textContent = '📋'; }, 1500);
+            });
+          });
+        });
+
+        document.querySelectorAll('.btn-update-local').forEach(btn => {
+          btn.addEventListener('click', function() {
+            document.getElementById('editPolicialId').value = this.getAttribute('data-id');
+            document.getElementById('infoPolicial').textContent = 'Policial: ' + this.getAttribute('data-nome');
+            document.getElementById('selectLocal').value = this.getAttribute('data-local');
+            document.getElementById('modalLocal').classList.remove('hidden');
+          });
+        });
+
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const nome = this.getAttribute('data-nome');
+            if (confirm('Remover:\n\n' + nome + '?')) {
+              supabaseClient.from('efetivo').delete().eq('id', id).then(({ error }) => {
+                if (error) { mostrarToast('❌ Erro ao remover', true); }
+                else { mostrarToast('🗑️ Removido!'); filtrarERenderizar(); }
+              });
+            }
+          });
+        });
+      }
+
+      function normalizarTexto(t) { return t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(); }
+      function normalizarPatente(p) { return p.toUpperCase().replace(/^CB\s*PM$/, 'CB PM').replace(/^SD\s*PM$/, 'SD PM').trim(); }
+
+      function mostrarToast(m, e) {
+        const t = document.getElementById('toast');
+        t.textContent = m;
+        t.style.borderColor = e ? '#ff4444' : '#ffcc00';
+        t.style.color = e ? '#ff4444' : '#ffcc00';
+        t.classList.remove('hidden');
+        clearTimeout(t._timeout);
+        t._timeout = setTimeout(() => t.classList.add('hidden'), 3000);
+      }
+
+      document.getElementById('btnAdmin').addEventListener('click', () => {
+        if (adminAutenticado) { document.getElementById('painelAdmin').classList.toggle('hidden'); return; }
+        document.getElementById('modalSenha').classList.remove('hidden');
+        document.getElementById('inputSenha').value = '';
+        document.getElementById('inputSenha').focus();
       });
-    }
 
-    function copiarRE(re, event) {
-      event.stopPropagation();
-      
-      navigator.clipboard.writeText(re).then(() => {
-        mostrarToast(`✅ RE ${re} copiado!`);
-        
-        const btn = event.target;
-        btn.textContent = '✅';
-        setTimeout(() => { btn.textContent = '📋'; }, 1500);
-      }).catch(() => {
-        mostrarToast('Erro ao copiar', true);
-      });
-    }
-
-    // ==================== FUNÇÕES DE EDIÇÃO DE LOCAL ====================
-
-    function abrirEditarLocal(id, nome, localAtual) {
-      document.getElementById('editPolicialId').value = id;
-      document.getElementById('infoPolicial').textContent = `Policial: ${nome}`;
-      document.getElementById('selectLocal').value = localAtual || '';
-      document.getElementById('modalLocal').classList.remove('hidden');
-    }
-
-    function fecharModalLocal() {
-      document.getElementById('modalLocal').classList.add('hidden');
-    }
-
-    async function salvarLocal() {
-      const id = document.getElementById('editPolicialId').value;
-      const local = document.getElementById('selectLocal').value;
-
-      const { error } = await supabase
-        .from('efetivo')
-        .update({ local_trabalho: local })
-        .eq('id', id);
-
-      if (error) {
-        mostrarToast('❌ Erro ao atualizar local', true);
-      } else {
-        mostrarToast('📍 Local atualizado!');
-        fecharModalLocal();
-        filtrarERenderizar();
-      }
-    }
-
-    // ==================== FUNÇÕES ADMIN ====================
-
-    function mostrarPainelAdmin() {
-      if (adminAutenticado) {
-        document.getElementById('painelAdmin').classList.toggle('hidden');
-        return;
-      }
-      document.getElementById('modalSenha').classList.remove('hidden');
-      document.getElementById('inputSenha').value = '';
-      setTimeout(() => document.getElementById('inputSenha').focus(), 100);
-    }
-
-    function fecharModal() {
-      document.getElementById('modalSenha').classList.add('hidden');
-    }
-
-    function verificarSenha() {
-      const senha = document.getElementById('inputSenha').value;
-      if (senha === SENHA_ADMIN) {
-        adminAutenticado = true;
+      document.getElementById('btnCancelarSenha').addEventListener('click', () => {
         document.getElementById('modalSenha').classList.add('hidden');
-        document.getElementById('painelAdmin').classList.remove('hidden');
-        mostrarToast('✅ Autenticado como admin!');
+      });
+
+      document.getElementById('btnConfirmarSenha').addEventListener('click', () => {
+        if (document.getElementById('inputSenha').value === SENHA_ADMIN) {
+          adminAutenticado = true;
+          document.getElementById('modalSenha').classList.add('hidden');
+          document.getElementById('painelAdmin').classList.remove('hidden');
+          mostrarToast('✅ Autenticado!');
+          filtrarERenderizar();
+        } else { mostrarToast('❌ Senha incorreta!', true); }
+      });
+
+      document.getElementById('btnCancelarLocal').addEventListener('click', () => {
+        document.getElementById('modalLocal').classList.add('hidden');
+      });
+
+      document.getElementById('btnSalvarLocal').addEventListener('click', async () => {
+        const id = document.getElementById('editPolicialId').value;
+        const local = document.getElementById('selectLocal').value;
+        const { error } = await supabaseClient.from('efetivo').update({ local_trabalho: local }).eq('id', id);
+        if (error) { mostrarToast('❌ Erro', true); }
+        else { mostrarToast('📍 Atualizado!'); document.getElementById('modalLocal').classList.add('hidden'); filtrarERenderizar(); }
+      });
+
+      document.getElementById('btnAdicionar').addEventListener('click', async () => {
+        const re = document.getElementById('inputRE').value.trim();
+        const nome = document.getElementById('inputNome').value.trim().toUpperCase();
+        const patente = document.getElementById('inputPatente').value;
+        const local = document.getElementById('inputLocal').value;
+        if (!re || !nome || !patente) { mostrarToast('❌ Preencha RE, Nome e Patente!', true); return; }
+        const { error } = await supabaseClient.from('efetivo').insert([{ re, nome, patente, local_trabalho: local }]);
+        if (error) { mostrarToast('❌ Erro: ' + error.message, true); }
+        else {
+          mostrarToast('✅ Adicionado!');
+          document.getElementById('inputRE').value = '';
+          document.getElementById('inputNome').value = '';
+          document.getElementById('inputPatente').value = '';
+          document.getElementById('inputLocal').value = '';
+          filtrarERenderizar();
+        }
+      });
+
+      document.getElementById('searchInput').addEventListener('input', filtrarERenderizar);
+      document.getElementById('filterPatente').addEventListener('change', filtrarERenderizar);
+      document.getElementById('filterLocal').addEventListener('change', filtrarERenderizar);
+      document.getElementById('btnLimpar').addEventListener('click', () => {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('filterPatente').value = '';
+        document.getElementById('filterLocal').value = '';
         filtrarERenderizar();
-      } else {
-        mostrarToast('❌ Senha incorreta!', true);
-      }
-    }
+      });
 
-    async function adicionarPolicial() {
-      const re = document.getElementById('inputRE').value.trim();
-      const nome = document.getElementById('inputNome').value.trim().toUpperCase();
-      const patente = document.getElementById('inputPatente').value;
-      const local = document.getElementById('inputLocal').value;
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          document.getElementById('modalSenha').classList.add('hidden');
+          document.getElementById('modalLocal').classList.add('hidden');
+        }
+      });
 
-      if (!re || !nome || !patente) {
-        mostrarToast('❌ Preencha RE, Nome e Patente!', true);
-        return;
-      }
-
-      const { error } = await supabase
-        .from('efetivo')
-        .insert([{ re, nome, patente, local_trabalho: local }]);
-
-      if (error) {
-        mostrarToast('❌ Erro ao adicionar: ' + error.message, true);
-      } else {
-        mostrarToast('✅ Policial adicionado!');
-        document.getElementById('inputRE').value = '';
-        document.getElementById('inputNome').value = '';
-        document.getElementById('inputPatente').value = '';
-        document.getElementById('inputLocal').value = '';
-        filtrarERenderizar();
-      }
-    }
-
-    async function deletarPolicial(id, nome) {
-      if (!confirm(`Tem certeza que deseja remover:\n\n${nome}?\n\nEsta ação não pode ser desfeita!`)) {
-        return;
-      }
-
-      const { error } = await supabase
-        .from('efetivo')
-        .delete()
-        .eq('id', id);
-
-      if (error) {
-        mostrarToast('❌ Erro ao remover', true);
-      } else {
-        mostrarToast('🗑️ Policial removido!');
-        filtrarERenderizar();
-      }
-    }
-
-    // ==================== FUNÇÕES AUXILIARES ====================
-
-    function normalizarTexto(texto) {
-      return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-    }
-
-    function normalizarPatente(patente) {
-      return patente.toUpperCase().replace(/^CB\s*PM$/, 'CB PM').replace(/^SD\s*PM$/, 'SD PM').trim();
-    }
-
-    function mostrarToast(mensagem, isErro = false) {
-      const toast = document.getElementById('toast');
-      toast.textContent = mensagem;
-      toast.style.borderColor = isErro ? '#ff4444' : '#ffcc00';
-      toast.style.color = isErro ? '#ff4444' : '#ffcc00';
-      toast.classList.remove('hidden');
-      
-      clearTimeout(toast._timeout);
-      toast._timeout = setTimeout(() => {
-        toast.classList.add('hidden');
-      }, 3000);
-    }
-
-    // ==================== EVENT LISTENERS ====================
-
-    document.getElementById('searchInput').addEventListener('input', filtrarERenderizar);
-    document.getElementById('filterPatente').addEventListener('change', filtrarERenderizar);
-    document.getElementById('filterLocal').addEventListener('change', filtrarERenderizar);
-    
-    document.getElementById('btnLimpar').addEventListener('click', () => {
-      document.getElementById('searchInput').value = '';
-      document.getElementById('filterPatente').value = '';
-      document.getElementById('filterLocal').value = '';
       filtrarERenderizar();
-      document.getElementById('searchInput').focus();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        fecharModal();
-        fecharModalLocal();
-      }
-    });
-
-    // Iniciar
-    filtrarERenderizar();
+    })();
   </script>
 </body>
 </html>
