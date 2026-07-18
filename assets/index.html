@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, shrink-to-fit=no">
 <title>Controle de Fiscalização - 4ª Cia PMRv</title>
 
-<!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 * {
     margin: 0;
@@ -67,7 +64,6 @@ body {
     display: flex;
     gap: 10px;
     z-index: 999;
-    align-items: center;
 }
 
 .btn-topo {
@@ -92,43 +88,6 @@ body {
 
 .btn-topo.encerrar { 
     background: #c82333; 
-}
-
-/* Status de sincronização */
-.status-sync {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 5px;
-}
-
-.status-sync.online {
-    background: #4CAF50;
-    box-shadow: 0 0 10px #4CAF50;
-    animation: pulse-green 2s infinite;
-}
-
-.status-sync.offline {
-    background: #f44336;
-    box-shadow: 0 0 10px #f44336;
-}
-
-.status-sync.saving {
-    background: #ffcc00;
-    animation: pulse-yellow 1s infinite;
-}
-
-@keyframes pulse-green {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-@keyframes pulse-yellow {
-    0% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.2); }
-    100% { opacity: 1; transform: scale(1); }
 }
 
 /* título */
@@ -272,53 +231,6 @@ input::placeholder {
     border-left: 3px solid #ffcc00;
 }
 
-/* Botões de ação */
-.botoes-acao {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin: 15px 0;
-    flex-wrap: wrap;
-}
-
-.btn-salvar-supabase {
-    background: #ffcc00;
-    color: #000;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    flex: 1;
-    min-width: 150px;
-}
-
-.btn-salvar-supabase:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 204, 0, 0.3);
-}
-
-.btn-finalizar {
-    background: #c82333;
-    color: #fff;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    flex: 1;
-    min-width: 150px;
-}
-
-.btn-finalizar:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(200, 35, 51, 0.3);
-}
-
 /* scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
@@ -361,14 +273,6 @@ input::placeholder {
         font-size: 1.1rem;
         margin: 15px 0;
     }
-    
-    .botoes-acao {
-        flex-direction: column;
-    }
-    
-    .btn-salvar-supabase, .btn-finalizar {
-        width: 100%;
-    }
 }
 </style>
 </head>
@@ -383,9 +287,8 @@ input::placeholder {
         </div>
     </div>
     <div class="topo-botoes">
-        <span class="status-sync offline" id="statusSync" title="Status da conexão"></span>
         <button class="btn-topo whats" onclick="enviarWhats()" title="Enviar WhatsApp">📤</button>
-        <button class="btn-topo encerrar" onclick="encerrarTurno()" title="Finalizar Turno">⛔</button>
+        <button class="btn-topo encerrar" onclick="encerrarTurno()" title="Encerrar Turno">⛔</button>
     </div>
 </header>
 
@@ -393,33 +296,14 @@ input::placeholder {
 
 <!-- DADOS DA EQUIPE -->
 <div class="box">
-    <input id="encarregado" placeholder="Nome do Encarregado" onchange="salvarDados()">
-    <input id="motorista" placeholder="Nome do Motorista" onchange="salvarDados()">
-    <input id="auxiliar" placeholder="Nome do Auxiliar (opcional)" onchange="salvarDados()">
+    <input id="encarregado" placeholder="Nome do Encarregado">
+    <input id="motorista" placeholder="Nome do Motorista">
+    <input id="auxiliar" placeholder="Nome do Auxiliar (opcional)">
 </div>
 
 <div id="lista"></div>
 
-<!-- Botões de ação -->
-<div class="botoes-acao">
-    <button class="btn-salvar-supabase" onclick="salvarNoSupabase()">
-        💾 Salvar no Banco
-    </button>
-    <button class="btn-finalizar" onclick="finalizarFiscalizacao()">
-        🏁 Finalizar Fiscalização
-    </button>
-</div>
-
 <script>
-// ===== CONFIGURAÇÃO SUPABASE (SUAS CREDENCIAIS) =====
-const SUPABASE_URL = 'https://hgokcxjselfmwodbclvs.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhnb2tjeGpzZWxmbXdvZGJjbHZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxMjAzNzksImV4cCI6MjA5ODY5NjM3OX0.WdEw6u4pKkmTlXlcP2NO8Jix-Z2kLHMdop0xFqlU5F8';
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let fiscalizacaoId = null;
-let dadosLocais = {};
-
 // ===== LISTA FIXA =====
 const itensFixos = [
  "AP Fiscalizado","CA Fiscalizado","OA Fiscalizado","MO Fiscalizado",
@@ -457,7 +341,7 @@ itens.forEach(it=>{
             <span class="arrow">▶</span>
         </div>
         <div class="conteudo" id="c_${it.id}">
-            ${isEdit ? `<input id="nome_${it.id}" placeholder="Digite o artigo" onchange="salvarDados()">` : ""}
+            ${isEdit ? `<input id="nome_${it.id}" placeholder="Digite o artigo">` : ""}
             ${linha("Encarregado","e",it.id)}
             ${linha("Motorista","m",it.id)}
             ${linha("Auxiliar","a",it.id)}
@@ -490,10 +374,8 @@ function toggle(id){
     }
 }
 
-// ===== FUNÇÕES DE SALVAMENTO =====
-
-// Salvar localmente
-function salvarDados(){
+// salvar / carregar
+function salvar(){
     const d={enc:encarregado.value,mot:motorista.value,aux:auxiliar.value,n:{},c:{}};
     itens.forEach(it=>{
         if(it.edit){
@@ -506,13 +388,11 @@ function salvarDados(){
         });
     });
     localStorage.setItem("controleFiscalizacao",JSON.stringify(d));
-    dadosLocais = d;
 }
 
-function carregarDados(){
+function carregar(){
     const d=JSON.parse(localStorage.getItem("controleFiscalizacao"));
     if(!d) return;
-    
     encarregado.value=d.enc || '';
     motorista.value=d.mot || '';
     auxiliar.value=d.aux || '';
@@ -525,184 +405,7 @@ function carregarDados(){
         let e=document.getElementById(k);
         if(e)e.innerText=d.c[k];
     }
-    dadosLocais = d;
 }
-
-// ===== FUNÇÕES SUPABASE =====
-
-// Atualizar status de conexão
-function atualizarStatus(status) {
-    const el = document.getElementById('statusSync');
-    el.className = 'status-sync ' + status;
-}
-
-// Verificar conexão com Supabase
-async function verificarConexao() {
-    try {
-        const { data, error } = await supabase.from('fiscalizacoes').select('count', { count: 'exact', head: true });
-        if (error) throw error;
-        atualizarStatus('online');
-        return true;
-    } catch (e) {
-        atualizarStatus('offline');
-        console.log('Offline: ', e.message);
-        return false;
-    }
-}
-
-// Coletar dados atuais
-function coletarDadosAtuais() {
-    dadosLocais.enc = encarregado.value || '';
-    dadosLocais.mot = motorista.value || '';
-    dadosLocais.aux = auxiliar.value || '';
-    
-    itens.forEach(it => {
-        if (it.edit) {
-            const el = document.getElementById("nome_"+it.id);
-            if (el) dadosLocais.n[it.id] = el.value || '';
-        }
-        ['e','m','a'].forEach(p => {
-            const el = document.getElementById(p+it.id);
-            if (el) dadosLocais.c[p+it.id] = el.innerText || '0';
-        });
-    });
-}
-
-// Salvar no Supabase
-async function salvarNoSupabase() {
-    const online = await verificarConexao();
-    if (!online) {
-        alert('⚠️ Sem conexão com o banco de dados. Os dados serão salvos localmente e sincronizados quando a conexão for restabelecida.');
-        salvarDados();
-        return;
-    }
-
-    try {
-        atualizarStatus('saving');
-        
-        // Coleta dados atuais
-        coletarDadosAtuais();
-        
-        // Se não tem ID, cria nova fiscalização
-        if (!fiscalizacaoId) {
-            // Verifica se já existe uma ativa
-            const { data: ativa, error: errAtiva } = await supabase
-                .from('fiscalizacoes')
-                .select('id')
-                .eq('status', 'ativo')
-                .limit(1);
-            
-            if (ativa && ativa.length > 0) {
-                fiscalizacaoId = ativa[0].id;
-            } else {
-                // Cria nova
-                const { data: nova, error: errNova } = await supabase
-                    .from('fiscalizacoes')
-                    .insert({
-                        encarregado: dadosLocais.enc || '',
-                        motorista: dadosLocais.mot || '',
-                        auxiliar: dadosLocais.aux || '',
-                        status: 'ativo'
-                    })
-                    .select()
-                    .single();
-                
-                if (errNova) throw errNova;
-                fiscalizacaoId = nova.id;
-            }
-        }
-        
-        // Atualiza a fiscalização
-        await supabase
-            .from('fiscalizacoes')
-            .update({
-                encarregado: dadosLocais.enc || '',
-                motorista: dadosLocais.mot || '',
-                auxiliar: dadosLocais.aux || ''
-            })
-            .eq('id', fiscalizacaoId);
-        
-        // Remove itens antigos
-        await supabase
-            .from('itens_fiscalizacao')
-            .delete()
-            .eq('fiscalizacao_id', fiscalizacaoId);
-        
-        // Insere novos itens
-        const itensParaSalvar = [];
-        itens.forEach((it, index) => {
-            const nome = it.edit ? 
-                document.getElementById("nome_"+it.id)?.value || `Artigo ${index+1}` :
-                it.nome;
-            
-            const enc = parseInt(document.getElementById("e"+it.id)?.innerText) || 0;
-            const mot = parseInt(document.getElementById("m"+it.id)?.innerText) || 0;
-            const aux = parseInt(document.getElementById("a"+it.id)?.innerText) || 0;
-            
-            if (enc + mot + aux > 0) {
-                itensParaSalvar.push({
-                    fiscalizacao_id: fiscalizacaoId,
-                    nome_item: nome,
-                    tipo_item: it.edit ? 'livre' : 'fixo',
-                    encarregado_valor: enc,
-                    motorista_valor: mot,
-                    auxiliar_valor: aux,
-                    ordem: index
-                });
-            }
-        });
-        
-        if (itensParaSalvar.length > 0) {
-            const { error: errItens } = await supabase
-                .from('itens_fiscalizacao')
-                .insert(itensParaSalvar);
-            
-            if (errItens) throw errItens;
-        }
-        
-        atualizarStatus('online');
-        alert('✅ Dados salvos com sucesso no banco de dados!');
-        
-        // Salva também localmente
-        salvarDados();
-        
-    } catch (error) {
-        console.error('Erro ao salvar:', error);
-        atualizarStatus('offline');
-        alert('❌ Erro ao salvar: ' + error.message);
-    }
-}
-
-// Finalizar fiscalização
-async function finalizarFiscalizacao() {
-    if (!fiscalizacaoId) {
-        alert('Salve os dados primeiro!');
-        return;
-    }
-    
-    if (confirm('Confirmar finalização da fiscalização atual?')) {
-        try {
-            await supabase
-                .from('fiscalizacoes')
-                .update({ status: 'finalizado' })
-                .eq('id', fiscalizacaoId);
-            
-            fiscalizacaoId = null;
-            alert('✅ Fiscalização finalizada com sucesso!');
-            
-            // Opção: limpar dados ou começar nova
-            if (confirm('Deseja limpar os dados para uma nova fiscalização?')) {
-                localStorage.removeItem('controleFiscalizacao');
-                location.reload();
-            }
-            
-        } catch (error) {
-            alert('❌ Erro ao finalizar: ' + error.message);
-        }
-    }
-}
-
-// ===== FUNÇÕES EXISTENTES =====
 
 function alterar(id,v){
     const el=document.getElementById(id);
@@ -710,18 +413,27 @@ function alterar(id,v){
     let n=parseInt(el.innerText)+v;
     if(n<0)n=0;
     el.innerText=n;
-    salvarDados();
+    salvar();
 }
 
+["encarregado","motorista","auxiliar"].forEach(i=>{
+    document.getElementById(i).addEventListener("input",salvar);
+});
+
+window.onload=carregar;
+
+// WhatsApp - versão corrigida
 function enviarWhats(){
     const enc = encarregado.value.trim();
     const mot = motorista.value.trim();
     const aux = auxiliar.value.trim();
     
+    // Monta cabeçalho
     let texto = "";
     if(enc) texto += `Encarregado: ${enc}\n`;
     if(mot) texto += `Motorista: ${mot}\n`;
     if(aux) texto += `Auxiliar: ${aux}\n`;
+    
     if(texto) texto += "\n";
     
     let temDados = false;
@@ -749,47 +461,18 @@ function enviarWhats(){
         return; 
     }
     
+    // Remove último \n extra
     texto = texto.trim();
     window.open("https://wa.me/?text="+encodeURIComponent(texto),"_blank");
 }
 
+// Encerrar turno
 function encerrarTurno(){
     if(confirm("Encerrar turno e apagar todos os dados?")){
         localStorage.removeItem("controleFiscalizacao");
         location.reload();
     }
 }
-
-// ===== INICIALIZAÇÃO =====
-
-// Configurar listeners
-["encarregado","motorista","auxiliar"].forEach(i=>{
-    document.getElementById(i).addEventListener("input",salvarDados);
-});
-
-// Carregar dados e verificar conexão
-window.onload = async function() {
-    carregarDados();
-    await verificarConexao();
-    
-    // Tenta carregar fiscalização ativa
-    try {
-        const { data, error } = await supabase
-            .from('fiscalizacoes')
-            .select('id')
-            .eq('status', 'ativo')
-            .limit(1);
-        
-        if (data && data.length > 0) {
-            fiscalizacaoId = data[0].id;
-        }
-    } catch (e) {
-        console.log('Erro ao buscar fiscalização:', e);
-    }
-    
-    // Verifica conexão a cada 30 segundos
-    setInterval(verificarConexao, 30000);
-};
 </script>
 
 </body>
