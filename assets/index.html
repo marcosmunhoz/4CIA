@@ -2,115 +2,303 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Controle de Fiscalização</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, shrink-to-fit=no">
+<title>Controle de Fiscalização - 4ª Cia PMRv</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-    padding: 10px;
-    padding-top: 80px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h2 { text-align: center; }
+body {
+    background-color: #0a0a0a;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    color: #f0f0f0;
+    padding: 10px;
+    padding-top: 80px;
+    min-height: 100vh;
+}
 
-/* topo */
-.topo-botoes {
+/* Barra superior */
+.top-bar {
+    background: #1a1a1a;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #ffcc00;
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    flex-wrap: wrap;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-text h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffcc00;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.logo-text span {
+    font-size: 0.7rem;
+    color: #cccccc;
+    font-weight: 400;
+    display: block;
+}
+
+/* BOTÕES DO TOPO */
+.topo-botoes {
     display: flex;
     gap: 10px;
     z-index: 999;
 }
 
 .btn-topo {
-    width: 52px;
-    height: 52px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     border: none;
-    font-size: 22px;
+    font-size: 18px;
     color: #fff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-.btn-topo.whats { background: #25d366; }
-.btn-topo.encerrar { background: #c82333; }
+.btn-topo:hover {
+    transform: scale(1.05);
+}
+
+.btn-topo.whats { 
+    background: #25d366; 
+}
+
+.btn-topo.encerrar { 
+    background: #c82333; 
+}
+
+/* título */
+h2 {
+    text-align: center;
+    color: #ffcc00;
+    font-size: 1.4rem;
+    margin: 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
 /* caixas */
 .box, .item {
-    background: #fff;
+    background: #1a1a1a;
     border-radius: 8px;
     margin-bottom: 8px;
     overflow: hidden;
+    border: 1px solid #2a2a2a;
 }
 
 .header {
-    padding: 12px;
-    font-weight: bold;
+    padding: 12px 15px;
+    font-weight: 600;
     cursor: pointer;
-    background: #e9e9e9;
+    background: #1f1f1f;
+    color: #ffcc00;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.header:hover {
+    background: #2a2a2a;
+}
+
+.header .arrow {
+    transition: transform 0.3s;
+    font-size: 0.8rem;
+}
+
+.header.active .arrow {
+    transform: rotate(90deg);
 }
 
 .conteudo {
     display: none;
-    padding: 10px;
+    padding: 12px;
+    background: #141414;
 }
 
 .linha {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid #1f1f1f;
+}
+
+.linha:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.linha span:first-child {
+    color: #cccccc;
+    font-size: 0.9rem;
 }
 
 .ctrl {
     display: flex;
     gap: 6px;
+    align-items: center;
 }
 
 button {
     border: none;
     border-radius: 6px;
-    padding: 6px 10px;
+    padding: 6px 12px;
     color: #fff;
-    font-size: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.add { background: #007bff; }
-.menos { background: #dc3545; }
+button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.add { 
+    background: #ffcc00; 
+    color: #000;
+}
+
+.menos { 
+    background: #dc3545; 
+}
 
 .contador {
-    min-width: 22px;
+    min-width: 28px;
     text-align: center;
     font-weight: bold;
+    color: #ffcc00;
+    font-size: 1.1rem;
 }
 
 input {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #2a2a2a;
+    background: #1a1a1a;
+    color: #f0f0f0;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #ffcc00;
+    background: #222;
+}
+
+input::placeholder {
+    color: #666;
+}
+
+.box input:last-child {
+    margin-bottom: 0;
+}
+
+/* estilo dos artigos livres */
+.item-edit .header {
+    background: #1a1a1a;
+    border-left: 3px solid #ffcc00;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ffcc00;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #e6b800;
+}
+
+/* responsivo */
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 10px 15px;
+    }
+    
+    .logo-text h1 {
+        font-size: 0.9rem;
+    }
+    
+    .logo-text span {
+        font-size: 0.6rem;
+    }
+    
+    .btn-topo {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+        margin: 15px 0;
+    }
 }
 </style>
 </head>
-
 <body>
 
-<!-- BOTÕES DO TOPO -->
-<div class="topo-botoes">
-    <button class="btn-topo whats" onclick="enviarWhats()" title="Enviar WhatsApp">📤</button>
-    <button class="btn-topo encerrar" onclick="encerrarTurno()" title="Encerrar Turno">⛔</button>
-</div>
+<!-- BARRA SUPERIOR -->
+<header class="top-bar">
+    <div class="logo-area">
+        <div class="logo-text">
+            <h1>4ª Cia Limeira</h1>
+            <span>Policiamento Rodoviário</span>
+        </div>
+    </div>
+    <div class="topo-botoes">
+        <button class="btn-topo whats" onclick="enviarWhats()" title="Enviar WhatsApp">📤</button>
+        <button class="btn-topo encerrar" onclick="encerrarTurno()" title="Encerrar Turno">⛔</button>
+    </div>
+</header>
 
 <h2>Controle de Fiscalização</h2>
 
+<!-- DADOS DA EQUIPE -->
 <div class="box">
     <input id="encarregado" placeholder="Nome do Encarregado">
     <input id="motorista" placeholder="Nome do Motorista">
-    <input id="auxiliar" placeholder="Nome do Auxiliar">
+    <input id="auxiliar" placeholder="Nome do Auxiliar (opcional)">
 </div>
 
 <div id="lista"></div>
@@ -143,13 +331,17 @@ for(let i=1;i<=8;i++) itens.push({id:"l"+i,nome:"",edit:true});
 
 // render
 itens.forEach(it=>{
+    const isEdit = it.edit;
+    const headerClass = isEdit ? 'header item-edit' : 'header';
+    
     lista.innerHTML += `
     <div class="item">
-        <div class="header" onclick="toggle('${it.id}')">
-            ${it.edit ? "✏️ Artigo livre" : it.nome}
+        <div class="${headerClass}" onclick="toggle('${it.id}')">
+            <span>${isEdit ? '✏️ Artigo livre' : it.nome}</span>
+            <span class="arrow">▶</span>
         </div>
         <div class="conteudo" id="c_${it.id}">
-            ${it.edit ? `<input id="nome_${it.id}" placeholder="Digite o artigo">` : ""}
+            ${isEdit ? `<input id="nome_${it.id}" placeholder="Digite o artigo">` : ""}
             ${linha("Encarregado","e",it.id)}
             ${linha("Motorista","m",it.id)}
             ${linha("Auxiliar","a",it.id)}
@@ -171,7 +363,15 @@ function linha(t,p,id){
 
 function toggle(id){
     const el=document.getElementById("c_"+id);
-    el.style.display = el.style.display==="block" ? "none" : "block";
+    const header=el.closest('.item').querySelector('.header');
+    
+    if(el.style.display === "block") {
+        el.style.display = "none";
+        header.classList.remove('active');
+    } else {
+        el.style.display = "block";
+        header.classList.add('active');
+    }
 }
 
 // salvar / carregar
@@ -183,7 +383,8 @@ function salvar(){
             if(n) d.n[it.id]=n.value;
         }
         ["e","m","a"].forEach(p=>{
-            d.c[p+it.id]=document.getElementById(p+it.id).innerText;
+            const el = document.getElementById(p+it.id);
+            if(el) d.c[p+it.id]=el.innerText;
         });
     });
     localStorage.setItem("controleFiscalizacao",JSON.stringify(d));
@@ -192,9 +393,9 @@ function salvar(){
 function carregar(){
     const d=JSON.parse(localStorage.getItem("controleFiscalizacao"));
     if(!d) return;
-    encarregado.value=d.enc;
-    motorista.value=d.mot;
-    auxiliar.value=d.aux;
+    encarregado.value=d.enc || '';
+    motorista.value=d.mot || '';
+    auxiliar.value=d.aux || '';
 
     for(let k in d.n){
         let e=document.getElementById("nome_"+k);
@@ -208,6 +409,7 @@ function carregar(){
 
 function alterar(id,v){
     const el=document.getElementById(id);
+    if(!el) return;
     let n=parseInt(el.innerText)+v;
     if(n<0)n=0;
     el.innerText=n;
@@ -220,31 +422,47 @@ function alterar(id,v){
 
 window.onload=carregar;
 
-// WhatsApp
+// WhatsApp - versão corrigida
 function enviarWhats(){
-    let texto=`📋 *Fiscalização*\n\n`;
-    texto+=`👷 Encarregado: ${encarregado.value||"-"}\n`;
-    texto+=`🚚 Motorista: ${motorista.value||"-"}\n`;
-    texto+=`👥 Auxiliar: ${auxiliar.value||"-"}\n\n`;
-
-    let tem=false;
+    const enc = encarregado.value.trim();
+    const mot = motorista.value.trim();
+    const aux = auxiliar.value.trim();
+    
+    // Monta cabeçalho
+    let texto = "";
+    if(enc) texto += `Encarregado: ${enc}\n`;
+    if(mot) texto += `Motorista: ${mot}\n`;
+    if(aux) texto += `Auxiliar: ${aux}\n`;
+    
+    if(texto) texto += "\n";
+    
+    let temDados = false;
+    
     itens.forEach(it=>{
-        let nome=it.edit?document.getElementById("nome_"+it.id).value:it.nome;
+        let nome = it.edit ? document.getElementById("nome_"+it.id)?.value?.trim() : it.nome;
         if(!nome) return;
-        let e=+document.getElementById("e"+it.id).innerText;
-        let m=+document.getElementById("m"+it.id).innerText;
-        let a=+document.getElementById("a"+it.id).innerText;
-        if(e+m+a===0) return;
-
-        tem=true;
-        texto+=`*${nome}*\n`;
-        if(e) texto+=`- Encarregado: ${e}\n`;
-        if(m) texto+=`- Motorista: ${m}\n`;
-        if(a) texto+=`- Auxiliar: ${a}\n`;
-        texto+="\n";
+        
+        const e = parseInt(document.getElementById("e"+it.id)?.innerText) || 0;
+        const m = parseInt(document.getElementById("m"+it.id)?.innerText) || 0;
+        const a = parseInt(document.getElementById("a"+it.id)?.innerText) || 0;
+        
+        if(e + m + a === 0) return;
+        
+        temDados = true;
+        texto += `${nome}\n`;
+        if(e > 0) texto += `- Encarregado: ${e}\n`;
+        if(m > 0) texto += `- Motorista: ${m}\n`;
+        if(a > 0) texto += `- Auxiliar: ${a}\n`;
+        texto += "\n";
     });
 
-    if(!tem){ alert("Nada para enviar"); return; }
+    if(!temDados && !enc && !mot && !aux){ 
+        alert("Nada para enviar"); 
+        return; 
+    }
+    
+    // Remove último \n extra
+    texto = texto.trim();
     window.open("https://wa.me/?text="+encodeURIComponent(texto),"_blank");
 }
 
