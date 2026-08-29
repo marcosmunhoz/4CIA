@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rodovias - SP | Filtro e Mapa</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: #f5f7fc;
+            margin: 0;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 1300px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+            padding: 2rem 1.5rem;
+        }
+        h1 {
+            font-weight: 600;
+            font-size: 1.9rem;
+            color: #0b1e3a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0.2rem;
+            margin-bottom: 1.8rem;
+            letter-spacing: -0.3px;
+        }
+        h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #4a5b7a;
+            margin-left: 12px;
+        }
+        .search-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 16px;
+            background: #f0f4fe;
+            padding: 1.2rem 1.5rem;
+            border-radius: 60px;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            border: 1px solid #d9e2ef;
+        }
+        .search-box label {
+            font-weight: 500;
+            color: #1a2b4a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .search-box input {
+            flex: 1 1 240px;
+            padding: 10px 18px;
+            border: 1px solid #cbd7e8;
+            border-radius: 40px;
+            font-size: 1rem;
+            background: white;
+            outline: none;
+            transition: 0.2s;
+        }
+        .search-box input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        .search-box button {
+            background: #1a2b4a;
+            border: none;
+            color: white;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .search-box button:hover {
+            background: #0f1d33;
+            transform: scale(1.02);
+        }
+        .reset-btn {
+            background: #e2e8f0 !important;
+            color: #1a2b4a !important;
+        }
+        .reset-btn:hover {
+            background: #cdd7e6 !important;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 20px;
+            border: 1px solid #e9edf4;
+            background: white;
+            margin-top: 0.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            min-width: 700px;
+        }
+        th {
+            background: #f0f5ff;
+            color: #1d3557;
+            font-weight: 600;
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 2px solid #d0dcee;
+            white-space: nowrap;
+        }
+        td {
+            padding: 12px 12px;
+            border-bottom: 1px solid #eaeef7;
+            vertical-align: middle;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background: #f8faff;
+        }
+        .codigo {
+            font-weight: 600;
+            color: #0b2b5c;
+            white-space: nowrap;
+        }
+        .nome {
+            font-weight: 500;
+            color: #1f3a5f;
+        }
+        .km {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            background: #f2f6fd;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .btn-mapa {
+            background: #1a73e8;
+            border: none;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .btn-mapa:hover {
+            background: #1558b0;
+            transform: scale(1.02);
+        }
+        .btn-mapa:active {
+            background: #0f4a94;
+        }
+        .btn-mapa i {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+        .sem-resultados {
+            text-align: center;
+            padding: 2.5rem 0;
+            color: #5d6f8c;
+            font-size: 1.1rem;
+        }
+        .municipio-badge {
+            background: #e6edf8;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #1f3a5f;
+            white-space: nowrap;
+        }
+        .footer-note {
+            margin-top: 1.8rem;
+            font-size: 0.85rem;
+            color: #5d6f8c;
+            text-align: center;
+        }
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .acao-col {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        @media (max-width: 650px) {
+            .container { padding: 1.5rem 0.8rem; }
+            .search-box { border-radius: 28px; padding: 1rem; }
+            .search-box input { flex: 1 1 160px; }
+            th, td { padding: 8px 6px; font-size: 0.85rem; }
+            .btn-mapa { padding: 4px 12px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>
+        🛣️ Rodovias SP
+        <small>filtro por nome ou código</small>
+    </h1>
+
+    <div class="search-box">
+        <label for="filtro">🔍 Buscar</label>
+        <input type="text" id="filtro" placeholder="Ex: SP 330, Luiz Ometto, 147..." autofocus>
+        <button id="btnFiltrar">Filtrar</button>
+        <button id="btnReset" class="reset-btn">↺ Mostrar todos</button>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome da Rodovia</th>
+                    <th>KM Inicial</th>
+                    <th>KM Final</th>
+                    <th>Município</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaRodovias">
+                <!-- linhas geradas via JS -->
+            </tbody>
+        </table>
+    </div>
+    <div class="footer-note">
+        Clique no botão <strong>🗺️ Mapa</strong> para ver a rota no Google Maps (trecho aproximado).
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- DADOS (extraídos da imagem) ----------
+        const rodovias = [
+            // SP
+            { codificacao: "SP", codigo: "133", nome: "Deputada João Herrmann Nota", kmInicial: "0,000", kmFinal: "10,650", municipio: "Limoeira" },
+            { codificacao: "SP", codigo: "135", nome: "Margarida da Graça Martin", kmInicial: "0,000", kmFinal: "8,540", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SP", codigo: "147", nome: "Engenheiro João Tarello", kmInicial: "90,951", kmFinal: "106,320", municipio: "Limoeira" },
+            { codificacao: "SP", codigo: "147", nome: "Laercio Carte, Deputada", kmInicial: "111,748", kmFinal: "122,850", municipio: "Limoeira" },
+            { codificacao: "SP", codigo: "151", nome: "Deutera João Mendo da Silva Júnior", kmInicial: "0,000", kmFinal: "4,780", municipio: "Limoeira" },
+            { codificacao: "SP", codigo: "191", nome: "Wilian Finardi", kmInicial: "25,301", kmFinal: "58,640", municipio: "Ararará" },
+            { codificacao: "SP", codigo: "304", nome: "Luiz de Queiroz", kmInicial: "131,501", kmFinal: "146,556", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SP", codigo: "306", nome: "Comendador Ambrice Emília Rami", kmInicial: "9,731", kmFinal: "21,750", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SP", codigo: "306", nome: "Luiz Ometto", kmInicial: "21,751", kmFinal: "28,060", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SP", codigo: "306", nome: "Luiz Ometto", kmInicial: "23,061", kmFinal: "39,260", municipio: "Limoeira" },
+            { codificacao: "SP", codigo: "310", nome: "Warhington Luiz", kmInicial: "153,250", kmFinal: "161,890", municipio: "Cardoirápaúl" },
+            { codificacao: "SP", codigo: "316", nome: "Cantantina Poruchi", kmInicial: "157,000", kmFinal: "165,490", municipio: "Cardoirápaúl" },
+            { codificacao: "SP", codigo: "330", nome: "Via Anhanguera", kmInicial: "130,151", kmFinal: "152,360", municipio: "Limoeira" },
+            { codificacao: "SP", codigo: "330", nome: "Via Anhanguera", kmInicial: "152,361", kmFinal: "160,400", municipio: "Cardoirápaúl" },
+            { codificacao: "SP", codigo: "330", nome: "Via Anhanguera", kmInicial: "160,401", kmFinal: "181,269", municipio: "Ararará" },
+            { codificacao: "SP", codigo: "348", nome: "Radovia Dar Bandeirante", kmInicial: "123,591", kmFinal: "139,320", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SP", codigo: "348", nome: "Radovia Dar Bandeirante", kmInicial: "139,321", kmFinal: "165,820", municipio: "Limoeira" },
+            { codificacao: "SP", codigo: "348", nome: "Radovia Dar Bandeirante", kmInicial: "165,821", kmFinal: "172,000", municipio: "Cardoirápaúl" },
+            // SPD
+            { codificacao: "SPD", codigo: "0477075", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "1,300", municipio: "Indaiatuba" },
+            { codificacao: "SPD", codigo: "0527075", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "1,965", municipio: "Indaiatuba" },
+            { codificacao: "SPD", codigo: "0567075", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "3,745", municipio: "Indaiatuba" },
+            { codificacao: "SPD", codigo: "0007135", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,300", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "0017151", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "1,800", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "0027151", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,400", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "0037151", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,930", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "0157306", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,380", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "0197306", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,420", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "0237306", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,110", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "0247306", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,380", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "0457191", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,200", municipio: "Ararará" },
+            { codificacao: "SPD", codigo: "1147147", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,310", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "1287348", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,100", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1337304", nome: "Luiz de Queiroz", kmInicial: "0,000", kmFinal: "1,800", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1347304", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,000", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1347348", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,000", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1357330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "1,130", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "1367304", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,500", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1377304", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "1,140", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "1397304", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,400", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1397330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "1,040", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1417304", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,450", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "1427330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "1,820", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1437304", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "1,350", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "1447348", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,910", municipio: "Santa Bárbara D'Oorto" },
+            { codificacao: "SPD", codigo: "1467304", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,100", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "1517348", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,500", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "1537330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,640", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1567348", nome: "Dr. Arlinda de Salva", kmInicial: "0,000", kmFinal: "0,400", municipio: "Limoeira" },
+            { codificacao: "SPD", codigo: "1577330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,800", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1607316", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,170", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1607330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,500", municipio: "Ararará" },
+            { codificacao: "SPD", codigo: "1617316", nome: "Valdemar Fragani", kmInicial: "0,000", kmFinal: "0,400", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1617316", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,350", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1627330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,550", municipio: "Ararará" },
+            { codificacao: "SPD", codigo: "1647316", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,350", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1657316", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,380", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1657330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,600", municipio: "Ararará" },
+            { codificacao: "SPD", codigo: "1677330", nome: "Gilda Scaravani", kmInicial: "0,000", kmFinal: "0,170", municipio: "Ararará" },
+            { codificacao: "SPD", codigo: "1677348", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,100", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1687348", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,000", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1707330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,500", municipio: "Ararará" },
+            { codificacao: "SPD", codigo: "1737330", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "0,760", municipio: "Ararará" },
+            { codificacao: "SPD", codigo: "1737348", nome: "Som Denaminação", kmInicial: "0,000", kmFinal: "2,500", municipio: "Cardoirápaúl" },
+            { codificacao: "SPD", codigo: "1797330", nome: "Roberto Zamban", kmInicial: "0,000", kmFinal: "0,400", municipio: "Ararará" },
+            // SPI
+            { codificacao: "SPI", codigo: "1657330", nome: "Gilberto Carlo Porteado da Silva Toller", kmInicial: "0,000", kmFinal: "4,670", municipio: "Ararará" }
+        ];
+
+        // referências DOM
+        const tbody = document.getElementById('tabelaRodovias');
+        const filtroInput = document.getElementById('filtro');
+        const btnFiltrar = document.getElementById('btnFiltrar');
+        const btnReset = document.getElementById('btnReset');
+
+        // função para montar a tabela
+        function renderizar(lista) {
+            if (!lista || lista.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="sem-resultados">Nenhuma rodovia encontrada.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            lista.forEach((r, index) => {
+                const codigoExibicao = r.codificacao + ' ' + r.codigo;
+                // constroi link do Google Maps com base no município e nome (aproximado)
+                // Usamos o nome e município para montar uma busca no maps
+                const query = encodeURIComponent(`${r.nome}, ${r.municipio}, SP`);
+                const urlMapa = `https://www.google.com/maps/search/?api=1&query=${query}`;
+
+                html += `<tr>
+                    <td class="codigo">${codigoExibicao}</td>
+                    <td class="nome">${r.nome}</td>
+                    <td><span class="km">${r.kmInicial}</span></td>
+                    <td><span class="km">${r.kmFinal}</span></td>
+                    <td><span class="municipio-badge">${r.municipio}</span></td>
+                    <td>
+                        <button class="btn-mapa" data-url="${urlMapa}" title="Abrir rota no Google Maps">
+                            🗺️ Mapa
+                        </button>
+                    </td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+
+            // adicionar event listeners para os botões "Mapa"
+            document.querySelectorAll('.btn-mapa').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const url = this.getAttribute('data-url');
+                    if (url) {
+                        window.open(url, '_blank');
+                    }
+                });
+            });
+        }
+
+        // função de filtro (case insensitive, busca em nome e código)
+        function filtrarRodovias(termo) {
+            if (!termo || termo.trim() === '') {
+                return rodovias.slice(); // todos
+            }
+            const lower = termo.toLowerCase().trim();
+            return rodovias.filter(r => {
+                const codigoCompleto = (r.codificacao + ' ' + r.codigo).toLowerCase();
+                const nomeLower = r.nome.toLowerCase();
+                // também busca pelo código puro e nome
+                return codigoCompleto.includes(lower) || 
+                       nomeLower.includes(lower) ||
+                       r.codigo.toLowerCase().includes(lower);
+            });
+        }
+
+        // atualiza a tabela com base no input
+        function atualizarTabela() {
+            const termo = filtroInput.value;
+            const resultados = filtrarRodovias(termo);
+            renderizar(resultados);
+        }
+
+        // eventos
+        btnFiltrar.addEventListener('click', atualizarTabela);
+
+        btnReset.addEventListener('click', function() {
+            filtroInput.value = '';
+            renderizar(rodovias);
+        });
+
+        // filtra ao pressionar Enter no campo
+        filtroInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                atualizarTabela();
+            }
+        });
+
+        // inicializa com todos
+        renderizar(rodovias);
+
+        // (opcional) ao carregar, manter foco no input
+        filtroInput.focus();
+    })();
+</script>
+</body>
+</html>
