@@ -578,7 +578,7 @@
                 saveToLocalStorage();
             }
             
-            // Função para gerar a mensagem formatada com negritos
+            // Função para gerar a mensagem formatada com negritos e quebras HTML
             function gerarMensagem() {
                 // Verificar se o formulário é válido
                 if (!form.checkValidity()) {
@@ -616,29 +616,29 @@
                 const numeroCompletoMsg = `4BPRV- ${numMsg}/${origemMsg}, de ${dataMsg}`;
                 
                 // Construir a mensagem formatada com HTML (para exibição com negritos)
-                // Usamos duas quebras de linha (\n\n) entre cada campo para garantir parágrafos separados no e-mail
-                let mensagemHtml = `<strong>MENSAGEM N° ${numeroCompletoMsg}</strong>\n`;
-                mensagemHtml += `Do Oficial Permanência da 4ª Cia\n`;
-                mensagemHtml += `Ao Sr. Of. Permanência do 4º BPRv\n`;
-                mensagemHtml += `<strong>Assunto: ${fato}</strong>\n\n`; // duas quebras após o assunto
+                // Usamos <br> para quebras de linha e <strong> para negrito nos rótulos
+                let mensagemHtml = `<strong>MENSAGEM N° ${numeroCompletoMsg}</strong><br>`;
+                mensagemHtml += `Do Oficial Permanência da 4ª Cia<br>`;
+                mensagemHtml += `Ao Sr. Of. Permanência do 4º BPRv<br>`;
+                mensagemHtml += `<strong>Assunto: ${fato}</strong><br><br>`;
                 
-                mensagemHtml += `<strong>Fato:</strong> ${fato}\n\n`;
-                mensagemHtml += `<strong>Ambiente:</strong> ${ambiente}\n\n`;
-                mensagemHtml += `<strong>Data:</strong> ${dataFato}\n\n`;
-                mensagemHtml += `<strong>Horário:</strong> Fato: ${horario} | Local: ${horarioLocal}\n\n`;
-                mensagemHtml += `<strong>Tempo de resposta:</strong> ${tempoResposta}\n\n`;
-                mensagemHtml += `<strong>Efetivo empenhado:</strong> ${efetivo}\n\n`;
-                mensagemHtml += `<strong>Endereço:</strong> ${endereco}\n\n`;
-                mensagemHtml += `<strong>Município:</strong> ${municipio}\n\n`;
-                mensagemHtml += `<strong>Bil:</strong> 4º BPRv\n\n`;
-                mensagemHtml += `<strong>Cia:</strong> 4ª Cia\n\n`;
-                mensagemHtml += `<strong>Pel:</strong> ${pelotao}\n\n`;
-                mensagemHtml += `<strong>Policiais militares que atenderam:</strong> ${policiais}\n\n`;
-                mensagemHtml += `<strong>Vtr:</strong> ${vtr}\n\n`;
-                mensagemHtml += `<strong>DP:</strong> ${delegacia}\n\n`;
+                mensagemHtml += `<strong>Fato:</strong> ${fato}<br><br>`;
+                mensagemHtml += `<strong>Ambiente:</strong> ${ambiente}<br><br>`;
+                mensagemHtml += `<strong>Data:</strong> ${dataFato}<br><br>`;
+                mensagemHtml += `<strong>Horário:</strong> Fato: ${horario} | Local: ${horarioLocal}<br><br>`;
+                mensagemHtml += `<strong>Tempo de resposta:</strong> ${tempoResposta}<br><br>`;
+                mensagemHtml += `<strong>Efetivo empenhado:</strong> ${efetivo}<br><br>`;
+                mensagemHtml += `<strong>Endereço:</strong> ${endereco}<br><br>`;
+                mensagemHtml += `<strong>Município:</strong> ${municipio}<br><br>`;
+                mensagemHtml += `<strong>Bil:</strong> 4º BPRv<br><br>`;
+                mensagemHtml += `<strong>Cia:</strong> 4ª Cia<br><br>`;
+                mensagemHtml += `<strong>Pel:</strong> ${pelotao}<br><br>`;
+                mensagemHtml += `<strong>Policiais militares que atenderam:</strong> ${policiais}<br><br>`;
+                mensagemHtml += `<strong>Vtr:</strong> ${vtr}<br><br>`;
+                mensagemHtml += `<strong>DP:</strong> ${delegacia}<br><br>`;
                 
                 if (veiculos.trim()) {
-                    mensagemHtml += `<strong>Veículo:</strong> Envolvido: ${veiculos}\n\n`;
+                    mensagemHtml += `<strong>Veículo:</strong> Envolvido: ${veiculos}<br><br>`;
                 }
                 
                 // Comandantes - cada linha com seu próprio formato
@@ -647,29 +647,29 @@
                     if (line.trim()) {
                         const parts = line.split(':');
                         if (parts.length >= 2) {
-                            mensagemHtml += `<strong>${parts[0]}:</strong> ${parts.slice(1).join(':').trim()}\n`;
+                            mensagemHtml += `<strong>${parts[0]}:</strong> ${parts.slice(1).join(':').trim()}<br>`;
                         } else {
-                            mensagemHtml += line + '\n';
+                            mensagemHtml += line + '<br>';
                         }
                     }
                 }
                 // Após comandantes, adicionar duas quebras
-                mensagemHtml += `\n`;
+                mensagemHtml += `<br>`;
                 
-                mensagemHtml += `<strong>Registro (BO/PM, BO/PC, Sindicatos, IPM, Investigação Preliminar):</strong> ${registros}\n\n`;
-                mensagemHtml += `<strong>Histórico:</strong> ${historico}\n\n`;
+                mensagemHtml += `<strong>Registro (BO/PM, BO/PC, Sindicatos, IPM, Investigação Preliminar):</strong> ${registros}<br><br>`;
+                mensagemHtml += `<strong>Histórico:</strong> ${historico}<br><br>`;
                 
                 if (autoridadeLocal.trim()) {
-                    mensagemHtml += `<strong>Autoridade presente no local:</strong> ${autoridadeLocal}\n\n`;
+                    mensagemHtml += `<strong>Autoridade presente no local:</strong> ${autoridadeLocal}<br><br>`;
                 }
                 if (autoridadeCientificada.trim()) {
-                    mensagemHtml += `<strong>Autoridade que foram cientificadas:</strong> ${autoridadeCientificada}\n\n`;
+                    mensagemHtml += `<strong>Autoridade que foram cientificadas:</strong> ${autoridadeCientificada}<br><br>`;
                 }
                 
                 // Assinatura
-                mensagemHtml += `\n${ASSINATURA}\n`;
+                mensagemHtml += `<br>${ASSINATURA}<br>`;
                 
-                // Exibir no preview com formatação HTML
+                // Exibir no preview
                 previewContent.innerHTML = mensagemHtml;
                 
                 // Rolar até o preview
@@ -682,30 +682,64 @@
                 saveToLocalStorage();
             }
             
-            // Função para copiar a mensagem com formatação
+            // Função para copiar a mensagem com formatação HTML (para e-mails)
             function copiarMensagem() {
                 const previewElement = document.getElementById('previewContent');
+                const htmlContent = previewElement.innerHTML;
                 
-                // Criar um elemento temporário para extrair o texto com formatação
+                // Monta o HTML completo para copiar com estilo Times New Roman 12pt
+                const fullHtml = `
+                    <div style="font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.6;">
+                        ${htmlContent}
+                    </div>
+                `;
+                
+                // Texto puro (fallback)
                 const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = previewElement.innerHTML;
+                tempDiv.innerHTML = htmlContent;
+                const plainText = tempDiv.textContent;
                 
-                // Substituir <br> por \n para manter quebras de linha
-                const textContent = tempDiv.textContent;
-                
-                // Usar a API Clipboard para copiar
-                navigator.clipboard.writeText(textContent).then(() => {
-                    showStatus('Mensagem copiada para a área de transferência!', 'copied');
-                }).catch(err => {
-                    // Fallback para navegadores antigos
-                    const textarea = document.createElement('textarea');
-                    textarea.value = textContent;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    showStatus('Mensagem copiada para a área de transferência!', 'copied');
-                });
+                // Usa a API Clipboard (moderna) para escrever ambos os formatos
+                if (navigator.clipboard && navigator.clipboard.write) {
+                    const blobHtml = new Blob([fullHtml], { type: 'text/html' });
+                    const blobPlain = new Blob([plainText], { type: 'text/plain' });
+                    
+                    navigator.clipboard.write([
+                        new ClipboardItem({
+                            'text/html': blobHtml,
+                            'text/plain': blobPlain
+                        })
+                    ]).then(() => {
+                        showStatus('Mensagem copiada com formatação (HTML)!', 'copied');
+                    }).catch(err => {
+                        // Fallback: tenta copiar só o HTML com writeText (pode não manter formatação)
+                        navigator.clipboard.writeText(plainText).then(() => {
+                            showStatus('Mensagem copiada (texto puro).', 'copied');
+                        }).catch(() => {
+                            // Fallback antigo
+                            const textarea = document.createElement('textarea');
+                            textarea.value = plainText;
+                            document.body.appendChild(textarea);
+                            textarea.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(textarea);
+                            showStatus('Mensagem copiada (texto puro).', 'copied');
+                        });
+                    });
+                } else {
+                    // Fallback para navegadores sem suporte a Clipboard API
+                    navigator.clipboard.writeText(plainText).then(() => {
+                        showStatus('Mensagem copiada (texto puro).', 'copied');
+                    }).catch(() => {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = plainText;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        showStatus('Mensagem copiada (texto puro).', 'copied');
+                    });
+                }
             }
             
             // Função para limpar todos os campos
