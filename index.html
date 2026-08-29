@@ -247,6 +247,13 @@
       margin-top: 1rem;
     }
 
+    /* ---- ESTILO PARA O LINK DO CARD ---- */
+    .card-link {
+      text-decoration: none;      /* remove sublinhado */
+      color: inherit;            /* herda a cor do texto */
+      display: block;            /* ocupa toda a largura do card */
+    }
+
     .card-imagem {
       background: #2c2c2c;
       border-radius: 12px;
@@ -449,21 +456,29 @@
       </section>
 
       <section class="galeria-imagens">
-        <h2><span>📸</span> Galeria de Imagens</h2>
+        <h2><span>📸</span> Galeria</h2>
         <div class="imagens-grid">
+          <!-- Card 1: Viatura -->
           <div class="card-imagem">
-            <!-- Imagem ilustrativa (substitua pelos links desejados) -->
             <img src="https://images.unsplash.com/photo-1617575520283-4c2a4b6b5c7e?w=400&h=250&fit=crop&auto=format" alt="Viatura policial" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>🚓</div><div class=\'legenda\'>Viatura PRv</div>';">
-            <div class="legenda">Viatura Tática</div>
+            <div class="legenda">Viatura</div>
           </div>
-          <div class="card-imagem">
-            <img src="https://images.unsplash.com/photo-1590073242678-70ee3fc28e8b?w=400&h=250&fit=crop&auto=format" alt="Rodovia" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>🛣️</div><div class=\'legenda\'>Rodovia SP</div>';">
-            <div class="legenda">Monitoramento</div>
-          </div>
+
+          <!-- Card 2: MONITORAMENTO (AGORA É UM LINK PARA trecho.html) -->
+          <a href="trecho.html" class="card-link">
+            <div class="card-imagem">
+              <img src="https://images.unsplash.com/photo-1590073242678-70ee3fc28e8b?w=400&h=250&fit=crop&auto=format" alt="Rodovia" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>🛣️</div><div class=\'legenda\'>Meu trecho</div>';">
+              <div class="legenda">Monitoramento</div>
+            </div>
+          </a>
+
+          <!-- Card 3: Policial -->
           <div class="card-imagem">
             <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=250&fit=crop&auto=format" alt="Policial" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>👮</div><div class=\'legenda\'>Policial PRv</div>';">
             <div class="legenda">Equipe em Ação</div>
           </div>
+
+          <!-- Card 4: Motocicleta -->
           <div class="card-imagem">
             <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=250&fit=crop&auto=format" alt="Base móvel" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-placeholder\'>🏍️</div><div class=\'legenda\'>Motocicleta</div>';">
             <div class="legenda">Patrulha Motos</div>
@@ -517,13 +532,11 @@
           const submenu = document.getElementById(submenuId);
           
           if (submenu) {
-            // Fecha outros submenus? Opcional: manter apenas um aberto.
-            // Vamos permitir múltiplos abertos ou comportamento de acordeão simples:
+            // Fecha outros submenus (comportamento acordeão)
             const allSubmenus = document.querySelectorAll('.submenu');
             allSubmenus.forEach(sm => {
               if (sm.id !== submenuId) {
                 sm.classList.remove('open');
-                // também remove active dos botões correspondentes
                 const relatedBtn = document.querySelector(`.menu-item[data-submenu="${sm.id}"]`);
                 if (relatedBtn) relatedBtn.classList.remove('active');
               }
