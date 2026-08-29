@@ -213,7 +213,7 @@
 
     <div class="form-grid">
 
-        <!-- Local fixo -->
+        <!-- Local fixo (RODOVIA) -->
         <div class="campo campo-full">
             <label>Local</label>
             <input type="text" id="local" value="SP 330 KM 151,600 SUL - RODOVIA ANHANGUERA" readonly>
@@ -250,7 +250,7 @@
             </select>
         </div>
 
-        <!-- Base / Viatura -->
+        <!-- Base ou Viatura -->
         <div class="campo">
             <label>Base / Viatura</label>
             <select id="baseViatura">
@@ -266,10 +266,10 @@
             <input type="text" id="hora" placeholder="Ex: 04:45">
         </div>
 
-        <!-- Campo dinâmico: Nº da Base ou Prefixo da Viatura -->
-        <div class="campo">
-            <label id="labelBaseViatura">Nº da Base / Prefixo</label>
-            <input type="text" id="baseViaturaValor" placeholder="Ex: 44.0 ou R-044XX">
+        <!-- Campo dinâmico: Nº da BASE ou Prefixo da VIATURA -->
+        <div class="campo" id="campoIdentificador">
+            <label id="labelIdentificador">Nº da BASE / Prefixo da VIATURA</label>
+            <input type="text" id="identificador" placeholder="Ex: 44.0 ou R-044XX">
         </div>
 
         <!-- Encarregado -->
@@ -332,9 +332,9 @@
         const equipeTipoSelect = document.getElementById('equipeTipo');
         const turnoSelect = document.getElementById('turno');
         const baseViaturaSelect = document.getElementById('baseViatura');
-        const baseViaturaValorInput = document.getElementById('baseViaturaValor');
-        const labelBaseViatura = document.getElementById('labelBaseViatura');
         const horaInput = document.getElementById('hora');
+        const identificadorInput = document.getElementById('identificador');
+        const labelIdentificador = document.getElementById('labelIdentificador');
         const encarregadoInput = document.getElementById('encarregado');
         const motoristaInput = document.getElementById('motorista');
 
@@ -366,22 +366,23 @@
         }
         atualizarData();
 
-        // Atualiza label e placeholder do campo Base/Viatura conforme seleção
-        function atualizarRotuloBaseViatura() {
+        // Atualiza rótulo do campo identificador conforme seleção Base/Viatura
+        function atualizarRotuloIdentificador() {
             const selecao = baseViaturaSelect.value;
             if (selecao === 'BASE') {
-                labelBaseViatura.textContent = 'Nº da BASE';
-                baseViaturaValorInput.placeholder = 'Ex: 44.0';
+                labelIdentificador.textContent = 'Nº DA BASE';
+                identificadorInput.placeholder = 'Ex: 44.0';
             } else if (selecao === 'VIATURA') {
-                labelBaseViatura.textContent = 'Prefixo da VIATURA';
-                baseViaturaValorInput.placeholder = 'Ex: R-044XX';
+                labelIdentificador.textContent = 'PREFIXO DA VIATURA';
+                identificadorInput.placeholder = 'Ex: R-044XX';
             } else {
-                labelBaseViatura.textContent = 'Nº da Base / Prefixo';
-                baseViaturaValorInput.placeholder = 'Ex: 44.0 ou R-044XX';
+                labelIdentificador.textContent = 'Nº DA BASE / PREFIXO DA VIATURA';
+                identificadorInput.placeholder = 'Ex: 44.0 ou R-044XX';
             }
-            // Força atualização do texto
-            atualizarVisualizacao();
         }
+
+        baseViaturaSelect.addEventListener('change', atualizarRotuloIdentificador);
+        atualizarRotuloIdentificador();
 
         // Função principal de geração do texto
         function gerarTexto() {
@@ -390,8 +391,8 @@
             const equipeTipo = equipeTipoSelect.value;
             const turno = turnoSelect.value;
             const baseViatura = baseViaturaSelect.value;
-            const baseViaturaValor = baseViaturaValorInput.value.trim();
             const hora = horaInput.value.trim();
+            const identificador = identificadorInput.value.trim();
             const enc = encarregadoInput.value.trim();
             const mot = motoristaInput.value.trim();
 
@@ -412,10 +413,10 @@
 
             let linhas = [];
 
-            // Linha 1: Local (sempre)
+            // Linha 1: Local
             if (local) linhas.push(local);
 
-            // Linha 2: Data + Equipe + Turno (só se houver data)
+            // Linha 2: Data + Equipe + Turno
             let linhaEquipe = '';
             if (data) linhaEquipe += data;
             if (equipeTipo) linhaEquipe += ` - EQUIPE ${equipeTipo}`;
@@ -426,29 +427,19 @@
             linhas.push('COMPOSIÇÃO DA US:');
             linhas.push('');
 
-            // Linha da BASE ou VIATURA com BOP
-            let linhaBaseViatura = '';
-            if (baseViatura === 'BASE') {
-                if (baseViaturaValor) {
-                    linhaBaseViatura = `BASE ${baseViaturaValor} - BOP 330/3`;
-                } else {
-                    linhaBaseViatura = 'BOP 330/3'; // se não preencheu o número
-                }
-            } else if (baseViatura === 'VIATURA') {
-                if (baseViaturaValor) {
-                    linhaBaseViatura = `VIATURA ${baseViaturaValor} - BOP 330/3`;
-                } else {
-                    linhaBaseViatura = 'BOP 330/3';
-                }
+            // Identificador (Base ou Viatura) + BOP
+            let linhaIdentificador = '';
+            if (baseViatura === 'BASE' && identificador) {
+                linhaIdentificador = `BASE ${identificador} - BOP 330/3`;
+            } else if (baseViatura === 'VIATURA' && identificador) {
+                linhaIdentificador = `VIATURA ${identificador} - BOP 330/3`;
+            } else if (identificador) {
+                // Se selecionou algo mas não definiu base/viatura, usa genérico
+                linhaIdentificador = `${identificador} - BOP 330/3`;
             } else {
-                // Se não selecionou Base/Viatura, mas preencheu o campo, usa como PDR genérico
-                if (baseViaturaValor) {
-                    linhaBaseViatura = `${baseViaturaValor} - BOP 330/3`;
-                } else {
-                    linhaBaseViatura = 'BOP 330/3';
-                }
+                linhaIdentificador = 'BOP 330/3';
             }
-            linhas.push(linhaBaseViatura);
+            linhas.push(linhaIdentificador);
             linhas.push('');
 
             // Encarregado
@@ -484,13 +475,13 @@
             }
             linhas.push('SEM OCORRÊNCIAS PENDENTES.');
 
-            // Base ou Viatura limpa e abastecida (usando a seleção)
+            // Base ou Viatura limpa e organizada/abastecida
             if (baseViatura === 'BASE') {
-                linhas.push('BASE LIMPA E ABASTECIDA.');
+                linhas.push('BASE LIMPA E ORGANIZADA.');
             } else if (baseViatura === 'VIATURA') {
                 linhas.push('VIATURA LIMPA E ABASTECIDA.');
             } else {
-                linhas.push('BASE/VIATURA LIMPA E ABASTECIDA.');
+                linhas.push('BASE/VIATURA LIMPA E ORGANIZADA/ABASTECIDA.');
             }
             linhas.push('');
 
@@ -510,21 +501,14 @@
             textoFinal.textContent = gerarTexto();
         }
 
-        // Vincula eventos
+        // Vincula eventos a todos os campos
         const todosInputs = document.querySelectorAll('input, select');
         todosInputs.forEach(el => {
             el.addEventListener('input', atualizarVisualizacao);
-            el.addEventListener('change', function() {
-                if (el.id === 'baseViatura') {
-                    atualizarRotuloBaseViatura();
-                } else {
-                    atualizarVisualizacao();
-                }
-            });
+            el.addEventListener('change', atualizarVisualizacao);
         });
 
-        // Inicializa rótulo
-        atualizarRotuloBaseViatura();
+        atualizarVisualizacao();
 
         // Botão Copiar
         document.getElementById('btnCopiar').addEventListener('click', function() {
@@ -556,7 +540,7 @@
             setTimeout(() => feedback.textContent = '', 3000);
         });
 
-        // Botão Limpar – zera todos os campos editáveis
+        // Botão Limpar
         document.getElementById('btnLimpar').addEventListener('click', function() {
             const inputs = document.querySelectorAll('input');
             inputs.forEach(inp => {
@@ -567,8 +551,8 @@
             selects.forEach(sel => {
                 sel.value = '';
             });
-            // Atualiza rótulo após limpar
-            atualizarRotuloBaseViatura();
+            // Atualiza o rótulo novamente
+            atualizarRotuloIdentificador();
             atualizarVisualizacao();
             feedback.textContent = 'Campos limpos (mantidos local e data)';
             feedback.style.color = '#f1c40f';
