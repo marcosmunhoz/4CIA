@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esqueleto RSO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef2f7;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 820px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            padding: 35px 40px;
+            transition: 0.3s;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1e2a3a;
+            text-align: center;
+            letter-spacing: 2px;
+            border-bottom: 3px solid #0b3b5c;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px 25px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .campo label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2c3e50;
+            letter-spacing: 0.3px;
+        }
+
+        .campo input {
+            padding: 8px 12px;
+            border: 1px solid #ccd7e6;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: #f9fbfd;
+            transition: 0.2s;
+        }
+
+        .campo input:focus {
+            outline: none;
+            border-color: #1e6f9f;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(30, 111, 159, 0.15);
+        }
+
+        .campo-full {
+            grid-column: 1 / -1;
+        }
+
+        .separador {
+            grid-column: 1 / -1;
+            border-top: 2px dashed #d0dbe8;
+            margin: 8px 0 4px 0;
+        }
+
+        .area-texto {
+            margin-top: 30px;
+            background: #f4f7fc;
+            border-radius: 16px;
+            padding: 20px 25px;
+            border-left: 6px solid #0b3b5c;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #1e2a3a;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .botoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e2e8f0;
+            color: #1e2a3a;
+            text-decoration: none;
+        }
+
+        .btn-copiar {
+            background: #1e6f9f;
+            color: #fff;
+        }
+        .btn-copiar:hover {
+            background: #145a80;
+            transform: translateY(-2px);
+        }
+
+        .btn-wpp {
+            background: #25d366;
+            color: #fff;
+        }
+        .btn-wpp:hover {
+            background: #1da85c;
+            transform: translateY(-2px);
+        }
+
+        .btn-limpar {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .btn-limpar:hover {
+            background: #c0392b;
+        }
+
+        .feedback {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: #27ae60;
+            font-weight: 500;
+            min-height: 1.8rem;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 15px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .area-texto {
+                font-size: 0.85rem;
+                padding: 15px;
+                max-height: 400px;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .botoes {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+    <h1>🧾 Esqueleto RSO</h1>
+
+    <!-- Formulário de entrada -->
+    <div class="form-grid">
+
+        <!-- Local (fixo) -->
+        <div class="campo campo-full">
+            <label>📍 Local</label>
+            <input type="text" id="local" value="SP 330 KM 151,600 SUL - Rodovia Anhanguera" readonly style="background:#eef2f7; cursor:default;">
+        </div>
+
+        <!-- Data automática -->
+        <div class="campo">
+            <label>📅 Data (DD/MM/AA)</label>
+            <input type="text" id="data" readonly style="background:#eef2f7; font-weight:bold; color:#0b3b5c;">
+        </div>
+
+        <!-- Hora -->
+        <div class="campo">
+            <label>🕒 Hora da assunção</label>
+            <input type="text" id="hora" placeholder="Ex: 07:30" value="07:30">
+        </div>
+
+        <!-- Viatura -->
+        <div class="campo">
+            <label>🚔 Viatura</label>
+            <input type="text" id="viatura" value="R-044XX">
+        </div>
+
+        <!-- PM Encarregado -->
+        <div class="campo">
+            <label>👤 PM Encarregado</label>
+            <input type="text" id="encarregado" value="FULANO">
+        </div>
+
+        <!-- PM Motorista -->
+        <div class="campo">
+            <label>👤 PM Motorista</label>
+            <input type="text" id="motorista" value="CICLANO">
+        </div>
+
+        <!-- Separador -->
+        <div class="separador"></div>
+
+        <!-- Dados do Encarregado -->
+        <div class="campo"><label>🔫 Pistola GLOCK (Enc.)</label><input type="text" id="pistola_enc" placeholder="Nº"></div>
+        <div class="campo"><label>🛡️ Colete (Enc.)</label><input type="text" id="colete_enc" placeholder="Nº"></div>
+        <div class="campo"><label>⛓️ Algema (Enc.)</label><input type="text" id="algema_enc" placeholder="Nº"></div>
+        <div class="campo"><label>📟 COP (Enc.)</label><input type="text" id="cop_enc" placeholder="Nº"></div>
+
+        <div class="separador"></div>
+
+        <!-- Dados do Motorista -->
+        <div class="campo"><label>🔫 Pistola GLOCK (Mot.)</label><input type="text" id="pistola_mot" placeholder="Nº"></div>
+        <div class="campo"><label>🛡️ Colete (Mot.)</label><input type="text" id="colete_mot" placeholder="Nº"></div>
+        <div class="campo"><label>⛓️ Algema (Mot.)</label><input type="text" id="algema_mot" placeholder="Nº"></div>
+        <div class="campo"><label>📟 COP (Mot.)</label><input type="text" id="cop_mot" placeholder="Nº"></div>
+
+        <div class="campo"><label>🚗 CNH Registro</label><input type="text" id="cnh_reg" placeholder="Nº"></div>
+        <div class="campo"><label>📅 CNH Validade</label><input type="text" id="cnh_val" placeholder="DD/MM/AAAA"></div>
+        <div class="campo"><label>🏷️ CNH Categoria</label><input type="text" id="cnh_cat" placeholder="Ex: D"></div>
+
+        <div class="separador"></div>
+
+        <!-- PPRI -->
+        <div class="campo">
+            <label>📄 PPRI Nº (XXXX/44/2026)</label>
+            <input type="text" id="ppri" placeholder="XXXX" value="1234">
+        </div>
+    </div>
+
+    <!-- Botões de ação -->
+    <div class="botoes">
+        <button class="btn btn-copiar" id="btnCopiar">📋 Copiar texto</button>
+        <button class="btn btn-wpp" id="btnWhats">📲 Salvar no WhatsApp</button>
+        <button class="btn btn-limpar" id="btnLimpar">🧹 Limpar campos</button>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <!-- Área de visualização do texto final -->
+    <div class="area-texto" id="textoFinal"></div>
+
+</div>
+
+<script>
+    (function() {
+        // Elementos
+        const localInput = document.getElementById('local');
+        const dataInput = document.getElementById('data');
+        const horaInput = document.getElementById('hora');
+        const viaturaInput = document.getElementById('viatura');
+        const encarregadoInput = document.getElementById('encarregado');
+        const motoristaInput = document.getElementById('motorista');
+
+        const pistolaEnc = document.getElementById('pistola_enc');
+        const coleteEnc = document.getElementById('colete_enc');
+        const algemaEnc = document.getElementById('algema_enc');
+        const copEnc = document.getElementById('cop_enc');
+
+        const pistolaMot = document.getElementById('pistola_mot');
+        const coleteMot = document.getElementById('colete_mot');
+        const algemaMot = document.getElementById('algema_mot');
+        const copMot = document.getElementById('cop_mot');
+        const cnhReg = document.getElementById('cnh_reg');
+        const cnhVal = document.getElementById('cnh_val');
+        const cnhCat = document.getElementById('cnh_cat');
+
+        const ppriInput = document.getElementById('ppri');
+
+        const textoFinal = document.getElementById('textoFinal');
+        const feedback = document.getElementById('feedback');
+
+        // ====== DATA ATUAL ======
+        function atualizarData() {
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = String(hoje.getFullYear()).slice(-2);
+            dataInput.value = `${dia}/${mes}/${ano}`;
+        }
+        atualizarData();
+
+        // ====== GERAR TEXTO ======
+        function gerarTexto() {
+            const local = localInput.value.trim();
+            const data = dataInput.value.trim();
+            const hora = horaInput.value.trim() || 'XX';
+            const viatura = viaturaInput.value.trim() || 'R-044XX';
+            const enc = encarregadoInput.value.trim() || 'FULANO';
+            const mot = motoristaInput.value.trim() || 'CICLANO';
+
+            const p1 = pistolaEnc.value.trim() || '______';
+            const c1 = coleteEnc.value.trim() || '______';
+            const a1 = algemaEnc.value.trim() || '______';
+            const cop1 = copEnc.value.trim() || '______';
+
+            const p2 = pistolaMot.value.trim() || '______';
+            const c2 = coleteMot.value.trim() || '______';
+            const a2 = algemaMot.value.trim() || '______';
+            const cop2 = copMot.value.trim() || '______';
+            const cnhR = cnhReg.value.trim() || '______';
+            const cnhV = cnhVal.value.trim() || '______';
+            const cnhC = cnhCat.value.trim() || '______';
+
+            const ppri = ppriInput.value.trim() || 'XXXX';
+
+            // Montagem do texto
+            let txt = '';
+            txt += `Esqueleto RSO\n\n`;
+            txt += `${local}\n`;
+            txt += `${data}\n\n`;
+            txt += `Composição da US:\n\n`;
+            txt += `Viatura ${viatura}\n\n`;
+            txt += `__ PM ${enc} na função de encarregado\n\n`;
+            txt += `Nº PISTOLA GLOCK: ${p1}\n`;
+            txt += `Nº COLETE: ${c1}\n`;
+            txt += `Nº ALGEMA: ${a1}\n`;
+            txt += `Nº COP: ${cop1}\n\n`;
+            txt += `__ PM ${mot} na função de motorista\n\n`;
+            txt += `Nº PISTOLA GLOCK: ${p2}\n`;
+            txt += `Nº COLETE: ${c2}\n`;
+            txt += `Nº ALGEMA: ${a2}\n`;
+            txt += `Nº COP: ${cop2}\n`;
+            txt += `CNH REGISTRO: ${cnhR}\n`;
+            txt += `VALIDADE: ${cnhV}\n`;
+            txt += `CATEGORIA: ${cnhC}\n\n`;
+            txt += `As ${hora} horas, assunção do serviço pela BOP 330/3.\n`;
+            txt += `Sem ocorrências pendentes.\n`;
+            txt += `Viatura limpa e abastecida.\n\n`;
+            txt += `PPRI Nº ${ppri}/44/2026\n`;
+            txt += `Cumprimento das atividades e operações conforme determina o PPRI.\n`;
+            txt += `Produtividade e resultados foram inseridos no sistema do mapa força, PPRI e Sicoordop.`;
+
+            return txt;
+        }
+
+        function atualizarVisualizacao() {
+            const texto = gerarTexto();
+            textoFinal.textContent = texto;
+        }
+
+        // Atualiza sempre que qualquer campo mudar
+        const todosInputs = document.querySelectorAll('input');
+        todosInputs.forEach(input => {
+            input.addEventListener('input', atualizarVisualizacao);
+            input.addEventListener('change', atualizarVisualizacao);
+        });
+
+        // Inicializa a visualização
+        atualizarVisualizacao();
+
+        // ====== BOTÃO COPIAR ======
+        document.getElementById('btnCopiar').addEventListener('click', function() {
+            const texto = gerarTexto();
+            navigator.clipboard.writeText(texto).then(() => {
+                feedback.textContent = '✅ Texto copiado para a área de transferência!';
+                feedback.style.color = '#27ae60';
+                setTimeout(() => feedback.textContent = '', 3500);
+            }).catch(() => {
+                // Fallback
+                const area = document.createElement('textarea');
+                area.value = texto;
+                document.body.appendChild(area);
+                area.select();
+                document.execCommand('copy');
+                document.body.removeChild(area);
+                feedback.textContent = '✅ Texto copiado!';
+                feedback.style.color = '#27ae60';
+                setTimeout(() => feedback.textContent = '', 3500);
+            });
+        });
+
+        // ====== BOTÃO WHATSAPP ======
+        document.getElementById('btnWhats').addEventListener('click', function() {
+            const texto = gerarTexto();
+            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
+            feedback.textContent = '📲 Abrindo WhatsApp...';
+            feedback.style.color = '#25d366';
+            setTimeout(() => feedback.textContent = '', 3000);
+        });
+
+        // ====== BOTÃO LIMPAR ======
+        document.getElementById('btnLimpar').addEventListener('click', function() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(inp => {
+                if (inp.id === 'local' || inp.id === 'data') return; // não limpa fixos
+                inp.value = '';
+            });
+            // Restaura valores padrão
+            viaturaInput.value = 'R-044XX';
+            encarregadoInput.value = 'FULANO';
+            motoristaInput.value = 'CICLANO';
+            ppriInput.value = 'XXXX';
+            horaInput.value = '07:30';
+            atualizarVisualizacao();
+            feedback.textContent = '🧹 Campos limpos (mantidos locais fixos)';
+            feedback.style.color = '#e67e22';
+            setTimeout(() => feedback.textContent = '', 3000);
+        });
+
+    })();
+</script>
+
+</body>
+</html>
