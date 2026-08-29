@@ -213,7 +213,7 @@
 
     <div class="form-grid">
 
-        <!-- Local fixo (RODOVIA) -->
+        <!-- Local fixo -->
         <div class="campo campo-full">
             <label>Local</label>
             <input type="text" id="local" value="SP 330 KM 151,600 SUL - RODOVIA ANHANGUERA" readonly>
@@ -225,7 +225,7 @@
             <input type="text" id="data" readonly style="font-weight:bold; color:#f1c40f;">
         </div>
 
-        <!-- Equipe / Tipo (sem valor padrão) -->
+        <!-- Equipe / Tipo -->
         <div class="campo">
             <label>Equipe / Tipo</label>
             <select id="equipeTipo">
@@ -240,7 +240,7 @@
             </select>
         </div>
 
-        <!-- Turno (sem valor padrão) -->
+        <!-- Turno -->
         <div class="campo">
             <label>Turno</label>
             <select id="turno">
@@ -250,7 +250,7 @@
             </select>
         </div>
 
-        <!-- Base ou Viatura (sem valor padrão) -->
+        <!-- Base / Viatura -->
         <div class="campo">
             <label>Base / Viatura</label>
             <select id="baseViatura">
@@ -266,10 +266,10 @@
             <input type="text" id="hora" placeholder="Ex: 04:45">
         </div>
 
-        <!-- PDR (viatura) -->
+        <!-- Campo dinâmico: Nº da Base ou Prefixo da Viatura -->
         <div class="campo">
-            <label>PDR (ex: 44.0)</label>
-            <input type="text" id="pdr" placeholder="Ex: 44.0">
+            <label id="labelBaseViatura">Nº da Base / Prefixo</label>
+            <input type="text" id="baseViaturaValor" placeholder="Ex: 44.0 ou R-044XX">
         </div>
 
         <!-- Encarregado -->
@@ -332,8 +332,9 @@
         const equipeTipoSelect = document.getElementById('equipeTipo');
         const turnoSelect = document.getElementById('turno');
         const baseViaturaSelect = document.getElementById('baseViatura');
+        const baseViaturaValorInput = document.getElementById('baseViaturaValor');
+        const labelBaseViatura = document.getElementById('labelBaseViatura');
         const horaInput = document.getElementById('hora');
-        const pdrInput = document.getElementById('pdr');
         const encarregadoInput = document.getElementById('encarregado');
         const motoristaInput = document.getElementById('motorista');
 
@@ -365,6 +366,23 @@
         }
         atualizarData();
 
+        // Atualiza label e placeholder do campo Base/Viatura conforme seleção
+        function atualizarRotuloBaseViatura() {
+            const selecao = baseViaturaSelect.value;
+            if (selecao === 'BASE') {
+                labelBaseViatura.textContent = 'Nº da BASE';
+                baseViaturaValorInput.placeholder = 'Ex: 44.0';
+            } else if (selecao === 'VIATURA') {
+                labelBaseViatura.textContent = 'Prefixo da VIATURA';
+                baseViaturaValorInput.placeholder = 'Ex: R-044XX';
+            } else {
+                labelBaseViatura.textContent = 'Nº da Base / Prefixo';
+                baseViaturaValorInput.placeholder = 'Ex: 44.0 ou R-044XX';
+            }
+            // Força atualização do texto
+            atualizarVisualizacao();
+        }
+
         // Função principal de geração do texto
         function gerarTexto() {
             const local = localInput.value.trim();
@@ -372,8 +390,8 @@
             const equipeTipo = equipeTipoSelect.value;
             const turno = turnoSelect.value;
             const baseViatura = baseViaturaSelect.value;
+            const baseViaturaValor = baseViaturaValorInput.value.trim();
             const hora = horaInput.value.trim();
-            const pdr = pdrInput.value.trim();
             const enc = encarregadoInput.value.trim();
             const mot = motoristaInput.value.trim();
 
@@ -408,12 +426,29 @@
             linhas.push('COMPOSIÇÃO DA US:');
             linhas.push('');
 
-            // PDR e BOP
-            if (pdr) {
-                linhas.push(`PDR ${pdr} - BOP 330/3`);
+            // Linha da BASE ou VIATURA com BOP
+            let linhaBaseViatura = '';
+            if (baseViatura === 'BASE') {
+                if (baseViaturaValor) {
+                    linhaBaseViatura = `BASE ${baseViaturaValor} - BOP 330/3`;
+                } else {
+                    linhaBaseViatura = 'BOP 330/3'; // se não preencheu o número
+                }
+            } else if (baseViatura === 'VIATURA') {
+                if (baseViaturaValor) {
+                    linhaBaseViatura = `VIATURA ${baseViaturaValor} - BOP 330/3`;
+                } else {
+                    linhaBaseViatura = 'BOP 330/3';
+                }
             } else {
-                linhas.push('BOP 330/3');
+                // Se não selecionou Base/Viatura, mas preencheu o campo, usa como PDR genérico
+                if (baseViaturaValor) {
+                    linhaBaseViatura = `${baseViaturaValor} - BOP 330/3`;
+                } else {
+                    linhaBaseViatura = 'BOP 330/3';
+                }
             }
+            linhas.push(linhaBaseViatura);
             linhas.push('');
 
             // Encarregado
@@ -449,13 +484,13 @@
             }
             linhas.push('SEM OCORRÊNCIAS PENDENTES.');
 
-            // Base ou Viatura
+            // Base ou Viatura limpa e abastecida (usando a seleção)
             if (baseViatura === 'BASE') {
                 linhas.push('BASE LIMPA E ABASTECIDA.');
             } else if (baseViatura === 'VIATURA') {
                 linhas.push('VIATURA LIMPA E ABASTECIDA.');
             } else {
-                linhas.push('BASE/VIATURA LIMPA E ABASTECIDA.'); // se não selecionou
+                linhas.push('BASE/VIATURA LIMPA E ABASTECIDA.');
             }
             linhas.push('');
 
@@ -475,14 +510,21 @@
             textoFinal.textContent = gerarTexto();
         }
 
-        // Vincula eventos a todos os campos
+        // Vincula eventos
         const todosInputs = document.querySelectorAll('input, select');
         todosInputs.forEach(el => {
             el.addEventListener('input', atualizarVisualizacao);
-            el.addEventListener('change', atualizarVisualizacao);
+            el.addEventListener('change', function() {
+                if (el.id === 'baseViatura') {
+                    atualizarRotuloBaseViatura();
+                } else {
+                    atualizarVisualizacao();
+                }
+            });
         });
 
-        atualizarVisualizacao();
+        // Inicializa rótulo
+        atualizarRotuloBaseViatura();
 
         // Botão Copiar
         document.getElementById('btnCopiar').addEventListener('click', function() {
@@ -518,14 +560,15 @@
         document.getElementById('btnLimpar').addEventListener('click', function() {
             const inputs = document.querySelectorAll('input');
             inputs.forEach(inp => {
-                if (inp.id === 'local' || inp.id === 'data') return; // mantém fixos
+                if (inp.id === 'local' || inp.id === 'data') return;
                 inp.value = '';
             });
-            // Reseta selects para a opção vazia
             const selects = document.querySelectorAll('select');
             selects.forEach(sel => {
                 sel.value = '';
             });
+            // Atualiza rótulo após limpar
+            atualizarRotuloBaseViatura();
             atualizarVisualizacao();
             feedback.textContent = 'Campos limpos (mantidos local e data)';
             feedback.style.color = '#f1c40f';
