@@ -156,7 +156,6 @@
             text-align: center;
             margin-top: 12px;
             font-size: 0.9rem;
-            color: #27ae60;
             font-weight: 500;
             min-height: 1.8rem;
         }
@@ -192,10 +191,8 @@
 
     <h1>🧾 Esqueleto RSO</h1>
 
-    <!-- Formulário de entrada -->
     <div class="form-grid">
-
-        <!-- Local (fixo) -->
+        <!-- Local fixo -->
         <div class="campo campo-full">
             <label>📍 Local</label>
             <input type="text" id="local" value="SP 330 KM 151,600 SUL - Rodovia Anhanguera" readonly style="background:#eef2f7; cursor:default;">
@@ -231,10 +228,9 @@
             <input type="text" id="motorista" value="CICLANO">
         </div>
 
-        <!-- Separador -->
         <div class="separador"></div>
 
-        <!-- Dados do Encarregado -->
+        <!-- Encarregado -->
         <div class="campo"><label>🔫 Pistola GLOCK (Enc.)</label><input type="text" id="pistola_enc" placeholder="Nº"></div>
         <div class="campo"><label>🛡️ Colete (Enc.)</label><input type="text" id="colete_enc" placeholder="Nº"></div>
         <div class="campo"><label>⛓️ Algema (Enc.)</label><input type="text" id="algema_enc" placeholder="Nº"></div>
@@ -242,7 +238,7 @@
 
         <div class="separador"></div>
 
-        <!-- Dados do Motorista -->
+        <!-- Motorista -->
         <div class="campo"><label>🔫 Pistola GLOCK (Mot.)</label><input type="text" id="pistola_mot" placeholder="Nº"></div>
         <div class="campo"><label>🛡️ Colete (Mot.)</label><input type="text" id="colete_mot" placeholder="Nº"></div>
         <div class="campo"><label>⛓️ Algema (Mot.)</label><input type="text" id="algema_mot" placeholder="Nº"></div>
@@ -254,14 +250,13 @@
 
         <div class="separador"></div>
 
-        <!-- PPRI -->
+        <!-- PPRI – agora com /441/2026 -->
         <div class="campo">
-            <label>📄 PPRI Nº (XXXX/44/2026)</label>
+            <label>📄 PPRI Nº (XXXX/441/2026)</label>
             <input type="text" id="ppri" placeholder="XXXX" value="1234">
         </div>
     </div>
 
-    <!-- Botões de ação -->
     <div class="botoes">
         <button class="btn btn-copiar" id="btnCopiar">📋 Copiar texto</button>
         <button class="btn btn-wpp" id="btnWhats">📲 Salvar no WhatsApp</button>
@@ -270,9 +265,7 @@
 
     <div class="feedback" id="feedback"></div>
 
-    <!-- Área de visualização do texto final -->
     <div class="area-texto" id="textoFinal"></div>
-
 </div>
 
 <script>
@@ -303,7 +296,7 @@
         const textoFinal = document.getElementById('textoFinal');
         const feedback = document.getElementById('feedback');
 
-        // ====== DATA ATUAL ======
+        // Data atual
         function atualizarData() {
             const hoje = new Date();
             const dia = String(hoje.getDate()).padStart(2, '0');
@@ -313,76 +306,104 @@
         }
         atualizarData();
 
-        // ====== GERAR TEXTO ======
+        // Função que gera o texto – inclui apenas linhas com campos preenchidos
         function gerarTexto() {
             const local = localInput.value.trim();
             const data = dataInput.value.trim();
-            const hora = horaInput.value.trim() || 'XX';
-            const viatura = viaturaInput.value.trim() || 'R-044XX';
-            const enc = encarregadoInput.value.trim() || 'FULANO';
-            const mot = motoristaInput.value.trim() || 'CICLANO';
+            const hora = horaInput.value.trim();
+            const viatura = viaturaInput.value.trim();
+            const enc = encarregadoInput.value.trim();
+            const mot = motoristaInput.value.trim();
 
-            const p1 = pistolaEnc.value.trim() || '______';
-            const c1 = coleteEnc.value.trim() || '______';
-            const a1 = algemaEnc.value.trim() || '______';
-            const cop1 = copEnc.value.trim() || '______';
+            const p1 = pistolaEnc.value.trim();
+            const c1 = coleteEnc.value.trim();
+            const a1 = algemaEnc.value.trim();
+            const cop1 = copEnc.value.trim();
 
-            const p2 = pistolaMot.value.trim() || '______';
-            const c2 = coleteMot.value.trim() || '______';
-            const a2 = algemaMot.value.trim() || '______';
-            const cop2 = copMot.value.trim() || '______';
-            const cnhR = cnhReg.value.trim() || '______';
-            const cnhV = cnhVal.value.trim() || '______';
-            const cnhC = cnhCat.value.trim() || '______';
+            const p2 = pistolaMot.value.trim();
+            const c2 = coleteMot.value.trim();
+            const a2 = algemaMot.value.trim();
+            const cop2 = copMot.value.trim();
+            const cnhR = cnhReg.value.trim();
+            const cnhV = cnhVal.value.trim();
+            const cnhC = cnhCat.value.trim();
 
-            const ppri = ppriInput.value.trim() || 'XXXX';
+            const ppriNum = ppriInput.value.trim() || 'XXXX';
 
-            // Montagem do texto
-            let txt = '';
-            txt += `Esqueleto RSO\n\n`;
-            txt += `${local}\n`;
-            txt += `${data}\n\n`;
-            txt += `Composição da US:\n\n`;
-            txt += `Viatura ${viatura}\n\n`;
-            txt += `__ PM ${enc} na função de encarregado\n\n`;
-            txt += `Nº PISTOLA GLOCK: ${p1}\n`;
-            txt += `Nº COLETE: ${c1}\n`;
-            txt += `Nº ALGEMA: ${a1}\n`;
-            txt += `Nº COP: ${cop1}\n\n`;
-            txt += `__ PM ${mot} na função de motorista\n\n`;
-            txt += `Nº PISTOLA GLOCK: ${p2}\n`;
-            txt += `Nº COLETE: ${c2}\n`;
-            txt += `Nº ALGEMA: ${a2}\n`;
-            txt += `Nº COP: ${cop2}\n`;
-            txt += `CNH REGISTRO: ${cnhR}\n`;
-            txt += `VALIDADE: ${cnhV}\n`;
-            txt += `CATEGORIA: ${cnhC}\n\n`;
-            txt += `As ${hora} horas, assunção do serviço pela BOP 330/3.\n`;
-            txt += `Sem ocorrências pendentes.\n`;
-            txt += `Viatura limpa e abastecida.\n\n`;
-            txt += `PPRI Nº ${ppri}/44/2026\n`;
-            txt += `Cumprimento das atividades e operações conforme determina o PPRI.\n`;
-            txt += `Produtividade e resultados foram inseridos no sistema do mapa força, PPRI e Sicoordop.`;
+            let linhas = [];
 
-            return txt;
+            // Título
+            linhas.push('Esqueleto RSO');
+            linhas.push('');
+
+            // Local e data
+            if (local) linhas.push(local);
+            if (data) linhas.push(data);
+            linhas.push('');
+
+            linhas.push('Composição da US:');
+            linhas.push('');
+
+            if (viatura) linhas.push(`Viatura ${viatura}`);
+            linhas.push('');
+
+            // Encarregado
+            if (enc) {
+                linhas.push(`__ PM ${enc} na função de encarregado`);
+                linhas.push('');
+                if (p1) linhas.push(`Nº PISTOLA GLOCK: ${p1}`);
+                if (c1) linhas.push(`Nº COLETE: ${c1}`);
+                if (a1) linhas.push(`Nº ALGEMA: ${a1}`);
+                if (cop1) linhas.push(`Nº COP: ${cop1}`);
+                linhas.push('');
+            }
+
+            // Motorista
+            if (mot) {
+                linhas.push(`__ PM ${mot} na função de motorista`);
+                linhas.push('');
+                if (p2) linhas.push(`Nº PISTOLA GLOCK: ${p2}`);
+                if (c2) linhas.push(`Nº COLETE: ${c2}`);
+                if (a2) linhas.push(`Nº ALGEMA: ${a2}`);
+                if (cop2) linhas.push(`Nº COP: ${cop2}`);
+                if (cnhR) linhas.push(`CNH REGISTRO: ${cnhR}`);
+                if (cnhV) linhas.push(`VALIDADE: ${cnhV}`);
+                if (cnhC) linhas.push(`CATEGORIA: ${cnhC}`);
+                linhas.push('');
+            }
+
+            // Hora e demais informações
+            if (hora) {
+                linhas.push(`As ${hora} horas, assunção do serviço pela BOP 330/3.`);
+            } else {
+                linhas.push(`As XX horas, assunção do serviço pela BOP 330/3.`);
+            }
+            linhas.push('Sem ocorrências pendentes.');
+            linhas.push('Viatura limpa e abastecida.');
+            linhas.push('');
+
+            // PPRI
+            linhas.push(`PPRI Nº ${ppriNum}/441/2026`);
+            linhas.push('Cumprimento das atividades e operações conforme determina o PPRI.');
+            linhas.push('Produtividade e resultados foram inseridos no sistema do mapa força, PPRI e Sicoordop.');
+
+            return linhas.join('\n');
         }
 
         function atualizarVisualizacao() {
-            const texto = gerarTexto();
-            textoFinal.textContent = texto;
+            textoFinal.textContent = gerarTexto();
         }
 
-        // Atualiza sempre que qualquer campo mudar
+        // Atualiza ao digitar
         const todosInputs = document.querySelectorAll('input');
         todosInputs.forEach(input => {
             input.addEventListener('input', atualizarVisualizacao);
             input.addEventListener('change', atualizarVisualizacao);
         });
 
-        // Inicializa a visualização
         atualizarVisualizacao();
 
-        // ====== BOTÃO COPIAR ======
+        // Copiar
         document.getElementById('btnCopiar').addEventListener('click', function() {
             const texto = gerarTexto();
             navigator.clipboard.writeText(texto).then(() => {
@@ -403,7 +424,7 @@
             });
         });
 
-        // ====== BOTÃO WHATSAPP ======
+        // WhatsApp
         document.getElementById('btnWhats').addEventListener('click', function() {
             const texto = gerarTexto();
             const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
@@ -413,14 +434,14 @@
             setTimeout(() => feedback.textContent = '', 3000);
         });
 
-        // ====== BOTÃO LIMPAR ======
+        // Limpar
         document.getElementById('btnLimpar').addEventListener('click', function() {
             const inputs = document.querySelectorAll('input');
             inputs.forEach(inp => {
-                if (inp.id === 'local' || inp.id === 'data') return; // não limpa fixos
+                if (inp.id === 'local' || inp.id === 'data') return;
                 inp.value = '';
             });
-            // Restaura valores padrão
+            // Restaura alguns defaults
             viaturaInput.value = 'R-044XX';
             encarregadoInput.value = 'FULANO';
             motoristaInput.value = 'CICLANO';
