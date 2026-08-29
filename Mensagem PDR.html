@@ -379,6 +379,12 @@
             </div>
             
             <div class="form-group">
+                <label for="pelotao" class="required">Pelotão</label>
+                <input type="text" id="pelotao" required>
+                <div class="field-info">Pelotão responsável (ex: 2º Pel)</div>
+            </div>
+            
+            <div class="form-group">
                 <label for="vtr" class="required">Viatura</label>
                 <input type="text" id="vtr" required>
                 <div class="field-info">Código da viatura (ex: R-04423)</div>
@@ -610,31 +616,32 @@
                 const numeroCompletoMsg = `4BPRV- ${numMsg}/${origemMsg}, de ${dataMsg}`;
                 
                 // Construir a mensagem formatada com HTML (para exibição com negritos)
+                // Usamos duas quebras de linha (\n\n) entre cada campo para garantir parágrafos separados no e-mail
                 let mensagemHtml = `<strong>MENSAGEM N° ${numeroCompletoMsg}</strong>\n`;
                 mensagemHtml += `Do Oficial Permanência da 4ª Cia\n`;
                 mensagemHtml += `Ao Sr. Of. Permanência do 4º BPRv\n`;
-                mensagemHtml += `<strong>Assunto: ${fato}</strong>\n\n`;
-                mensagemHtml += `          \n`;
-                mensagemHtml += `<strong>Fato:</strong> ${fato}\n`;
-                mensagemHtml += `<strong>Ambiente:</strong> ${ambiente}\n`;
-                mensagemHtml += `<strong>Data:</strong> ${dataFato}\n`;
-                mensagemHtml += `<strong>Horário:</strong> Fato: ${horario} | Local: ${horarioLocal}\n`;
-                mensagemHtml += `<strong>Tempo de resposta:</strong> ${tempoResposta}\n`;
-                mensagemHtml += `<strong>Efetivo empenhado:</strong> ${efetivo}\n`;
-                mensagemHtml += `<strong>Endereço:</strong> ${endereco}\n`;
-                mensagemHtml += `<strong>Município:</strong> ${municipio}\n`;
-                mensagemHtml += `<strong>Bil:</strong> 4º BPRv\n`;
-                mensagemHtml += `<strong>Cia:</strong> 4ª Cia\n`;
-                mensagemHtml += `<strong>Pel:</strong> ${pelotao}\n`;
-                mensagemHtml += `<strong>Policiais militares que atenderam:</strong> ${policiais}\n`;
-                mensagemHtml += `<strong>Vtr:</strong> ${vtr}\n`;
-                mensagemHtml += `<strong>DP:</strong> ${delegacia}\n`;
+                mensagemHtml += `<strong>Assunto: ${fato}</strong>\n\n`; // duas quebras após o assunto
+                
+                mensagemHtml += `<strong>Fato:</strong> ${fato}\n\n`;
+                mensagemHtml += `<strong>Ambiente:</strong> ${ambiente}\n\n`;
+                mensagemHtml += `<strong>Data:</strong> ${dataFato}\n\n`;
+                mensagemHtml += `<strong>Horário:</strong> Fato: ${horario} | Local: ${horarioLocal}\n\n`;
+                mensagemHtml += `<strong>Tempo de resposta:</strong> ${tempoResposta}\n\n`;
+                mensagemHtml += `<strong>Efetivo empenhado:</strong> ${efetivo}\n\n`;
+                mensagemHtml += `<strong>Endereço:</strong> ${endereco}\n\n`;
+                mensagemHtml += `<strong>Município:</strong> ${municipio}\n\n`;
+                mensagemHtml += `<strong>Bil:</strong> 4º BPRv\n\n`;
+                mensagemHtml += `<strong>Cia:</strong> 4ª Cia\n\n`;
+                mensagemHtml += `<strong>Pel:</strong> ${pelotao}\n\n`;
+                mensagemHtml += `<strong>Policiais militares que atenderam:</strong> ${policiais}\n\n`;
+                mensagemHtml += `<strong>Vtr:</strong> ${vtr}\n\n`;
+                mensagemHtml += `<strong>DP:</strong> ${delegacia}\n\n`;
                 
                 if (veiculos.trim()) {
-                    mensagemHtml += `<strong>Veículo:</strong> Envolvido: ${veiculos}\n`;
+                    mensagemHtml += `<strong>Veículo:</strong> Envolvido: ${veiculos}\n\n`;
                 }
                 
-                // Comandantes com formatação
+                // Comandantes - cada linha com seu próprio formato
                 const comandantesLines = comandantes.split('\n');
                 for (let line of comandantesLines) {
                     if (line.trim()) {
@@ -646,20 +653,20 @@
                         }
                     }
                 }
+                // Após comandantes, adicionar duas quebras
+                mensagemHtml += `\n`;
                 
-                mensagemHtml += `<strong>Registro (BO/PM, BO/PC, Sindicatos, IPM, Investigação Preliminar):</strong> ${registros}\n`;
+                mensagemHtml += `<strong>Registro (BO/PM, BO/PC, Sindicatos, IPM, Investigação Preliminar):</strong> ${registros}\n\n`;
                 mensagemHtml += `<strong>Histórico:</strong> ${historico}\n\n`;
-                mensagemHtml += `                            \n\n`;
                 
                 if (autoridadeLocal.trim()) {
-                    mensagemHtml += `<strong>Autoridade presente no local:</strong> ${autoridadeLocal}\n`;
+                    mensagemHtml += `<strong>Autoridade presente no local:</strong> ${autoridadeLocal}\n\n`;
                 }
-                
                 if (autoridadeCientificada.trim()) {
-                    mensagemHtml += `<strong>Autoridade que foram cientificadas:</strong> ${autoridadeCientificada}\n`;
+                    mensagemHtml += `<strong>Autoridade que foram cientificadas:</strong> ${autoridadeCientificada}\n\n`;
                 }
                 
-                // Adiciona a assinatura no final da mensagem
+                // Assinatura
                 mensagemHtml += `\n${ASSINATURA}\n`;
                 
                 // Exibir no preview com formatação HTML
