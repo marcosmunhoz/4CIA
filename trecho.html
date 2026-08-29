@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Rodovias - SP (Completo)</title>
+    <title>Consulta de Rodovias - SP</title>
     <style>
         * {
             box-sizing: border-box;
@@ -111,24 +111,6 @@
             color: #2563eb;
             white-space: nowrap;
         }
-        .btn-mapa {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-        .btn-mapa:hover {
-            background: #1d4ed8;
-            transform: scale(1.02);
-        }
-        .btn-mapa:active {
-            transform: scale(0.97);
-        }
         .no-results {
             text-align: center;
             padding: 40px 20px;
@@ -138,7 +120,6 @@
         @media (max-width: 600px) {
             .container { padding: 16px; }
             th, td { padding: 8px 6px; font-size: 12px; }
-            .btn-mapa { font-size: 11px; padding: 4px 10px; }
         }
     </style>
 </head>
@@ -166,7 +147,6 @@
                     <th>KM Final</th>
                     <th>Extensão (km)</th>
                     <th>Município</th>
-                    <th>Ação</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -180,7 +160,7 @@
     // ==================== DADOS CONSOLIDADOS ====================
     // Inclui todos os registros das três planilhas fornecidas
     const dados = [
-        // --- REGIÃO LIMEIRA / ARARAS / CORDEIRÓPOLIS / SANTA BÁRBARA (primeira planilha corrigida) ---
+        // --- REGIÃO LIMEIRA / ARARAS / CORDEIRÓPOLIS / SANTA BÁRBARA ---
         { codificacao: "SP", codigo: "133", nome: "Deputado João Herrmann Neto", kmInicial: "0,000", kmFinal: "10,650", extensao: "10,650", municipio: "Limeira" },
         { codificacao: "SP", codigo: "135", nome: "Margarida da Graça Martins", kmInicial: "0,000", kmFinal: "8,540", extensao: "8,540", municipio: "Santa Bárbara D'Oeste" },
         { codificacao: "SP", codigo: "147", nome: "Engenheiro João Tosello", kmInicial: "90,951", kmFinal: "106,320", extensao: "15,369", municipio: "Limeira" },
@@ -248,7 +228,7 @@
         { codificacao: "SPD", codigo: "179/330", nome: "Roberto Zambon", kmInicial: "0,000", kmFinal: "0,400", extensao: "0,400", municipio: "Araras" },
         { codificacao: "SPI", codigo: "165/330", nome: "Gilberto Carlos Penteado da Silva Telles", kmInicial: "0,000", kmFinal: "4,670", extensao: "4,670", municipio: "Araras" },
 
-        // --- REGIÃO PIRASSUNUNGA / PORTO FERREIRA / DESCALVADO / LEME / SANTA RITA (segunda planilha + CC) ---
+        // --- REGIÃO PIRASSUNUNGA / PORTO FERREIRA / DESCALVADO / LEME / SANTA RITA ---
         { codificacao: "SP", codigo: "201", nome: "Prefeito Euberto Nemésio Pereira de Godoy", kmInicial: "0,000", kmFinal: "17,620", extensao: "17,620", municipio: "Pirassununga" },
         { codificacao: "SP", codigo: "215", nome: "Vicente Botta", kmInicial: "80,701", kmFinal: "97,370", extensao: "16,669", municipio: "Porto Ferreira" },
         { codificacao: "SP", codigo: "215", nome: "Vicente Botta", kmInicial: "99,600", kmFinal: "103,700", extensao: "4,100", municipio: "Porto Ferreira" },
@@ -327,7 +307,7 @@
         { codificacao: "SPD", codigo: "252/330", nome: "Sem Denominação", kmInicial: "0,000", kmFinal: "1,120", extensao: "1,120", municipio: "Santa Rita do Passa Quatro" },
         { codificacao: "SPD", codigo: "258/330", nome: "Sem Denominação", kmInicial: "0,000", kmFinal: "1,130", extensao: "1,130", municipio: "Santa Rita do Passa Quatro" },
 
-        // --- DADOS ADICIONAIS DA SEÇÃO "CC" (linhas extras) ---
+        // --- DADOS ADICIONAIS DA SEÇÃO "CC" ---
         { codificacao: "SPD", codigo: "022/225", nome: "Sem Denominação", kmInicial: "0,000", kmFinal: "0,740", extensao: "0,740", municipio: "Aguaí" },
         { codificacao: "SPD", codigo: "029/207", nome: "Sem Denominação", kmInicial: "0,000", kmFinal: "0,360", extensao: "0,360", municipio: "Mococa" },
         { codificacao: "SPD", codigo: "031/215", nome: "Sem Denominação", kmInicial: "0,000", kmFinal: "0,650", extensao: "0,650", municipio: "Vargem Grande do Sul" },
@@ -395,12 +375,12 @@
         countSpan.textContent = filtered.length;
 
         if (filtered.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="no-results">Nenhuma rodovia encontrada para "<strong>${filterText}</strong>"</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="no-results">Nenhuma rodovia encontrada para "<strong>${filterText}</strong>"</td></tr>`;
             return;
         }
 
         let html = '';
-        filtered.forEach((item, index) => {
+        filtered.forEach(item => {
             const codigoExibicao = item.codificacao + ' ' + item.codigo;
             html += `
                 <tr>
@@ -410,27 +390,10 @@
                     <td>${item.kmFinal}</td>
                     <td>${item.extensao}</td>
                     <td class="municipio">${item.municipio}</td>
-                    <td>
-                        <button class="btn-mapa" data-index="${index}">🗺️ Ver mapa</button>
-                    </td>
                 </tr>
             `;
         });
         tbody.innerHTML = html;
-
-        document.querySelectorAll('.btn-mapa').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const idx = parseInt(this.dataset.index);
-                const item = filtered[idx];
-                abrirMapa(item);
-            });
-        });
-    }
-
-    function abrirMapa(item) {
-        const query = encodeURIComponent(`${item.nome} ${item.municipio} SP`);
-        const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
-        window.open(url, '_blank');
     }
 
     searchInput.addEventListener('input', function() {
