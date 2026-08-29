@@ -161,6 +161,15 @@
             background-color: #8e44ad;
         }
         
+        #btnImportar {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        #btnImportar:hover {
+            background-color: #e67e22;
+        }
+        
         .message-preview {
             margin-top: 40px;
             padding: 20px;
@@ -246,6 +255,18 @@
             display: block;
         }
         
+        .status.imported {
+            background-color: #f39c12;
+            color: white;
+            display: block;
+        }
+        
+        .status.calculated {
+            background-color: #3498db;
+            color: white;
+            display: block;
+        }
+        
         @media (max-width: 768px) {
             .half-width, .quarter-width {
                 width: 100%;
@@ -278,6 +299,16 @@
         <h1>FORMULÁRIO DE MENSAGEM PADRÃO - 4º BPRv</h1>
         
         <form id="mensagemForm">
+            <!-- NOVO GRUPO: IMPORTAR MENSAGEM -->
+            <div class="form-group" style="border: 2px dashed #f39c12; padding: 15px; border-radius: 8px; background-color: #fef9e7;">
+                <label for="textoImportar">📂 Importar mensagem existente (cole o texto gerado)</label>
+                <textarea id="textoImportar" style="height: 100px; font-family: 'Times New Roman', Times, serif; font-size: 12pt;"></textarea>
+                <div class="field-info">Cole aqui uma mensagem que foi gerada anteriormente e clique em "IMPORTAR" para preencher os campos automaticamente.</div>
+                <button type="button" id="btnImportar" style="margin-top: 10px;">📥 IMPORTAR MENSAGEM</button>
+            </div>
+            
+            <hr style="margin: 30px 0; border: 0; border-top: 2px solid #ecf0f1;">
+            
             <div class="form-group">
                 <label for="tipoMensagem" class="required">Tipo de Mensagem</label>
                 <select id="tipoMensagem" required>
@@ -328,21 +359,21 @@
             
             <div class="form-group">
                 <div class="quarter-width">
-                    <label for="horario" class="required">Horário</label>
-                    <input type="text" id="horario" required>
-                    <div class="field-info">Horário do fato (ex: 20h10min)</div>
+                    <label for="horario" class="required">Horário do Fato</label>
+                    <input type="text" id="horario" required placeholder="ex: 20h10min">
+                    <div class="field-info">Horário do fato (ex: 20h10min ou 20:10)</div>
                 </div>
                 
                 <div class="quarter-width">
-                    <label for="horarioLocal" class="required">Horário Local</label>
-                    <input type="text" id="horarioLocal" required>
+                    <label for="horarioLocal" class="required">Horário Local (chegada)</label>
+                    <input type="text" id="horarioLocal" required placeholder="ex: 20:50">
                     <div class="field-info">Horário de chegada ao local (ex: 20:50)</div>
                 </div>
                 
                 <div class="quarter-width">
-                    <label for="tempoResposta" class="required">Tempo de Resposta</label>
-                    <input type="text" id="tempoResposta" required>
-                    <div class="field-info">Tempo de resposta da equipe (ex: 40min)</div>
+                    <label for="tempoResposta">Tempo de Resposta (calculado)</label>
+                    <input type="text" id="tempoResposta" readonly style="background-color: #f0f0f0; font-weight: bold; color: #2c3e50;">
+                    <div class="field-info">Calculado automaticamente a partir dos horários</div>
                 </div>
                 
                 <div class="quarter-width">
@@ -457,10 +488,15 @@
             const btnLimpar = document.getElementById('btnLimpar');
             const btnPadrao = document.getElementById('btnPadrao');
             const btnCopiar = document.getElementById('btnCopiar');
+            const btnImportar = document.getElementById('btnImportar');
+            const textoImportar = document.getElementById('textoImportar');
             const previewContent = document.getElementById('previewContent');
             const statusMessage = document.getElementById('statusMessage');
             const tipoMensagemSelect = document.getElementById('tipoMensagem');
             const fatoInput = document.getElementById('fato');
+            const horarioInput = document.getElementById('horario');
+            const horarioLocalInput = document.getElementById('horarioLocal');
+            const tempoRespostaInput = document.getElementById('tempoResposta');
             
             // Chaves para localStorage
             const STORAGE_KEY = 'mensagem_bprv_form_data';
@@ -478,7 +514,90 @@
                 }, 3000);
             }
             
-            // Função para atualizar automático o campo "Fato" baseado no tipo selecionado
+            // ============================================================
+            // FUNÇÃO PARA CALCULAR TEMPO DE RESPOSTA
+            // ============================================================
+            function calcularTempoResposta() {
+                const horarioStr = horarioInput.value.trim();
+                const localStr = horarioLocalInput.value.trim();
+                
+                if (!horarioStr || !localStr) {
+                    tempoRespostaInput.value = '';
+                    return;
+                }
+                
+                // Função para converter "HHhMMmin" ou "HH:MM" ou "HHhMM" para minutos
+                function parseHorario(str) {
+                    str = str.replace(/\s/g, '');
+                    let horas = 0, minutos = 0;
+                    
+                    // Tenta formato "20h10min" ou "20h10"
+                    const matchH = str.match(/^(\d{1,2})h(\d{2})(?:min)?$/i);
+                    if (matchH) {
+                        horas = parseInt(matchH[1], 10);
+                        minutos = parseInt(matchH[2], 10);
+                        return horas * 60 + minutos;
+                    }
+                    
+                    // Tenta formato "20:10"
+                    const matchColon = str.match(/^(\d{1,2}):(\d{2})$/);
+                    if (matchColon) {
+                        horas = parseInt(matchColon[1], 10);
+                        minutos = parseInt(matchColon[2], 10);
+                        return horas * 60 + minutos;
+                    }
+                    
+                    // Tenta formato "20.10" (ponto)
+                    const matchDot = str.match(/^(\d{1,2})\.(\d{2})$/);
+                    if (matchDot) {
+                        horas = parseInt(matchDot[1], 10);
+                        minutos = parseInt(matchDot[2], 10);
+                        return horas * 60 + minutos;
+                    }
+                    
+                    // Tenta "20" (apenas horas)
+                    const matchOnlyHours = str.match(/^(\d{1,2})$/);
+                    if (matchOnlyHours) {
+                        horas = parseInt(matchOnlyHours[1], 10);
+                        return horas * 60;
+                    }
+                    
+                    return NaN;
+                }
+                
+                const totalFato = parseHorario(horarioStr);
+                const totalLocal = parseHorario(localStr);
+                
+                if (isNaN(totalFato) || isNaN(totalLocal)) {
+                    tempoRespostaInput.value = '';
+                    return;
+                }
+                
+                let diff = totalLocal - totalFato;
+                // Se negativo, significa que passou da meia-noite (ex: fato 23:50, local 00:10)
+                if (diff < 0) {
+                    diff += 24 * 60; // adiciona 24h
+                }
+                
+                const horas = Math.floor(diff / 60);
+                const minutos = diff % 60;
+                
+                let resultado = '';
+                if (horas > 0 && minutos > 0) {
+                    resultado = `${horas}h${minutos.toString().padStart(2, '0')}min`;
+                } else if (horas > 0) {
+                    resultado = `${horas}h`;
+                } else {
+                    resultado = `${minutos}min`;
+                }
+                
+                tempoRespostaInput.value = resultado;
+                showStatus(`Tempo de resposta calculado: ${resultado}`, 'calculated');
+            }
+            
+            // ============================================================
+            // FUNÇÃO PARA ATUALIZAR CAMPO "FATO" AUTOMATICAMENTE
+            // ============================================================
             function atualizarCampoFato() {
                 const tipoSelecionado = tipoMensagemSelect.value;
                 const valorAtualFato = fatoInput.value;
@@ -508,13 +627,15 @@
                 saveToLocalStorage();
             }
             
-            // Função para salvar dados no localStorage
+            // ============================================================
+            // FUNÇÕES DE LOCALSTORAGE
+            // ============================================================
             function saveToLocalStorage() {
                 const formData = {};
                 const formElements = form.elements;
                 
                 for (let element of formElements) {
-                    if (element.id && element.id !== 'btnGerar' && element.id !== 'btnLimpar' && element.id !== 'btnPadrao' && element.id !== 'btnCopiar') {
+                    if (element.id && element.id !== 'btnGerar' && element.id !== 'btnLimpar' && element.id !== 'btnPadrao' && element.id !== 'btnCopiar' && element.id !== 'btnImportar' && element.id !== 'textoImportar') {
                         formData[element.id] = element.value;
                     }
                 }
@@ -526,7 +647,6 @@
                 }
             }
             
-            // Função para carregar dados do localStorage
             function loadFromLocalStorage() {
                 try {
                     const savedData = localStorage.getItem(STORAGE_KEY);
@@ -548,7 +668,9 @@
                 }
             }
             
-            // Função para carregar o modelo padrão com dados do exemplo da imagem
+            // ============================================================
+            // MODELO PADRÃO
+            // ============================================================
             function loadDefaultModel() {
                 document.getElementById('tipoMensagem').value = 'PRÉVIA';
                 document.getElementById('numeroMensagem').value = '2801044.0';
@@ -574,20 +696,216 @@
                 document.getElementById('autoridadeLocal').value = '1º Sgt PM Júlio - CGP 2º Pel.';
                 document.getElementById('autoridadeCientificada').value = '1º Ten PM Campos - Comandante do 2º Pel da 4ª Cia.';
                 
+                // Recalcular tempo de resposta (já está preenchido, mas chamamos para garantir)
+                calcularTempoResposta();
                 showStatus('Modelo padrão carregado!', 'saved');
                 saveToLocalStorage();
             }
             
-            // Função para gerar a mensagem formatada com negritos e quebras HTML
+            // ============================================================
+            // IMPORTAÇÃO (PARSER) - ATUALIZADO PARA EXTRAIR HORÁRIOS E CALCULAR
+            // ============================================================
+            function importarMensagem() {
+                const rawText = textoImportar.value;
+                if (!rawText.trim()) {
+                    showStatus('Por favor, cole uma mensagem para importar.', 'error');
+                    return;
+                }
+                
+                let text = rawText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+                
+                // Extrai cabeçalho
+                const headerMatch = text.match(/MENSAGEM N°\s*4BPRV-\s*([^\/\n]+)\/([^,\n]+),\s*de\s*([^\n]+)/);
+                let numero = '', origem = '', dataMsg = '';
+                if (headerMatch) {
+                    numero = headerMatch[1].trim();
+                    origem = headerMatch[2].trim();
+                    dataMsg = headerMatch[3].trim();
+                }
+                
+                // Extrai Assunto
+                const assuntoMatch = text.match(/Assunto:\s*([^\n]+)/);
+                let fato = '';
+                let tipo = '';
+                if (assuntoMatch) {
+                    fato = assuntoMatch[1].trim();
+                    if (fato.includes('- Prévia')) tipo = 'PRÉVIA';
+                    else if (fato.includes('- Final')) tipo = 'FINAL';
+                }
+                
+                const fieldMap = {
+                    'Fato': 'fato',
+                    'Ambiente': 'ambiente',
+                    'Data': 'dataFato',
+                    'Horário': 'horario_raw',
+                    'Tempo de resposta': 'tempoResposta',
+                    'Efetivo empenhado': 'efetivo',
+                    'Endereço': 'endereco',
+                    'Município': 'municipio',
+                    'Bil': 'bil_ignore',
+                    'Cia': 'cia_ignore',
+                    'Pel': 'pelotao',
+                    'Policiais militares que atenderam': 'policiais',
+                    'Vtr': 'vtr',
+                    'DP': 'delegacia',
+                    'Veículo': 'veiculos',
+                    'Registro': 'registros',
+                    'Histórico': 'historico',
+                    'Autoridade presente no local': 'autoridadeLocal',
+                    'Autoridade que foram cientificadas': 'autoridadeCientificada'
+                };
+                
+                const extracted = {
+                    numero, origem, dataMsg, fato, tipo,
+                    horario: '', horarioLocal: '', tempoResposta: '',
+                    efetivo: '', pelotao: '', policiais: '', vtr: '',
+                    delegacia: '', veiculos: '', registros: '', historico: '',
+                    autoridadeLocal: '', autoridadeCientificada: '',
+                    comandantes: [],
+                    ambiente: '', dataFato: '', endereco: '', municipio: ''
+                };
+                
+                const lines = text.split('\n');
+                let currentField = null;
+                let currentValue = [];
+                
+                function extractLabel(line) {
+                    const match = line.match(/^([^:]+):/);
+                    if (match) {
+                        const labelCandidate = match[1].trim();
+                        for (let key of Object.keys(fieldMap)) {
+                            if (labelCandidate.toLowerCase() === key.toLowerCase()) {
+                                return key;
+                            }
+                        }
+                        if (labelCandidate.toLowerCase().startsWith('registro')) return 'Registro';
+                        if (labelCandidate.toUpperCase().includes('CMT') || labelCandidate.toUpperCase().includes('COMANDANTE')) {
+                            return 'CMT';
+                        }
+                    }
+                    return null;
+                }
+                
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i];
+                    if (!line.trim()) continue;
+                    
+                    const label = extractLabel(line);
+                    
+                    if (label) {
+                        if (currentField && currentValue.length > 0) {
+                            const fullValue = currentValue.join('\n').trim();
+                            if (currentField === 'horario_raw') {
+                                const horarioMatch = fullValue.match(/Fato:\s*([^\|]+)\|?\s*Local:\s*([^\|]+)/);
+                                if (horarioMatch) {
+                                    extracted.horario = horarioMatch[1].trim();
+                                    extracted.horarioLocal = horarioMatch[2].trim();
+                                } else {
+                                    extracted.horario = fullValue;
+                                }
+                            } else if (currentField === 'CMT') {
+                                extracted.comandantes.push(fullValue);
+                            } else if (currentField === 'Registro') {
+                                extracted.registros = fullValue;
+                            } else if (currentField === 'Histórico') {
+                                extracted.historico = fullValue;
+                            } else if (fieldMap[currentField]) {
+                                const id = fieldMap[currentField];
+                                if (id !== 'bil_ignore' && id !== 'cia_ignore') {
+                                    extracted[id] = fullValue;
+                                }
+                            }
+                        }
+                        
+                        currentField = label;
+                        currentValue = [];
+                        const contentMatch = line.match(/^[^:]+:\s*(.*)/);
+                        if (contentMatch) {
+                            currentValue.push(contentMatch[1].trim());
+                        } else {
+                            currentValue.push('');
+                        }
+                    } else {
+                        if (currentField) {
+                            currentValue.push(line.trim());
+                        }
+                    }
+                }
+                
+                // Salva último campo
+                if (currentField && currentValue.length > 0) {
+                    const fullValue = currentValue.join('\n').trim();
+                    if (currentField === 'horario_raw') {
+                        const horarioMatch = fullValue.match(/Fato:\s*([^\|]+)\|?\s*Local:\s*([^\|]+)/);
+                        if (horarioMatch) {
+                            extracted.horario = horarioMatch[1].trim();
+                            extracted.horarioLocal = horarioMatch[2].trim();
+                        } else {
+                            extracted.horario = fullValue;
+                        }
+                    } else if (currentField === 'CMT') {
+                        extracted.comandantes.push(fullValue);
+                    } else if (currentField === 'Registro') {
+                        extracted.registros = fullValue;
+                    } else if (currentField === 'Histórico') {
+                        extracted.historico = fullValue;
+                    } else if (fieldMap[currentField]) {
+                        const id = fieldMap[currentField];
+                        if (id !== 'bil_ignore' && id !== 'cia_ignore') {
+                            extracted[id] = fullValue;
+                        }
+                    }
+                }
+                
+                // Preenche campos
+                if (extracted.tipo) document.getElementById('tipoMensagem').value = extracted.tipo;
+                if (extracted.numero) document.getElementById('numeroMensagem').value = extracted.numero;
+                if (extracted.origem) document.getElementById('origemMensagem').value = extracted.origem;
+                if (extracted.dataMsg) document.getElementById('dataMensagem').value = extracted.dataMsg;
+                if (extracted.fato) document.getElementById('fato').value = extracted.fato;
+                if (extracted.ambiente) document.getElementById('ambiente').value = extracted.ambiente;
+                if (extracted.dataFato) document.getElementById('dataFato').value = extracted.dataFato;
+                if (extracted.horario) document.getElementById('horario').value = extracted.horario;
+                if (extracted.horarioLocal) document.getElementById('horarioLocal').value = extracted.horarioLocal;
+                if (extracted.tempoResposta) document.getElementById('tempoResposta').value = extracted.tempoResposta;
+                if (extracted.efetivo) document.getElementById('efetivo').value = extracted.efetivo;
+                if (extracted.pelotao) document.getElementById('pelotao').value = extracted.pelotao;
+                if (extracted.endereco) document.getElementById('endereco').value = extracted.endereco;
+                if (extracted.municipio) document.getElementById('municipio').value = extracted.municipio;
+                if (extracted.delegacia) document.getElementById('delegacia').value = extracted.delegacia;
+                if (extracted.veiculos) document.getElementById('veiculos').value = extracted.veiculos;
+                if (extracted.vtr) document.getElementById('vtr').value = extracted.vtr;
+                if (extracted.policiais) document.getElementById('policiais').value = extracted.policiais;
+                if (extracted.registros) document.getElementById('registros').value = extracted.registros;
+                if (extracted.historico) document.getElementById('historico').value = extracted.historico;
+                if (extracted.autoridadeLocal) document.getElementById('autoridadeLocal').value = extracted.autoridadeLocal;
+                if (extracted.autoridadeCientificada) document.getElementById('autoridadeCientificada').value = extracted.autoridadeCientificada;
+                if (extracted.comandantes.length > 0) {
+                    document.getElementById('comandantes').value = extracted.comandantes.join('\n');
+                }
+                
+                // Recalcula tempo de resposta (caso tenha sido importado ou não)
+                calcularTempoResposta();
+                
+                saveToLocalStorage();
+                showStatus('Mensagem importada com sucesso! Campos preenchidos.', 'imported');
+                textoImportar.value = '';
+                gerarMensagem();
+            }
+            
+            // ============================================================
+            // GERAR MENSAGEM
+            // ============================================================
             function gerarMensagem() {
-                // Verificar se o formulário é válido
                 if (!form.checkValidity()) {
                     alert('Por favor, preencha todos os campos obrigatórios (*)');
                     form.reportValidity();
                     return;
                 }
                 
-                // Obter valores dos campos
+                // Recalcula o tempo antes de gerar (garantia)
+                calcularTempoResposta();
+                
                 const tipoMsg = document.getElementById('tipoMensagem').value;
                 const numMsg = document.getElementById('numeroMensagem').value;
                 const origemMsg = document.getElementById('origemMensagem').value;
@@ -597,7 +915,7 @@
                 const dataFato = document.getElementById('dataFato').value;
                 const horario = document.getElementById('horario').value;
                 const horarioLocal = document.getElementById('horarioLocal').value;
-                const tempoResposta = document.getElementById('tempoResposta').value;
+                const tempoResposta = document.getElementById('tempoResposta').value || 'calculado';
                 const efetivo = document.getElementById('efetivo').value;
                 const pelotao = document.getElementById('pelotao').value;
                 const endereco = document.getElementById('endereco').value;
@@ -612,11 +930,8 @@
                 const autoridadeLocal = document.getElementById('autoridadeLocal').value;
                 const autoridadeCientificada = document.getElementById('autoridadeCientificada').value;
                 
-                // Gerar número completo da mensagem
                 const numeroCompletoMsg = `4BPRV- ${numMsg}/${origemMsg}, de ${dataMsg}`;
                 
-                // Construir a mensagem formatada com HTML (para exibição com negritos)
-                // Usamos <br> para quebras de linha e <strong> para negrito nos rótulos
                 let mensagemHtml = `<strong>MENSAGEM N° ${numeroCompletoMsg}</strong><br>`;
                 mensagemHtml += `Do Oficial Permanência da 4ª Cia<br>`;
                 mensagemHtml += `Ao Sr. Of. Permanência do 4º BPRv<br>`;
@@ -641,7 +956,6 @@
                     mensagemHtml += `<strong>Veículo:</strong> Envolvido: ${veiculos}<br><br>`;
                 }
                 
-                // Comandantes - cada linha com seu próprio formato
                 const comandantesLines = comandantes.split('\n');
                 for (let line of comandantesLines) {
                     if (line.trim()) {
@@ -653,7 +967,6 @@
                         }
                     }
                 }
-                // Após comandantes, adicionar duas quebras
                 mensagemHtml += `<br>`;
                 
                 mensagemHtml += `<strong>Registro (BO/PM, BO/PC, Sindicatos, IPM, Investigação Preliminar):</strong> ${registros}<br><br>`;
@@ -666,44 +979,31 @@
                     mensagemHtml += `<strong>Autoridade que foram cientificadas:</strong> ${autoridadeCientificada}<br><br>`;
                 }
                 
-                // Assinatura
                 mensagemHtml += `<br>${ASSINATURA}<br>`;
                 
-                // Exibir no preview
                 previewContent.innerHTML = mensagemHtml;
-                
-                // Rolar até o preview
                 document.getElementById('messagePreview').scrollIntoView({ behavior: 'smooth' });
-                
-                // Mostrar mensagem de sucesso
                 showStatus('Mensagem gerada com sucesso!', 'saved');
-                
-                // Salvar automaticamente após gerar
                 saveToLocalStorage();
             }
             
-            // Função para copiar a mensagem com formatação HTML (para e-mails)
+            // ============================================================
+            // COPIAR MENSAGEM
+            // ============================================================
             function copiarMensagem() {
-                const previewElement = document.getElementById('previewContent');
-                const htmlContent = previewElement.innerHTML;
-                
-                // Monta o HTML completo para copiar com estilo Times New Roman 12pt
+                const htmlContent = previewContent.innerHTML;
                 const fullHtml = `
                     <div style="font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.6;">
                         ${htmlContent}
                     </div>
                 `;
-                
-                // Texto puro (fallback)
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = htmlContent;
                 const plainText = tempDiv.textContent;
                 
-                // Usa a API Clipboard (moderna) para escrever ambos os formatos
                 if (navigator.clipboard && navigator.clipboard.write) {
                     const blobHtml = new Blob([fullHtml], { type: 'text/html' });
                     const blobPlain = new Blob([plainText], { type: 'text/plain' });
-                    
                     navigator.clipboard.write([
                         new ClipboardItem({
                             'text/html': blobHtml,
@@ -711,12 +1011,10 @@
                         })
                     ]).then(() => {
                         showStatus('Mensagem copiada com formatação (HTML)!', 'copied');
-                    }).catch(err => {
-                        // Fallback: tenta copiar só o HTML com writeText (pode não manter formatação)
+                    }).catch(() => {
                         navigator.clipboard.writeText(plainText).then(() => {
                             showStatus('Mensagem copiada (texto puro).', 'copied');
                         }).catch(() => {
-                            // Fallback antigo
                             const textarea = document.createElement('textarea');
                             textarea.value = plainText;
                             document.body.appendChild(textarea);
@@ -727,7 +1025,6 @@
                         });
                     });
                 } else {
-                    // Fallback para navegadores sem suporte a Clipboard API
                     navigator.clipboard.writeText(plainText).then(() => {
                         showStatus('Mensagem copiada (texto puro).', 'copied');
                     }).catch(() => {
@@ -742,65 +1039,69 @@
                 }
             }
             
-            // Função para limpar todos os campos
+            // ============================================================
+            // LIMPAR CAMPOS
+            // ============================================================
             function limparCampos() {
                 if (confirm('Tem certeza que deseja limpar todos os campos? Os dados serão perdidos.')) {
                     form.reset();
                     previewContent.innerHTML = 'Preencha os campos acima e clique em "GERAR MENSAGEM"';
+                    textoImportar.value = '';
                     localStorage.removeItem(STORAGE_KEY);
                     showStatus('Campos limpos e dados removidos!', 'saved');
                 }
             }
             
-            // Event Listeners
+            // ============================================================
+            // EVENTOS
+            // ============================================================
             tipoMensagemSelect.addEventListener('change', function() {
                 atualizarCampoFato();
             });
             
-            // Quando o campo Fato perder o foco, verifica se precisa atualizar
             fatoInput.addEventListener('blur', function() {
                 const valorFato = fatoInput.value;
                 const tipoSelecionado = tipoMensagemSelect.value;
-                
                 if (tipoSelecionado && !valorFato.includes(tipoSelecionado)) {
                     atualizarCampoFato();
                 }
             });
             
-            // Salvar automaticamente ao digitar/mudar qualquer campo
+            // Eventos para calcular tempo de resposta automaticamente
+            horarioInput.addEventListener('input', function() {
+                calcularTempoResposta();
+                saveToLocalStorage();
+            });
+            horarioLocalInput.addEventListener('input', function() {
+                calcularTempoResposta();
+                saveToLocalStorage();
+            });
+            
+            // Salvar automático
             form.addEventListener('input', function(e) {
-                if (e.target.id && e.target.id !== 'btnGerar' && e.target.id !== 'btnLimpar' && e.target.id !== 'btnPadrao' && e.target.id !== 'btnCopiar') {
-                    if (e.target.id === 'tipoMensagem') {
-                        return;
-                    }
+                if (e.target.id && e.target.id !== 'btnGerar' && e.target.id !== 'btnLimpar' && e.target.id !== 'btnPadrao' && e.target.id !== 'btnCopiar' && e.target.id !== 'btnImportar' && e.target.id !== 'textoImportar') {
+                    if (e.target.id === 'tipoMensagem') return;
                     saveToLocalStorage();
                 }
             });
             
             form.addEventListener('change', function(e) {
-                if (e.target.id && e.target.id !== 'btnGerar' && e.target.id !== 'btnLimpar' && e.target.id !== 'btnPadrao' && e.target.id !== 'btnCopiar') {
+                if (e.target.id && e.target.id !== 'btnGerar' && e.target.id !== 'btnLimpar' && e.target.id !== 'btnPadrao' && e.target.id !== 'btnCopiar' && e.target.id !== 'btnImportar' && e.target.id !== 'textoImportar') {
                     saveToLocalStorage();
                 }
             });
             
-            // Adicionar evento ao botão Gerar
             btnGerar.addEventListener('click', gerarMensagem);
-            
-            // Adicionar evento ao botão Limpar
             btnLimpar.addEventListener('click', limparCampos);
-            
-            // Adicionar evento ao botão Padrão
             btnPadrao.addEventListener('click', function() {
                 if (confirm('Carregar o modelo padrão? Os dados atuais serão substituídos.')) {
                     loadDefaultModel();
                     previewContent.innerHTML = 'Preencha os campos acima e clique em "GERAR MENSAGEM"';
                 }
             });
-            
-            // Adicionar evento ao botão Copiar
             btnCopiar.addEventListener('click', copiarMensagem);
+            btnImportar.addEventListener('click', importarMensagem);
             
-            // Permitir enviar o formulário com Enter (exceto em textareas)
             form.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'BUTTON') {
                     e.preventDefault();
@@ -808,10 +1109,8 @@
                 }
             });
             
-            // Carregar dados ao iniciar
+            // Inicialização
             loadFromLocalStorage();
-            
-            // Tentar gerar mensagem automaticamente se houver dados
             setTimeout(() => {
                 if (document.getElementById('numeroMensagem').value !== '' && 
                     document.getElementById('origemMensagem').value !== '') {
@@ -819,7 +1118,6 @@
                 }
             }, 500);
             
-            // Salvar dados antes de fechar a página
             window.addEventListener('beforeunload', function() {
                 saveToLocalStorage();
             });
