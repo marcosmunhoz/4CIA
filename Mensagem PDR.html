@@ -299,11 +299,11 @@
         <h1>FORMULÁRIO DE MENSAGEM PADRÃO - 4º BPRv</h1>
         
         <form id="mensagemForm">
-            <!-- NOVO GRUPO: IMPORTAR MENSAGEM -->
+            <!-- Importar Mensagem -->
             <div class="form-group" style="border: 2px dashed #f39c12; padding: 15px; border-radius: 8px; background-color: #fef9e7;">
                 <label for="textoImportar">📂 Importar mensagem existente (cole o texto gerado)</label>
                 <textarea id="textoImportar" style="height: 100px; font-family: 'Times New Roman', Times, serif; font-size: 12pt;"></textarea>
-                <div class="field-info">Cole aqui uma mensagem que foi gerada anteriormente e clique em "IMPORTAR" para preencher os campos automaticamente.</div>
+                <div class="field-info">Cole aqui uma mensagem gerada anteriormente e clique em "IMPORTAR" para preencher os campos automaticamente.</div>
                 <button type="button" id="btnImportar" style="margin-top: 10px;">📥 IMPORTAR MENSAGEM</button>
             </div>
             
@@ -498,13 +498,9 @@
             const horarioLocalInput = document.getElementById('horarioLocal');
             const tempoRespostaInput = document.getElementById('tempoResposta');
             
-            // Chaves para localStorage
             const STORAGE_KEY = 'mensagem_bprv_form_data';
-            
-            // Frase de assinatura
             const ASSINATURA = "\"Nós, Policiais Militares, sob a proteção de Deus, estamos compromissados com a Defesa da Vida, da Integridade Física e da Dignidade da Pessoa Humana\"";
             
-            // Função para mostrar status
             function showStatus(message, type) {
                 statusMessage.textContent = message;
                 statusMessage.className = `status ${type}`;
@@ -515,7 +511,7 @@
             }
             
             // ============================================================
-            // FUNÇÃO PARA CALCULAR TEMPO DE RESPOSTA
+            // CÁLCULO DO TEMPO DE RESPOSTA
             // ============================================================
             function calcularTempoResposta() {
                 const horarioStr = horarioInput.value.trim();
@@ -526,12 +522,10 @@
                     return;
                 }
                 
-                // Função para converter "HHhMMmin" ou "HH:MM" ou "HHhMM" para minutos
                 function parseHorario(str) {
                     str = str.replace(/\s/g, '');
                     let horas = 0, minutos = 0;
                     
-                    // Tenta formato "20h10min" ou "20h10"
                     const matchH = str.match(/^(\d{1,2})h(\d{2})(?:min)?$/i);
                     if (matchH) {
                         horas = parseInt(matchH[1], 10);
@@ -539,7 +533,6 @@
                         return horas * 60 + minutos;
                     }
                     
-                    // Tenta formato "20:10"
                     const matchColon = str.match(/^(\d{1,2}):(\d{2})$/);
                     if (matchColon) {
                         horas = parseInt(matchColon[1], 10);
@@ -547,7 +540,6 @@
                         return horas * 60 + minutos;
                     }
                     
-                    // Tenta formato "20.10" (ponto)
                     const matchDot = str.match(/^(\d{1,2})\.(\d{2})$/);
                     if (matchDot) {
                         horas = parseInt(matchDot[1], 10);
@@ -555,7 +547,6 @@
                         return horas * 60 + minutos;
                     }
                     
-                    // Tenta "20" (apenas horas)
                     const matchOnlyHours = str.match(/^(\d{1,2})$/);
                     if (matchOnlyHours) {
                         horas = parseInt(matchOnlyHours[1], 10);
@@ -574,77 +565,51 @@
                 }
                 
                 let diff = totalLocal - totalFato;
-                // Se negativo, significa que passou da meia-noite (ex: fato 23:50, local 00:10)
-                if (diff < 0) {
-                    diff += 24 * 60; // adiciona 24h
-                }
+                if (diff < 0) diff += 24 * 60;
                 
                 const horas = Math.floor(diff / 60);
                 const minutos = diff % 60;
                 
                 let resultado = '';
-                if (horas > 0 && minutos > 0) {
-                    resultado = `${horas}h${minutos.toString().padStart(2, '0')}min`;
-                } else if (horas > 0) {
-                    resultado = `${horas}h`;
-                } else {
-                    resultado = `${minutos}min`;
-                }
+                if (horas > 0 && minutos > 0) resultado = `${horas}h${minutos.toString().padStart(2, '0')}min`;
+                else if (horas > 0) resultado = `${horas}h`;
+                else resultado = `${minutos}min`;
                 
                 tempoRespostaInput.value = resultado;
                 showStatus(`Tempo de resposta calculado: ${resultado}`, 'calculated');
             }
             
             // ============================================================
-            // FUNÇÃO PARA ATUALIZAR CAMPO "FATO" AUTOMATICAMENTE
+            // ATUALIZAR CAMPO FATO
             // ============================================================
             function atualizarCampoFato() {
                 const tipoSelecionado = tipoMensagemSelect.value;
                 const valorAtualFato = fatoInput.value;
-                
-                // Remove " - Prévia" ou " - Final" se existir
                 let baseFato = valorAtualFato;
-                if (baseFato.includes(' - Prévia')) {
-                    baseFato = baseFato.replace(' - Prévia', '');
-                }
-                if (baseFato.includes(' - Final')) {
-                    baseFato = baseFato.replace(' - Final', '');
-                }
-                
-                // Se o campo está vazio ou contém apenas o padrão, ajusta
+                if (baseFato.includes(' - Prévia')) baseFato = baseFato.replace(' - Prévia', '');
+                if (baseFato.includes(' - Final')) baseFato = baseFato.replace(' - Final', '');
                 if (!baseFato.trim() || baseFato === 'Sinistro de trânsito com vítima fatal') {
                     baseFato = 'Sinistro de trânsito com vítima fatal';
                 }
-                
-                // Adiciona o tipo correspondente
-                if (tipoSelecionado === 'PRÉVIA') {
-                    fatoInput.value = baseFato + ' - Prévia';
-                } else if (tipoSelecionado === 'FINAL') {
-                    fatoInput.value = baseFato + ' - Final';
-                }
-                
-                // Salva automaticamente
+                if (tipoSelecionado === 'PRÉVIA') fatoInput.value = baseFato + ' - Prévia';
+                else if (tipoSelecionado === 'FINAL') fatoInput.value = baseFato + ' - Final';
                 saveToLocalStorage();
             }
             
             // ============================================================
-            // FUNÇÕES DE LOCALSTORAGE
+            // LOCALSTORAGE
             // ============================================================
             function saveToLocalStorage() {
                 const formData = {};
                 const formElements = form.elements;
-                
                 for (let element of formElements) {
                     if (element.id && element.id !== 'btnGerar' && element.id !== 'btnLimpar' && element.id !== 'btnPadrao' && element.id !== 'btnCopiar' && element.id !== 'btnImportar' && element.id !== 'textoImportar') {
                         formData[element.id] = element.value;
                     }
                 }
-                
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-                } catch (e) {
-                    console.error('Erro ao salvar dados:', e);
-                }
+                } catch (e) { console.error('Erro ao salvar dados:', e); }
             }
             
             function loadFromLocalStorage() {
@@ -652,12 +617,9 @@
                     const savedData = localStorage.getItem(STORAGE_KEY);
                     if (savedData) {
                         const formData = JSON.parse(savedData);
-                        
                         for (const [id, value] of Object.entries(formData)) {
                             const element = document.getElementById(id);
-                            if (element) {
-                                element.value = value;
-                            }
+                            if (element) element.value = value;
                         }
                     } else {
                         loadDefaultModel();
@@ -669,7 +631,7 @@
             }
             
             // ============================================================
-            // MODELO PADRÃO
+            // MODELO PADRÃO (atualizado com Btl)
             // ============================================================
             function loadDefaultModel() {
                 document.getElementById('tipoMensagem').value = 'PRÉVIA';
@@ -690,20 +652,18 @@
                 document.getElementById('veiculos').value = 'Envolvido: 02 CAR';
                 document.getElementById('vtr').value = 'R-04423';
                 document.getElementById('policiais').value = 'SD PM 200857-2 Jheniffer e SD PM 242475-4 Marangoni';
-                document.getElementById('comandantes').value = 'NOME COMPLETO CMT CPRv: Cel PM Hugo Arantjo Santos - Comandante do Pol Rv\nNOME COMPLETO CMT BTL: Ten Cel PM Marcelo Estevão de Oliveira - Comandante do 4º BPRv\nNOME COMPLETO CMT CIA: Cap PM Daniel Durosk: Neves - Comandante - da 4ª Cia do 4º BPRv\nNOME COMPLETO CMT PEL: 1º Ten PM Rodrigo Gonçalves de Campos - Comandante do 2º Pelotão da 4ª Cia do 4º BPRv';
+                document.getElementById('comandantes').value = 'NOME COMPLETO CMT CPRv: Cel PM Hugo Araújo Santos - Comandante do Pol Rv\nNOME COMPLETO CMT BTL: Maj PM Vagner Pedron - Comandante Interino do 4º BPRv\nNOME COMPLETO CMT CIA: 1º Ten PM Rodrigo Gonçalves de Campos – Comandante Interino da 4ª Cia do 4º BPRv\nNOME COMPLETO CMT PEL: 1º Ten PM Caroline de Godoy Fonrrozo - Comandante Interino do 1º Pelotão da 4ª Cia do 4º BPRv';
                 document.getElementById('registros').value = 'B0202607031012807, PPM nº 493023/442/26';
                 document.getElementById('historico').value = 'Sinistro ocorreu aproximadamente as 20h10, quando transitavam os veículos de carga na referida rodovia, no sentido Analândia a Pirassununga, momento em que o condutor do CAR 01 (fatal) iniciou uma ultrapassagem em local sinalizado com faixa dupla contínua e, ao ultrapassar o CAR 02, colidiu lateralmente, perdeu o controle da direção, invadiu o canteiro lateral e imobilizou-se no acostamento, resultando no óbito do condutor do CAR 01, em ferimentos leves na passageira do CAR 01 e em nenhum ferimento no condutor do CAR 02, que permaneceu ileso. Por volta das 20h15, uma viatura da AFA, com médico presente, passou pelo local do sinistro e constatou o óbito do condutor do CAR 01, sendo que às 20h50 a Viatura R-04432, composta pelo CB PM 116116-4 Marcel e CB PM 144803-0 Carmilo, chegou ao local para prestar os primeiros atendimentos, e posteriormente, às 22h05, a Viatura R-04423 chegou para a confecção do Boletim de Ocorrência; Local não tem bom sinal de celular nem comunicação via rádio, o que está dificultando a chegada de informações. Demais dados seguem posteriormente.';
                 document.getElementById('autoridadeLocal').value = '1º Sgt PM Júlio - CGP 2º Pel.';
                 document.getElementById('autoridadeCientificada').value = '1º Ten PM Campos - Comandante do 2º Pel da 4ª Cia.';
-                
-                // Recalcular tempo de resposta (já está preenchido, mas chamamos para garantir)
                 calcularTempoResposta();
                 showStatus('Modelo padrão carregado!', 'saved');
                 saveToLocalStorage();
             }
             
             // ============================================================
-            // IMPORTAÇÃO (PARSER) - ATUALIZADO PARA EXTRAIR HORÁRIOS E CALCULAR
+            // IMPORTAÇÃO (PARSER CORRIGIDO)
             // ============================================================
             function importarMensagem() {
                 const rawText = textoImportar.value;
@@ -714,7 +674,6 @@
                 
                 let text = rawText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
                 
-                // Extrai cabeçalho
                 const headerMatch = text.match(/MENSAGEM N°\s*4BPRV-\s*([^\/\n]+)\/([^,\n]+),\s*de\s*([^\n]+)/);
                 let numero = '', origem = '', dataMsg = '';
                 if (headerMatch) {
@@ -723,10 +682,8 @@
                     dataMsg = headerMatch[3].trim();
                 }
                 
-                // Extrai Assunto
                 const assuntoMatch = text.match(/Assunto:\s*([^\n]+)/);
-                let fato = '';
-                let tipo = '';
+                let fato = '', tipo = '';
                 if (assuntoMatch) {
                     fato = assuntoMatch[1].trim();
                     if (fato.includes('- Prévia')) tipo = 'PRÉVIA';
@@ -742,7 +699,7 @@
                     'Efetivo empenhado': 'efetivo',
                     'Endereço': 'endereco',
                     'Município': 'municipio',
-                    'Bil': 'bil_ignore',
+                    'Bil': 'bil_ignore', // será ignorado, usamos Btl no preview
                     'Cia': 'cia_ignore',
                     'Pel': 'pelotao',
                     'Policiais militares que atenderam': 'policiais',
@@ -761,24 +718,28 @@
                     efetivo: '', pelotao: '', policiais: '', vtr: '',
                     delegacia: '', veiculos: '', registros: '', historico: '',
                     autoridadeLocal: '', autoridadeCientificada: '',
-                    comandantes: [],
+                    comandantes: [], // cada elemento será a linha completa com label
                     ambiente: '', dataFato: '', endereco: '', municipio: ''
                 };
                 
                 const lines = text.split('\n');
                 let currentField = null;
                 let currentValue = [];
+                let isHistorico = false;
                 
                 function extractLabel(line) {
                     const match = line.match(/^([^:]+):/);
                     if (match) {
                         const labelCandidate = match[1].trim();
+                        // Verifica se é um label mapeado
                         for (let key of Object.keys(fieldMap)) {
                             if (labelCandidate.toLowerCase() === key.toLowerCase()) {
                                 return key;
                             }
                         }
+                        // Registro
                         if (labelCandidate.toLowerCase().startsWith('registro')) return 'Registro';
+                        // Comandantes: se contém "CMT" ou "COMANDANTE"
                         if (labelCandidate.toUpperCase().includes('CMT') || labelCandidate.toUpperCase().includes('COMANDANTE')) {
                             return 'CMT';
                         }
@@ -793,6 +754,7 @@
                     const label = extractLabel(line);
                     
                     if (label) {
+                        // Se já estávamos acumulando, salva
                         if (currentField && currentValue.length > 0) {
                             const fullValue = currentValue.join('\n').trim();
                             if (currentField === 'horario_raw') {
@@ -803,8 +765,6 @@
                                 } else {
                                     extracted.horario = fullValue;
                                 }
-                            } else if (currentField === 'CMT') {
-                                extracted.comandantes.push(fullValue);
                             } else if (currentField === 'Registro') {
                                 extracted.registros = fullValue;
                             } else if (currentField === 'Histórico') {
@@ -817,8 +777,19 @@
                             }
                         }
                         
+                        // Inicia novo campo
                         currentField = label;
                         currentValue = [];
+                        
+                        // Caso especial: CMT - guardamos a linha inteira (com label)
+                        if (label === 'CMT') {
+                            extracted.comandantes.push(line.trim());
+                            currentField = null; // não acumula
+                            currentValue = [];
+                            continue;
+                        }
+                        
+                        // Extrai conteúdo após os dois pontos
                         const contentMatch = line.match(/^[^:]+:\s*(.*)/);
                         if (contentMatch) {
                             currentValue.push(contentMatch[1].trim());
@@ -826,8 +797,11 @@
                             currentValue.push('');
                         }
                     } else {
+                        // Linha sem label: pode ser continuação do campo atual
                         if (currentField) {
                             currentValue.push(line.trim());
+                        } else {
+                            // Linha solta (ex: assinatura) - ignorar
                         }
                     }
                 }
@@ -843,8 +817,6 @@
                         } else {
                             extracted.horario = fullValue;
                         }
-                    } else if (currentField === 'CMT') {
-                        extracted.comandantes.push(fullValue);
                     } else if (currentField === 'Registro') {
                         extracted.registros = fullValue;
                     } else if (currentField === 'Histórico') {
@@ -857,7 +829,7 @@
                     }
                 }
                 
-                // Preenche campos
+                // Preenche campos do formulário
                 if (extracted.tipo) document.getElementById('tipoMensagem').value = extracted.tipo;
                 if (extracted.numero) document.getElementById('numeroMensagem').value = extracted.numero;
                 if (extracted.origem) document.getElementById('origemMensagem').value = extracted.origem;
@@ -884,9 +856,7 @@
                     document.getElementById('comandantes').value = extracted.comandantes.join('\n');
                 }
                 
-                // Recalcula tempo de resposta (caso tenha sido importado ou não)
                 calcularTempoResposta();
-                
                 saveToLocalStorage();
                 showStatus('Mensagem importada com sucesso! Campos preenchidos.', 'imported');
                 textoImportar.value = '';
@@ -894,7 +864,7 @@
             }
             
             // ============================================================
-            // GERAR MENSAGEM
+            // GERAR MENSAGEM (com Btl em vez de Bil)
             // ============================================================
             function gerarMensagem() {
                 if (!form.checkValidity()) {
@@ -903,7 +873,6 @@
                     return;
                 }
                 
-                // Recalcula o tempo antes de gerar (garantia)
                 calcularTempoResposta();
                 
                 const tipoMsg = document.getElementById('tipoMensagem').value;
@@ -945,7 +914,7 @@
                 mensagemHtml += `<strong>Efetivo empenhado:</strong> ${efetivo}<br><br>`;
                 mensagemHtml += `<strong>Endereço:</strong> ${endereco}<br><br>`;
                 mensagemHtml += `<strong>Município:</strong> ${municipio}<br><br>`;
-                mensagemHtml += `<strong>Bil:</strong> 4º BPRv<br><br>`;
+                mensagemHtml += `<strong>Btl:</strong> 4º BPRv<br><br>`;  // Alterado de "Bil" para "Btl"
                 mensagemHtml += `<strong>Cia:</strong> 4ª Cia<br><br>`;
                 mensagemHtml += `<strong>Pel:</strong> ${pelotao}<br><br>`;
                 mensagemHtml += `<strong>Policiais militares que atenderam:</strong> ${policiais}<br><br>`;
@@ -956,6 +925,7 @@
                     mensagemHtml += `<strong>Veículo:</strong> Envolvido: ${veiculos}<br><br>`;
                 }
                 
+                // Comandantes: cada linha já contém label, então só aplicar negrito ao label
                 const comandantesLines = comandantes.split('\n');
                 for (let line of comandantesLines) {
                     if (line.trim()) {
@@ -1067,7 +1037,6 @@
                 }
             });
             
-            // Eventos para calcular tempo de resposta automaticamente
             horarioInput.addEventListener('input', function() {
                 calcularTempoResposta();
                 saveToLocalStorage();
@@ -1077,7 +1046,6 @@
                 saveToLocalStorage();
             });
             
-            // Salvar automático
             form.addEventListener('input', function(e) {
                 if (e.target.id && e.target.id !== 'btnGerar' && e.target.id !== 'btnLimpar' && e.target.id !== 'btnPadrao' && e.target.id !== 'btnCopiar' && e.target.id !== 'btnImportar' && e.target.id !== 'textoImportar') {
                     if (e.target.id === 'tipoMensagem') return;
